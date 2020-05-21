@@ -2,82 +2,128 @@ package com.ikvych.cocktail.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.os.Parcelable.Creator;
 import android.widget.ImageView;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
 import androidx.databinding.BindingAdapter;
 import androidx.databinding.library.baseAdapters.BR;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.Ignore;
+import androidx.room.PrimaryKey;
 
 import com.bumptech.glide.Glide;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Drink extends BaseObservable implements Parcelable {
+@Entity(tableName = "drink")
+public class Drink extends BaseObservable implements Parcelable{
 
     @SerializedName("idDrink")
     @Expose
-    private String idDrink;
+    @PrimaryKey(autoGenerate = false)
+    @ColumnInfo(name = "id_drink")
+    private Long idDrink;
+
     @SerializedName("strDrink")
     @Expose
+    @ColumnInfo(name = "str_drink")
     private String strDrink;
+
     @SerializedName("strDrinkAlternate")
     @Expose
+    @Ignore
     private Object strDrinkAlternate;
+
     @SerializedName("strDrinkES")
     @Expose
+    @Ignore
     private Object strDrinkES;
+
     @SerializedName("strDrinkDE")
     @Expose
+    @Ignore
     private Object strDrinkDE;
+
     @SerializedName("strDrinkFR")
     @Expose
+    @Ignore
     private Object strDrinkFR;
+
     @SerializedName("strDrinkZH-HANS")
     @Expose
+    @Ignore
     private Object strDrinkZHHANS;
+
     @SerializedName("strDrinkZH-HANT")
     @Expose
+    @Ignore
     private Object strDrinkZHHANT;
+
     @SerializedName("strTags")
     @Expose
+    @Ignore
     private Object strTags;
+
     @SerializedName("strVideo")
     @Expose
+    @Ignore
     private Object strVideo;
+
     @SerializedName("strCategory")
     @Expose
+    @Ignore
     private String strCategory;
+
     @SerializedName("strIBA")
     @Expose
+    @Ignore
     private Object strIBA;
+
     @SerializedName("strAlcoholic")
     @Expose
+    @ColumnInfo(name = "str_alcoholic")
     private String strAlcoholic;
+
     @SerializedName("strGlass")
     @Expose
+    @ColumnInfo(name = "str_glass")
     private String strGlass;
+
     @SerializedName("strInstructions")
     @Expose
+    @ColumnInfo(name = "str_instructions")
     private String strInstructions;
+
     @SerializedName("strInstructionsES")
     @Expose
+    @Ignore
     private Object strInstructionsES;
+
     @SerializedName("strInstructionsDE")
     @Expose
+    @Ignore
     private String strInstructionsDE;
+
     @SerializedName("strInstructionsFR")
     @Expose
+    @Ignore
     private Object strInstructionsFR;
+
     @SerializedName("strInstructionsZH-HANS")
     @Expose
+    @Ignore
     private Object strInstructionsZHHANS;
+
     @SerializedName("strInstructionsZH-HANT")
     @Expose
+    @Ignore
     private Object strInstructionsZHHANT;
+
     @SerializedName("strDrinkThumb")
     @Expose
+    @ColumnInfo(name = "str_drink_thumb")
     private String strDrinkThumb;
 
     @BindingAdapter({"strDrinkThumb"})
@@ -89,100 +135,164 @@ public class Drink extends BaseObservable implements Parcelable {
 
     @SerializedName("strIngredient1")
     @Expose
+    @ColumnInfo(name = "str_ingredient1")
     private String strIngredient1;
+
     @SerializedName("strIngredient2")
     @Expose
+    @ColumnInfo(name = "str_ingredient2")
     private String strIngredient2;
+
     @SerializedName("strIngredient3")
     @Expose
+    @ColumnInfo(name = "str_ingredient3")
     private String strIngredient3;
+
     @SerializedName("strIngredient4")
     @Expose
+    @ColumnInfo(name = "str_ingredient4")
     private String strIngredient4;
+
     @SerializedName("strIngredient5")
     @Expose
+    @ColumnInfo(name = "str_ingredient5")
     private String strIngredient5;
+
     @SerializedName("strIngredient6")
     @Expose
+    @ColumnInfo(name = "str_ingredient6")
     private String strIngredient6;
+
     @SerializedName("strIngredient7")
     @Expose
-    private Object strIngredient7;
+    @ColumnInfo(name = "str_ingredient7")
+    private String strIngredient7;
+
     @SerializedName("strIngredient8")
     @Expose
-    private Object strIngredient8;
+    @ColumnInfo(name = "str_ingredient8")
+    private String strIngredient8;
+
     @SerializedName("strIngredient9")
     @Expose
-    private Object strIngredient9;
+    @ColumnInfo(name = "str_ingredient9")
+    private String strIngredient9;
+
     @SerializedName("strIngredient10")
     @Expose
-    private Object strIngredient10;
+    @ColumnInfo(name = "str_ingredient10")
+    private String strIngredient10;
+
     @SerializedName("strIngredient11")
     @Expose
-    private Object strIngredient11;
+    @ColumnInfo(name = "str_ingredient11")
+    private String strIngredient11;
+
     @SerializedName("strIngredient12")
     @Expose
-    private Object strIngredient12;
+    @ColumnInfo(name = "str_ingredient12")
+    private String strIngredient12;
+
     @SerializedName("strIngredient13")
     @Expose
-    private Object strIngredient13;
+    @ColumnInfo(name = "str_ingredient13")
+    private String strIngredient13;
+
     @SerializedName("strIngredient14")
     @Expose
-    private Object strIngredient14;
+    @ColumnInfo(name = "str_ingredient14")
+    private String strIngredient14;
+
     @SerializedName("strIngredient15")
     @Expose
-    private Object strIngredient15;
+    @ColumnInfo(name = "str_ingredient15")
+    private String strIngredient15;
+
     @SerializedName("strMeasure1")
     @Expose
+    @ColumnInfo(name = "str_measure1")
     private String strMeasure1;
+
     @SerializedName("strMeasure2")
     @Expose
+    @ColumnInfo(name = "str_measure2")
     private String strMeasure2;
+
     @SerializedName("strMeasure3")
     @Expose
+    @ColumnInfo(name = "str_measure3")
     private String strMeasure3;
+
     @SerializedName("strMeasure4")
     @Expose
+    @ColumnInfo(name = "str_measure4")
     private String strMeasure4;
+
     @SerializedName("strMeasure5")
     @Expose
+    @ColumnInfo(name = "str_measure5")
     private String strMeasure5;
+
     @SerializedName("strMeasure6")
     @Expose
-    private Object strMeasure6;
+    @ColumnInfo(name = "str_measure6")
+    private String strMeasure6;
+
     @SerializedName("strMeasure7")
     @Expose
-    private Object strMeasure7;
+    @ColumnInfo(name = "str_measure7")
+    private String strMeasure7;
+
     @SerializedName("strMeasure8")
     @Expose
-    private Object strMeasure8;
+    @ColumnInfo(name = "str_measure8")
+    private String strMeasure8;
+
     @SerializedName("strMeasure9")
     @Expose
-    private Object strMeasure9;
+    @ColumnInfo(name = "str_measure9")
+    private String strMeasure9;
+
     @SerializedName("strMeasure10")
     @Expose
-    private Object strMeasure10;
+    @ColumnInfo(name = "str_measure10")
+    private String strMeasure10;
+
     @SerializedName("strMeasure11")
     @Expose
-    private Object strMeasure11;
+    @ColumnInfo(name = "str_measure11")
+    private String strMeasure11;
+
     @SerializedName("strMeasure12")
     @Expose
-    private Object strMeasure12;
+    @ColumnInfo(name = "str_measure12")
+    private String strMeasure12;
+
     @SerializedName("strMeasure13")
     @Expose
-    private Object strMeasure13;
+    @ColumnInfo(name = "str_measure13")
+    private String strMeasure13;
+
     @SerializedName("strMeasure14")
     @Expose
-    private Object strMeasure14;
+    @ColumnInfo(name = "str_measure14")
+    private String strMeasure14;
+
     @SerializedName("strMeasure15")
     @Expose
-    private Object strMeasure15;
+    @ColumnInfo(name = "str_measure15")
+    private String strMeasure15;
+
     @SerializedName("strCreativeCommonsConfirmed")
     @Expose
+    @Ignore
     private String strCreativeCommonsConfirmed;
+
     @SerializedName("dateModified")
     @Expose
+    @Ignore
     private String dateModified;
+
     public final static Parcelable.Creator<Drink> CREATOR = new Creator<Drink>() {
 
 
@@ -198,7 +308,7 @@ public class Drink extends BaseObservable implements Parcelable {
     };
 
     protected Drink(Parcel in) {
-        this.idDrink = ((String) in.readValue((String.class.getClassLoader())));
+        this.idDrink = ((Long) in.readValue((String.class.getClassLoader())));
         this.strDrink = ((String) in.readValue((String.class.getClassLoader())));
         this.strDrinkAlternate = ((Object) in.readValue((Object.class.getClassLoader())));
         this.strDrinkES = ((Object) in.readValue((Object.class.getClassLoader())));
@@ -225,30 +335,30 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strIngredient4 = ((String) in.readValue((String.class.getClassLoader())));
         this.strIngredient5 = ((String) in.readValue((String.class.getClassLoader())));
         this.strIngredient6 = ((String) in.readValue((String.class.getClassLoader())));
-        this.strIngredient7 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strIngredient8 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strIngredient9 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strIngredient10 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strIngredient11 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strIngredient12 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strIngredient13 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strIngredient14 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strIngredient15 = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.strIngredient7 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strIngredient8 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strIngredient9 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strIngredient10 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strIngredient11 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strIngredient12 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strIngredient13 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strIngredient14 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strIngredient15 = ((String) in.readValue((Object.class.getClassLoader())));
         this.strMeasure1 = ((String) in.readValue((String.class.getClassLoader())));
         this.strMeasure2 = ((String) in.readValue((String.class.getClassLoader())));
         this.strMeasure3 = ((String) in.readValue((String.class.getClassLoader())));
         this.strMeasure4 = ((String) in.readValue((String.class.getClassLoader())));
         this.strMeasure5 = ((String) in.readValue((String.class.getClassLoader())));
-        this.strMeasure6 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strMeasure7 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strMeasure8 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strMeasure9 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strMeasure10 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strMeasure11 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strMeasure12 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strMeasure13 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strMeasure14 = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strMeasure15 = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.strMeasure6 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strMeasure7 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strMeasure8 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strMeasure9 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strMeasure10 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strMeasure11 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strMeasure12 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strMeasure13 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strMeasure14 = ((String) in.readValue((Object.class.getClassLoader())));
+        this.strMeasure15 = ((String) in.readValue((Object.class.getClassLoader())));
         this.strCreativeCommonsConfirmed = ((String) in.readValue((String.class.getClassLoader())));
         this.dateModified = ((String) in.readValue((String.class.getClassLoader())));
     }
@@ -257,14 +367,15 @@ public class Drink extends BaseObservable implements Parcelable {
     }
 
     @Bindable
-    public String getIdDrink() {
+    public Long getIdDrink() {
         return idDrink;
     }
 
-    public void setIdDrink(String idDrink) {
+    public void setIdDrink(Long idDrink) {
         this.idDrink = idDrink;
         notifyPropertyChanged(BR.idDrink);
     }
+
     @Bindable
     public String getStrDrink() {
         return strDrink;
@@ -274,6 +385,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strDrink = strDrink;
         notifyPropertyChanged(BR.strDrink);
     }
+
     @Bindable
     public Object getStrDrinkAlternate() {
         return strDrinkAlternate;
@@ -283,6 +395,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strDrinkAlternate = strDrinkAlternate;
         notifyPropertyChanged(BR.strDrinkAlternate);
     }
+
     @Bindable
     public Object getStrDrinkES() {
         return strDrinkES;
@@ -292,6 +405,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strDrinkES = strDrinkES;
         notifyPropertyChanged(BR.strDrinkES);
     }
+
     @Bindable
     public Object getStrDrinkDE() {
         return strDrinkDE;
@@ -301,6 +415,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strDrinkDE = strDrinkDE;
         notifyPropertyChanged(BR.strDrinkDE);
     }
+
     @Bindable
     public Object getStrDrinkFR() {
         return strDrinkFR;
@@ -310,6 +425,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strDrinkFR = strDrinkFR;
         notifyPropertyChanged(BR.strDrinkFR);
     }
+
     @Bindable
     public Object getStrDrinkZHHANS() {
         return strDrinkZHHANS;
@@ -319,6 +435,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strDrinkZHHANS = strDrinkZHHANS;
         notifyPropertyChanged(BR.strDrinkZHHANS);
     }
+
     @Bindable
     public Object getStrDrinkZHHANT() {
         return strDrinkZHHANT;
@@ -328,6 +445,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strDrinkZHHANT = strDrinkZHHANT;
         notifyPropertyChanged(BR.strDrinkZHHANT);
     }
+
     @Bindable
     public Object getStrTags() {
         return strTags;
@@ -337,6 +455,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strTags = strTags;
         notifyPropertyChanged(BR.strTags);
     }
+
     @Bindable
     public Object getStrVideo() {
         return strVideo;
@@ -346,6 +465,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strVideo = strVideo;
         notifyPropertyChanged(BR.strVideo);
     }
+
     @Bindable
     public String getStrCategory() {
         return strCategory;
@@ -355,6 +475,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strCategory = strCategory;
         notifyPropertyChanged(BR.strCategory);
     }
+
     @Bindable
     public Object getStrIBA() {
         return strIBA;
@@ -364,6 +485,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strIBA = strIBA;
         notifyPropertyChanged(BR.strIBA);
     }
+
     @Bindable
     public String getStrAlcoholic() {
         return strAlcoholic;
@@ -373,6 +495,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strAlcoholic = strAlcoholic;
         notifyPropertyChanged(BR.strAlcoholic);
     }
+
     @Bindable
     public String getStrGlass() {
         return strGlass;
@@ -382,6 +505,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strGlass = strGlass;
         notifyPropertyChanged(BR.strGlass);
     }
+
     @Bindable
     public String getStrInstructions() {
         return strInstructions;
@@ -391,6 +515,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strInstructions = strInstructions;
         notifyPropertyChanged(BR.strInstructions);
     }
+
     @Bindable
     public Object getStrInstructionsES() {
         return strInstructionsES;
@@ -400,6 +525,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strInstructionsES = strInstructionsES;
         notifyPropertyChanged(BR.strInstructionsES);
     }
+
     @Bindable
     public String getStrInstructionsDE() {
         return strInstructionsDE;
@@ -409,6 +535,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strInstructionsDE = strInstructionsDE;
         notifyPropertyChanged(BR.strInstructionsDE);
     }
+
     @Bindable
     public Object getStrInstructionsFR() {
         return strInstructionsFR;
@@ -418,6 +545,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strInstructionsFR = strInstructionsFR;
         notifyPropertyChanged(BR.strInstructionsFR);
     }
+
     @Bindable
     public Object getStrInstructionsZHHANS() {
         return strInstructionsZHHANS;
@@ -427,6 +555,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strInstructionsZHHANS = strInstructionsZHHANS;
         notifyPropertyChanged(BR.strInstructionsZHHANS);
     }
+
     @Bindable
     public Object getStrInstructionsZHHANT() {
         return strInstructionsZHHANT;
@@ -436,6 +565,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strInstructionsZHHANT = strInstructionsZHHANT;
         notifyPropertyChanged(BR.strInstructionsZHHANT);
     }
+
     @Bindable
     public String getStrDrinkThumb() {
         return strDrinkThumb;
@@ -445,6 +575,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strDrinkThumb = strDrinkThumb;
         notifyPropertyChanged(BR.strDrinkThumb);
     }
+
     @Bindable
     public String getStrIngredient1() {
         return strIngredient1;
@@ -454,6 +585,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strIngredient1 = strIngredient1;
         notifyPropertyChanged(BR.strIngredient1);
     }
+
     @Bindable
     public String getStrIngredient2() {
         return strIngredient2;
@@ -463,6 +595,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strIngredient2 = strIngredient2;
         notifyPropertyChanged(BR.strIngredient2);
     }
+
     @Bindable
     public String getStrIngredient3() {
         return strIngredient3;
@@ -472,6 +605,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strIngredient3 = strIngredient3;
         notifyPropertyChanged(BR.strIngredient3);
     }
+
     @Bindable
     public String getStrIngredient4() {
         return strIngredient4;
@@ -481,6 +615,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strIngredient4 = strIngredient4;
         notifyPropertyChanged(BR.strIngredient4);
     }
+
     @Bindable
     public String getStrIngredient5() {
         return strIngredient5;
@@ -490,6 +625,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strIngredient5 = strIngredient5;
         notifyPropertyChanged(BR.strIngredient5);
     }
+
     @Bindable
     public String getStrIngredient6() {
         return strIngredient6;
@@ -499,87 +635,97 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strIngredient6 = strIngredient6;
         notifyPropertyChanged(BR.strIngredient6);
     }
+
     @Bindable
-    public Object getStrIngredient7() {
+    public String getStrIngredient7() {
         return strIngredient7;
     }
 
-    public void setStrIngredient7(Object strIngredient7) {
+    public void setStrIngredient7(String strIngredient7) {
         this.strIngredient7 = strIngredient7;
         notifyPropertyChanged(BR.strIngredient7);
     }
+
     @Bindable
-    public Object getStrIngredient8() {
+    public String getStrIngredient8() {
         return strIngredient8;
     }
 
-    public void setStrIngredient8(Object strIngredient8) {
+    public void setStrIngredient8(String strIngredient8) {
         this.strIngredient8 = strIngredient8;
         notifyPropertyChanged(BR.strIngredient8);
     }
+
     @Bindable
-    public Object getStrIngredient9() {
+    public String getStrIngredient9() {
         return strIngredient9;
     }
 
-    public void setStrIngredient9(Object strIngredient9) {
+    public void setStrIngredient9(String strIngredient9) {
         this.strIngredient9 = strIngredient9;
         notifyPropertyChanged(BR.strIngredient9);
     }
+
     @Bindable
-    public Object getStrIngredient10() {
+    public String getStrIngredient10() {
         return strIngredient10;
     }
 
-    public void setStrIngredient10(Object strIngredient10) {
+    public void setStrIngredient10(String strIngredient10) {
         this.strIngredient10 = strIngredient10;
         notifyPropertyChanged(BR.strIngredient10);
     }
+
     @Bindable
-    public Object getStrIngredient11() {
+    public String getStrIngredient11() {
         return strIngredient11;
     }
 
-    public void setStrIngredient11(Object strIngredient11) {
+    public void setStrIngredient11(String strIngredient11) {
         this.strIngredient11 = strIngredient11;
         notifyPropertyChanged(BR.strIngredient11);
     }
+
     @Bindable
-    public Object getStrIngredient12() {
+    public String getStrIngredient12() {
         return strIngredient12;
     }
 
-    public void setStrIngredient12(Object strIngredient12) {
+    public void setStrIngredient12(String strIngredient12) {
         this.strIngredient12 = strIngredient12;
         notifyPropertyChanged(BR.strIngredient12);
     }
+
     @Bindable
-    public Object getStrIngredient13() {
+    public String getStrIngredient13() {
         return strIngredient13;
     }
 
-    public void setStrIngredient13(Object strIngredient13) {
+    public void setStrIngredient13(String strIngredient13) {
         this.strIngredient13 = strIngredient13;
         notifyPropertyChanged(BR.strIngredient13);
     }
+
     @Bindable
-    public Object getStrIngredient14() {
+    public String getStrIngredient14() {
         return strIngredient14;
     }
 
-    public void setStrIngredient14(Object strIngredient14) {
+    public void setStrIngredient14(String strIngredient14) {
         this.strIngredient14 = strIngredient14;
         notifyPropertyChanged(BR.strIngredient14);
     }
+
     @Bindable
-    public Object getStrIngredient15() {
+    public String getStrIngredient15() {
         return strIngredient15;
     }
 
-    public void setStrIngredient15(Object strIngredient15) {
+    public void setStrIngredient15(String strIngredient15) {
         this.strIngredient15 = strIngredient15;
         notifyPropertyChanged(BR.strIngredient15);
     }
+
     @Bindable
     public String getStrMeasure1() {
         return strMeasure1;
@@ -589,6 +735,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strMeasure1 = strMeasure1;
         notifyPropertyChanged(BR.strMeasure1);
     }
+
     @Bindable
     public String getStrMeasure2() {
         return strMeasure2;
@@ -598,6 +745,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strMeasure2 = strMeasure2;
         notifyPropertyChanged(BR.strMeasure2);
     }
+
     @Bindable
     public String getStrMeasure3() {
         return strMeasure3;
@@ -607,6 +755,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strMeasure3 = strMeasure3;
         notifyPropertyChanged(BR.strMeasure3);
     }
+
     @Bindable
     public String getStrMeasure4() {
         return strMeasure4;
@@ -616,6 +765,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strMeasure4 = strMeasure4;
         notifyPropertyChanged(BR.strMeasure4);
     }
+
     @Bindable
     public String getStrMeasure5() {
         return strMeasure5;
@@ -625,96 +775,107 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strMeasure5 = strMeasure5;
         notifyPropertyChanged(BR.strMeasure5);
     }
+
     @Bindable
-    public Object getStrMeasure6() {
+    public String getStrMeasure6() {
         return strMeasure6;
     }
 
-    public void setStrMeasure6(Object strMeasure6) {
+    public void setStrMeasure6(String strMeasure6) {
         this.strMeasure6 = strMeasure6;
         notifyPropertyChanged(BR.strMeasure6);
     }
+
     @Bindable
-    public Object getStrMeasure7() {
+    public String getStrMeasure7() {
         return strMeasure7;
     }
 
-    public void setStrMeasure7(Object strMeasure7) {
+    public void setStrMeasure7(String strMeasure7) {
         this.strMeasure7 = strMeasure7;
         notifyPropertyChanged(BR.strMeasure7);
     }
+
     @Bindable
-    public Object getStrMeasure8() {
+    public String getStrMeasure8() {
         return strMeasure8;
     }
 
-    public void setStrMeasure8(Object strMeasure8) {
+    public void setStrMeasure8(String strMeasure8) {
         this.strMeasure8 = strMeasure8;
         notifyPropertyChanged(BR.strMeasure8);
     }
+
     @Bindable
-    public Object getStrMeasure9() {
+    public String getStrMeasure9() {
         return strMeasure9;
     }
 
-    public void setStrMeasure9(Object strMeasure9) {
+    public void setStrMeasure9(String strMeasure9) {
         this.strMeasure9 = strMeasure9;
         notifyPropertyChanged(BR.strMeasure9);
     }
+
     @Bindable
-    public Object getStrMeasure10() {
+    public String getStrMeasure10() {
         return strMeasure10;
     }
 
-    public void setStrMeasure10(Object strMeasure10) {
+    public void setStrMeasure10(String strMeasure10) {
         this.strMeasure10 = strMeasure10;
         notifyPropertyChanged(BR.strMeasure10);
     }
+
     @Bindable
-    public Object getStrMeasure11() {
+    public String getStrMeasure11() {
         return strMeasure11;
     }
 
-    public void setStrMeasure11(Object strMeasure11) {
+    public void setStrMeasure11(String strMeasure11) {
         this.strMeasure11 = strMeasure11;
         notifyPropertyChanged(BR.strMeasure11);
     }
+
     @Bindable
-    public Object getStrMeasure12() {
+    public String getStrMeasure12() {
         return strMeasure12;
     }
 
-    public void setStrMeasure12(Object strMeasure12) {
+    public void setStrMeasure12(String strMeasure12) {
         this.strMeasure12 = strMeasure12;
         notifyPropertyChanged(BR.strMeasure12);
     }
+
     @Bindable
-    public Object getStrMeasure13() {
+    public String getStrMeasure13() {
         return strMeasure13;
     }
 
-    public void setStrMeasure13(Object strMeasure13) {
+    public void setStrMeasure13(String strMeasure13) {
         this.strMeasure13 = strMeasure13;
         notifyPropertyChanged(BR.strMeasure13);
     }
+
     @Bindable
-    public Object getStrMeasure14() {
+    public String getStrMeasure14() {
         return strMeasure14;
     }
 
-    public void setStrMeasure14(Object strMeasure14) {
+    public void setStrMeasure14(String strMeasure14) {
         this.strMeasure14 = strMeasure14;
         notifyPropertyChanged(BR.strMeasure14);
     }
+
     @Bindable
-    public Object getStrMeasure15() {
+    public String getStrMeasure15() {
         return strMeasure15;
     }
 
-    public void setStrMeasure15(Object strMeasure15) {
+    public void setStrMeasure15(String strMeasure15) {
         this.strMeasure15 = strMeasure15;
         notifyPropertyChanged(BR.strMeasure15);
     }
+
     @Bindable
     public String getStrCreativeCommonsConfirmed() {
         return strCreativeCommonsConfirmed;
@@ -724,6 +885,7 @@ public class Drink extends BaseObservable implements Parcelable {
         this.strCreativeCommonsConfirmed = strCreativeCommonsConfirmed;
         notifyPropertyChanged(BR.strCreativeCommonsConfirmed);
     }
+
     @Bindable
     public String getDateModified() {
         return dateModified;

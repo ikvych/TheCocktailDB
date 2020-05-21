@@ -7,6 +7,7 @@ import com.ikvych.cocktail.model.DrinkApiResponse;
 import com.ikvych.cocktail.service.DrinkApiService;
 import com.ikvych.cocktail.service.RetrofitInstance;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -23,20 +24,30 @@ public class DrinkApiRepository {
 
         Call<DrinkApiResponse> call = drinkApiService.getDrinksByName(name);
 
-        call.enqueue(new Callback<DrinkApiResponse>() {
+
+
+        Runnable runnable = new Runnable() {
             @Override
-            public void onResponse(Call<DrinkApiResponse> call, Response<DrinkApiResponse> response) {
-                DrinkApiResponse drinkApiResponse = response.body();
-                if (drinkApiResponse != null && drinkApiResponse.getDrinks() != null) {
-                    drinkList = drinkApiResponse.getDrinks();
+            public void run() {
+                try {
+                    Response<DrinkApiResponse> response = call.execute();
+                    DrinkApiResponse drinkApiResponse = response.body();
+                    if (drinkApiResponse != null && drinkApiResponse.getDrinks() != null) {
+                        drinkList = drinkApiResponse.getDrinks();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
+        };
+        Thread thread = new Thread(runnable);
+        thread.start();
+        try {
+            thread.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
-            @Override
-            public void onFailure(Call<DrinkApiResponse> call, Throwable t) {
-
-            }
-        });
         return drinkList;
     }
 }

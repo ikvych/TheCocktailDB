@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.model.Drink;
+import com.ikvych.cocktail.view.DrinkDetails;
 
 import java.util.List;
 import java.util.zip.Inflater;
@@ -63,6 +65,21 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
 
             imageView = itemView.findViewById(R.id.drinkImageView);
             drinkName = itemView.findViewById(R.id.drinkName);
+
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int position = getAdapterPosition();
+
+                    if (position != RecyclerView.NO_POSITION) {
+                        Drink drink = drinkList.get(position);
+
+                        Intent intent = new Intent(context, DrinkDetails.class);
+                        intent.putExtra("drink", drink);
+                        context.startActivity(intent);
+                    }
+                }
+            });
         }
     }
 

@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -19,6 +20,7 @@ import android.widget.TextView;
 
 import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.adapter.DrinkAdapter;
+import com.ikvych.cocktail.databinding.ActivitySearchBinding;
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.repository.DrinkApiRepository;
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel;
@@ -30,11 +32,14 @@ public class SearchActivity extends AppCompatActivity {
 
     private DrinkAdapter drinkAdapter;
     private SearchActivityViewModel viewModel;
+    private ActivitySearchBinding activitySearchBinding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+
+        activitySearchBinding = DataBindingUtil.setContentView(this, R.layout.activity_search);
 
         viewModel = new ViewModelProvider
                 .AndroidViewModelFactory(getApplication())
@@ -73,7 +78,7 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     public void fillRecycleView() {
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        RecyclerView recyclerView = activitySearchBinding.recyclerView;
         drinkAdapter = new DrinkAdapter(this);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));

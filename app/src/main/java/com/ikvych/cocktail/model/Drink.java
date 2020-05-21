@@ -3,11 +3,18 @@ package com.ikvych.cocktail.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.Parcelable.Creator;
+import android.widget.ImageView;
 
+import androidx.databinding.BaseObservable;
+import androidx.databinding.Bindable;
+import androidx.databinding.BindingAdapter;
+import androidx.databinding.library.baseAdapters.BR;
+
+import com.bumptech.glide.Glide;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-public class Drink implements Parcelable {
+public class Drink extends BaseObservable implements Parcelable {
 
     @SerializedName("idDrink")
     @Expose
@@ -72,6 +79,14 @@ public class Drink implements Parcelable {
     @SerializedName("strDrinkThumb")
     @Expose
     private String strDrinkThumb;
+
+    @BindingAdapter({"strDrinkThumb"})
+    public static void loadImage(ImageView imageView, String imageUrl) {
+        Glide.with(imageView.getContext())
+                .load(imageUrl)
+                .into(imageView);
+    }
+
     @SerializedName("strIngredient1")
     @Expose
     private String strIngredient1;
@@ -241,428 +256,482 @@ public class Drink implements Parcelable {
     public Drink() {
     }
 
+    @Bindable
     public String getIdDrink() {
         return idDrink;
     }
 
     public void setIdDrink(String idDrink) {
         this.idDrink = idDrink;
+        notifyPropertyChanged(BR.idDrink);
     }
-
+    @Bindable
     public String getStrDrink() {
         return strDrink;
     }
 
     public void setStrDrink(String strDrink) {
         this.strDrink = strDrink;
+        notifyPropertyChanged(BR.strDrink);
     }
-
+    @Bindable
     public Object getStrDrinkAlternate() {
         return strDrinkAlternate;
     }
 
     public void setStrDrinkAlternate(Object strDrinkAlternate) {
         this.strDrinkAlternate = strDrinkAlternate;
+        notifyPropertyChanged(BR.strDrinkAlternate);
     }
-
+    @Bindable
     public Object getStrDrinkES() {
         return strDrinkES;
     }
 
     public void setStrDrinkES(Object strDrinkES) {
         this.strDrinkES = strDrinkES;
+        notifyPropertyChanged(BR.strDrinkES);
     }
-
+    @Bindable
     public Object getStrDrinkDE() {
         return strDrinkDE;
     }
 
     public void setStrDrinkDE(Object strDrinkDE) {
         this.strDrinkDE = strDrinkDE;
+        notifyPropertyChanged(BR.strDrinkDE);
     }
-
+    @Bindable
     public Object getStrDrinkFR() {
         return strDrinkFR;
     }
 
     public void setStrDrinkFR(Object strDrinkFR) {
         this.strDrinkFR = strDrinkFR;
+        notifyPropertyChanged(BR.strDrinkFR);
     }
-
+    @Bindable
     public Object getStrDrinkZHHANS() {
         return strDrinkZHHANS;
     }
 
     public void setStrDrinkZHHANS(Object strDrinkZHHANS) {
         this.strDrinkZHHANS = strDrinkZHHANS;
+        notifyPropertyChanged(BR.strDrinkZHHANS);
     }
-
+    @Bindable
     public Object getStrDrinkZHHANT() {
         return strDrinkZHHANT;
     }
 
     public void setStrDrinkZHHANT(Object strDrinkZHHANT) {
         this.strDrinkZHHANT = strDrinkZHHANT;
+        notifyPropertyChanged(BR.strDrinkZHHANT);
     }
-
+    @Bindable
     public Object getStrTags() {
         return strTags;
     }
 
     public void setStrTags(Object strTags) {
         this.strTags = strTags;
+        notifyPropertyChanged(BR.strTags);
     }
-
+    @Bindable
     public Object getStrVideo() {
         return strVideo;
     }
 
     public void setStrVideo(Object strVideo) {
         this.strVideo = strVideo;
+        notifyPropertyChanged(BR.strVideo);
     }
-
+    @Bindable
     public String getStrCategory() {
         return strCategory;
     }
 
     public void setStrCategory(String strCategory) {
         this.strCategory = strCategory;
+        notifyPropertyChanged(BR.strCategory);
     }
-
+    @Bindable
     public Object getStrIBA() {
         return strIBA;
     }
 
     public void setStrIBA(Object strIBA) {
         this.strIBA = strIBA;
+        notifyPropertyChanged(BR.strIBA);
     }
-
+    @Bindable
     public String getStrAlcoholic() {
         return strAlcoholic;
     }
 
     public void setStrAlcoholic(String strAlcoholic) {
         this.strAlcoholic = strAlcoholic;
+        notifyPropertyChanged(BR.strAlcoholic);
     }
-
+    @Bindable
     public String getStrGlass() {
         return strGlass;
     }
 
     public void setStrGlass(String strGlass) {
         this.strGlass = strGlass;
+        notifyPropertyChanged(BR.strGlass);
     }
-
+    @Bindable
     public String getStrInstructions() {
         return strInstructions;
     }
 
     public void setStrInstructions(String strInstructions) {
         this.strInstructions = strInstructions;
+        notifyPropertyChanged(BR.strInstructions);
     }
-
+    @Bindable
     public Object getStrInstructionsES() {
         return strInstructionsES;
     }
 
     public void setStrInstructionsES(Object strInstructionsES) {
         this.strInstructionsES = strInstructionsES;
+        notifyPropertyChanged(BR.strInstructionsES);
     }
-
+    @Bindable
     public String getStrInstructionsDE() {
         return strInstructionsDE;
     }
 
     public void setStrInstructionsDE(String strInstructionsDE) {
         this.strInstructionsDE = strInstructionsDE;
+        notifyPropertyChanged(BR.strInstructionsDE);
     }
-
+    @Bindable
     public Object getStrInstructionsFR() {
         return strInstructionsFR;
     }
 
     public void setStrInstructionsFR(Object strInstructionsFR) {
         this.strInstructionsFR = strInstructionsFR;
+        notifyPropertyChanged(BR.strInstructionsFR);
     }
-
+    @Bindable
     public Object getStrInstructionsZHHANS() {
         return strInstructionsZHHANS;
     }
 
     public void setStrInstructionsZHHANS(Object strInstructionsZHHANS) {
         this.strInstructionsZHHANS = strInstructionsZHHANS;
+        notifyPropertyChanged(BR.strInstructionsZHHANS);
     }
-
+    @Bindable
     public Object getStrInstructionsZHHANT() {
         return strInstructionsZHHANT;
     }
 
     public void setStrInstructionsZHHANT(Object strInstructionsZHHANT) {
         this.strInstructionsZHHANT = strInstructionsZHHANT;
+        notifyPropertyChanged(BR.strInstructionsZHHANT);
     }
-
+    @Bindable
     public String getStrDrinkThumb() {
         return strDrinkThumb;
     }
 
     public void setStrDrinkThumb(String strDrinkThumb) {
         this.strDrinkThumb = strDrinkThumb;
+        notifyPropertyChanged(BR.strDrinkThumb);
     }
-
+    @Bindable
     public String getStrIngredient1() {
         return strIngredient1;
     }
 
     public void setStrIngredient1(String strIngredient1) {
         this.strIngredient1 = strIngredient1;
+        notifyPropertyChanged(BR.strIngredient1);
     }
-
+    @Bindable
     public String getStrIngredient2() {
         return strIngredient2;
     }
 
     public void setStrIngredient2(String strIngredient2) {
         this.strIngredient2 = strIngredient2;
+        notifyPropertyChanged(BR.strIngredient2);
     }
-
+    @Bindable
     public String getStrIngredient3() {
         return strIngredient3;
     }
 
     public void setStrIngredient3(String strIngredient3) {
         this.strIngredient3 = strIngredient3;
+        notifyPropertyChanged(BR.strIngredient3);
     }
-
+    @Bindable
     public String getStrIngredient4() {
         return strIngredient4;
     }
 
     public void setStrIngredient4(String strIngredient4) {
         this.strIngredient4 = strIngredient4;
+        notifyPropertyChanged(BR.strIngredient4);
     }
-
+    @Bindable
     public String getStrIngredient5() {
         return strIngredient5;
     }
 
     public void setStrIngredient5(String strIngredient5) {
         this.strIngredient5 = strIngredient5;
+        notifyPropertyChanged(BR.strIngredient5);
     }
-
+    @Bindable
     public String getStrIngredient6() {
         return strIngredient6;
     }
 
     public void setStrIngredient6(String strIngredient6) {
         this.strIngredient6 = strIngredient6;
+        notifyPropertyChanged(BR.strIngredient6);
     }
-
+    @Bindable
     public Object getStrIngredient7() {
         return strIngredient7;
     }
 
     public void setStrIngredient7(Object strIngredient7) {
         this.strIngredient7 = strIngredient7;
+        notifyPropertyChanged(BR.strIngredient7);
     }
-
+    @Bindable
     public Object getStrIngredient8() {
         return strIngredient8;
     }
 
     public void setStrIngredient8(Object strIngredient8) {
         this.strIngredient8 = strIngredient8;
+        notifyPropertyChanged(BR.strIngredient8);
     }
-
+    @Bindable
     public Object getStrIngredient9() {
         return strIngredient9;
     }
 
     public void setStrIngredient9(Object strIngredient9) {
         this.strIngredient9 = strIngredient9;
+        notifyPropertyChanged(BR.strIngredient9);
     }
-
+    @Bindable
     public Object getStrIngredient10() {
         return strIngredient10;
     }
 
     public void setStrIngredient10(Object strIngredient10) {
         this.strIngredient10 = strIngredient10;
+        notifyPropertyChanged(BR.strIngredient10);
     }
-
+    @Bindable
     public Object getStrIngredient11() {
         return strIngredient11;
     }
 
     public void setStrIngredient11(Object strIngredient11) {
         this.strIngredient11 = strIngredient11;
+        notifyPropertyChanged(BR.strIngredient11);
     }
-
+    @Bindable
     public Object getStrIngredient12() {
         return strIngredient12;
     }
 
     public void setStrIngredient12(Object strIngredient12) {
         this.strIngredient12 = strIngredient12;
+        notifyPropertyChanged(BR.strIngredient12);
     }
-
+    @Bindable
     public Object getStrIngredient13() {
         return strIngredient13;
     }
 
     public void setStrIngredient13(Object strIngredient13) {
         this.strIngredient13 = strIngredient13;
+        notifyPropertyChanged(BR.strIngredient13);
     }
-
+    @Bindable
     public Object getStrIngredient14() {
         return strIngredient14;
     }
 
     public void setStrIngredient14(Object strIngredient14) {
         this.strIngredient14 = strIngredient14;
+        notifyPropertyChanged(BR.strIngredient14);
     }
-
+    @Bindable
     public Object getStrIngredient15() {
         return strIngredient15;
     }
 
     public void setStrIngredient15(Object strIngredient15) {
         this.strIngredient15 = strIngredient15;
+        notifyPropertyChanged(BR.strIngredient15);
     }
-
+    @Bindable
     public String getStrMeasure1() {
         return strMeasure1;
     }
 
     public void setStrMeasure1(String strMeasure1) {
         this.strMeasure1 = strMeasure1;
+        notifyPropertyChanged(BR.strMeasure1);
     }
-
+    @Bindable
     public String getStrMeasure2() {
         return strMeasure2;
     }
 
     public void setStrMeasure2(String strMeasure2) {
         this.strMeasure2 = strMeasure2;
+        notifyPropertyChanged(BR.strMeasure2);
     }
-
+    @Bindable
     public String getStrMeasure3() {
         return strMeasure3;
     }
 
     public void setStrMeasure3(String strMeasure3) {
         this.strMeasure3 = strMeasure3;
+        notifyPropertyChanged(BR.strMeasure3);
     }
-
+    @Bindable
     public String getStrMeasure4() {
         return strMeasure4;
     }
 
     public void setStrMeasure4(String strMeasure4) {
         this.strMeasure4 = strMeasure4;
+        notifyPropertyChanged(BR.strMeasure4);
     }
-
+    @Bindable
     public String getStrMeasure5() {
         return strMeasure5;
     }
 
     public void setStrMeasure5(String strMeasure5) {
         this.strMeasure5 = strMeasure5;
+        notifyPropertyChanged(BR.strMeasure5);
     }
-
+    @Bindable
     public Object getStrMeasure6() {
         return strMeasure6;
     }
 
     public void setStrMeasure6(Object strMeasure6) {
         this.strMeasure6 = strMeasure6;
+        notifyPropertyChanged(BR.strMeasure6);
     }
-
+    @Bindable
     public Object getStrMeasure7() {
         return strMeasure7;
     }
 
     public void setStrMeasure7(Object strMeasure7) {
         this.strMeasure7 = strMeasure7;
+        notifyPropertyChanged(BR.strMeasure7);
     }
-
+    @Bindable
     public Object getStrMeasure8() {
         return strMeasure8;
     }
 
     public void setStrMeasure8(Object strMeasure8) {
         this.strMeasure8 = strMeasure8;
+        notifyPropertyChanged(BR.strMeasure8);
     }
-
+    @Bindable
     public Object getStrMeasure9() {
         return strMeasure9;
     }
 
     public void setStrMeasure9(Object strMeasure9) {
         this.strMeasure9 = strMeasure9;
+        notifyPropertyChanged(BR.strMeasure9);
     }
-
+    @Bindable
     public Object getStrMeasure10() {
         return strMeasure10;
     }
 
     public void setStrMeasure10(Object strMeasure10) {
         this.strMeasure10 = strMeasure10;
+        notifyPropertyChanged(BR.strMeasure10);
     }
-
+    @Bindable
     public Object getStrMeasure11() {
         return strMeasure11;
     }
 
     public void setStrMeasure11(Object strMeasure11) {
         this.strMeasure11 = strMeasure11;
+        notifyPropertyChanged(BR.strMeasure11);
     }
-
+    @Bindable
     public Object getStrMeasure12() {
         return strMeasure12;
     }
 
     public void setStrMeasure12(Object strMeasure12) {
         this.strMeasure12 = strMeasure12;
+        notifyPropertyChanged(BR.strMeasure12);
     }
-
+    @Bindable
     public Object getStrMeasure13() {
         return strMeasure13;
     }
 
     public void setStrMeasure13(Object strMeasure13) {
         this.strMeasure13 = strMeasure13;
+        notifyPropertyChanged(BR.strMeasure13);
     }
-
+    @Bindable
     public Object getStrMeasure14() {
         return strMeasure14;
     }
 
     public void setStrMeasure14(Object strMeasure14) {
         this.strMeasure14 = strMeasure14;
+        notifyPropertyChanged(BR.strMeasure14);
     }
-
+    @Bindable
     public Object getStrMeasure15() {
         return strMeasure15;
     }
 
     public void setStrMeasure15(Object strMeasure15) {
         this.strMeasure15 = strMeasure15;
+        notifyPropertyChanged(BR.strMeasure15);
     }
-
+    @Bindable
     public String getStrCreativeCommonsConfirmed() {
         return strCreativeCommonsConfirmed;
     }
 
     public void setStrCreativeCommonsConfirmed(String strCreativeCommonsConfirmed) {
         this.strCreativeCommonsConfirmed = strCreativeCommonsConfirmed;
+        notifyPropertyChanged(BR.strCreativeCommonsConfirmed);
     }
-
+    @Bindable
     public String getDateModified() {
         return dateModified;
     }
 
     public void setDateModified(String dateModified) {
         this.dateModified = dateModified;
+        notifyPropertyChanged(BR.dateModified);
     }
 
     public void writeToParcel(Parcel dest, int flags) {

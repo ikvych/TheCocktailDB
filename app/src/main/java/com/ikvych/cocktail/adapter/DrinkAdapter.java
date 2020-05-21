@@ -2,26 +2,21 @@ package com.ikvych.cocktail.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.ikvych.cocktail.R;
+import com.ikvych.cocktail.databinding.DrinkListItemBinding;
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.view.DrinkDetails;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.zip.Inflater;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
 
@@ -36,19 +31,20 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     @NonNull
     @Override
     public DrinkViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.drink_list_item, parent, false);
-        return new DrinkViewHolder(view);
+        DrinkListItemBinding drinkListItemBinding = DataBindingUtil.inflate(
+                LayoutInflater.from(parent.getContext()),
+                R.layout.drink_list_item,
+                parent,
+                false
+        );
+
+        return new DrinkViewHolder(drinkListItemBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DrinkViewHolder holder, int position) {
         Drink drink = drinkList.get(position);
-
-        holder.drinkName.setText(drink.getStrDrink());
-        String imagePath = drink.getStrDrinkThumb();
-        Glide.with(context)
-                .load(imagePath)
-                .into(holder.imageView);
+        holder.drinkListItemBinding.setDrink(drink);
     }
 
     @Override
@@ -56,18 +52,16 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
         return drinkList.size();
     }
 
+
     public class DrinkViewHolder extends RecyclerView.ViewHolder {
 
-        ImageView imageView;
-        TextView drinkName;
+        private DrinkListItemBinding drinkListItemBinding;
 
-        public DrinkViewHolder(@NonNull View itemView) {
-            super(itemView);
+        public DrinkViewHolder(@NonNull DrinkListItemBinding drinkListItemBinding) {
+            super(drinkListItemBinding.getRoot());
+            this.drinkListItemBinding = drinkListItemBinding;
 
-            imageView = itemView.findViewById(R.id.drinkImageView);
-            drinkName = itemView.findViewById(R.id.drinkName);
-
-            itemView.setOnClickListener(new View.OnClickListener() {
+            drinkListItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     int position = getAdapterPosition();

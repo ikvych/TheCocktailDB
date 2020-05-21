@@ -19,6 +19,7 @@ import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.view.DrinkDetails;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.Inflater;
 
@@ -27,9 +28,9 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     private List<Drink> drinkList;
     private Context context;
 
-    public DrinkAdapter(Context context, List<Drink> drinkList) {
+    public DrinkAdapter(Context context) {
         this.context = context;
-        this.drinkList = drinkList;
+        drinkList = new ArrayList<>();
     }
 
     @NonNull

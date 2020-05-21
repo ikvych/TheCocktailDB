@@ -1,6 +1,8 @@
 package com.ikvych.cocktail.view;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,53 +21,64 @@ import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.adapter.DrinkAdapter;
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.repository.DrinkApiRepository;
+import com.ikvych.cocktail.viewmodel.SearchActivityViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SearchActivity extends AppCompatActivity {
 
-    private EditText searchName;
-    private DrinkApiRepository drinkRepository;
-    private RecyclerView recyclerView;
     private DrinkAdapter drinkAdapter;
-    private List<Drink> drinkList = new ArrayList<>();
+    private SearchActivityViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
 
-        recyclerView = findViewById(R.id.recyclerView);
-        drinkAdapter = new DrinkAdapter(this, drinkList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.setAdapter(drinkAdapter);
-        drinkAdapter.notifyDataSetChanged();
+        viewModel = new ViewModelProvider
+                .AndroidViewModelFactory(getApplication())
+                .create(SearchActivityViewModel.class);
 
-        searchName = findViewById(R.id.search_name);
+        fillRecycleView();
+
+        EditText searchName = findViewById(R.id.search_name);
         searchName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_GO) {
-                    drinkRepository = new DrinkApiRepository();
-                    drinkList = drinkRepository.getDrinkListByName("Margarita");
-                    drinkAdapter.setDrinkList(drinkList);
-
+                    String searchQuery = v.getText().toString();
+                    findDrinkByName(searchQuery);
                     View view = SearchActivity.this.getCurrentFocus();
                     if (view != null) {
                         InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                         imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-
                     }
-
                     handled = true;
                 }
                 return handled;
             }
         });
 
+    }
+
+    public void findDrinkByName(String name) {
+        viewModel.getDrinksByNameData(name).observe(this, new Observer<List<Drink>>() {
+            @Override
+            public void onChanged(List<Drink> drinks) {
+                drinkAdapter.setDrinkList(drinks);
+            }
+        });
+    }
+
+    public void fillRecycleView() {
+        RecyclerView recyclerView = findViewById(R.id.recyclerView);
+        drinkAdapter = new DrinkAdapter(this);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.setAdapter(drinkAdapter);
+        drinkAdapter.notifyDataSetChanged();
     }
 }

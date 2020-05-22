@@ -8,18 +8,15 @@ import androidx.lifecycle.LiveData;
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.service.DrinkDao;
 import com.ikvych.cocktail.service.DrinkDataBase;
-import com.ikvych.cocktail.service.ImageLoadService;
 
 import java.util.List;
 
 public class DrinkDbRepository {
 
     private DrinkDao drinkDao;
-    private ImageLoadService imageLoadService;
 
     public DrinkDbRepository(Application application) {
         drinkDao = DrinkDataBase.getInstance(application).getDrinkDao();
-        this.imageLoadService = new ImageLoadService(application);
     }
 
     public LiveData<List<Drink>> getDrinks() {
@@ -30,31 +27,23 @@ public class DrinkDbRepository {
         return drinkDao.getDrinkById(idDrink);
     }
 
-    public void saveDrinkIntoDbWithDownloadedPhoto(Drink drink) {
-        new SaveDrinkAsyncTask(drinkDao, imageLoadService).execute(drink);
+    public void saveDrink(Drink drink) {
+        new SaveDrinkAsyncTask(drinkDao).execute(drink);
     }
 
     private static class SaveDrinkAsyncTask extends AsyncTask<Drink, Void, Void> {
 
         private DrinkDao drinkDao;
-        private ImageLoadService imageLoadService;
 
-        public SaveDrinkAsyncTask(DrinkDao drinkDao, ImageLoadService imageLoadService) {
+        public SaveDrinkAsyncTask(DrinkDao drinkDao) {
             this.drinkDao = drinkDao;
-            this.imageLoadService = imageLoadService;
         }
 
         @Override
         protected Void doInBackground(Drink... drinks) {
-            synchronized (this) {
-                imageLoadService.downloadImageAndSaveNewPath(drinks[0], this);
-                try {
-                    this.wait();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
+            for (Drink drink : drinks) {
+                drinkDao.insert(drink);
             }
-            drinkDao.insert(drinks[0]);
             return null;
         }
     }

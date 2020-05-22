@@ -28,8 +28,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         return drinkDbRepository.getDrinkById(idDrink);
     }
 
-    public void saveDrinkIntoDbWithDownloadedPhoto(Drink drink) {
-        drinkDbRepository.saveDrinkIntoDbWithDownloadedPhoto(drink);
+    public void saveDrink(Drink drink) {
+        drinkDbRepository.saveDrink(drink);
     }
 
 }

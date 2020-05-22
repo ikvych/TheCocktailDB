@@ -51,7 +51,7 @@ public class DrinkDetails extends AppCompatActivity {
                 .AndroidViewModelFactory(getApplication())
                 .create(MainActivityViewModel.class);
 
-        mainActivityViewModel.saveDrinkIntoDbWithDownloadedPhoto(drink);
+        mainActivityViewModel.saveDrink(drink);
 
     }
 

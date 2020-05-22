@@ -8,19 +8,16 @@ import androidx.lifecycle.LiveData;
 
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.repository.DrinkDbRepository;
-import com.ikvych.cocktail.service.ImageLoadService;
 
 import java.util.List;
 
 public class MainActivityViewModel extends AndroidViewModel {
 
     private DrinkDbRepository drinkDbRepository;
-    private ImageLoadService imageLoadRepository;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
         drinkDbRepository = new DrinkDbRepository(application);
-        imageLoadRepository = new ImageLoadService();
     }
 
     public LiveData<List<Drink>> getAllDrinksFromDb() {
@@ -31,11 +28,8 @@ public class MainActivityViewModel extends AndroidViewModel {
         return drinkDbRepository.getDrinkById(idDrink);
     }
 
-    public void insertDrinkIntoDB(Drink drink) {
-        drinkDbRepository.insertDrink(drink);
+    public void saveDrinkIntoDbWithDownloadedPhoto(Drink drink) {
+        drinkDbRepository.saveDrinkIntoDbWithDownloadedPhoto(drink);
     }
 
-/*    public void downloadImageAndSaveNewPath(Drink drink, Context context) {
-        imageLoadRepository.downloadImageAndSaveNewPath(drink, context);
-    }*/
 }

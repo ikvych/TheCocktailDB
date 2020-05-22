@@ -6,18 +6,12 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.ImageView;
-import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
 import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding;
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel;
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel;
-
-import java.io.IOException;
-import java.util.concurrent.Callable;
 
 public class DrinkDetails extends AppCompatActivity {
 
@@ -57,8 +51,7 @@ public class DrinkDetails extends AppCompatActivity {
                 .AndroidViewModelFactory(getApplication())
                 .create(MainActivityViewModel.class);
 
-/*        mainActivityViewModel.downloadImageAndSaveNewPath(drink, this);*/
-        mainActivityViewModel.insertDrinkIntoDB(drink);
+        mainActivityViewModel.saveDrinkIntoDbWithDownloadedPhoto(drink);
 
     }
 

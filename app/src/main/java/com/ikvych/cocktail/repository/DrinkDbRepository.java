@@ -15,13 +15,11 @@ import java.util.List;
 public class DrinkDbRepository {
 
     private DrinkDao drinkDao;
-    private Application application;
     private ImageLoadService imageLoadService;
 
     public DrinkDbRepository(Application application) {
         drinkDao = DrinkDataBase.getInstance(application).getDrinkDao();
-        this.application = application;
-        this.imageLoadService = new ImageLoadService();
+        this.imageLoadService = new ImageLoadService(application);
     }
 
     public LiveData<List<Drink>> getDrinks() {
@@ -32,29 +30,26 @@ public class DrinkDbRepository {
         return drinkDao.getDrinkById(idDrink);
     }
 
-    public void insertDrink(Drink drink) {
-        new InsertDrinkAsyncTask(drinkDao, application, imageLoadService).execute(drink);
+    public void saveDrinkIntoDbWithDownloadedPhoto(Drink drink) {
+        new SaveDrinkAsyncTask(drinkDao, imageLoadService).execute(drink);
     }
 
-    private static class InsertDrinkAsyncTask extends AsyncTask<Drink, Void, Void> {
+    private static class SaveDrinkAsyncTask extends AsyncTask<Drink, Void, Void> {
 
         private DrinkDao drinkDao;
-        private Application application;
         private ImageLoadService imageLoadService;
 
-
-        public InsertDrinkAsyncTask(DrinkDao drinkDao, Application application, ImageLoadService imageLoadService) {
+        public SaveDrinkAsyncTask(DrinkDao drinkDao, ImageLoadService imageLoadService) {
             this.drinkDao = drinkDao;
-            this.application = application;
             this.imageLoadService = imageLoadService;
         }
 
         @Override
         protected Void doInBackground(Drink... drinks) {
-            synchronized (Thread.currentThread()) {
-                imageLoadService.downloadImageAndSaveNewPath(drinks[0], application, Thread.currentThread());
+            synchronized (this) {
+                imageLoadService.downloadImageAndSaveNewPath(drinks[0], this);
                 try {
-                    Thread.currentThread().wait();
+                    this.wait();
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }

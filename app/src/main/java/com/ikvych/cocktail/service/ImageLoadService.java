@@ -1,7 +1,6 @@
 package com.ikvych.cocktail.service;
 
 import android.app.Application;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Environment;
@@ -13,7 +12,6 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.ikvych.cocktail.model.Drink;
-import com.ikvych.cocktail.view.MainActivity;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,18 +21,28 @@ import java.util.Date;
 
 public class ImageLoadService {
 
-    public void downloadImageAndSaveNewPath(Drink drink, Application application, Thread thread) {
+    private Application application;
+
+    public ImageLoadService(Application application) {
+        this.application = application;
+    }
+
+    public void downloadImageAndSaveNewPath(Drink drink, Object lock) {
         Glide.with(application)
                 .asBitmap()
                 .load(drink.getStrDrinkThumb())
                 .into(new CustomTarget<Bitmap>() {
                     @Override
                     public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                        String newPath = saveImage(resource, application);
+                        String newPath = saveImage(resource);
                         if (newPath != null) {
                             drink.setStrDrinkThumb(newPath);
                         }
-                        thread.interrupt();
+                        if (lock != null) {
+                            synchronized (lock) {
+                                lock.notify();
+                            }
+                        }
                     }
 
                     @Override
@@ -45,7 +53,7 @@ public class ImageLoadService {
                 });
     }
 
-    private String saveImage(Bitmap image, Application application) {
+    private String saveImage(Bitmap image) {
         String savedImagePath = null;
 
         String imageFileName = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date()) + ".jpg";

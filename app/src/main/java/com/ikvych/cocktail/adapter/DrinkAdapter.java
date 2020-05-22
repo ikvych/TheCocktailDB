@@ -22,10 +22,12 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
 
     private List<Drink> drinkList;
     private Context context;
+    private String activityName;
 
-    public DrinkAdapter(Context context) {
+    public DrinkAdapter(Context context, String activityName) {
         this.context = context;
         drinkList = new ArrayList<>();
+        this.activityName = activityName;
     }
 
     @NonNull
@@ -68,8 +70,15 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
 
                     if (position != RecyclerView.NO_POSITION) {
                         Drink drink = drinkList.get(position);
-
                         Intent intent = new Intent(context, DrinkDetails.class);
+                        switch (activityName) {
+                            case "main":
+                                intent.putExtra("viewModelType", "main");
+                                break;
+                            case "search":
+                                intent.putExtra("viewModelType", "search");
+                                break;
+                        }
                         intent.putExtra("drink", drink);
                         context.startActivity(intent);
                     }

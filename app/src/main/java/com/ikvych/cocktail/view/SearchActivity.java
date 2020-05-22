@@ -53,7 +53,7 @@ public class SearchActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 boolean handled = false;
                 if (actionId == EditorInfo.IME_ACTION_GO) {
-                    String searchQuery = v.getText().toString();
+                    String searchQuery = v.getText().toString().trim();
                     findDrinkByName(searchQuery);
                     View view = SearchActivity.this.getCurrentFocus();
                     if (view != null) {
@@ -79,7 +79,7 @@ public class SearchActivity extends AppCompatActivity {
 
     public void fillRecycleView() {
         RecyclerView recyclerView = activitySearchBinding.recyclerView;
-        drinkAdapter = new DrinkAdapter(this);
+        drinkAdapter = new DrinkAdapter(this, "search");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setItemAnimator(new DefaultItemAnimator());

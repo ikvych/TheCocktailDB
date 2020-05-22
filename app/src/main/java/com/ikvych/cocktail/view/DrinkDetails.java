@@ -14,10 +14,15 @@ import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding;
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel;
+import com.ikvych.cocktail.viewmodel.SearchActivityViewModel;
+
+import java.io.IOException;
+import java.util.concurrent.Callable;
 
 public class DrinkDetails extends AppCompatActivity {
 
-    private MainActivityViewModel viewModel;
+    private MainActivityViewModel mainActivityViewModel;
+    private SearchActivityViewModel searchActivityViewModel;
     private Drink drink;
 
     @Override
@@ -25,20 +30,37 @@ public class DrinkDetails extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_drink_details);
 
-        viewModel = new ViewModelProvider
-                .AndroidViewModelFactory(getApplication())
-                .create(MainActivityViewModel.class);
+        Intent intent = getIntent();
+
+        if (intent != null && intent.hasExtra("drink")) {
+
+            drink = intent.getParcelableExtra("drink");
+            String viewModelType = intent.getStringExtra("viewModelType");
+
+            switch (viewModelType) {
+                case "main":
+                    break;
+                case "search":
+                    initSearchViewModel(drink);
+                    break;
+            }
+        }
 
         ActivityDrinkDetailsBinding activityDrinkDetailsBinding =
                 DataBindingUtil.setContentView(this, R.layout.activity_drink_details);
 
-        Intent intent = getIntent();
-
-
-        if (intent != null && intent.hasExtra("drink")) {
-            drink = intent.getParcelableExtra("drink");
-            viewModel.insertDrinkIntoDB(drink);
-            activityDrinkDetailsBinding.setDrink(drink);
-        }
+        activityDrinkDetailsBinding.setDrink(drink);
     }
+
+    private void initSearchViewModel(Drink drink) {
+        mainActivityViewModel = new ViewModelProvider
+                .AndroidViewModelFactory(getApplication())
+                .create(MainActivityViewModel.class);
+
+/*        mainActivityViewModel.downloadImageAndSaveNewPath(drink, this);*/
+        mainActivityViewModel.insertDrinkIntoDB(drink);
+
+    }
+
+
 }

@@ -2,6 +2,7 @@ package com.ikvych.cocktail.view;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,6 +21,10 @@ import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel;
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel;
 
+import java.io.File;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -57,11 +62,12 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent);
             }
         });
+
     }
 
     public void fillRecycleView() {
         RecyclerView recyclerView = activityMainBinding.recyclerView;
-        drinkAdapter = new DrinkAdapter(this);
+        drinkAdapter = new DrinkAdapter(this, "main");
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recyclerView.setItemAnimator(new DefaultItemAnimator());

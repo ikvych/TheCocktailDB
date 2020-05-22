@@ -3,6 +3,9 @@
     package="com.ikvych.cocktail">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission
+        android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        android:maxSdkVersion="18" />
 
     <application
         android:allowBackup="true"
@@ -11,9 +14,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".view.DrinkDetails"
-            android:parentActivityName=".view.SearchActivity">
-        </activity>
+        <activity
+            android:name=".view.DrinkDetails"
+            android:parentActivityName=".view.SearchActivity"/>
         <activity
             android:name=".view.SearchActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
@@ -24,6 +27,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="com.ikvych.cocktail.fileprovider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_paths" />
+        </provider>
     </application>
 
 </manifest>

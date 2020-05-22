@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.SearchManager;
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.SearchView;
 import android.widget.TextView;
 
 import com.ikvych.cocktail.R;
@@ -47,22 +50,28 @@ public class SearchActivity extends AppCompatActivity {
 
         fillRecycleView();
 
-        EditText searchName = findViewById(R.id.search_name);
-        searchName.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+
+        getApplicationContext();
+
+        SearchView searchView = findViewById(R.id.search_name);
+        searchView.setIconifiedByDefault(false);
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+            public boolean onQueryTextSubmit(String query) {
                 boolean handled = false;
-                if (actionId == EditorInfo.IME_ACTION_GO) {
-                    String searchQuery = v.getText().toString().trim();
-                    findDrinkByName(searchQuery);
-                    View view = SearchActivity.this.getCurrentFocus();
-                    if (view != null) {
-                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                    }
-                    handled = true;
-                }
+
+                String searchQuery = query.trim();
+                findDrinkByName(searchQuery);
+                searchView.clearFocus();
+                handled = true;
+
                 return handled;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
             }
         });
 

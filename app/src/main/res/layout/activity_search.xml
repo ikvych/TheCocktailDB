@@ -19,44 +19,34 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.50"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+            app:layout_constraintTop_toBottomOf="@+id/navigationView2" />
 
-        <LinearLayout
-            android:id="@+id/linearLayout"
+
+        <com.google.android.material.navigation.NavigationView
+            android:id="@+id/navigationView2"
             android:layout_width="0dp"
             android:layout_height="64dp"
-            android:orientation="vertical"
-            android:elevation="8dp"
-            android:background="@android:color/white"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.455"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent">
 
-
-        <SearchView
-            android:id="@+id/search_name"
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_marginStart="8dp"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginBottom="8dp"
-            android:foregroundGravity="bottom"
-            android:elevation="9dp"
-
-            android:outlineAmbientShadowColor="@android:color/transparent"
-            android:background="@drawable/cursor_edittext"
-            android:queryBackground="@android:color/transparent"
-            app:layout_constraintBottom_toBottomOf="@+id/linearLayout"
-            app:layout_constraintEnd_toEndOf="@+id/linearLayout"
-            app:layout_constraintHorizontal_bias="0.478"
-            app:layout_constraintStart_toStartOf="@+id/linearLayout"
-            app:layout_constraintTop_toTopOf="@+id/linearLayout"
-            tools:targetApi="p" />
-
+            <SearchView
+                android:id="@+id/search_name"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/search_view_shape"
+                android:elevation="1dp"
+                android:foregroundGravity="bottom"
+                android:outlineAmbientShadowColor="@android:color/transparent"
+                android:queryBackground="@android:color/transparent"
+                tools:targetApi="p" />
+        </com.google.android.material.navigation.NavigationView>
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

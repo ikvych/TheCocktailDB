@@ -2,7 +2,13 @@ package com.ikvych.cocktail.model;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TableLayout;
+import android.widget.TableRow;
+import android.widget.TextView;
 
 import androidx.databinding.BaseObservable;
 import androidx.databinding.Bindable;
@@ -16,6 +22,12 @@ import androidx.room.PrimaryKey;
 import com.bumptech.glide.Glide;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import com.ikvych.cocktail.R;
+
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Entity(tableName = "drink")
 public class Drink extends BaseObservable implements Parcelable{
@@ -126,10 +138,58 @@ public class Drink extends BaseObservable implements Parcelable{
     @ColumnInfo(name = "str_drink_thumb")
     private String strDrinkThumb;
 
+    @Ignore
+    private Map<String, String> ingredients = new HashMap<>();
+
+    @Bindable
+    public Map<String, String> getIngredients() {
+        ingredients.put(strIngredient1, strMeasure1);
+        ingredients.put(strIngredient2, strMeasure2);
+        ingredients.put(strIngredient3, strMeasure3);
+        ingredients.put(strIngredient4, strMeasure4);
+        ingredients.put(strIngredient5, strMeasure5);
+        ingredients.put(strIngredient6, strMeasure6);
+        ingredients.put(strIngredient7, strMeasure7);
+        ingredients.put(strIngredient8, strMeasure8);
+        ingredients.put(strIngredient9, strMeasure9);
+        ingredients.put(strIngredient10, strMeasure10);
+        ingredients.put(strIngredient11, strMeasure11);
+        ingredients.put(strIngredient12, strMeasure12);
+        ingredients.put(strIngredient13, strMeasure13);
+        ingredients.put(strIngredient14, strMeasure14);
+        ingredients.put(strIngredient15, strMeasure15);
+        return ingredients;
+    }
+
+    public void setIngredients(Map<String, String> ingredients) {
+        this.ingredients = ingredients;
+        notifyPropertyChanged(BR.ingredients);
+    }
+
+    @BindingAdapter({"ingredients"})
+    public static void getIngredients(TableLayout tableLayout, Map<String, String> ingredients) {
+        for (Map.Entry<String, String> entry : ingredients.entrySet()) {
+            if (entry.getKey() == null) {
+                continue;
+            }
+            TableRow tr = (TableRow) LayoutInflater.from(tableLayout.getContext())
+                    .inflate(R.layout.ingredient_list_item, tableLayout, false);
+
+            TextView ingredient = tr.findViewById(R.id.ingredients);
+            ingredient.setText(entry.getKey());
+
+            TextView measure = tr.findViewById(R.id.measure);
+            measure.setText(entry.getValue());
+
+            tableLayout.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+        }
+    }
+
     @BindingAdapter({"strDrinkThumb"})
     public static void loadImage(ImageView imageView, String imageUrl) {
         Glide.with(imageView.getContext())
                 .load(imageUrl)
+                .placeholder(R.drawable.default_icon)
                 .into(imageView);
     }
 

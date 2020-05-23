@@ -2,4 +2,9 @@
     <string name="app_name">TheCocktailDB</string>
     <string name="empty_list">Enter text to start search</string>
     <string name="empty_search">No cocktails found</string>
+    <string name="details_name">Name:</string>
+    <string name="details_alcoholic">Alcoholic:</string>
+    <string name="details_glass">Glass:</string>
+    <string name="details_ingredients">Ingredients</string>
+    <string name="details_instruction">Instructions</string>
 </resources>

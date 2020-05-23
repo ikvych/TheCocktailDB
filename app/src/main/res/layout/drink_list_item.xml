@@ -14,9 +14,9 @@
 
 android:layout_width="match_parent"
 android:layout_height="wrap_content"
-    android:layout_margin="2dp"
+    android:layout_margin="4dp"
 card_view:cardCornerRadius="8dp"
-card_view:cardElevation="8dp"
+card_view:cardElevation="4dp"
 card_view:cardUseCompatPadding="true">
 
 <RelativeLayout
@@ -25,10 +25,11 @@ card_view:cardUseCompatPadding="true">
 
     <ImageView
         android:id="@+id/drinkImageView"
-        android:scaleType="fitXY"
-        android:layout_width="match_parent"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        bind:strDrinkThumb="@{drink.strDrinkThumb}"/>
+        android:adjustViewBounds="true"
+        android:scaleType="fitXY"
+        bind:strDrinkThumb="@{drink.strDrinkThumb}" />
 
     <TextView
         android:id="@+id/drinkName"

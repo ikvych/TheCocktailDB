@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding;
@@ -56,4 +57,7 @@ public class DrinkDetails extends AppCompatActivity {
     }
 
 
+    public void resumePreviousActivity(View view) {
+        finish();
+    }
 }

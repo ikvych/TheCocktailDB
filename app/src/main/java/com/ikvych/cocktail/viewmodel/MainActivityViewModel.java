@@ -14,6 +14,7 @@ import java.util.List;
 public class MainActivityViewModel extends AndroidViewModel {
 
     private DrinkDbRepository drinkDbRepository;
+    private LiveData<List<Drink>> drinks;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
@@ -21,7 +22,8 @@ public class MainActivityViewModel extends AndroidViewModel {
     }
 
     public LiveData<List<Drink>> getAllDrinksFromDb() {
-        return drinkDbRepository.getDrinks();
+        drinks = drinkDbRepository.getDrinks();
+        return drinks;
     }
 
     public LiveData<Drink> getDrinkById(Long idDrink) {

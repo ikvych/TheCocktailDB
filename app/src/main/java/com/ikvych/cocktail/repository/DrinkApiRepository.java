@@ -11,6 +11,7 @@ import com.ikvych.cocktail.service.RetrofitInstance;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.xml.transform.Result;
@@ -21,12 +22,17 @@ import retrofit2.Response;
 
 public class DrinkApiRepository {
 
-    private List<Drink> drinkList = new ArrayList<>();
-    private MutableLiveData<List<Drink>> mutableLiveData = new MutableLiveData<>();
+    private List<Drink> drinkList;
+    private MutableLiveData<List<Drink>> mutableLiveData;
+    private DrinkApiService drinkApiService;
+
+    public DrinkApiRepository() {
+        mutableLiveData = new MutableLiveData<>();
+        drinkList = new ArrayList<>();
+        drinkApiService = RetrofitInstance.getService();
+    }
 
     public MutableLiveData<List<Drink>> getMutableLiveData(String name) {
-        DrinkApiService drinkApiService = RetrofitInstance.getService();
-
         Call<DrinkApiResponse> call = drinkApiService.getDrinksByName(name);
 
         call.enqueue(new Callback<DrinkApiResponse>() {
@@ -46,5 +52,12 @@ public class DrinkApiRepository {
         });
 
         return mutableLiveData;
+    }
+
+    public List<Drink> getDataOnRotation() {
+        if (mutableLiveData.getValue() != null) {
+            return mutableLiveData.getValue();
+        }
+        return Collections.emptyList();
     }
 }

@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.view;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 
@@ -17,8 +18,8 @@ import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.adapter.DrinkAdapter;
 import com.ikvych.cocktail.databinding.ActivityMainBinding;
 import com.ikvych.cocktail.model.Drink;
+import com.ikvych.cocktail.util.ActivityUtil;
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel;
-import com.ikvych.cocktail.viewmodel.SearchActivityViewModel;
 
 import java.util.List;
 
@@ -45,11 +46,9 @@ public class MainActivity extends AppCompatActivity {
             public void onChanged(List<Drink> drinks) {
                 drinkAdapter.setDrinkList(drinks);
                 if (drinks.size() == 0) {
-                    findViewById(R.id.empty_history).setVisibility(View.VISIBLE);
-                    findViewById(R.id.recyclerView).setVisibility(View.GONE);
+                    ActivityUtil.setDbEmptyHistoryVisible(MainActivity.this);
                 } else {
-                    findViewById(R.id.empty_history).setVisibility(View.GONE);
-                    findViewById(R.id.recyclerView).setVisibility(View.VISIBLE);
+                    ActivityUtil.setDbRecyclerViewVisible(MainActivity.this);
                 }
             }
         });
@@ -66,18 +65,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void fillRecycleView(List<Drink> drinks) {
-        RecyclerView recyclerView = activityMainBinding.recyclerView;
+        RecyclerView recyclerView = activityMainBinding.dbRecyclerView;
         drinkAdapter = new DrinkAdapter(this, "main");
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
+        } else {
+            recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
+        }
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(drinkAdapter);
         if (drinks.size() == 0) {
-            findViewById(R.id.empty_history).setVisibility(View.VISIBLE);
-            findViewById(R.id.recyclerView).setVisibility(View.GONE);
+            ActivityUtil.setDbEmptyHistoryVisible(MainActivity.this);
         } else {
-            findViewById(R.id.empty_history).setVisibility(View.GONE);
-            findViewById(R.id.recyclerView).setVisibility(View.VISIBLE);
+            ActivityUtil.setDbRecyclerViewVisible(MainActivity.this);
         }
         drinkAdapter.setDrinkList(drinks);
     }

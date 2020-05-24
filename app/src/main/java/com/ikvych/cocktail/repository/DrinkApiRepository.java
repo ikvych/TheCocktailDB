@@ -22,17 +22,15 @@ import retrofit2.Response;
 
 public class DrinkApiRepository {
 
-    private List<Drink> drinkList;
-    private MutableLiveData<List<Drink>> mutableLiveData;
+    private MutableLiveData<List<Drink>> drinksLiveData;
     private DrinkApiService drinkApiService;
 
     public DrinkApiRepository() {
-        mutableLiveData = new MutableLiveData<>();
-        drinkList = new ArrayList<>();
+        drinksLiveData = new MutableLiveData<>();
         drinkApiService = RetrofitInstance.getService();
     }
 
-    public void updateLiveData(String name) {
+    public void updateDrinksLiveData(String name) {
         Call<DrinkApiResponse> call = drinkApiService.getDrinksByName(name);
 
         call.enqueue(new Callback<DrinkApiResponse>() {
@@ -40,11 +38,9 @@ public class DrinkApiRepository {
             public void onResponse(Call<DrinkApiResponse> call, Response<DrinkApiResponse> response) {
                 DrinkApiResponse drinkApiResponse = response.body();
                 if (drinkApiResponse != null && drinkApiResponse.getDrinks() != null) {
-                    drinkList = drinkApiResponse.getDrinks();
-                    mutableLiveData.setValue(drinkList);
+                    drinksLiveData.setValue(drinkApiResponse.getDrinks());
                 } else {
-                    drinkList = new ArrayList<>();
-                    mutableLiveData.setValue(drinkList);
+                    drinksLiveData.setValue(Collections.emptyList());
                 }
             }
 
@@ -55,14 +51,15 @@ public class DrinkApiRepository {
         });
     }
 
-    public MutableLiveData<List<Drink>> updateLiveData() {
-        return mutableLiveData;
+    public MutableLiveData<List<Drink>> getDrinksLiveData() {
+        return drinksLiveData;
     }
 
-    public List<Drink> getDataOnRotation() {
-        if (mutableLiveData.getValue() != null) {
-            return mutableLiveData.getValue();
+    public List<Drink> getCurrentData() {
+        if (drinksLiveData.getValue() != null) {
+            return drinksLiveData.getValue();
         }
         return Collections.emptyList();
     }
+
 }

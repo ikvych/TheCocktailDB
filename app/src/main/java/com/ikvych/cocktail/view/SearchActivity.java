@@ -2,7 +2,6 @@ package com.ikvych.cocktail.view;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.SearchView;
 
 import androidx.fragment.app.FragmentActivity;
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.adapter.DrinkAdapter;
 import com.ikvych.cocktail.model.Drink;
+import com.ikvych.cocktail.util.ActivityUtil;
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel;
 
 import java.util.List;
@@ -43,13 +43,12 @@ public class SearchActivity extends FragmentActivity {
     public void initSearchView() {
         searchView = findViewById(R.id.search_name);
         searchView.setIconifiedByDefault(false);
-
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 
             @Override
             public boolean onQueryTextSubmit(String query) {
                 String searchQuery = query.trim();
-                viewModel.findDrinksByName(searchQuery);
+                viewModel.updateDrinksLiveData(searchQuery);
                 searchView.clearFocus();
                 return true;
             }
@@ -63,18 +62,14 @@ public class SearchActivity extends FragmentActivity {
     }
 
     public void findDrinkByName() {
-        viewModel.getDrinks().observe(this, new Observer<List<Drink>>() {
+        viewModel.getDrinksLiveData().observe(this, new Observer<List<Drink>>() {
             @Override
             public void onChanged(List<Drink> drinks) {
                 drinkAdapter.setDrinkList(drinks);
                 if (drinks.size() == 0) {
-                    findViewById(R.id.empty_list_id).setVisibility(View.GONE);
-                    findViewById(R.id.empty_search_id).setVisibility(View.VISIBLE);
-                    findViewById(R.id.recyclerView1).setVisibility(View.GONE);
+                    ActivityUtil.setEmptySearchVisible(SearchActivity.this);
                 } else {
-                    findViewById(R.id.empty_list_id).setVisibility(View.GONE);
-                    findViewById(R.id.empty_search_id).setVisibility(View.GONE);
-                    findViewById(R.id.recyclerView1).setVisibility(View.VISIBLE);
+                    ActivityUtil.setSearchRecyclerViewVisible(SearchActivity.this);
                 }
             }
         });
@@ -82,7 +77,7 @@ public class SearchActivity extends FragmentActivity {
 
 
     public void initRecycleView(List<Drink> drinks) {
-        recyclerView = findViewById(R.id.recyclerView1);
+        recyclerView = findViewById(R.id.search_recycler_view);
         drinkAdapter = new DrinkAdapter(this, "search");
         recyclerView.setHasFixedSize(true);
 
@@ -95,13 +90,9 @@ public class SearchActivity extends FragmentActivity {
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(drinkAdapter);
         if (drinks.size() == 0) {
-            findViewById(R.id.empty_list_id).setVisibility(View.VISIBLE);
-            findViewById(R.id.empty_search_id).setVisibility(View.GONE);
-            findViewById(R.id.recyclerView1).setVisibility(View.GONE);
+            ActivityUtil.setSearchEmptyListVisible(this);
         } else {
-            findViewById(R.id.empty_list_id).setVisibility(View.GONE);
-            findViewById(R.id.empty_search_id).setVisibility(View.GONE);
-            findViewById(R.id.recyclerView1).setVisibility(View.VISIBLE);
+            ActivityUtil.setSearchRecyclerViewVisible(this);
         }
         drinkAdapter.setDrinkList(drinks);
     }

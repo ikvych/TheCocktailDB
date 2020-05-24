@@ -1,17 +1,11 @@
 package com.ikvych.cocktail.viewmodel;
 
-import android.app.Application;
-
-import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
-import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.repository.DrinkApiRepository;
 
-import java.util.Collections;
 import java.util.List;
 
 public class SearchActivityViewModel extends ViewModel {
@@ -21,11 +15,11 @@ public class SearchActivityViewModel extends ViewModel {
 
     public SearchActivityViewModel() {
         drinkApiRepository = new DrinkApiRepository();
-        drinks = drinkApiRepository.getMutableLiveData();
+        drinks = drinkApiRepository.updateLiveData();
     }
 
-    public void getDrinksByNameData(String name) {
-        drinkApiRepository.getMutableLiveData(name);
+    public void findDrinksByName(String name) {
+        drinkApiRepository.updateLiveData(name);
     }
 
     public MutableLiveData<List<Drink>> getDrinks() {

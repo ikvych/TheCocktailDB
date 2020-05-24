@@ -9,6 +9,7 @@ import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.service.DrinkDao;
 import com.ikvych.cocktail.service.DrinkDataBase;
 
+import java.util.Collections;
 import java.util.List;
 
 public class DrinkDbRepository {
@@ -23,9 +24,6 @@ public class DrinkDbRepository {
         return drinkDao.getAllDrink();
     }
 
-    public LiveData<Drink> getDrinkById(Long idDrink) {
-        return drinkDao.getDrinkById(idDrink);
-    }
 
     public void saveDrink(Drink drink) {
         new SaveDrinkAsyncTask(drinkDao).execute(drink);

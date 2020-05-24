@@ -26,7 +26,4 @@ public interface DrinkDao {
 
     @Query("SELECT * FROM drink")
     LiveData<List<Drink>> getAllDrink();
-
-    @Query("SELECT * FROM drink WHERE id_drink == :idDrink")
-    LiveData<Drink> getDrinkById(Long idDrink);
 }

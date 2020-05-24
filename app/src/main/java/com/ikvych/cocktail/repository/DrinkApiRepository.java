@@ -32,7 +32,7 @@ public class DrinkApiRepository {
         drinkApiService = RetrofitInstance.getService();
     }
 
-    public void getMutableLiveData(String name) {
+    public void updateLiveData(String name) {
         Call<DrinkApiResponse> call = drinkApiService.getDrinksByName(name);
 
         call.enqueue(new Callback<DrinkApiResponse>() {
@@ -55,7 +55,7 @@ public class DrinkApiRepository {
         });
     }
 
-    public MutableLiveData<List<Drink>> getMutableLiveData() {
+    public MutableLiveData<List<Drink>> updateLiveData() {
         return mutableLiveData;
     }
 

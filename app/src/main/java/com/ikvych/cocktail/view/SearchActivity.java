@@ -6,8 +6,6 @@ import android.view.View;
 import android.widget.SearchView;
 
 import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
@@ -51,7 +49,7 @@ public class SearchActivity extends FragmentActivity {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 String searchQuery = query.trim();
-                viewModel.getDrinksByNameData(searchQuery);
+                viewModel.findDrinksByName(searchQuery);
                 searchView.clearFocus();
                 return true;
             }

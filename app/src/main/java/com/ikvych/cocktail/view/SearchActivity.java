@@ -1,7 +1,10 @@
 package com.ikvych.cocktail.view;
 
+import android.content.Context;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.SearchView;
 
 import androidx.fragment.app.FragmentActivity;
@@ -59,6 +62,7 @@ public class SearchActivity extends FragmentActivity {
             }
 
         });
+
     }
 
     private void initLiveDataObserver() {

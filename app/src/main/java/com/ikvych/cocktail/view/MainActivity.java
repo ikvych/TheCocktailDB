@@ -39,8 +39,12 @@ public class MainActivity extends AppCompatActivity {
 
         viewModel = new ViewModelProvider(this).get(MainActivityViewModel.class);
 
-        fillRecycleView(viewModel.getCurrentData());
+        initRecycleView(viewModel.getCurrentData());
+        initLiveDataObserver();
+        initFabListener();
+    }
 
+    private void initLiveDataObserver() {
         viewModel.getDrinksLiveData().observe(this, new Observer<List<Drink>>() {
             @Override
             public void onChanged(List<Drink> drinks) {
@@ -52,7 +56,9 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
 
+    private void initFabListener() {
         FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,25 +67,28 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.this.startActivity(intent);
             }
         });
-
     }
 
-    public void fillRecycleView(List<Drink> drinks) {
+    private void initRecycleView(List<Drink> drinks) {
         RecyclerView recyclerView = activityMainBinding.dbRecyclerView;
-        drinkAdapter = new DrinkAdapter(this, "main");
+        drinkAdapter = new DrinkAdapter(this, DrinkAdapter.MAIN_MODEL_TYPE);
         recyclerView.setHasFixedSize(true);
+
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         } else {
             recyclerView.setLayoutManager(new GridLayoutManager(this, 4));
         }
+
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(drinkAdapter);
+
         if (drinks.size() == 0) {
             ActivityUtil.setDbEmptyHistoryVisible(MainActivity.this);
         } else {
             ActivityUtil.setDbRecyclerViewVisible(MainActivity.this);
         }
+
         drinkAdapter.setDrinkList(drinks);
     }
 }

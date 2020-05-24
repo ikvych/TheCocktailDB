@@ -18,12 +18,6 @@ public interface DrinkDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Drink drink);
 
-    @Update
-    void update(Drink drink);
-
-    @Delete
-    void delete(Drink drink);
-
     @Query("SELECT * FROM drink")
     LiveData<List<Drink>> getAllDrink();
 }

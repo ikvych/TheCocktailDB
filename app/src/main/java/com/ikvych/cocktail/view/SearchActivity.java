@@ -36,11 +36,11 @@ public class SearchActivity extends FragmentActivity {
 
         initSearchView();
         initRecycleView(viewModel.getCurrentData());
-        findDrinkByName();
+        initLiveDataObserver();
     }
 
 
-    public void initSearchView() {
+    private void initSearchView() {
         searchView = findViewById(R.id.search_name);
         searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
@@ -61,7 +61,7 @@ public class SearchActivity extends FragmentActivity {
         });
     }
 
-    public void findDrinkByName() {
+    private void initLiveDataObserver() {
         viewModel.getDrinksLiveData().observe(this, new Observer<List<Drink>>() {
             @Override
             public void onChanged(List<Drink> drinks) {
@@ -76,9 +76,9 @@ public class SearchActivity extends FragmentActivity {
     }
 
 
-    public void initRecycleView(List<Drink> drinks) {
+    private void initRecycleView(List<Drink> drinks) {
         recyclerView = findViewById(R.id.search_recycler_view);
-        drinkAdapter = new DrinkAdapter(this, "search");
+        drinkAdapter = new DrinkAdapter(this, DrinkAdapter.SEARCH_MODEL_TYPE);
         recyclerView.setHasFixedSize(true);
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {

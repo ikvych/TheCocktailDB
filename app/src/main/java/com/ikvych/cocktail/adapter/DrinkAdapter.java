@@ -92,4 +92,8 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
         this.drinkList = drinkList;
         notifyDataSetChanged();
     }
+
+    public List<Drink> getDrinkList() {
+        return drinkList;
+    }
 }

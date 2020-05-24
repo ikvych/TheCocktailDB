@@ -26,10 +26,6 @@ public class MainActivityViewModel extends AndroidViewModel {
         return drinks;
     }
 
-    public LiveData<Drink> getDrinkById(Long idDrink) {
-        return drinkDbRepository.getDrinkById(idDrink);
-    }
-
     public void saveDrink(Drink drink) {
         drinkDbRepository.saveDrink(drink);
     }

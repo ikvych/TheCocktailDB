@@ -17,16 +17,22 @@ import java.util.List;
 public class SearchActivityViewModel extends ViewModel {
 
     private DrinkApiRepository drinkApiRepository;
+    private MutableLiveData<List<Drink>> drinks;
 
     public SearchActivityViewModel() {
         drinkApiRepository = new DrinkApiRepository();
+        drinks = drinkApiRepository.getMutableLiveData();
     }
 
-    public LiveData<List<Drink>> getDrinksByNameData(String name) {
-        return drinkApiRepository.getMutableLiveData(name);
+    public void getDrinksByNameData(String name) {
+        drinkApiRepository.getMutableLiveData(name);
     }
 
-    public List<Drink> getDataOnRotation() {
+    public MutableLiveData<List<Drink>> getDrinks() {
+        return drinks;
+    }
+
+    public List<Drink> getCurrentData() {
         return drinkApiRepository.getDataOnRotation();
     }
 

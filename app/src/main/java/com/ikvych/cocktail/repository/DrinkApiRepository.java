@@ -32,7 +32,7 @@ public class DrinkApiRepository {
         drinkApiService = RetrofitInstance.getService();
     }
 
-    public MutableLiveData<List<Drink>> getMutableLiveData(String name) {
+    public void getMutableLiveData(String name) {
         Call<DrinkApiResponse> call = drinkApiService.getDrinksByName(name);
 
         call.enqueue(new Callback<DrinkApiResponse>() {
@@ -42,6 +42,9 @@ public class DrinkApiRepository {
                 if (drinkApiResponse != null && drinkApiResponse.getDrinks() != null) {
                     drinkList = drinkApiResponse.getDrinks();
                     mutableLiveData.setValue(drinkList);
+                } else {
+                    drinkList = new ArrayList<>();
+                    mutableLiveData.setValue(drinkList);
                 }
             }
 
@@ -50,7 +53,9 @@ public class DrinkApiRepository {
 
             }
         });
+    }
 
+    public MutableLiveData<List<Drink>> getMutableLiveData() {
         return mutableLiveData;
     }
 

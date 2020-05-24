@@ -18,6 +18,6 @@ public interface DrinkDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     void insert(Drink drink);
 
-    @Query("SELECT * FROM drink")
+    @Query("SELECT * FROM drink ORDER BY created DESC")
     LiveData<List<Drink>> getAllDrink();
 }

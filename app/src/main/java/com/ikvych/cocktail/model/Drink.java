@@ -3,8 +3,6 @@ package com.ikvych.cocktail.model;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.view.LayoutInflater;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -24,8 +22,7 @@ import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 import com.ikvych.cocktail.R;
 
-import org.w3c.dom.Text;
-
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,6 +34,9 @@ public class Drink extends BaseObservable implements Parcelable{
     @PrimaryKey(autoGenerate = false)
     @ColumnInfo(name = "id_drink")
     private Long idDrink;
+
+    @ColumnInfo(name = "created")
+    private Date createdAt;
 
     @SerializedName("strDrink")
     @Expose
@@ -352,6 +352,7 @@ public class Drink extends BaseObservable implements Parcelable{
     @Expose
     @Ignore
     private String dateModified;
+
 
     public final static Parcelable.Creator<Drink> CREATOR = new Creator<Drink>() {
 
@@ -954,6 +955,15 @@ public class Drink extends BaseObservable implements Parcelable{
     public void setDateModified(String dateModified) {
         this.dateModified = dateModified;
         notifyPropertyChanged(BR.dateModified);
+    }
+
+
+    public Date getCreatedAt() {
+        return new Date();
+    }
+
+    public void setCreatedAt(Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public void writeToParcel(Parcel dest, int flags) {

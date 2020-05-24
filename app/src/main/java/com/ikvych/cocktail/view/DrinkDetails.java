@@ -12,12 +12,15 @@ import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding;
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel;
-import com.ikvych.cocktail.viewmodel.SearchActivityViewModel;
+
+import static com.ikvych.cocktail.adapter.DrinkAdapter.DRINK;
+import static com.ikvych.cocktail.adapter.DrinkAdapter.MAIN_MODEL_TYPE;
+import static com.ikvych.cocktail.adapter.DrinkAdapter.SEARCH_MODEL_TYPE;
+import static com.ikvych.cocktail.adapter.DrinkAdapter.VIEW_MODEL_TYPE;
 
 public class DrinkDetails extends AppCompatActivity {
 
     private MainActivityViewModel mainActivityViewModel;
-    private SearchActivityViewModel searchActivityViewModel;
     private Drink drink;
 
     @Override
@@ -27,33 +30,32 @@ public class DrinkDetails extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        if (intent != null && intent.hasExtra("drink")) {
+        if (intent != null && intent.hasExtra(DRINK)) {
 
-            drink = intent.getParcelableExtra("drink");
-            String viewModelType = intent.getStringExtra("viewModelType");
+            drink = intent.getParcelableExtra(DRINK);
 
-            switch (viewModelType) {
-                case "main":
-                    break;
-                case "search":
-                    initSearchViewModel(drink);
-                    break;
+            if (intent.hasExtra(VIEW_MODEL_TYPE)) {
+                String viewModelType = intent.getStringExtra(VIEW_MODEL_TYPE);
+                switch (viewModelType) {
+                    case MAIN_MODEL_TYPE:
+                        break;
+                    case SEARCH_MODEL_TYPE:
+                        saveDrinkIntoDb(drink);
+                        break;
+                }
             }
         }
 
-        ActivityDrinkDetailsBinding activityDrinkDetailsBinding =
-                DataBindingUtil.setContentView(this, R.layout.activity_drink_details);
-
+        ActivityDrinkDetailsBinding activityDrinkDetailsBinding = DataBindingUtil.setContentView(this, R.layout.activity_drink_details);
         activityDrinkDetailsBinding.setDrink(drink);
     }
 
-    private void initSearchViewModel(Drink drink) {
+    private void saveDrinkIntoDb(Drink drink) {
         mainActivityViewModel = new ViewModelProvider
                 .AndroidViewModelFactory(getApplication())
                 .create(MainActivityViewModel.class);
 
         mainActivityViewModel.saveDrink(drink);
-
     }
 
 

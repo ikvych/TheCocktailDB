@@ -21,6 +21,11 @@ import java.util.List;
 
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
 
+    public static final String VIEW_MODEL_TYPE = "viewModelType";
+    public static final String MAIN_MODEL_TYPE = "main";
+    public static final String SEARCH_MODEL_TYPE = "search";
+    public static final String DRINK = "drink";
+
     private List<Drink> drinkList;
     private Context context;
     private String activityName;
@@ -73,14 +78,14 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
                         Drink drink = drinkList.get(position);
                         Intent intent = new Intent(context, DrinkDetails.class);
                         switch (activityName) {
-                            case "main":
-                                intent.putExtra("viewModelType", "main");
+                            case MAIN_MODEL_TYPE:
+                                intent.putExtra(VIEW_MODEL_TYPE, MAIN_MODEL_TYPE);
                                 break;
-                            case "search":
-                                intent.putExtra("viewModelType", "search");
+                            case SEARCH_MODEL_TYPE:
+                                intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE);
                                 break;
                         }
-                        intent.putExtra("drink", drink);
+                        intent.putExtra(DRINK, drink);
                         context.startActivity(intent);
                     }
                 }
@@ -91,9 +96,5 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     public void setDrinkList(List<Drink> drinkList) {
         this.drinkList = drinkList;
         notifyDataSetChanged();
-    }
-
-    public List<Drink> getDrinkList() {
-        return drinkList;
     }
 }

@@ -10,7 +10,7 @@ import androidx.room.TypeConverters;
 import com.ikvych.cocktail.convertor.DateConverter;
 import com.ikvych.cocktail.model.Drink;
 
-@Database(entities = {Drink.class}, version = 1)
+@Database(entities = {Drink.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})
 public abstract class DrinkDataBase extends RoomDatabase {
 

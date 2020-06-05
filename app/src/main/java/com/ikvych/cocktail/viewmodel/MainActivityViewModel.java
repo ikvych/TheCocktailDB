@@ -3,11 +3,11 @@ package com.ikvych.cocktail.viewmodel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.repository.DrinkDbRepository;
+import com.ikvych.cocktail.repository.impl.DrinkDbRepositoryImpl;
 
 import java.util.Collections;
 import java.util.List;
@@ -19,7 +19,7 @@ public class MainActivityViewModel extends ActivityViewModel {
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
-        drinkDbRepository = new DrinkDbRepository(application);
+        drinkDbRepository = new DrinkDbRepositoryImpl(application);
         drinks = drinkDbRepository.getDrinks();
     }
 

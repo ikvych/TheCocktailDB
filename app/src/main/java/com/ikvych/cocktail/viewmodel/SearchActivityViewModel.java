@@ -4,12 +4,11 @@ import android.app.Application;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
-import androidx.lifecycle.ViewModel;
 
 import com.ikvych.cocktail.model.Drink;
 import com.ikvych.cocktail.repository.DrinkApiRepository;
+import com.ikvych.cocktail.repository.impl.DrinkApiRepositoryImpl;
 
-import java.util.Collections;
 import java.util.List;
 
 public class SearchActivityViewModel extends ActivityViewModel {
@@ -18,7 +17,7 @@ public class SearchActivityViewModel extends ActivityViewModel {
 
     public SearchActivityViewModel(@NonNull Application application) {
         super(application);
-        drinkApiRepository = new DrinkApiRepository();
+        drinkApiRepository = new DrinkApiRepositoryImpl();
     }
 
     public void updateDrinksLiveData(String searchQuery) {

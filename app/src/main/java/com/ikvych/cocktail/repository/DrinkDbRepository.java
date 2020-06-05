@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.repository;
 
 import android.app.Application;
+import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
@@ -16,8 +17,8 @@ public class DrinkDbRepository {
 
     private DrinkDao drinkDao;
 
-    public DrinkDbRepository(Application application) {
-        drinkDao = DrinkDataBase.getInstance(application).getDrinkDao();
+    public DrinkDbRepository(Context context) {
+        drinkDao = DrinkDataBase.getInstance(context).getDrinkDao();
     }
 
     public LiveData<List<Drink>> getDrinks() {
@@ -33,7 +34,7 @@ public class DrinkDbRepository {
 
         private DrinkDao drinkDao;
 
-        public SaveDrinkAsyncTask(DrinkDao drinkDao) {
+        SaveDrinkAsyncTask(DrinkDao drinkDao) {
             this.drinkDao = drinkDao;
         }
 

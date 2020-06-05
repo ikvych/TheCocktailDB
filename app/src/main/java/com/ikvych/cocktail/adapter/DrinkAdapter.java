@@ -61,33 +61,30 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     }
 
 
-    public class DrinkViewHolder extends RecyclerView.ViewHolder {
+    class DrinkViewHolder extends RecyclerView.ViewHolder {
 
         private DrinkListItemBinding drinkListItemBinding;
 
-        public DrinkViewHolder(@NonNull DrinkListItemBinding drinkListItemBinding) {
+        DrinkViewHolder(@NonNull DrinkListItemBinding drinkListItemBinding) {
             super(drinkListItemBinding.getRoot());
             this.drinkListItemBinding = drinkListItemBinding;
 
-            drinkListItemBinding.getRoot().setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    int position = getAdapterPosition();
+            drinkListItemBinding.getRoot().setOnClickListener(v -> {
+                int position = getAdapterPosition();
 
-                    if (position != RecyclerView.NO_POSITION) {
-                        Drink drink = drinkList.get(position);
-                        Intent intent = new Intent(context, DrinkDetails.class);
-                        switch (activityName) {
-                            case MAIN_MODEL_TYPE:
-                                intent.putExtra(VIEW_MODEL_TYPE, MAIN_MODEL_TYPE);
-                                break;
-                            case SEARCH_MODEL_TYPE:
-                                intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE);
-                                break;
-                        }
-                        intent.putExtra(DRINK, drink);
-                        context.startActivity(intent);
+                if (position != RecyclerView.NO_POSITION) {
+                    Drink drink = drinkList.get(position);
+                    Intent intent = new Intent(context, DrinkDetails.class);
+                    switch (activityName) {
+                        case MAIN_MODEL_TYPE:
+                            intent.putExtra(VIEW_MODEL_TYPE, MAIN_MODEL_TYPE);
+                            break;
+                        case SEARCH_MODEL_TYPE:
+                            intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE);
+                            break;
                     }
+                    intent.putExtra(DRINK, drink);
+                    context.startActivity(intent);
                 }
             });
         }

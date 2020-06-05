@@ -12,7 +12,7 @@ import com.ikvych.cocktail.repository.DrinkDbRepository;
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivityViewModel extends AndroidViewModel {
+public class MainActivityViewModel extends ActivityViewModel {
 
     private DrinkDbRepository drinkDbRepository;
     private LiveData<List<Drink>> drinks;
@@ -23,6 +23,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         drinks = drinkDbRepository.getDrinks();
     }
 
+    @Override
     public LiveData<List<Drink>> getDrinksLiveData() {
         return drinks;
     }
@@ -31,6 +32,7 @@ public class MainActivityViewModel extends AndroidViewModel {
         drinkDbRepository.saveDrink(drink);
     }
 
+    @Override
     public List<Drink> getCurrentData() {
         if (drinks.getValue() != null) {
             return drinks.getValue();

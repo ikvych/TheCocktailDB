@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.convertor;
+package com.ikvych.cocktail.ect.convertor;
 
 import androidx.room.TypeConverter;
 

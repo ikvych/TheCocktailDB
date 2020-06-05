@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.view;
+package com.ikvych.cocktail.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 

@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.service;
+package com.ikvych.cocktail.data.database;
 
 import android.content.Context;
 
@@ -7,8 +7,8 @@ import androidx.room.Room;
 import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
-import com.ikvych.cocktail.convertor.DateConverter;
-import com.ikvych.cocktail.model.Drink;
+import com.ikvych.cocktail.ect.convertor.DateConverter;
+import com.ikvych.cocktail.data.entity.Drink;
 
 @Database(entities = {Drink.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})

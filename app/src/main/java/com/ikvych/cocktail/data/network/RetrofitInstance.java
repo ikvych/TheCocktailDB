@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.service;
+package com.ikvych.cocktail.data.network;
 
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;

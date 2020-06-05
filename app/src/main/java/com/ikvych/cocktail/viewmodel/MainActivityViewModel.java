@@ -5,14 +5,15 @@ import android.app.Application;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
-import com.ikvych.cocktail.model.Drink;
-import com.ikvych.cocktail.repository.DrinkDbRepository;
-import com.ikvych.cocktail.repository.impl.DrinkDbRepositoryImpl;
+import com.ikvych.cocktail.data.entity.Drink;
+import com.ikvych.cocktail.data.repository.base.DrinkDbRepository;
+import com.ikvych.cocktail.data.repository.DrinkDbRepositoryImpl;
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel;
 
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivityViewModel extends ActivityViewModel {
+public class MainActivityViewModel extends BaseViewModel {
 
     private DrinkDbRepository drinkDbRepository;
     private LiveData<List<Drink>> drinks;

@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.viewmodel;
+package com.ikvych.cocktail.viewmodel.base;
 
 import android.app.Application;
 
@@ -6,13 +6,13 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.ikvych.cocktail.model.Drink;
+import com.ikvych.cocktail.data.entity.Drink;
 
 import java.util.List;
 
-public abstract class ActivityViewModel extends AndroidViewModel {
+public abstract class BaseViewModel extends AndroidViewModel {
 
-    ActivityViewModel(@NonNull Application application) {
+    public BaseViewModel(@NonNull Application application) {
         super(application);
     }
 

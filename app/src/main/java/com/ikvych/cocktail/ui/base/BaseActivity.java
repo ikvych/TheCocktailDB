@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.view;
+package com.ikvych.cocktail.ui.base;
 
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ikvych.cocktail.adapter.DrinkAdapter;
-import com.ikvych.cocktail.model.Drink;
-import com.ikvych.cocktail.viewmodel.ActivityViewModel;
+import com.ikvych.cocktail.ect.adapter.DrinkAdapter;
+import com.ikvych.cocktail.data.entity.Drink;
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel;
 
 import java.util.List;
 
-public abstract class BaseActivity<T extends ActivityViewModel> extends AppCompatActivity {
+public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatActivity {
 
     protected DrinkAdapter drinkAdapter;
     protected T viewModel;

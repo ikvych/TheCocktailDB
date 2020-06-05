@@ -12,7 +12,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
-        <activity android:name=".view.SplashActivity"
+        <activity android:name=".ui.activity.SplashActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,13 +20,13 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".view.DrinkDetails"
+        <activity android:name=".ui.activity.DrinkDetails"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
 
-        <activity android:name=".view.SearchActivity"
+        <activity android:name=".ui.activity.SearchActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar" />
 
-        <activity android:name=".view.MainActivity"
+        <activity android:name=".ui.activity.MainActivity"
             android:theme="@style/Theme.AppCompat.DayNight.NoActionBar"/>
 
     </application>

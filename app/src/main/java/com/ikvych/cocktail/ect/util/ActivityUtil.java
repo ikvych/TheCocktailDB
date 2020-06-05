@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.util;
+package com.ikvych.cocktail.ect.util;
 
 import android.app.Activity;
 import android.view.View;

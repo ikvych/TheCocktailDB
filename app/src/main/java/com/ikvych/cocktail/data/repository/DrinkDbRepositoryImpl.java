@@ -1,14 +1,14 @@
-package com.ikvych.cocktail.repository.impl;
+package com.ikvych.cocktail.data.repository;
 
 import android.content.Context;
 import android.os.AsyncTask;
 
 import androidx.lifecycle.LiveData;
 
-import com.ikvych.cocktail.model.Drink;
-import com.ikvych.cocktail.repository.DrinkDbRepository;
-import com.ikvych.cocktail.service.DrinkDao;
-import com.ikvych.cocktail.service.DrinkDataBase;
+import com.ikvych.cocktail.data.entity.Drink;
+import com.ikvych.cocktail.data.repository.base.DrinkDbRepository;
+import com.ikvych.cocktail.data.database.DrinkDao;
+import com.ikvych.cocktail.data.database.DrinkDataBase;
 
 import java.util.List;
 

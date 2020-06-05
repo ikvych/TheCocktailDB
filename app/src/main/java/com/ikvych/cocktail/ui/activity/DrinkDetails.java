@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.view;
+package com.ikvych.cocktail.ui.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.databinding.DataBindingUtil;
@@ -10,13 +10,13 @@ import android.view.View;
 
 import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding;
-import com.ikvych.cocktail.model.Drink;
+import com.ikvych.cocktail.data.entity.Drink;
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel;
 
-import static com.ikvych.cocktail.adapter.DrinkAdapter.DRINK;
-import static com.ikvych.cocktail.adapter.DrinkAdapter.MAIN_MODEL_TYPE;
-import static com.ikvych.cocktail.adapter.DrinkAdapter.SEARCH_MODEL_TYPE;
-import static com.ikvych.cocktail.adapter.DrinkAdapter.VIEW_MODEL_TYPE;
+import static com.ikvych.cocktail.ect.adapter.DrinkAdapter.DRINK;
+import static com.ikvych.cocktail.ect.adapter.DrinkAdapter.MAIN_MODEL_TYPE;
+import static com.ikvych.cocktail.ect.adapter.DrinkAdapter.SEARCH_MODEL_TYPE;
+import static com.ikvych.cocktail.ect.adapter.DrinkAdapter.VIEW_MODEL_TYPE;
 
 public class DrinkDetails extends AppCompatActivity {
 

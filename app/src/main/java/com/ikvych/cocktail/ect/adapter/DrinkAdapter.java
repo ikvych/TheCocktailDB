@@ -1,11 +1,9 @@
-package com.ikvych.cocktail.adapter;
+package com.ikvych.cocktail.ect.adapter;
 
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TableLayout;
 
 import androidx.annotation.NonNull;
 import androidx.databinding.DataBindingUtil;
@@ -13,8 +11,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.databinding.DrinkListItemBinding;
-import com.ikvych.cocktail.model.Drink;
-import com.ikvych.cocktail.view.DrinkDetails;
+import com.ikvych.cocktail.data.entity.Drink;
+import com.ikvych.cocktail.ui.activity.DrinkDetails;
 
 import java.util.ArrayList;
 import java.util.List;

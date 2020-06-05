@@ -7,7 +7,7 @@
     <data>
         <variable
             name="drink"
-            type="com.ikvych.cocktail.model.Drink" />
+            type="com.ikvych.cocktail.data.entity.Drink" />
     </data>
 
 <androidx.cardview.widget.CardView

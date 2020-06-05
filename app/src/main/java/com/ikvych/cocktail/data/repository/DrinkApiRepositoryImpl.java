@@ -1,12 +1,12 @@
-package com.ikvych.cocktail.repository.impl;
+package com.ikvych.cocktail.data.repository;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.ikvych.cocktail.model.Drink;
-import com.ikvych.cocktail.model.DrinkApiResponse;
-import com.ikvych.cocktail.repository.DrinkApiRepository;
-import com.ikvych.cocktail.service.DrinkApiService;
-import com.ikvych.cocktail.service.RetrofitInstance;
+import com.ikvych.cocktail.data.entity.Drink;
+import com.ikvych.cocktail.data.entity.DrinkApiResponse;
+import com.ikvych.cocktail.data.repository.base.DrinkApiRepository;
+import com.ikvych.cocktail.data.network.DrinkApiService;
+import com.ikvych.cocktail.data.network.RetrofitInstance;
 
 import java.util.Collections;
 import java.util.List;

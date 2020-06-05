@@ -1,6 +1,6 @@
-package com.ikvych.cocktail.service;
+package com.ikvych.cocktail.data.network;
 
-import com.ikvych.cocktail.model.DrinkApiResponse;
+import com.ikvych.cocktail.data.entity.DrinkApiResponse;
 
 import retrofit2.Call;
 import retrofit2.http.GET;

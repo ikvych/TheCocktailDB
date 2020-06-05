@@ -1,8 +1,8 @@
-package com.ikvych.cocktail.repository;
+package com.ikvych.cocktail.data.repository.base;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.ikvych.cocktail.model.Drink;
+import com.ikvych.cocktail.data.entity.Drink;
 
 import java.util.List;
 

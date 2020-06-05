@@ -1,14 +1,12 @@
-package com.ikvych.cocktail.service;
+package com.ikvych.cocktail.data.database;
 
 import androidx.lifecycle.LiveData;
 import androidx.room.Dao;
-import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
-import androidx.room.Update;
 
-import com.ikvych.cocktail.model.Drink;
+import com.ikvych.cocktail.data.entity.Drink;
 
 import java.util.List;
 

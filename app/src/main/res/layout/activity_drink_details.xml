@@ -10,13 +10,13 @@
 
         <variable
             name="drink"
-            type="com.ikvych.cocktail.model.Drink" />
+            type="com.ikvych.cocktail.data.entity.Drink" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.DrinkDetails">
+        tools:context=".ui.activity.DrinkDetails">
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/navigationView"

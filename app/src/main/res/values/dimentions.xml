@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!--navigationView-->
+    <dimen name="navigation_view_width">0dp</dimen>
+    <dimen name="navigation_view_height">64dp</dimen>
+
+    <!--navigationView textView-->
+    <dimen name="navigation_view_title_text_margin_start">70dp</dimen>
+    <dimen name="navigation_view_title_text_margin_top">18dp</dimen>
+    <dimen name="navigation_view_title_text_size">20sp</dimen>
+
+    <!--navigationView searchView-->
+    <dimen name="navigation_view_search_input_height">48dp</dimen>
+    <dimen name="navigation_view_search_input_margin_start">8dp</dimen>
+    <dimen name="navigation_view_search_input_margin_end">8dp</dimen>
+    <dimen name="navigation_view_search_input_margin_top">8dp</dimen>
+    <dimen name="navigation_view_search_input_margin_bottom">8dp</dimen>
+    <dimen name="navigation_view_search_input_elevation">2dp</dimen>
+
+    <!--navigationView imageButton-->
+    <dimen name="navigation_view_return_button_width">32dp</dimen>
+    <dimen name="navigation_view_return_button_height">32dp</dimen>
+    <dimen name="navigation_view_return_button_margin_start">20dp</dimen>
+    <dimen name="navigation_view_return_button_margin_top">16dp</dimen>
+    <dimen name="navigation_view_return_button_margin_bottom">16dp</dimen>
+
+
+    <!--floating search button-->
+    <dimen name="search_button_width">56dp</dimen>
+    <dimen name="search_button_height">56dp</dimen>
+    <dimen name="search_button_margin_bottom">16dp</dimen>
+    <dimen name="search_button_margin_end">16dp</dimen>
+
+    <!--splash imageView-->
+    <dimen name="splash_image_view_margin_start">32dp</dimen>
+    <dimen name="splash_image_view_margin_end">32dp</dimen>
+
+    <!--LinerLayout for recyclerView-->
+    <dimen name="liner_layout_width_for_rv">0dp</dimen>
+    <dimen name="liner_layout_height_for_rv">0dp</dimen>
+
+    <!--recyclerView-->
+    <dimen name="recycler_view_margin_top">0dp</dimen>
+    <dimen name="recycler_view_margin_bottom">0dp</dimen>
+    <dimen name="recycler_view_margin_start">8dp</dimen>
+    <dimen name="recycler_view_margin_end">8dp</dimen>
+
+    <!--recyclerView empty-->
+    <dimen name="empty_recycler_view_text_size">14sp</dimen>
+
+    <!--recyclerView cardView-->
+    <dimen name="recycler_view_item_margin_top">10dp</dimen>
+    <dimen name="recycler_view_item_margin_bottom">10dp</dimen>
+    <dimen name="recycler_view_item_margin_start">12dp</dimen>
+    <dimen name="recycler_view_item_margin_end">12dp</dimen>
+    <dimen name="recycler_view_item_corner_radius">8dp</dimen>
+    <dimen name="recycler_view_item_elevation">4dp</dimen>
+
+    <!--recyclerView cardView textView-->
+    <dimen name="recycler_view_item_text_margin_start">10dp</dimen>
+    <dimen name="recycler_view_item_text_margin_end">7dp</dimen>
+    <dimen name="recycler_view_item_text_margin_top">7dp</dimen>
+    <dimen name="recycler_view_item_text_margin_bottom">9dp</dimen>
+    <dimen name="recycler_view_item_text_size">14sp</dimen>
+
+    <!--scrollView-->
+    <dimen name="scroll_view_width">0dp</dimen>
+    <dimen name="scroll_view_height">0dp</dimen>
+
+    <!--detail image-->
+    <dimen name="detail_image_height">180dp</dimen>
+    <dimen name="detail_image_margin_top">16dp</dimen>
+    <dimen name="detail_image_corner_radius">8dp</dimen>
+
+    <!--detail table-->
+    <dimen name="detail_table_width">0dp</dimen>
+    <dimen name="detail_table_margin_top">16dp</dimen>
+
+    <!--detail table row-->
+    <dimen name="detail_table_row_margin_top">4dp</dimen>
+    <dimen name="detail_table_row_margin_bottom">4dp</dimen>
+
+    <!--detail table row text-->
+    <dimen name="detail_table_row_text_size">16sp</dimen>
+    <dimen name="detail_table_row_text_name_margin_start">20dp</dimen>
+    <dimen name="detail_table_row_text_value_margin_start">40dp</dimen>
+    <dimen name="detail_table_row_text_line_spacing_extra">12sp</dimen>
+
+    <!--detail info-->
+    <dimen name="detail_info_width">0dp</dimen>
+    <dimen name="detail_info_margin_top">16dp</dimen>
+
+    <!--detail textView-->
+    <dimen name="detail_info_text_margin_start">20dp</dimen>
+    <dimen name="detail_info_text_margin_end">20dp</dimen>
+    <dimen name="detail_info_text_margin_bottom">20dp</dimen>
+    <dimen name="detail_info_text_size">16sp</dimen>
+    <dimen name="detail_info_text_line_spacing_extra">12sp</dimen>
+
+    <!--detail chapter-->
+    <dimen name="detail_chapter_width">0dp</dimen>
+    <dimen name="detail_chapter_margin_top">16dp</dimen>
+
+    <!--detail chapter text-->
+    <dimen name="detail_chapter_text_line_spacing_extra">10sp</dimen>
+    <dimen name="detail_chapter_text_padding">4dp</dimen>
+    <dimen name="detail_chapter_text_size">18sp</dimen>
+
+</resources>

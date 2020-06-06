@@ -2,29 +2,28 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginTop="4dp"
-    android:layout_marginBottom="4dp"
-    >
+    android:layout_marginTop="@dimen/detail_table_row_margin_top"
+    android:layout_marginBottom="@dimen/detail_table_row_margin_bottom">
 
     <TextView
         android:id="@+id/ingredients"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="@dimen/detail_table_row_text_name_margin_start"
         android:fontFamily="sans-serif"
-        android:lineSpacingExtra="12sp"
+        android:lineSpacingExtra="@dimen/detail_table_row_text_line_spacing_extra"
         android:textColor="#de000000"
-        android:textSize="16sp"
+        android:textSize="@dimen/detail_table_row_text_size"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/measure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="@dimen/detail_table_row_text_value_margin_start"
         android:fontFamily="sans-serif-medium"
-        android:lineSpacingExtra="12sp"
+        android:lineSpacingExtra="@dimen/detail_table_row_text_line_spacing_extra"
         android:textColor="#de000000"
-        android:textSize="16sp"
+        android:textSize="@dimen/detail_table_row_text_size"
         android:textStyle="normal" />
 </TableRow>

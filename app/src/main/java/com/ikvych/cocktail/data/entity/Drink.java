@@ -168,6 +168,7 @@ public class Drink extends BaseObservable implements Parcelable{
 
     @BindingAdapter({"ingredients"})
     public static void getIngredients(TableLayout tableLayout, Map<String, String> ingredients) {
+        int count = 1;
         for (Map.Entry<String, String> entry : ingredients.entrySet()) {
             if (entry.getKey() == null) {
                 continue;
@@ -176,12 +177,14 @@ public class Drink extends BaseObservable implements Parcelable{
                     .inflate(R.layout.item_ingredient_list, tableLayout, false);
 
             TextView ingredient = tr.findViewById(R.id.ingredients);
-            ingredient.setText(entry.getKey());
+            String numberedIngredient = count + ". " + entry.getKey();
+            ingredient.setText(numberedIngredient);
 
             TextView measure = tr.findViewById(R.id.measure);
             measure.setText(entry.getValue());
 
             tableLayout.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.MATCH_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
+            count++;
         }
     }
 

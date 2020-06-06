@@ -173,7 +173,7 @@ public class Drink extends BaseObservable implements Parcelable{
                 continue;
             }
             TableRow tr = (TableRow) LayoutInflater.from(tableLayout.getContext())
-                    .inflate(R.layout.ingredient_list_item, tableLayout, false);
+                    .inflate(R.layout.item_ingredient_list, tableLayout, false);
 
             TextView ingredient = tr.findViewById(R.id.ingredients);
             ingredient.setText(entry.getKey());

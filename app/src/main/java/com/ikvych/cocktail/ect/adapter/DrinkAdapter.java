@@ -10,8 +10,8 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikvych.cocktail.R;
-import com.ikvych.cocktail.databinding.DrinkListItemBinding;
 import com.ikvych.cocktail.data.entity.Drink;
+import com.ikvych.cocktail.databinding.ItemDrinkListBinding;
 import com.ikvych.cocktail.ui.activity.DrinkDetails;
 
 import java.util.ArrayList;
@@ -37,20 +37,20 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
     @NonNull
     @Override
     public DrinkViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        DrinkListItemBinding drinkListItemBinding = DataBindingUtil.inflate(
+        ItemDrinkListBinding itemDrinkListBinding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
-                R.layout.drink_list_item,
+                R.layout.item_drink_list,
                 parent,
                 false
         );
 
-        return new DrinkViewHolder(drinkListItemBinding);
+        return new DrinkViewHolder(itemDrinkListBinding);
     }
 
     @Override
     public void onBindViewHolder(@NonNull DrinkViewHolder holder, int position) {
         Drink drink = drinkList.get(position);
-        holder.drinkListItemBinding.setDrink(drink);
+        holder.itemDrinkListBinding.setDrink(drink);
     }
 
     @Override
@@ -61,13 +61,13 @@ public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHol
 
     class DrinkViewHolder extends RecyclerView.ViewHolder {
 
-        private DrinkListItemBinding drinkListItemBinding;
+        private ItemDrinkListBinding itemDrinkListBinding;
 
-        DrinkViewHolder(@NonNull DrinkListItemBinding drinkListItemBinding) {
-            super(drinkListItemBinding.getRoot());
-            this.drinkListItemBinding = drinkListItemBinding;
+        DrinkViewHolder(@NonNull ItemDrinkListBinding itemDrinkListBinding) {
+            super(itemDrinkListBinding.getRoot());
+            this.itemDrinkListBinding = itemDrinkListBinding;
 
-            drinkListItemBinding.getRoot().setOnClickListener(v -> {
+            itemDrinkListBinding.getRoot().setOnClickListener(v -> {
                 int position = getAdapterPosition();
 
                 if (position != RecyclerView.NO_POSITION) {

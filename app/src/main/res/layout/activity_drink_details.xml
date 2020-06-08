@@ -17,39 +17,21 @@
         tools:context=".ui.activity.DrinkDetails">
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView"
-            android:layout_width="@dimen/navigation_view_width"
-            android:layout_height="@dimen/navigation_view_height"
+            android:id="@+id/drink_detail_navigation_view"
+            style="@style/NavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/drink_name_details"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/navigation_view_title_text_margin_start"
-                android:layout_marginTop="@dimen/navigation_view_title_text_margin_top"
-                android:fontFamily="sans-serif-medium"
-                android:text="@{drink.strDrink}"
-                android:textColor="#de000000"
-                android:textSize="@dimen/navigation_view_title_text_size"
-                android:textStyle="normal"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                style="@style/NavigationViewTitle"
+                android:text="@{drink.strDrink}" />
 
             <ImageButton
-                android:id="@+id/imageButton"
-                android:layout_width="@dimen/navigation_view_return_button_width"
-                android:layout_height="@dimen/navigation_view_return_button_height"
-                android:layout_marginStart="@dimen/navigation_view_return_button_margin_start"
-                android:layout_marginTop="@dimen/navigation_view_return_button_margin_top"
-                android:layout_marginBottom="@dimen/navigation_view_return_button_margin_bottom"
-                android:adjustViewBounds="true"
-                android:background="?android:attr/colorBackground"
+                android:id="@+id/return_button"
+                style="@style/CustomResumeButton"
                 android:onClick="resumePreviousActivity"
-                android:visibility="visible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -64,7 +46,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/navigationView">
+            app:layout_constraintTop_toBottomOf="@+id/drink_detail_navigation_view">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
@@ -74,220 +56,119 @@
 
                 <androidx.cardview.widget.CardView
                     android:id="@+id/cardView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/detail_image_height"
-                    android:layout_marginTop="@dimen/detail_image_margin_top"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    card_view:cardCornerRadius="@dimen/detail_image_corner_radius">
+                    card_view:cardCornerRadius="@dimen/detail_image_corner_radius"
+                    style="@style/DetailCardView">
 
                     <ImageView
                         android:id="@+id/drinkImageView"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_centerHorizontal="true"
-                        android:layout_centerVertical="true"
-                        android:adjustViewBounds="true"
                         bind:strDrinkThumb="@{drink.strDrinkThumb}"
-                        tools:srcCompat="@drawable/default_icon" />
+                        tools:srcCompat="@drawable/default_icon"
+                        style="@style/DrinkImage.DetailImage" />
 
                 </androidx.cardview.widget.CardView>
 
                 <TableLayout
-                    android:id="@+id/tableLayout"
-                    android:layout_width="@dimen/detail_table_width"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/detail_table_margin_top"
+                    android:id="@+id/table_layout"
+                    style="@style/DrinkDetailTable"
                     app:layout_constraintTop_toBottomOf="@+id/cardView"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent">
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/detail_table_row_margin_top"
-                        android:layout_marginBottom="@dimen/detail_table_row_margin_bottom">
-
+                    <TableRow style="@style/DrinkDetailTableRow">
                         <TextView
                             android:id="@+id/details_name"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/detail_table_row_text_name_margin_start"
-                            android:fontFamily="sans-serif"
-                            android:lineSpacingExtra="@dimen/detail_table_row_text_line_spacing_extra"
-                            android:text="@string/details_name"
-                            android:textColor="#de000000"
-                            android:textSize="@dimen/detail_table_row_text_size"
-                            android:textStyle="bold" />
+                            style="@style/DrinkDetailTableColumn.Name"
+                            android:text="@string/details_name" />
 
                         <TextView
                             android:id="@+id/details_name_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/detail_table_row_text_value_margin_start"
-                            android:fontFamily="sans-serif-medium"
-                            android:lineSpacingExtra="@dimen/detail_table_row_text_line_spacing_extra"
-                            android:text="@{drink.strDrink}"
-                            android:textColor="#de000000"
-                            android:textSize="@dimen/detail_table_row_text_size"
-                            android:textStyle="normal" />
+                            style="@style/DrinkDetailTableColumn.Value"
+                            android:text="@{drink.strDrink}" />
                     </TableRow>
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/detail_table_row_margin_top"
-                        android:layout_marginBottom="@dimen/detail_table_row_margin_bottom">
-
+                    <TableRow style="@style/DrinkDetailTableRow">
                         <TextView
                             android:id="@+id/details_alcoholic"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/detail_table_row_text_name_margin_start"
-                            android:fontFamily="sans-serif"
-                            android:lineSpacingExtra="@dimen/detail_table_row_text_line_spacing_extra"
-                            android:text="@string/details_alcoholic"
-                            android:textColor="#de000000"
-                            android:textSize="@dimen/detail_table_row_text_size"
-                            android:textStyle="bold" />
+                            style="@style/DrinkDetailTableColumn.Name"
+                            android:text="@string/details_alcoholic" />
 
                         <TextView
                             android:id="@+id/details_alcoholic_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/detail_table_row_text_value_margin_start"
-                            android:fontFamily="sans-serif-medium"
-                            android:lineSpacingExtra="@dimen/detail_table_row_text_line_spacing_extra"
-                            android:text="@{drink.strAlcoholic}"
-                            android:textColor="#de000000"
-                            android:textSize="@dimen/detail_table_row_text_size"
-                            android:textStyle="normal" />
+                            style="@style/DrinkDetailTableColumn.Value"
+                            android:text="@{drink.strAlcoholic}" />
                     </TableRow>
 
-                    <TableRow
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/detail_table_row_margin_top"
-                        android:layout_marginBottom="@dimen/detail_table_row_margin_bottom">
-
+                    <TableRow style="@style/DrinkDetailTableRow">
                         <TextView
                             android:id="@+id/details_glass"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/detail_table_row_text_name_margin_start"
-                            android:fontFamily="sans-serif"
-                            android:lineSpacingExtra="@dimen/detail_table_row_text_line_spacing_extra"
-                            android:text="@string/details_glass"
-                            android:textColor="#de000000"
-                            android:textSize="@dimen/detail_table_row_text_size"
-                            android:textStyle="bold" />
+                            style="@style/DrinkDetailTableColumn.Name"
+                            android:text="@string/details_glass" />
 
                         <TextView
                             android:id="@+id/details_glass_value"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/detail_table_row_text_value_margin_start"
-                            android:fontFamily="sans-serif-medium"
-                            android:lineSpacingExtra="@dimen/detail_table_row_text_line_spacing_extra"
-                            android:text="@{drink.strGlass}"
-                            android:textColor="#de000000"
-                            android:textSize="@dimen/detail_table_row_text_size"
-                            android:textStyle="normal" />
+                            style="@style/DrinkDetailTableColumn.Value"
+                            android:text="@{drink.strGlass}" />
                     </TableRow>
 
                 </TableLayout>
 
                 <LinearLayout
-                    android:id="@+id/titleIngredient"
-                    android:layout_width="@dimen/detail_chapter_width"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/detail_chapter_margin_top"
-                    android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@+id/tableLayout"
+                    android:id="@+id/drink_ingredient_section"
+                    style="@style/DrinkDetailsSection"
+                    app:layout_constraintTop_toBottomOf="@+id/table_layout"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent">
 
                     <TextView
-                        android:id="@+id/textView6"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/details_ingredient_shape"
-                        android:fontFamily="sans-serif"
-                        android:gravity="center_horizontal"
-                        android:lineSpacingExtra="@dimen/detail_chapter_text_line_spacing_extra"
-                        android:padding="@dimen/detail_chapter_text_padding"
+                        android:id="@+id/details_ingredients"
+                        style="@style/DrinkDetailsSectionName"
                         android:text="@string/details_ingredients"
-                        android:textColor="#de000000"
-                        android:textSize="@dimen/detail_chapter_text_size"
-                        android:textStyle="bold"
                         card_view:layout_constraintEnd_toEndOf="parent"
                         card_view:layout_constraintStart_toStartOf="parent" />
                 </LinearLayout>
 
                 <TableLayout
                     android:id="@+id/ingredients_table_layout"
-                    android:layout_width="@dimen/detail_table_width"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/detail_table_margin_top"
-                    app:layout_constraintTop_toBottomOf="@id/titleIngredient"
+                    style="@style/DrinkDetailTable"
+                    app:layout_constraintTop_toBottomOf="@id/drink_ingredient_section"
                     bind:ingredients="@{drink.ingredients}"
                     card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintStart_toStartOf="@id/titleIngredient">
-                </TableLayout>
+                    card_view:layout_constraintStart_toStartOf="@id/drink_ingredient_section" />
 
                 <LinearLayout
-                    android:id="@+id/titleInstruction"
-                    android:layout_width="@dimen/detail_chapter_width"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/detail_chapter_margin_top"
-                    android:orientation="vertical"
+                    android:id="@+id/drink_instruction_section"
+                    style="@style/DrinkDetailsSection"
                     app:layout_constraintTop_toBottomOf="@+id/ingredients_table_layout"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent">
 
                     <TextView
-                        android:id="@+id/instruction"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/details_ingredient_shape"
-                        android:fontFamily="sans-serif"
-                        android:gravity="center_horizontal"
-                        android:lineSpacingExtra="@dimen/detail_chapter_text_line_spacing_extra"
-                        android:padding="@dimen/detail_chapter_text_padding"
+                        android:id="@+id/detail_instruction"
+                        style="@style/DrinkDetailsSectionName"
                         android:text="@string/details_instruction"
-                        android:textColor="#de000000"
-                        android:textSize="@dimen/detail_chapter_text_size"
-                        android:textStyle="bold"
                         card_view:layout_constraintEnd_toEndOf="parent"
                         card_view:layout_constraintStart_toStartOf="parent" />
                 </LinearLayout>
 
                 <LinearLayout
-                    android:id="@+id/instructionLayout"
+                    android:id="@+id/instruction_layout"
                     android:layout_width="@dimen/detail_info_width"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="@dimen/detail_info_margin_top"
                     android:orientation="vertical"
-                    app:layout_constraintTop_toBottomOf="@+id/titleInstruction"
+                    app:layout_constraintTop_toBottomOf="@+id/drink_instruction_section"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent">
 
                     <TextView
-                        android:id="@+id/instructionsText"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_marginStart="@dimen/detail_info_text_margin_start"
-                        android:layout_marginEnd="@dimen/detail_info_text_margin_end"
-                        android:layout_marginBottom="@dimen/detail_info_text_margin_bottom"
-                        android:fontFamily="sans-serif-medium"
-                        android:lineSpacingExtra="@dimen/detail_info_text_line_spacing_extra"
+                        android:id="@+id/drink_instruction_description"
                         android:text="@{drink.strInstructions}"
-                        android:textColor="#de000000"
-                        android:textSize="@dimen/detail_info_text_size"
-                        android:textStyle="normal"
                         card_view:layout_constraintEnd_toEndOf="parent"
-                        card_view:layout_constraintStart_toStartOf="parent" />
+                        card_view:layout_constraintStart_toStartOf="parent"
+                        style="@style/DrinkInstructionText" />
                 </LinearLayout>
 
             </androidx.constraintlayout.widget.ConstraintLayout>

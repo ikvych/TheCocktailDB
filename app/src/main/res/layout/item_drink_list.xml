@@ -4,21 +4,15 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
     <data>
-
         <variable
             name="drink"
             type="com.ikvych.cocktail.data.entity.Drink" />
     </data>
 
     <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/recycler_view_item_margin_top"
-        android:layout_marginBottom="@dimen/recycler_view_item_margin_bottom"
-        android:layout_marginStart="@dimen/recycler_view_item_margin_start"
-        android:layout_marginEnd="@dimen/recycler_view_item_margin_end"
         card_view:cardCornerRadius="@dimen/recycler_view_item_corner_radius"
-        card_view:cardElevation="@dimen/recycler_view_item_elevation">
+        card_view:cardElevation="@dimen/recycler_view_item_elevation"
+        style="@style/DrinkItemCardView">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -26,26 +20,13 @@
 
             <ImageView
                 android:id="@+id/drinkImageView"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                bind:strDrinkThumb="@{drink.strDrinkThumb}" />
+                bind:strDrinkThumb="@{drink.strDrinkThumb}"
+                style="@style/DrinkImage" />
 
             <TextView
                 android:id="@+id/drinkName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/drinkImageView"
-                android:layout_marginStart="@dimen/recycler_view_item_text_margin_start"
-                android:layout_marginTop="@dimen/recycler_view_item_text_margin_top"
-                android:layout_marginEnd="@dimen/recycler_view_item_text_margin_end"
-                android:layout_marginBottom="@dimen/recycler_view_item_text_margin_bottom"
-                android:fontFamily="sans-serif-medium"
                 android:text="@{drink.strDrink}"
-                android:textColor="#de000000"
-                android:textSize="@dimen/recycler_view_item_text_size"
-                android:textStyle="normal" />
+                style="@style/DrinkName" />
 
         </RelativeLayout>
 

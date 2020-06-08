@@ -47,7 +47,7 @@ public class SearchActivity extends BaseActivity<SearchActivityViewModel> {
 
 
     private void initSearchView() {
-        searchView = findViewById(R.id.search_name);
+        searchView = findViewById(R.id.search_query);
         searchView.setIconifiedByDefault(false);
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
 

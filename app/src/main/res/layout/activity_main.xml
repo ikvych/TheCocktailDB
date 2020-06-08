@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
@@ -10,27 +9,16 @@
         tools:context=".ui.activity.MainActivity">
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView"
-            android:layout_width="@dimen/navigation_view_width"
-            android:layout_height="@dimen/navigation_view_height"
+            android:id="@+id/main_navigation_view"
+            style="@style/NavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/drink_name_details"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/navigation_view_title_text_margin_start"
-                android:layout_marginTop="@dimen/navigation_view_title_text_margin_top"
-                android:text="@string/app_name"
-                android:textSize="@dimen/navigation_view_title_text_size"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="normal"
-                android:textColor="#de000000"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                style="@style/NavigationViewTitle"
+                android:text="@string/app_name" />
 
         </com.google.android.material.navigation.NavigationView>
 
@@ -42,44 +30,24 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/navigationView">
+            app:layout_constraintTop_toBottomOf="@+id/main_navigation_view">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/db_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/recycler_view_margin_start"
-                android:layout_marginTop="@dimen/recycler_view_margin_top"
-                android:layout_marginEnd="@dimen/recycler_view_margin_end"
-                android:layout_marginBottom="@dimen/recycler_view_margin_bottom"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                style="@style/RecyclerView" />
 
-        <TextView
-            android:id="@+id/empty_history"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center"
-            android:text="@string/empty_history"
-            android:textColor="#727272"
-            android:textSize="@dimen/empty_recycler_view_text_size"
-            android:textStyle="normal"
-            android:visibility="gone" />
+            <TextView
+                android:id="@+id/empty_history"
+                style="@style/EmptyListElements"
+                android:text="@string/empty_history" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
-            android:layout_width="@dimen/search_button_width"
-            android:layout_height="@dimen/search_button_height"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="@dimen/search_button_margin_end"
-            android:layout_marginBottom="@dimen/search_button_margin_bottom"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/search" />
+            app:srcCompat="@drawable/search"
+            style="@style/SearchButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

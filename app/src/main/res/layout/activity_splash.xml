@@ -13,5 +13,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:srcCompat="@drawable/ic_logo"
-        style="@style/SplashImage" />
+        style="@style/SplashImage"
+        android:contentDescription="@string/contentDescription" />
 </androidx.constraintlayout.widget.ConstraintLayout>

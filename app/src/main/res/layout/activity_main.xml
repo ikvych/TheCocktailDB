@@ -36,6 +36,7 @@
                 android:id="@+id/db_recycler_view"
                 style="@style/RecyclerView" />
 
+            <!--Shown when the database is empty-->
             <TextView
                 android:id="@+id/empty_history"
                 style="@style/EmptyListElements"

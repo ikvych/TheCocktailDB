@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
 import com.ikvych.cocktail.data.entity.Drink;
-import com.ikvych.cocktail.data.repository.base.DrinkApiRepository;
 import com.ikvych.cocktail.data.repository.DrinkApiRepositoryImpl;
+import com.ikvych.cocktail.data.repository.base.DrinkApiRepository;
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel;
 
 import java.util.List;

@@ -10,8 +10,8 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.ikvych.cocktail.ect.adapter.DrinkAdapter;
 import com.ikvych.cocktail.data.entity.Drink;
+import com.ikvych.cocktail.ect.adapter.DrinkAdapter;
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel;
 
 import java.util.List;
@@ -33,7 +33,7 @@ public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatAct
     protected void initLiveDataObserver() {
         viewModel.getDrinksLiveData().observe(this, drinks -> {
             drinkAdapter.setDrinkList(drinks);
-            setLayerVisibilityOnUpdateData(drinks);
+            determineVisibleLayerOnUpdateData(drinks);
         });
     }
 
@@ -51,16 +51,32 @@ public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatAct
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setAdapter(drinkAdapter);
 
-        setLayerVisibilityOnCreateData(drinks);
+        determineVisibleLayerOnCreate(drinks);
 
         drinkAdapter.setDrinkList(drinks);
     }
 
-    protected void setLayerVisibilityOnCreateData(List<Drink> drinks) {
+    /**
+     * If drinks is empty, hide recyclerView and show appropriate textView,
+     * else make recyclerView visible.
+     *
+     * To do this, use {@link com.ikvych.cocktail.ect.util.ActivityUtil ActivityUtil} methods
+     *
+     * @param drinks data list to check for items
+     */
+    protected void determineVisibleLayerOnCreate(List<Drink> drinks) {
         //TO DO
     }
 
-    protected void setLayerVisibilityOnUpdateData(List<Drink> drinks) {
+    /**
+     * If drinks is empty, hide recyclerView and show appropriate textView,
+     * else make recyclerView visible
+     *
+     * To do this, use {@link com.ikvych.cocktail.ect.util.ActivityUtil ActivityUtil} methods
+     *
+     * @param drinks data list to check for items
+     */
+    protected void determineVisibleLayerOnUpdateData(List<Drink> drinks) {
         //TO DO
     }
 

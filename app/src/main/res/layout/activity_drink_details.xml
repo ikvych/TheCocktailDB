@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="drink"
             type="com.ikvych.cocktail.data.entity.Drink" />
@@ -37,7 +38,8 @@
                 app:layout_constraintTop_toTopOf="parent"
                 card_view:srcCompat="?attr/homeAsUpIndicator"
                 tools:srcCompat="@drawable/abc_vector_test"
-                tools:visibility="visible" />
+                tools:visibility="visible"
+                android:contentDescription="@string/contentDescription"/>
         </com.google.android.material.navigation.NavigationView>
 
         <ScrollView
@@ -55,29 +57,31 @@
                 tools:visibility="visible">
 
                 <androidx.cardview.widget.CardView
-                    android:id="@+id/cardView"
+                    android:id="@+id/drink_image_card_view"
+                    style="@style/DetailCardView"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
-                    card_view:cardCornerRadius="@dimen/detail_image_corner_radius"
-                    style="@style/DetailCardView">
+                    card_view:cardCornerRadius="@dimen/detail_image_corner_radius">
 
                     <ImageView
-                        android:id="@+id/drinkImageView"
+                        android:id="@+id/drink_image_viev"
+                        style="@style/DrinkImage.DetailImage"
                         bind:strDrinkThumb="@{drink.strDrinkThumb}"
                         tools:srcCompat="@drawable/default_icon"
-                        style="@style/DrinkImage.DetailImage" />
+                        android:contentDescription="@string/contentDescription"/>
 
                 </androidx.cardview.widget.CardView>
 
                 <TableLayout
                     android:id="@+id/table_layout"
                     style="@style/DrinkDetailTable"
-                    app:layout_constraintTop_toBottomOf="@+id/cardView"
+                    app:layout_constraintTop_toBottomOf="@+id/drink_image_card_view"
                     card_view:layout_constraintEnd_toEndOf="parent"
                     card_view:layout_constraintStart_toStartOf="parent">
 
                     <TableRow style="@style/DrinkDetailTableRow">
+
                         <TextView
                             android:id="@+id/details_name"
                             style="@style/DrinkDetailTableColumn.Name"
@@ -90,6 +94,7 @@
                     </TableRow>
 
                     <TableRow style="@style/DrinkDetailTableRow">
+
                         <TextView
                             android:id="@+id/details_alcoholic"
                             style="@style/DrinkDetailTableColumn.Name"
@@ -102,6 +107,7 @@
                     </TableRow>
 
                     <TableRow style="@style/DrinkDetailTableRow">
+
                         <TextView
                             android:id="@+id/details_glass"
                             style="@style/DrinkDetailTableColumn.Name"
@@ -130,6 +136,7 @@
                         card_view:layout_constraintStart_toStartOf="parent" />
                 </LinearLayout>
 
+                <!--The table is filled with data, from the entity "Drink", method getIngredients(TableLayout tableLayout, Map<String, String> ingredients)-->
                 <TableLayout
                     android:id="@+id/ingredients_table_layout"
                     style="@style/DrinkDetailTable"
@@ -165,11 +172,12 @@
 
                     <TextView
                         android:id="@+id/drink_instruction_description"
+                        style="@style/DrinkInstructionText"
                         android:text="@{drink.strInstructions}"
                         card_view:layout_constraintEnd_toEndOf="parent"
-                        card_view:layout_constraintStart_toStartOf="parent"
-                        style="@style/DrinkInstructionText" />
+                        card_view:layout_constraintStart_toStartOf="parent" />
                 </LinearLayout>
+
 
             </androidx.constraintlayout.widget.ConstraintLayout>
 

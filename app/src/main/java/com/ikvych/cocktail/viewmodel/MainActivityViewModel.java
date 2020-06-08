@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
 
 import com.ikvych.cocktail.data.entity.Drink;
-import com.ikvych.cocktail.data.repository.base.DrinkDbRepository;
 import com.ikvych.cocktail.data.repository.DrinkDbRepositoryImpl;
+import com.ikvych.cocktail.data.repository.base.DrinkDbRepository;
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel;
 
 import java.util.Collections;
@@ -40,8 +40,4 @@ public class MainActivityViewModel extends BaseViewModel {
         }
         return Collections.emptyList();
     }
-
-
-
-
 }

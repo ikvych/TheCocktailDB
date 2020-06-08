@@ -33,11 +33,13 @@
                 android:id="@+id/search_recycler_view"
                 style="@style/RecyclerView" />
 
+            <!--Shown at the start of activity-->
             <TextView
                 android:id="@+id/empty_list_id"
                 style="@style/EmptyListElements"
                 android:text="@string/empty_list" />
 
+            <!--Shown when the search is empty-->
             <TextView
                 android:id="@+id/empty_search_id"
                 style="@style/EmptyListElements"

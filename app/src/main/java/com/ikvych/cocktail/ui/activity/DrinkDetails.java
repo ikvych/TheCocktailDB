@@ -1,16 +1,16 @@
 package com.ikvych.cocktail.ui.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.databinding.DataBindingUtil;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.ikvych.cocktail.R;
-import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding;
 import com.ikvych.cocktail.data.entity.Drink;
+import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding;
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel;
 
 import static com.ikvych.cocktail.ect.adapter.DrinkAdapter.DRINK;
@@ -20,7 +20,6 @@ import static com.ikvych.cocktail.ect.adapter.DrinkAdapter.VIEW_MODEL_TYPE;
 
 public class DrinkDetails extends AppCompatActivity {
 
-    private MainActivityViewModel mainActivityViewModel;
     private Drink drink;
 
     @Override
@@ -36,12 +35,14 @@ public class DrinkDetails extends AppCompatActivity {
 
             if (intent.hasExtra(VIEW_MODEL_TYPE)) {
                 String viewModelType = intent.getStringExtra(VIEW_MODEL_TYPE);
-                switch (viewModelType) {
-                    case MAIN_MODEL_TYPE:
-                        break;
-                    case SEARCH_MODEL_TYPE:
-                        saveDrinkIntoDb(drink);
-                        break;
+                if (viewModelType != null) {
+                    switch (viewModelType) {
+                        case MAIN_MODEL_TYPE:
+                            break;
+                        case SEARCH_MODEL_TYPE:
+                            saveDrinkIntoDb(drink);
+                            break;
+                    }
                 }
             }
         }
@@ -51,7 +52,7 @@ public class DrinkDetails extends AppCompatActivity {
     }
 
     private void saveDrinkIntoDb(Drink drink) {
-        mainActivityViewModel = new ViewModelProvider
+        MainActivityViewModel mainActivityViewModel = new ViewModelProvider
                 .AndroidViewModelFactory(getApplication())
                 .create(MainActivityViewModel.class);
 

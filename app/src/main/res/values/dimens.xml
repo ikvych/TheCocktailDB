@@ -64,7 +64,7 @@
     <dimen name="recycler_view_item_text_margin_bottom">9dp</dimen>
     <dimen name="recycler_view_item_text_size">14sp</dimen>
 
-    <!--scrollView-->
+    <!--scrollView for drink details-->
     <dimen name="scroll_view_width">0dp</dimen>
     <dimen name="scroll_view_height">0dp</dimen>
 
@@ -98,13 +98,13 @@
     <dimen name="detail_info_text_size">16sp</dimen>
     <dimen name="detail_info_text_line_spacing_extra">12sp</dimen>
 
-    <!--detail chapter-->
-    <dimen name="detail_chapter_width">0dp</dimen>
-    <dimen name="detail_chapter_margin_top">16dp</dimen>
+    <!--detail section-->
+    <dimen name="detail_section_width">0dp</dimen>
+    <dimen name="detail_section_margin_top">16dp</dimen>
 
-    <!--detail chapter text-->
-    <dimen name="detail_chapter_text_line_spacing_extra">10sp</dimen>
-    <dimen name="detail_chapter_text_padding">4dp</dimen>
-    <dimen name="detail_chapter_text_size">18sp</dimen>
+    <!--detail section text-->
+    <dimen name="detail_section_text_line_spacing_extra">10sp</dimen>
+    <dimen name="detail_section_text_padding">4dp</dimen>
+    <dimen name="detail_section_text_size">18sp</dimen>
 
 </resources>

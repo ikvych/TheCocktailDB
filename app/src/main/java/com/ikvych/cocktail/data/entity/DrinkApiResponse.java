@@ -1,13 +1,13 @@
 package com.ikvych.cocktail.data.entity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DrinkApiResponse implements Parcelable {
 
@@ -17,7 +17,6 @@ public class DrinkApiResponse implements Parcelable {
 
     public final static Parcelable.Creator<DrinkApiResponse> CREATOR = new Creator<DrinkApiResponse>() {
 
-        @SuppressWarnings({"unchecked"})
         public DrinkApiResponse createFromParcel(Parcel in) {
             return new DrinkApiResponse(in);
         }
@@ -28,7 +27,7 @@ public class DrinkApiResponse implements Parcelable {
 
     };
 
-    protected DrinkApiResponse(Parcel in) {
+    private DrinkApiResponse(Parcel in) {
         in.readList(this.drinks, (Drink.class.getClassLoader()));
     }
 

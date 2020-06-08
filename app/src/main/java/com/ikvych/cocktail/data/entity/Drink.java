@@ -27,11 +27,11 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Entity(tableName = "drink")
-public class Drink extends BaseObservable implements Parcelable{
+public class Drink extends BaseObservable implements Parcelable {
 
     @SerializedName("idDrink")
     @Expose
-    @PrimaryKey(autoGenerate = false)
+    @PrimaryKey()
     @ColumnInfo(name = "id_drink")
     private Long idDrink;
 
@@ -141,6 +141,7 @@ public class Drink extends BaseObservable implements Parcelable{
     @Ignore
     private Map<String, String> ingredients = new HashMap<>();
 
+    /*Fills the map with ingredients and measure*/
     @Bindable
     public Map<String, String> getIngredients() {
         ingredients.put(strIngredient1, strMeasure1);
@@ -166,6 +167,7 @@ public class Drink extends BaseObservable implements Parcelable{
         notifyPropertyChanged(BR.ingredients);
     }
 
+    /*Using getIngredients() method fills the tableLayout in activity_drink_details with ingredients and measure*/
     @BindingAdapter({"ingredients"})
     public static void getIngredients(TableLayout tableLayout, Map<String, String> ingredients) {
         int count = 1;
@@ -360,7 +362,6 @@ public class Drink extends BaseObservable implements Parcelable{
     public final static Parcelable.Creator<Drink> CREATOR = new Creator<Drink>() {
 
 
-        @SuppressWarnings({"unchecked"})
         public Drink createFromParcel(Parcel in) {
             return new Drink(in);
         }
@@ -374,24 +375,24 @@ public class Drink extends BaseObservable implements Parcelable{
     protected Drink(Parcel in) {
         this.idDrink = ((Long) in.readValue((String.class.getClassLoader())));
         this.strDrink = ((String) in.readValue((String.class.getClassLoader())));
-        this.strDrinkAlternate = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strDrinkES = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strDrinkDE = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strDrinkFR = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strDrinkZHHANS = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strDrinkZHHANT = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strTags = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strVideo = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.strDrinkAlternate = (in.readValue((Object.class.getClassLoader())));
+        this.strDrinkES = ( in.readValue((Object.class.getClassLoader())));
+        this.strDrinkDE = ( in.readValue((Object.class.getClassLoader())));
+        this.strDrinkFR = ( in.readValue((Object.class.getClassLoader())));
+        this.strDrinkZHHANS = ( in.readValue((Object.class.getClassLoader())));
+        this.strDrinkZHHANT = ( in.readValue((Object.class.getClassLoader())));
+        this.strTags = ( in.readValue((Object.class.getClassLoader())));
+        this.strVideo = ( in.readValue((Object.class.getClassLoader())));
         this.strCategory = ((String) in.readValue((String.class.getClassLoader())));
-        this.strIBA = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.strIBA = ( in.readValue((Object.class.getClassLoader())));
         this.strAlcoholic = ((String) in.readValue((String.class.getClassLoader())));
         this.strGlass = ((String) in.readValue((String.class.getClassLoader())));
         this.strInstructions = ((String) in.readValue((String.class.getClassLoader())));
-        this.strInstructionsES = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.strInstructionsES = ( in.readValue((Object.class.getClassLoader())));
         this.strInstructionsDE = ((String) in.readValue((String.class.getClassLoader())));
-        this.strInstructionsFR = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strInstructionsZHHANS = ((Object) in.readValue((Object.class.getClassLoader())));
-        this.strInstructionsZHHANT = ((Object) in.readValue((Object.class.getClassLoader())));
+        this.strInstructionsFR = ( in.readValue((Object.class.getClassLoader())));
+        this.strInstructionsZHHANS = (in.readValue((Object.class.getClassLoader())));
+        this.strInstructionsZHHANT = (in.readValue((Object.class.getClassLoader())));
         this.strDrinkThumb = ((String) in.readValue((String.class.getClassLoader())));
         this.strIngredient1 = ((String) in.readValue((String.class.getClassLoader())));
         this.strIngredient2 = ((String) in.readValue((String.class.getClassLoader())));
@@ -962,7 +963,8 @@ public class Drink extends BaseObservable implements Parcelable{
 
 
     public Date getCreatedAt() {
-        return new Date();
+        this.createdAt = new Date();
+        return createdAt;
     }
 
     public void setCreatedAt(Date createdAt) {

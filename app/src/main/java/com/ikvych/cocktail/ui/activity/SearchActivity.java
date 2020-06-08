@@ -4,10 +4,10 @@ import android.os.Bundle;
 import android.widget.SearchView;
 
 import com.ikvych.cocktail.R;
-import com.ikvych.cocktail.ect.adapter.DrinkAdapter;
 import com.ikvych.cocktail.data.entity.Drink;
-import com.ikvych.cocktail.ui.base.BaseActivity;
+import com.ikvych.cocktail.ect.adapter.DrinkAdapter;
 import com.ikvych.cocktail.ect.util.ActivityUtil;
+import com.ikvych.cocktail.ui.base.BaseActivity;
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel;
 
 import java.util.List;
@@ -28,7 +28,7 @@ public class SearchActivity extends BaseActivity<SearchActivityViewModel> {
     }
 
     @Override
-    protected void setLayerVisibilityOnCreateData(List<Drink> drinks) {
+    protected void determineVisibleLayerOnCreate(List<Drink> drinks) {
         if (drinks.size() == 0) {
             ActivityUtil.setSearchEmptyListVisible(this);
         } else {
@@ -37,7 +37,7 @@ public class SearchActivity extends BaseActivity<SearchActivityViewModel> {
     }
 
     @Override
-    protected void setLayerVisibilityOnUpdateData(List<Drink> drinks) {
+    protected void determineVisibleLayerOnUpdateData(List<Drink> drinks) {
         if (drinks.size() == 0) {
             ActivityUtil.setEmptySearchVisible(SearchActivity.this);
         } else {

@@ -8,4 +8,5 @@
     <string name="details_glass">Glass:</string>
     <string name="details_ingredients">Ingredients</string>
     <string name="details_instruction">Instructions</string>
+    <string name="contentDescription">image with data</string>
 </resources>

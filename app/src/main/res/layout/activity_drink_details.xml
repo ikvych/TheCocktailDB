@@ -32,14 +32,14 @@
             <ImageButton
                 android:id="@+id/return_button"
                 style="@style/CustomResumeButton"
+                android:contentDescription="@string/contentDescription"
                 android:onClick="resumePreviousActivity"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 card_view:srcCompat="?attr/homeAsUpIndicator"
-                tools:srcCompat="@drawable/abc_vector_test"
-                tools:visibility="visible"
-                android:contentDescription="@string/contentDescription"/>
+                tools:srcCompat="@drawable/ic_arrow_back"
+                tools:visibility="visible" />
         </com.google.android.material.navigation.NavigationView>
 
         <ScrollView

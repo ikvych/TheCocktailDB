@@ -50,10 +50,10 @@
     <dimen name="empty_recycler_view_text_size">14sp</dimen>
 
     <!--recyclerView cardView-->
-    <dimen name="recycler_view_item_margin_top">10dp</dimen>
-    <dimen name="recycler_view_item_margin_bottom">10dp</dimen>
-    <dimen name="recycler_view_item_margin_start">12dp</dimen>
-    <dimen name="recycler_view_item_margin_end">12dp</dimen>
+    <dimen name="recycler_view_item_margin_top">4dp</dimen>
+    <dimen name="recycler_view_item_margin_bottom">4dp</dimen>
+    <dimen name="recycler_view_item_margin_start">4dp</dimen>
+    <dimen name="recycler_view_item_margin_end">4dp</dimen>
     <dimen name="recycler_view_item_corner_radius">8dp</dimen>
     <dimen name="recycler_view_item_elevation">4dp</dimen>
 

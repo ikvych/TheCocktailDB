@@ -12,6 +12,7 @@
     <androidx.cardview.widget.CardView
         card_view:cardCornerRadius="@dimen/recycler_view_item_corner_radius"
         card_view:cardElevation="@dimen/recycler_view_item_elevation"
+        card_view:cardUseCompatPadding="true"
         style="@style/DrinkItemCardView">
 
         <RelativeLayout

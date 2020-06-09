@@ -92,13 +92,11 @@
     </style>
 
     <style name="DrinkDetailTableColumn.Ingredient">
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="DrinkDetailTableColumn.Measure">
         <item name="android:layout_marginStart">@dimen/detail_table_row_text_value_margin_start
         </item>
-        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="DrinkDetailTableColumn.Name">
@@ -188,7 +186,7 @@
             @dimen/navigation_view_return_button_margin_bottom
         </item>
         <item name="android:adjustViewBounds">true</item>
-        <item name="android:background">?android:attr/colorBackground</item>
+        <item name="android:background">@color/color_surface</item>
         <item name="android:visibility">visible</item>
         <item name="contentDescription">@string/contentDescription</item>
     </style>
@@ -210,7 +208,7 @@
         <item name="android:gravity">center_horizontal</item>
         <item name="android:lineSpacingExtra">@dimen/detail_section_text_line_spacing_extra</item>
         <item name="android:padding">@dimen/detail_section_text_padding</item>
-        <item name="android:textColor">#de000000</item>
+        <item name="android:textColor">@color/color_on_surface</item>
         <item name="android:textSize">@dimen/detail_section_text_size</item>
         <item name="android:textStyle">bold</item>
     </style>

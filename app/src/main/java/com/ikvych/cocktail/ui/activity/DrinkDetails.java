@@ -60,6 +60,7 @@ public class DrinkDetails extends AppCompatActivity {
     }
 
 
+    @SuppressWarnings("unused")
     public void resumePreviousActivity(View view) {
         finish();
     }

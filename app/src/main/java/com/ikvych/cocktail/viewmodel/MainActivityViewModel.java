@@ -13,6 +13,7 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel;
 import java.util.Collections;
 import java.util.List;
 
+@SuppressWarnings({"CanBeFinal", "unused"})
 public class MainActivityViewModel extends BaseViewModel {
 
     private DrinkDbRepository drinkDbRepository;

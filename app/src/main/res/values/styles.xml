@@ -122,7 +122,7 @@
     <style name="DrinkName">
         <item name="android:layout_width">wrap_content</item>
         <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_below">@+id/drink_image_viev</item>
+        <item name="android:layout_below">@+id/drink_image_view</item>
         <item name="android:layout_marginStart">@dimen/recycler_view_item_text_margin_start</item>
         <item name="android:layout_marginTop">@dimen/recycler_view_item_text_margin_top</item>
         <item name="android:layout_marginEnd">@dimen/recycler_view_item_text_margin_end</item>

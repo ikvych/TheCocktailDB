@@ -10,9 +10,10 @@ import com.ikvych.cocktail.data.entity.Drink;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public abstract class BaseViewModel extends AndroidViewModel {
 
-    public BaseViewModel(@NonNull Application application) {
+    protected BaseViewModel(@NonNull Application application) {
         super(application);
     }
 

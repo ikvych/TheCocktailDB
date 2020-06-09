@@ -18,7 +18,7 @@ import java.util.List;
 
 public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatActivity {
 
-    protected DrinkAdapter drinkAdapter;
+    private DrinkAdapter drinkAdapter;
     protected T viewModel;
 
     @Override
@@ -37,7 +37,7 @@ public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatAct
         });
     }
 
-    public void initRecycleView(List<Drink> drinks, Integer recyclerViewId, String ModelType) {
+    protected void initRecycleView(List<Drink> drinks, Integer recyclerViewId, String ModelType) {
         RecyclerView recyclerView = findViewById(recyclerViewId);
         drinkAdapter = new DrinkAdapter(this, ModelType);
         recyclerView.setHasFixedSize(true);

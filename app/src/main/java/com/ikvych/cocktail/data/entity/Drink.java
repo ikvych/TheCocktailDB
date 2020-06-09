@@ -162,6 +162,7 @@ public class Drink extends BaseObservable implements Parcelable {
         return ingredients;
     }
 
+    @SuppressWarnings("unused")
     public void setIngredients(Map<String, String> ingredients) {
         this.ingredients = ingredients;
         notifyPropertyChanged(BR.ingredients);
@@ -451,101 +452,121 @@ public class Drink extends BaseObservable implements Parcelable {
         notifyPropertyChanged(BR.strDrink);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrDrinkAlternate() {
         return strDrinkAlternate;
     }
 
+    @SuppressWarnings("unused")
     public void setStrDrinkAlternate(Object strDrinkAlternate) {
         this.strDrinkAlternate = strDrinkAlternate;
         notifyPropertyChanged(BR.strDrinkAlternate);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrDrinkES() {
         return strDrinkES;
     }
 
+    @SuppressWarnings("unused")
     public void setStrDrinkES(Object strDrinkES) {
         this.strDrinkES = strDrinkES;
         notifyPropertyChanged(BR.strDrinkES);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrDrinkDE() {
         return strDrinkDE;
     }
 
+    @SuppressWarnings("unused")
     public void setStrDrinkDE(Object strDrinkDE) {
         this.strDrinkDE = strDrinkDE;
         notifyPropertyChanged(BR.strDrinkDE);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrDrinkFR() {
         return strDrinkFR;
     }
 
+    @SuppressWarnings("unused")
     public void setStrDrinkFR(Object strDrinkFR) {
         this.strDrinkFR = strDrinkFR;
         notifyPropertyChanged(BR.strDrinkFR);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrDrinkZHHANS() {
         return strDrinkZHHANS;
     }
 
+    @SuppressWarnings("unused")
     public void setStrDrinkZHHANS(Object strDrinkZHHANS) {
         this.strDrinkZHHANS = strDrinkZHHANS;
         notifyPropertyChanged(BR.strDrinkZHHANS);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrDrinkZHHANT() {
         return strDrinkZHHANT;
     }
 
+    @SuppressWarnings("unused")
     public void setStrDrinkZHHANT(Object strDrinkZHHANT) {
         this.strDrinkZHHANT = strDrinkZHHANT;
         notifyPropertyChanged(BR.strDrinkZHHANT);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrTags() {
         return strTags;
     }
 
+    @SuppressWarnings("unused")
     public void setStrTags(Object strTags) {
         this.strTags = strTags;
         notifyPropertyChanged(BR.strTags);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrVideo() {
         return strVideo;
     }
 
+    @SuppressWarnings("unused")
     public void setStrVideo(Object strVideo) {
         this.strVideo = strVideo;
         notifyPropertyChanged(BR.strVideo);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public String getStrCategory() {
         return strCategory;
     }
 
+    @SuppressWarnings("unused")
     public void setStrCategory(String strCategory) {
         this.strCategory = strCategory;
         notifyPropertyChanged(BR.strCategory);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrIBA() {
         return strIBA;
     }
 
+    @SuppressWarnings("unused")
     public void setStrIBA(Object strIBA) {
         this.strIBA = strIBA;
         notifyPropertyChanged(BR.strIBA);
@@ -581,51 +602,61 @@ public class Drink extends BaseObservable implements Parcelable {
         notifyPropertyChanged(BR.strInstructions);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrInstructionsES() {
         return strInstructionsES;
     }
 
+    @SuppressWarnings("unused")
     public void setStrInstructionsES(Object strInstructionsES) {
         this.strInstructionsES = strInstructionsES;
         notifyPropertyChanged(BR.strInstructionsES);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public String getStrInstructionsDE() {
         return strInstructionsDE;
     }
 
+    @SuppressWarnings("unused")
     public void setStrInstructionsDE(String strInstructionsDE) {
         this.strInstructionsDE = strInstructionsDE;
         notifyPropertyChanged(BR.strInstructionsDE);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrInstructionsFR() {
         return strInstructionsFR;
     }
 
+    @SuppressWarnings("unused")
     public void setStrInstructionsFR(Object strInstructionsFR) {
         this.strInstructionsFR = strInstructionsFR;
         notifyPropertyChanged(BR.strInstructionsFR);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrInstructionsZHHANS() {
         return strInstructionsZHHANS;
     }
 
+    @SuppressWarnings("unused")
     public void setStrInstructionsZHHANS(Object strInstructionsZHHANS) {
         this.strInstructionsZHHANS = strInstructionsZHHANS;
         notifyPropertyChanged(BR.strInstructionsZHHANS);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public Object getStrInstructionsZHHANT() {
         return strInstructionsZHHANT;
     }
 
+    @SuppressWarnings("unused")
     public void setStrInstructionsZHHANT(Object strInstructionsZHHANT) {
         this.strInstructionsZHHANT = strInstructionsZHHANT;
         notifyPropertyChanged(BR.strInstructionsZHHANT);
@@ -941,21 +972,25 @@ public class Drink extends BaseObservable implements Parcelable {
         notifyPropertyChanged(BR.strMeasure15);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public String getStrCreativeCommonsConfirmed() {
         return strCreativeCommonsConfirmed;
     }
 
+    @SuppressWarnings("unused")
     public void setStrCreativeCommonsConfirmed(String strCreativeCommonsConfirmed) {
         this.strCreativeCommonsConfirmed = strCreativeCommonsConfirmed;
         notifyPropertyChanged(BR.strCreativeCommonsConfirmed);
     }
 
+    @SuppressWarnings("unused")
     @Bindable
     public String getDateModified() {
         return dateModified;
     }
 
+    @SuppressWarnings("unused")
     public void setDateModified(String dateModified) {
         this.dateModified = dateModified;
         notifyPropertyChanged(BR.dateModified);

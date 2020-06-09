@@ -12,6 +12,7 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel;
 
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class SearchActivityViewModel extends BaseViewModel {
 
     private DrinkApiRepository drinkApiRepository;
@@ -25,6 +26,7 @@ public class SearchActivityViewModel extends BaseViewModel {
         drinkApiRepository.updateDrinksLiveData(searchQuery);
     }
 
+    @SuppressWarnings("unused")
     @Override
     public MutableLiveData<List<Drink>> getDrinksLiveData() {
         return drinkApiRepository.getDrinksLiveData();

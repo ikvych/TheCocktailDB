@@ -16,6 +16,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import retrofit2.internal.EverythingIsNonNull;
 
+@SuppressWarnings("CanBeFinal")
 public class DrinkApiRepositoryImpl implements DrinkApiRepository {
 
     private MutableLiveData<List<Drink>> drinksLiveData;

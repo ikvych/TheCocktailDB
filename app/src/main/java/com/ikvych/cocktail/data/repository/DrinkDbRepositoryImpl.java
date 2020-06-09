@@ -12,6 +12,7 @@ import com.ikvych.cocktail.data.repository.base.DrinkDbRepository;
 
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class DrinkDbRepositoryImpl implements DrinkDbRepository {
 
     private DrinkDao drinkDao;
@@ -31,6 +32,7 @@ public class DrinkDbRepositoryImpl implements DrinkDbRepository {
         new SaveDrinkAsyncTask(drinkDao).execute(drink);
     }
 
+    @SuppressWarnings("CanBeFinal")
     private static class SaveDrinkAsyncTask extends AsyncTask<Drink, Void, Void> {
 
         private DrinkDao drinkDao;

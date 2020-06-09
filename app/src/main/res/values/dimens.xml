@@ -2,7 +2,6 @@
 <resources>
 
     <!--navigationView-->
-    <dimen name="navigation_view_width">0dp</dimen>
     <dimen name="navigation_view_height">64dp</dimen>
 
     <!--navigationView textView-->

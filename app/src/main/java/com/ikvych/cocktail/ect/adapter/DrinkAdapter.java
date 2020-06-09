@@ -17,6 +17,7 @@ import com.ikvych.cocktail.ui.activity.DrinkDetails;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("CanBeFinal")
 public class DrinkAdapter extends RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder> {
 
     public static final String VIEW_MODEL_TYPE = "viewModelType";

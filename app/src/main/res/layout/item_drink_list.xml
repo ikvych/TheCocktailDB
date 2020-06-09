@@ -20,7 +20,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/drink_image_viev"
+                android:id="@+id/drink_image_view"
                 bind:strDrinkThumb="@{drink.strDrinkThumb}"
                 style="@style/DrinkImage"
                 android:contentDescription="@string/contentDescription"/>

@@ -65,10 +65,9 @@
                     card_view:cardCornerRadius="@dimen/detail_image_corner_radius">
 
                     <ImageView
-                        android:id="@+id/drink_image_viev"
+                        android:id="@+id/drink_image_view"
                         style="@style/DrinkImage.DetailImage"
                         bind:strDrinkThumb="@{drink.strDrinkThumb}"
-                        tools:srcCompat="@drawable/default_icon"
                         android:contentDescription="@string/contentDescription"/>
 
                 </androidx.cardview.widget.CardView>

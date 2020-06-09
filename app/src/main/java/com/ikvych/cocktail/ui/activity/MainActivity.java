@@ -6,8 +6,8 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.ikvych.cocktail.R;
 import com.ikvych.cocktail.data.entity.Drink;
-import com.ikvych.cocktail.ect.adapter.DrinkAdapter;
-import com.ikvych.cocktail.ect.util.ActivityUtil;
+import com.ikvych.cocktail.adapter.list.DrinkAdapter;
+import com.ikvych.cocktail.util.ActivityUtil;
 import com.ikvych.cocktail.ui.base.BaseActivity;
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel;
 

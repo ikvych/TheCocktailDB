@@ -13,10 +13,10 @@ import com.ikvych.cocktail.data.entity.Drink;
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding;
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel;
 
-import static com.ikvych.cocktail.ect.adapter.DrinkAdapter.DRINK;
-import static com.ikvych.cocktail.ect.adapter.DrinkAdapter.MAIN_MODEL_TYPE;
-import static com.ikvych.cocktail.ect.adapter.DrinkAdapter.SEARCH_MODEL_TYPE;
-import static com.ikvych.cocktail.ect.adapter.DrinkAdapter.VIEW_MODEL_TYPE;
+import static com.ikvych.cocktail.adapter.list.DrinkAdapter.DRINK;
+import static com.ikvych.cocktail.adapter.list.DrinkAdapter.MAIN_MODEL_TYPE;
+import static com.ikvych.cocktail.adapter.list.DrinkAdapter.SEARCH_MODEL_TYPE;
+import static com.ikvych.cocktail.adapter.list.DrinkAdapter.VIEW_MODEL_TYPE;
 
 public class DrinkDetails extends AppCompatActivity {
 

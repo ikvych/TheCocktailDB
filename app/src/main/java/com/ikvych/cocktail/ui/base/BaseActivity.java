@@ -11,7 +11,8 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.ikvych.cocktail.data.entity.Drink;
-import com.ikvych.cocktail.ect.adapter.DrinkAdapter;
+import com.ikvych.cocktail.adapter.list.DrinkAdapter;
+import com.ikvych.cocktail.util.ActivityUtil;
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatAct
      * If drinks is empty, hide recyclerView and show appropriate textView,
      * else make recyclerView visible.
      *
-     * To do this, use {@link com.ikvych.cocktail.ect.util.ActivityUtil ActivityUtil} methods
+     * To do this, use {@link ActivityUtil ActivityUtil} methods
      *
      * @param drinks data list to check for items
      */
@@ -72,7 +73,7 @@ public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatAct
      * If drinks is empty, hide recyclerView and show appropriate textView,
      * else make recyclerView visible
      *
-     * To do this, use {@link com.ikvych.cocktail.ect.util.ActivityUtil ActivityUtil} methods
+     * To do this, use {@link ActivityUtil ActivityUtil} methods
      *
      * @param drinks data list to check for items
      */

@@ -8,7 +8,7 @@ import androidx.room.RoomDatabase;
 import androidx.room.TypeConverters;
 
 import com.ikvych.cocktail.data.entity.Drink;
-import com.ikvych.cocktail.ect.convertor.DateConverter;
+import com.ikvych.cocktail.convertor.db.DateConverter;
 
 @Database(entities = {Drink.class}, version = 1, exportSchema = false)
 @TypeConverters({DateConverter.class})

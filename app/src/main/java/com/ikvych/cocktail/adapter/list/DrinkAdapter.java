@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ect.adapter;
+package com.ikvych.cocktail.adapter.list;
 
 import android.content.Context;
 import android.content.Intent;

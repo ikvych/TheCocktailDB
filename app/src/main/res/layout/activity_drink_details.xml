@@ -6,6 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="drink"
             type="com.ikvych.cocktail.data.entity.Drink" />
@@ -26,9 +27,9 @@
 
             <TextView
                 android:id="@+id/drink_name_details"
+                style="@style/NavigationViewTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                style="@style/NavigationViewTitle"
                 android:text="@{drink.strDrink}" />
 
             <ImageButton
@@ -163,7 +164,7 @@
                 <LinearLayout
                     android:id="@+id/drink_ingredient_section"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@+id/table_layout"
@@ -175,8 +176,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/details_section_background"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:gravity="center_horizontal"
+                        android:paddingVertical="5dp"
                         android:text="@string/details_ingredients"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                         card_view:layout_constraintEnd_toEndOf="parent"
                         card_view:layout_constraintStart_toStartOf="parent" />
                 </LinearLayout>
@@ -195,7 +198,7 @@
                 <LinearLayout
                     android:id="@+id/drink_instruction_section"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:orientation="vertical"
                     app:layout_constraintTop_toBottomOf="@+id/ingredients_table_layout"
@@ -207,8 +210,10 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/details_section_background"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
+                        android:gravity="center_horizontal"
+                        android:paddingVertical="5dp"
                         android:text="@string/details_instruction"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                         card_view:layout_constraintEnd_toEndOf="parent"
                         card_view:layout_constraintStart_toStartOf="parent" />
                 </LinearLayout>
@@ -227,10 +232,12 @@
                         android:id="@+id/drink_instruction_description"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                         android:layout_marginHorizontal="20dp"
                         android:layout_marginBottom="20dp"
+                        android:lineSpacingExtra="5sp"
+                        android:textStyle="bold"
                         android:text="@{drink.strInstructions}"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
                         card_view:layout_constraintEnd_toEndOf="parent"
                         card_view:layout_constraintStart_toStartOf="parent" />
                 </LinearLayout>

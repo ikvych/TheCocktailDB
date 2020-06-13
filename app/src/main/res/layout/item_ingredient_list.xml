@@ -9,7 +9,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
-        android:text="@string/details_alcoholic"
+        android:lineSpacingExtra="5sp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
     <TextView
@@ -17,6 +17,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:text="@string/details_alcoholic"
+        android:lineSpacingExtra="5sp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 </TableRow>

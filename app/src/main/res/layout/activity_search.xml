@@ -11,38 +11,50 @@
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/search_navigation_view"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/navigation_view_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            style="@style/NavigationView">
+            app:layout_constraintTop_toTopOf="parent">
 
             <SearchView
                 android:id="@+id/search_query"
-                style="@style/SearchView" />
+                style="@style/AppSearchView"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/search_view_height" />
+
         </com.google.android.material.navigation.NavigationView>
 
         <LinearLayout
             android:id="@+id/search_container"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_navigation_view"
-            style="@style/SearchContainer">
+            app:layout_constraintTop_toBottomOf="@+id/search_navigation_view">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/search_recycler_view"
-                style="@style/RecyclerView" />
+                android:id="@+id/recycler_view"
+                style="@style/RecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <!--Shown at the start of activity-->
             <TextView
                 android:id="@+id/empty_list_id"
-                style="@style/EmptyListElements"
+                style="@style/TextOnEmptyRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="@string/empty_list" />
 
             <!--Shown when the search is empty-->
             <TextView
                 android:id="@+id/empty_search_id"
-                style="@style/EmptyListElements"
+                style="@style/TextOnEmptyRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="@string/empty_search" />
 
         </LinearLayout>

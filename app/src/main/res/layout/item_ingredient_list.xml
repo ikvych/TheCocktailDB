@@ -1,12 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
-    style="@style/DrinkDetailTableRow">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginVertical="@dimen/table_row_margin_vertical">
 
     <TextView
         android:id="@+id/ingredients"
-        style="@style/DrinkDetailTableColumn.Ingredient" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:text="@string/details_alcoholic"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
     <TextView
         android:id="@+id/measure"
-        style="@style/DrinkDetailTableColumn.Measure" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="40dp"
+        android:text="@string/details_alcoholic"
+        android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 </TableRow>

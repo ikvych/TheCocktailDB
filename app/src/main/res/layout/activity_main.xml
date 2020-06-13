@@ -10,7 +10,8 @@
 
         <com.google.android.material.navigation.NavigationView
             android:id="@+id/main_navigation_view"
-            style="@style/NavigationView"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/navigation_view_height"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
@@ -18,14 +19,16 @@
             <TextView
                 android:id="@+id/drink_name_details"
                 style="@style/NavigationViewTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
                 android:text="@string/app_name" />
 
         </com.google.android.material.navigation.NavigationView>
 
         <LinearLayout
             android:id="@+id/search_container"
-            android:layout_width="@dimen/liner_layout_width_for_rv"
-            android:layout_height="@dimen/liner_layout_height_for_rv"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -33,22 +36,28 @@
             app:layout_constraintTop_toBottomOf="@+id/main_navigation_view">
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/db_recycler_view"
-                style="@style/RecyclerView" />
+                android:id="@+id/recycler_view"
+                style="@style/RecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
 
             <!--Shown when the database is empty-->
             <TextView
                 android:id="@+id/empty_history"
-                style="@style/EmptyListElements"
+                style="@style/TextOnEmptyRecyclerView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:text="@string/empty_history" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
+            style="@style/SearchButton"
+            android:layout_width="@dimen/search_button_width"
+            android:layout_height="@dimen/search_button_height"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/search"
-            style="@style/SearchButton" />
+            app:srcCompat="@drawable/search" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

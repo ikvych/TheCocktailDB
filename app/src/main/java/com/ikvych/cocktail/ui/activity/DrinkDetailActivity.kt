@@ -15,7 +15,7 @@ import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
 
-class DrinkDetailActivity : BaseActivity<MainActivityViewModel>() {
+class DrinkDetailActivity : BaseActivity() {
 
     private var drink: Drink? = null
     private var modelType: String? = null

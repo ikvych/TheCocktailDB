@@ -12,7 +12,7 @@ import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : BaseActivity<MainActivityViewModel>() {
+class MainActivity : RecyclerViewActivity<MainActivityViewModel>() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

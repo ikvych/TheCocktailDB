@@ -12,7 +12,7 @@ import com.ikvych.cocktail.util.setSearchRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
 
 
-class SearchActivity : BaseActivity<SearchActivityViewModel>() {
+class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>() {
 
     lateinit var searchView: SearchView
 

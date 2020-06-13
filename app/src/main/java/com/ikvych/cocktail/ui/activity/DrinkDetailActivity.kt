@@ -9,7 +9,7 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
-import com.ikvych.cocktail.service.DrinkOfferService
+import com.ikvych.cocktail.service.ApplicationService
 import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
@@ -63,8 +63,9 @@ class DrinkDetailActivity : BaseActivity() {
 
     override fun onDestroy() {
         if (modelType == SEARCH_MODEL_TYPE) {
-            val intent = Intent(this, DrinkOfferService::class.java)
+            val intent = Intent(this, ApplicationService::class.java)
             intent.putExtra(DRINK_ID, drink?.getIdDrink())
+            intent.action = ACTION_SHOW_DRINK_OFFER
             startService(intent)
         }
         super.onDestroy()

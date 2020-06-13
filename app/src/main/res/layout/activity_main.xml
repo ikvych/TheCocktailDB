@@ -1,86 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.MainActivity">
+        tools:context=".ui.activity.MainActivity">
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
+            android:id="@+id/main_navigation_view"
+            style="@style/NavigationView"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/drink_name_details"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_marginStart="70dp"
-                android:layout_marginTop="18dp"
-                android:text="@string/app_name"
-                android:textSize="20sp"
-                android:fontFamily="sans-serif-medium"
-                android:textStyle="normal"
-                android:textColor="#de000000"
-                android:lineSpacingExtra="8sp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:layout_editor_absoluteX="64dp" />
+                style="@style/NavigationViewTitle"
+                android:text="@string/app_name" />
 
         </com.google.android.material.navigation.NavigationView>
 
         <LinearLayout
             android:id="@+id/search_container"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
+            android:layout_width="@dimen/liner_layout_width_for_rv"
+            android:layout_height="@dimen/liner_layout_height_for_rv"
             android:orientation="vertical"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/navigationView">
+            app:layout_constraintTop_toBottomOf="@+id/main_navigation_view">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/db_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="10dp"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
-                app:layout_constraintStart_toStartOf="parent" />
+                style="@style/RecyclerView" />
 
-        <TextView
-            android:id="@+id/empty_history"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:fontFamily="sans-serif-medium"
-            android:gravity="center"
-            android:text="@string/empty_history"
-            android:textColor="#727272"
-            android:textSize="14sp"
-            android:textStyle="normal"
-            android:visibility="gone" />
+            <!--Shown when the database is empty-->
+            <TextView
+                android:id="@+id/empty_history"
+                style="@style/EmptyListElements"
+                android:text="@string/empty_history" />
         </LinearLayout>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"
-            android:layout_width="56dp"
-            android:layout_height="56dp"
-            android:layout_gravity="bottom|end"
-            android:layout_marginEnd="16dp"
-            android:layout_marginBottom="16dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/search" />
+            app:srcCompat="@drawable/search"
+            style="@style/SearchButton" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

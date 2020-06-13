@@ -6,87 +6,45 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".view.SearchActivity">
-
-        <LinearLayout
-            android:id="@+id/search_container"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            android:orientation="vertical"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/navigationView2">
-
-            <androidx.recyclerview.widget.RecyclerView
-
-                android:id="@+id/search_recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="0dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginBottom="0dp"
-                android:visibility="visible"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.50"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="parent" />
-
-            <TextView
-                android:id="@+id/empty_list_id"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="@string/empty_list"
-                android:textColor="#727272"
-                android:textSize="14sp"
-                android:textStyle="normal"
-                android:visibility="gone" />
-
-            <TextView
-                android:id="@+id/empty_search_id"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="sans-serif-medium"
-                android:gravity="center"
-                android:text="@string/empty_search"
-                android:textColor="#727272"
-                android:textSize="14sp"
-                android:textStyle="normal"
-                android:visibility="gone" />
-
-        </LinearLayout>
+        tools:context=".ui.activity.SearchActivity">
 
 
         <com.google.android.material.navigation.NavigationView
-            android:id="@+id/navigationView2"
-            android:layout_width="0dp"
-            android:layout_height="64dp"
+            android:id="@+id/search_navigation_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"
+            style="@style/NavigationView">
 
             <SearchView
-                android:id="@+id/search_name"
-                android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginStart="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginBottom="8dp"
-                android:background="@drawable/search_view_shape"
-                android:inputType="text"
-                android:elevation="2dp"
-                android:outlineAmbientShadowColor="@android:color/transparent"
-                android:queryBackground="@android:color/transparent"
-                tools:targetApi="p" />
+                android:id="@+id/search_query"
+                style="@style/SearchView" />
         </com.google.android.material.navigation.NavigationView>
 
+        <LinearLayout
+            android:id="@+id/search_container"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/search_navigation_view"
+            style="@style/SearchContainer">
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/search_recycler_view"
+                style="@style/RecyclerView" />
+
+            <!--Shown at the start of activity-->
+            <TextView
+                android:id="@+id/empty_list_id"
+                style="@style/EmptyListElements"
+                android:text="@string/empty_list" />
+
+            <!--Shown when the search is empty-->
+            <TextView
+                android:id="@+id/empty_search_id"
+                style="@style/EmptyListElements"
+                android:text="@string/empty_search" />
+
+        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

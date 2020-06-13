@@ -1,11 +1,246 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+    <style name="Theme.MyApp.Main" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorPrimaryDark">@color/color_primary_variant</item>
+        <item name="colorSecondary">@color/color_secondary</item>
+        <item name="android:colorBackground">@color/color_background</item>
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="colorOnSecondary">@color/color_on_secondary</item>
+        <item name="colorOnPrimary">@color/color_on_primary</item>
+        <item name="colorOnBackground">@color/color_on_background</item>
+        <item name="colorOnSurface">@color/color_on_surface</item>
+    </style>
+
+    <!--Navigation Title-->
+    <style name="NavigationViewTitle">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">@dimen/navigation_view_title_text_margin_start
+        </item>
+        <item name="android:layout_marginTop">@dimen/navigation_view_title_text_margin_top</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textSize">@dimen/navigation_view_title_text_size</item>
+        <item name="android:textColor">@color/color_on_surface</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!--Splash image-->
+    <style name="SplashImage">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/splash_image_view_margin_start</item>
+        <item name="android:layout_marginEnd">@dimen/splash_image_view_margin_end</item>
+    </style>
+
+    <!--Navigation View-->
+    <style name="NavigationView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/navigation_view_height</item>
+    </style>
+
+    <!--Recycler view-->
+    <style name="RecyclerView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginStart">@dimen/recycler_view_margin_start</item>
+        <item name="android:layout_marginTop">@dimen/recycler_view_margin_top</item>
+        <item name="android:layout_marginEnd">@dimen/recycler_view_margin_end</item>
+        <item name="android:layout_marginBottom">@dimen/recycler_view_margin_bottom</item>
+        <item name="android:visibility">visible</item>
+    </style>
+
+    <!--Empty RecyclerView-->
+    <style name="EmptyListElements">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:gravity">center</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">@color/color_on_surface_variant</item>
+        <item name="android:textSize">@dimen/empty_recycler_view_text_size</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:visibility">gone</item>
+    </style>
+
+
+    <!--Drink Detail Table Elements-->
+    <style name="DrinkDetailTable">
+        <item name="android:layout_width">@dimen/detail_table_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/detail_table_margin_top</item>
+    </style>
+
+    <style name="DrinkDetailTableRow">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_marginTop">@dimen/detail_table_row_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/detail_table_row_margin_bottom</item>
+    </style>
+
+    <style name="DrinkDetailTableColumn">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/detail_table_row_text_name_margin_start
+        </item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:lineSpacingExtra">@dimen/detail_table_row_text_line_spacing_extra</item>
+        <item name="android:textColor">@color/color_on_surface</item>
+        <item name="android:textSize">@dimen/detail_table_row_text_size</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="DrinkDetailTableColumn.Ingredient">
+    </style>
+
+    <style name="DrinkDetailTableColumn.Measure">
+        <item name="android:layout_marginStart">@dimen/detail_table_row_text_value_margin_start
+        </item>
+    </style>
+
+    <style name="DrinkDetailTableColumn.Name">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="DrinkDetailTableColumn.Value">
+        <item name="android:layout_marginStart">@dimen/detail_table_row_text_value_margin_start
+        </item>
+    </style>
+
+
+    <!--Drink CardView Elements-->
+    <style name="DrinkItemCardView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/recycler_view_item_margin_top</item>
+        <item name="android:layout_marginBottom">@dimen/recycler_view_item_margin_bottom</item>
+        <item name="android:layout_marginStart">@dimen/recycler_view_item_margin_start</item>
+        <item name="android:layout_marginEnd">@dimen/recycler_view_item_margin_end</item>
+    </style>
+
+    <style name="DrinkName">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_below">@+id/drink_image_view</item>
+        <item name="android:layout_marginStart">@dimen/recycler_view_item_text_margin_start</item>
+        <item name="android:layout_marginTop">@dimen/recycler_view_item_text_margin_top</item>
+        <item name="android:layout_marginEnd">@dimen/recycler_view_item_text_margin_end</item>
+        <item name="android:layout_marginBottom">@dimen/recycler_view_item_text_margin_bottom</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:textColor">#de000000</item>
+        <item name="android:textSize">@dimen/recycler_view_item_text_size</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="DrinkImage">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:scaleType">fitXY</item>
+        <item name="contentDescription">@string/contentDescription</item>
+    </style>
+
+    <style name="DrinkImage.DetailImage">
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_centerHorizontal">true</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="contentDescription">@string/contentDescription</item>
+    </style>
+
+    <style name="DetailCardView">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">@dimen/detail_image_height</item>
+        <item name="android:layout_marginTop">@dimen/detail_image_margin_top</item>
+    </style>
+
+
+    <!--SearchView-->
+    <style name="SearchView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">@dimen/navigation_view_search_input_height</item>
+        <item name="android:layout_marginStart">@dimen/navigation_view_search_input_margin_start
+        </item>
+        <item name="android:layout_marginTop">@dimen/navigation_view_search_input_margin_top</item>
+        <item name="android:layout_marginEnd">@dimen/navigation_view_search_input_margin_end</item>
+        <item name="android:layout_marginBottom">@dimen/navigation_view_search_input_margin_bottom
+        </item>
+        <item name="android:background">@drawable/search_view_shape</item>
+        <item name="android:elevation">@dimen/navigation_view_search_input_elevation</item>
+        <item name="android:inputType">text</item>
+        <item name="android:outlineAmbientShadowColor" tools:targetApi="p">
+            @android:color/transparent
+        </item>
+        <item name="android:queryBackground">@android:color/transparent</item>
+    </style>
+
+
+    <!--Custom Resume Button-->
+    <style name="CustomResumeButton">
+        <item name="android:layout_width">@dimen/navigation_view_return_button_width</item>
+        <item name="android:layout_height">@dimen/navigation_view_return_button_height</item>
+        <item name="android:layout_marginStart">@dimen/navigation_view_return_button_margin_start
+        </item>
+        <item name="android:layout_marginTop">@dimen/navigation_view_return_button_margin_top</item>
+        <item name="android:layout_marginBottom">
+            @dimen/navigation_view_return_button_margin_bottom
+        </item>
+        <item name="android:adjustViewBounds">true</item>
+        <item name="android:background">@color/color_surface</item>
+        <item name="android:visibility">visible</item>
+        <item name="contentDescription">@string/contentDescription</item>
+    </style>
+
+
+    <!--Drink Detail Section-->
+    <style name="DrinkDetailsSection">
+        <item name="android:layout_width">@dimen/detail_section_width</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">@dimen/detail_section_margin_top</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
+    <style name="DrinkDetailsSectionName">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">@drawable/details_section_background</item>
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:lineSpacingExtra">@dimen/detail_section_text_line_spacing_extra</item>
+        <item name="android:padding">@dimen/detail_section_text_padding</item>
+        <item name="android:textColor">@color/color_on_surface</item>
+        <item name="android:textSize">@dimen/detail_section_text_size</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!--Drink Instruction Text-->
+    <style name="DrinkInstructionText">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">@dimen/detail_info_text_margin_start</item>
+        <item name="android:layout_marginEnd">@dimen/detail_info_text_margin_end</item>
+        <item name="android:layout_marginBottom">@dimen/detail_info_text_margin_bottom</item>
+        <item name="android:fontFamily">sans-serif-medium</item>
+        <item name="android:lineSpacingExtra">@dimen/detail_info_text_line_spacing_extra</item>
+        <item name="android:textColor">#de000000</item>
+        <item name="android:textSize">@dimen/detail_info_text_size</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <!--Search Button-->
+    <style name="SearchButton">
+        <item name="android:layout_width">@dimen/search_button_width</item>
+        <item name="android:layout_height">@dimen/search_button_height</item>
+        <item name="android:layout_gravity">bottom|end</item>
+        <item name="android:layout_marginEnd">@dimen/search_button_margin_end</item>
+        <item name="android:layout_marginBottom">@dimen/search_button_margin_bottom</item>
+    </style>
+
+    <!--Search Result Container-->
+    <style name="SearchContainer">
+        <item name="android:layout_width">@dimen/liner_layout_width_for_rv</item>
+        <item name="android:layout_height">@dimen/liner_layout_height_for_rv</item>
+        <item name="android:orientation">vertical</item>
     </style>
 
 </resources>

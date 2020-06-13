@@ -3,26 +3,29 @@ package com.ikvych.cocktail.viewmodel;
 import android.app.Application;
 
 import androidx.annotation.NonNull;
-import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
-import com.ikvych.cocktail.model.Drink;
-import com.ikvych.cocktail.repository.DrinkDbRepository;
+import com.ikvych.cocktail.data.entity.Drink;
+import com.ikvych.cocktail.data.repository.DrinkDbRepositoryImpl;
+import com.ikvych.cocktail.data.repository.base.DrinkDbRepository;
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel;
 
 import java.util.Collections;
 import java.util.List;
 
-public class MainActivityViewModel extends AndroidViewModel {
+@SuppressWarnings({"CanBeFinal", "unused"})
+public class MainActivityViewModel extends BaseViewModel {
 
     private DrinkDbRepository drinkDbRepository;
     private LiveData<List<Drink>> drinks;
 
     public MainActivityViewModel(@NonNull Application application) {
         super(application);
-        drinkDbRepository = new DrinkDbRepository(application);
+        drinkDbRepository = new DrinkDbRepositoryImpl(application);
         drinks = drinkDbRepository.getDrinks();
     }
 
+    @Override
     public LiveData<List<Drink>> getDrinksLiveData() {
         return drinks;
     }
@@ -31,14 +34,11 @@ public class MainActivityViewModel extends AndroidViewModel {
         drinkDbRepository.saveDrink(drink);
     }
 
+    @Override
     public List<Drink> getCurrentData() {
         if (drinks.getValue() != null) {
             return drinks.getValue();
         }
         return Collections.emptyList();
     }
-
-
-
-
 }

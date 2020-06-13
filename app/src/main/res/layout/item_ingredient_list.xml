@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/DrinkDetailTableRow">
+
+    <TextView
+        android:id="@+id/ingredients"
+        style="@style/DrinkDetailTableColumn.Ingredient" />
+
+    <TextView
+        android:id="@+id/measure"
+        style="@style/DrinkDetailTableColumn.Measure" />
+</TableRow>

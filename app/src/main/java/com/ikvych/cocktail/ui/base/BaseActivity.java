@@ -28,7 +28,7 @@ public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatAct
     }
 
     protected void initViewModel(Class<T> viewModelClass) {
-        viewModel = new ViewModelProvider(this).get(viewModelClass);
+        viewModel = new ViewModelProvider(this).get(viewModelClass) ;
     }
 
     protected void initLiveDataObserver() {

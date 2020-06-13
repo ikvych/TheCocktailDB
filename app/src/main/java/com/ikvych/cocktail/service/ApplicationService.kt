@@ -7,6 +7,7 @@ import android.widget.Toast
 import androidx.core.app.JobIntentService
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.ACTION_SHOW_DRINK_OFFER
+import com.ikvych.cocktail.constant.BOOT_COMPLETED
 import com.ikvych.cocktail.constant.DRINK_ID
 import com.ikvych.cocktail.ui.activity.SplashActivity
 
@@ -14,9 +15,8 @@ import com.ikvych.cocktail.ui.activity.SplashActivity
 class ApplicationService : JobIntentService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        val action = intent?.action
-
-        if (action == Intent.ACTION_BOOT_COMPLETED) {
+        val isBootCompleted = intent?.hasExtra(BOOT_COMPLETED) ?: false
+        if (isBootCompleted) {
             val context: Context = applicationContext
             Toast.makeText(
                 context,

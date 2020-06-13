@@ -1,16 +1,15 @@
 package com.ikvych.cocktail.ui.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.constant.DRINK
-import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
-import com.ikvych.cocktail.constant.SEARCH_MODEL_TYPE
-import com.ikvych.cocktail.constant.VIEW_MODEL_TYPE
+import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
+import com.ikvych.cocktail.service.DrinkOfferService
 import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
@@ -50,10 +49,11 @@ class DrinkDetailActivity : BaseActivity() {
     }
 
     private fun saveDrinkIntoDb(drink: Drink) {
-        val mainActivityViewModel: MainActivityViewModel = ViewModelProvider.AndroidViewModelFactory(
-            application
-        )
-            .create(MainActivityViewModel::class.java)
+        val mainActivityViewModel: MainActivityViewModel =
+            ViewModelProvider.AndroidViewModelFactory(
+                application
+            )
+                .create(MainActivityViewModel::class.java)
         mainActivityViewModel.saveDrink(drink)
     }
 
@@ -61,4 +61,12 @@ class DrinkDetailActivity : BaseActivity() {
         finish()
     }
 
+    override fun onDestroy() {
+        if (modelType == SEARCH_MODEL_TYPE) {
+            val intent = Intent(this, DrinkOfferService::class.java)
+            intent.putExtra(DRINK_ID, drink?.getIdDrink())
+            startService(intent)
+        }
+        super.onDestroy()
+    }
 }

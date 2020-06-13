@@ -33,7 +33,7 @@ public abstract class BaseActivity<T extends BaseViewModel> extends AppCompatAct
 
     protected void initLiveDataObserver() {
         viewModel.getDrinksLiveData().observe(this, drinks -> {
-            drinkAdapter.setDrinkList(drinks);
+            drinkAdapter.setDrinkList(drinks );
             determineVisibleLayerOnUpdateData(drinks);
         });
     }

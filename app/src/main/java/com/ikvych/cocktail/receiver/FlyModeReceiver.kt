@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.widget.Toast
+import com.ikvych.cocktail.R
 
 class FlyModeReceiver : BroadcastReceiver() {
 
@@ -13,7 +14,7 @@ class FlyModeReceiver : BroadcastReceiver() {
             if (isAirplaneModeOn) {
                 Toast.makeText(
                     context,
-                    "Смакуйте маргаритку із відчуттям міри. І надіємося, що Ви не пілот під  час польоту",
+                    R.string.text_on_boot_completed,
                     Toast.LENGTH_LONG
                 ).show()
             }

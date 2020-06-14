@@ -27,7 +27,7 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
         setContentView(R.layout.activity_search)
 
         initViewModel(SearchActivityViewModel::class.java)
-        initRecyclerView(viewModel.getCurrentData(), R.id.recycler_view, SEARCH_MODEL_TYPE)
+        initRecyclerView(viewModel.getCurrentData(), R.id.db_recycler_view, SEARCH_MODEL_TYPE)
         initLiveDataObserver()
         initSearchView()
     }
@@ -89,10 +89,10 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
         val currentDrinkId: Long = intent.getLongExtra(DRINK_ID, -1L)
         val drink: Drink = drinks.shuffled().find { it.getIdDrink() != currentDrinkId } ?: return
 
-        val view: View = findViewById(R.id.recycler_view)
+        val view: View = findViewById(R.id.db_recycler_view)
 
         Snackbar.make(view, "Як щодо - ${drink.getStrDrink()}", 3500)
-            .setAction("Переглянути") {
+            .setAction(R.string.toast_action_view) {
                 val drinkIntent = Intent(this, DrinkDetailActivity::class.java)
                 drinkIntent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
                 drinkIntent.putExtra(DRINK, drink)

@@ -19,7 +19,6 @@ abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity() {
         viewModel = ViewModelProvider(this).get(viewModelClass)
     }
 
-    //comment
     fun initLiveDataObserver() {
         viewModel.getLiveData().observe(this, Observer { drinks ->
             drinkAdapter.drinkList = drinks

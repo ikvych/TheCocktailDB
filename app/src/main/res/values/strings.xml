@@ -9,4 +9,7 @@
     <string name="details_ingredients">Ingredients</string>
     <string name="details_instruction">Instructions</string>
     <string name="contentDescription">image with data</string>
+    <string name="info">info</string>
+    <string name="toast_action_view">ПЕРЕГЛЯНУТИ</string>
+    <string name="text_on_boot_completed">Смакуйте маргаритку із відчуттям міри. І надіємося, що Ви не пілот під  час польоту</string>
 </resources>

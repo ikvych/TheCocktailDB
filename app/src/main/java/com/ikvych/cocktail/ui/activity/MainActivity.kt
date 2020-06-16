@@ -147,5 +147,7 @@ class MainActivity : RecyclerViewActivity<MainActivityViewModel>(), BatteryListe
             batteryIcon.setColorFilter(ContextCompat.getColor(this, R.color.battery_low))
         }
     }
+    
+    // Add Snackbar
 
 }

@@ -6,7 +6,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-
+z
         <variable
             name="drink"
             type="com.ikvych.cocktail.data.entity.Drink" />

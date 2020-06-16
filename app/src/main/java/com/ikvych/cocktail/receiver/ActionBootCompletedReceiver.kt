@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.ikvych.cocktail.constant.BOOT_COMPLETED
 import com.ikvych.cocktail.service.ApplicationService
 
 class ActionBootCompletedReceiver : BroadcastReceiver() {

@@ -13,7 +13,8 @@ class ActionBootCompletedReceiver : BroadcastReceiver() {
         if (intent?.action == Intent.ACTION_BOOT_COMPLETED) {
             Log.d("MyLog", "Start Up Receiver ACTION_BOOT_COMPLETED")
             val newIntent = Intent(context, ApplicationService::class.java)
-            newIntent.putExtra(BOOT_COMPLETED, true)
+            newIntent.action = Intent.ACTION_BOOT_COMPLETED
+            Log.d("MyLog", "${context} d")
             context?.startService(newIntent)
         }
     }

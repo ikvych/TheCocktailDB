@@ -16,7 +16,9 @@ class ApplicationService : JobIntentService() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val isBootCompleted = intent?.hasExtra(BOOT_COMPLETED) ?: false
+        Log.d("MyLog", "On Start Command")
         if (isBootCompleted) {
+            Log.d("MyLog", "${isBootCompleted} is bootCmpleted")
             val context: Context = applicationContext
             Toast.makeText(
                 context,
@@ -44,6 +46,7 @@ class ApplicationService : JobIntentService() {
 
         when (currentAction) {
             Intent.ACTION_BOOT_COMPLETED -> {
+                Log.d("MyLog", "ACTION_BOOT_COMPLETED")
                 val context: Context = applicationContext
                 Intent(context, SplashActivity::class.java).apply {
                     startActivity(this)

@@ -3,29 +3,34 @@ package com.ikvych.cocktail.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_auth.*
 
 class AuthActivity : BaseActivity() {
 
-    val login: String = "l"
-    val password: String = "1"
+    private val login: String = "l"
+    private val password: String = "1"
 
-    lateinit var loginView: EditText
-    lateinit var passwordView: EditText
-    lateinit var submitButton: Button
+    private lateinit var loginView: EditText
+    private lateinit var passwordView: EditText
+    private lateinit var submitButton: Button
+    private val inputFilter: InputFilter = TextInputFilter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
         loginView = findViewById(R.id.login)
+        loginView.filters = arrayOf(inputFilter)
         passwordView = findViewById(R.id.password)
+        passwordView.filters = arrayOf(inputFilter)
         submitButton = findViewById(R.id.button)
 
         submitButton.setOnClickListener(onLoginButtonListener())

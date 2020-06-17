@@ -4,6 +4,7 @@
     <style name="Theme.App.Main" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_primary</item>
+        <item name="colorAccent">@color/color_accent</item>
         <item name="colorPrimaryDark">@color/color_primary_variant</item>
         <item name="colorSecondary">@color/color_secondary</item>
         <item name="android:colorBackground">@color/color_background</item>

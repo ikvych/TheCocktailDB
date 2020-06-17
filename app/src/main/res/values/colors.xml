@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_primary">#FFFFFF</color>
+    <color name="color_accent">#000000</color>
     <color name="color_primary_variant">#000000</color>
     <color name="color_secondary">#018786</color>
     <color name="color_background">#FFFFFF</color>
@@ -15,6 +16,9 @@
     <color name="battery_charging">#558B2F</color>
     <color name="battery_low">#D32F2F</color>
 
+    <color name="text_invalid">#B00020</color>
+
     <color name="iv_return_button_bg">#E0E0E0</color>
+
 
 </resources>

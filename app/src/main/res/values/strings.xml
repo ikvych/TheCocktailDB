@@ -13,4 +13,6 @@
     <string name="toast_action_view">ПЕРЕГЛЯНУТИ</string>
     <string name="text_on_boot_completed">Смакуйте маргаритку із відчуттям міри. І надіємося, що Ви не пілот під  час польоту</string>
     <string name="basic_information">Basic information</string>
+    <string name="login">Login</string>
+    <string name="password">password</string>
 </resources>

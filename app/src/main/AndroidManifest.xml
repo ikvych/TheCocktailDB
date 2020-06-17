@@ -5,7 +5,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="false"
@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_custom_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Main">
+        <activity android:name=".ui.activity.AuthActivity"/>
         <activity android:name=".ui.activity.MainActivity" />
         <activity android:name=".ui.activity.DrinkDetailActivity" />
         <activity android:name=".ui.activity.SearchActivity" />
@@ -34,7 +35,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

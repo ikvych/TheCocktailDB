@@ -10,10 +10,13 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import android.widget.EditText
+import com.google.android.material.textfield.TextInputEditText
+import com.google.android.material.textfield.TextInputLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.ui.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_auth.*
+
 
 class AuthActivity : BaseActivity() {
 
@@ -21,7 +24,8 @@ class AuthActivity : BaseActivity() {
     private val password: String = "1"
 
     private lateinit var loginView: EditText
-    private lateinit var passwordView: EditText
+    private lateinit var textInputPassword: TextInputLayout
+    private lateinit var textInputEditPassword: TextInputEditText
     private lateinit var submitButton: Button
     private val inputFilter: InputFilter = TextInputFilter()
 
@@ -31,8 +35,9 @@ class AuthActivity : BaseActivity() {
 
         loginView = findViewById(R.id.login)
         loginView.filters = arrayOf(inputFilter)
-        passwordView = findViewById(R.id.password)
-        passwordView.filters = arrayOf(inputFilter)
+        textInputPassword = findViewById(R.id.til_password)
+        textInputEditPassword = findViewById(R.id.tiet_password)
+        textInputEditPassword.filters = arrayOf(inputFilter)
         submitButton = findViewById(R.id.button)
 
         submitButton.setOnClickListener(onLoginButtonListener())
@@ -53,7 +58,7 @@ class AuthActivity : BaseActivity() {
         }
 
         loginView.addTextChangedListener(textWatcher)
-        passwordView.addTextChangedListener(textWatcher)
+        textInputEditPassword.addTextChangedListener(textWatcher)
         invalidateAuthData()
     }
 
@@ -67,7 +72,7 @@ class AuthActivity : BaseActivity() {
 
     private fun invalidateAuthData() {
         val login: String = loginView.text.toString()
-        val password = passwordView.text.toString()
+        val password = textInputEditPassword.text.toString()
 
         button.isEnabled = login == this.login && password == this.password
     }

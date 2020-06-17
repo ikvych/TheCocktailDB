@@ -15,4 +15,6 @@
     <string name="basic_information">Basic information</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
+    <string name="invalid_password_text">Пароль повинний містити більше 6 символів, одну літеру і одну цифру</string>
+    <string name="invalid_login_text">Логін повинний містити більше 6 символів</string>
 </resources>

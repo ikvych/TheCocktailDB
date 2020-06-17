@@ -14,7 +14,8 @@
         android:roundIcon="@mipmap/ic_custom_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Main">
-        <activity android:name=".ui.activity.AuthActivity"/>
+        <activity android:name=".ui.activity.AuthActivity"
+            android:windowSoftInputMode="adjustResize"/>
         <activity android:name=".ui.activity.MainActivity" />
         <activity android:name=".ui.activity.DrinkDetailActivity" />
         <activity android:name=".ui.activity.SearchActivity" />

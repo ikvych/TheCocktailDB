@@ -17,8 +17,8 @@ class AuthTextWatcher(
     }
 
     override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-        if (textInputLayout.isErrorEnabled) {
-            textInputLayout.isErrorEnabled = false
+        if (textInputLayout.error != null) {
+            textInputLayout.error = null
         }
     }
 }

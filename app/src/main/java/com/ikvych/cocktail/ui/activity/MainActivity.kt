@@ -18,7 +18,7 @@ import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
-import com.ikvych.cocktail.widget.custom.ApplicationToolBarView
+import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -49,7 +49,7 @@ class MainActivity : RecyclerViewActivity<MainActivityViewModel>(), BatteryListe
         initRecyclerView(viewModel.getCurrentData(), R.id.db_recycler_view, MAIN_MODEL_TYPE)
         initLiveDataObserver()
 
-        filterBtn = findViewById<ApplicationToolBarView>(R.id.app_toolbar).customBtn
+        filterBtn = findViewById<ApplicationToolBar>(R.id.app_toolbar).customBtn
         filterBtn.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_filter))
         filterBtn.setOnClickListener {
             Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show()

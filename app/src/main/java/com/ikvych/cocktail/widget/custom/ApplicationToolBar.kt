@@ -7,7 +7,7 @@ import android.view.View
 import android.widget.*
 import com.ikvych.cocktail.R
 
-class ApplicationToolBarView(
+class ApplicationToolBar(
     context: Context?,
     attrs: AttributeSet?
 ) : LinearLayout(context, attrs) {
@@ -31,6 +31,7 @@ class ApplicationToolBarView(
         invalidate()
         requestLayout()
     }
+
     var mainTitle: String? = null
         set(value) {
             field = value
@@ -38,6 +39,7 @@ class ApplicationToolBarView(
             invalidate()
             requestLayout()
         }
+
     var isCustomBtnEnabled: Boolean = false
     set(value) {
         field = value
@@ -60,12 +62,12 @@ class ApplicationToolBarView(
 
         context!!.theme.obtainStyledAttributes(
             attrs,
-            R.styleable.ApplicationToolBarView,
+            R.styleable.ApplicationToolBar,
             0, 0).apply {
             try {
-                isForSearch = getBoolean(R.styleable.ApplicationToolBarView_tl_is_for_search, false)
-                mainTitle = getString(R.styleable.ApplicationToolBarView_tl_set_text) ?: context.getString(R.string.app_name)
-                isCustomBtnEnabled = getBoolean(R.styleable.ApplicationToolBarView_tl_enable_custom_btn, false)
+                isForSearch = getBoolean(R.styleable.ApplicationToolBar_tl_is_for_search, false)
+                mainTitle = getString(R.styleable.ApplicationToolBar_tl_set_text) ?: context.getString(R.string.app_name)
+                isCustomBtnEnabled = getBoolean(R.styleable.ApplicationToolBar_tl_enable_custom_btn, false)
             } finally {
                 recycle()
             }

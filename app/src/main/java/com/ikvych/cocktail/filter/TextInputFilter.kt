@@ -1,6 +1,5 @@
 package com.ikvych.cocktail.filter
 
-import android.R.attr
 import android.text.InputFilter
 import android.text.SpannableString
 import android.text.Spanned
@@ -26,7 +25,6 @@ class TextInputFilter : InputFilter {
                 keepOriginal = false
             }
         }
-
         return if (keepOriginal) {
             null
         } else {

@@ -8,12 +8,12 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.SearchActivity">
 
-        <com.ikvych.cocktail.widget.custom.ApplicationToolBarView
+        <com.ikvych.cocktail.widget.custom.ApplicationToolBar
             android:id="@+id/app_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="56dp"
-            android:elevation="15dp"
-            android:background="@drawable/search_view_shape"
+            android:layout_height="@dimen/app_toolbar_height"
+            android:elevation="@dimen/app_toolbar_elevation"
+            android:background="@drawable/app_bar_bg_shape"
             app:tl_is_for_search="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

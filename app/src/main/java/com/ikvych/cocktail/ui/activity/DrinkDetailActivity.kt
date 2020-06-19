@@ -34,6 +34,8 @@ class DrinkDetailActivity : BaseActivity() {
     private var imageMarginStart: Int? = null
     private var imageMarginTop: Int? = null
 
+    private lateinit var imageViewParams: LinearLayout.LayoutParams
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drink_details)
@@ -66,19 +68,16 @@ class DrinkDetailActivity : BaseActivity() {
         imageView = findViewById(R.id.iv_drink)
         imageViewContainer = findViewById(R.id.fl_image)
 
+        initAppBarLayoutListener()
+    }
+
+    private fun initAppBarLayoutListener() {
         appBarLayout.addOnOffsetChangedListener(
             AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
 
                 //init image parameters
                 if (maxImageWidth == null) {
-                    maxImageWidth = imageView.width
-                    imageViewContainer.layoutParams.height = imageView.height
-                    imageViewContainer.requestLayout()
-                    cachedImageWidth = maxImageWidth
-
-                    imageMarginStart = (resources.getDimension(R.dimen.iv_detail_margin_start)).toInt()
-                    imageMarginTop = (resources.getDimension(R.dimen.iv_detail_margin_top)).toInt()
-                    minImageWidth = (resources.getDimension(R.dimen.iv_detail_min_width)).toInt()
+                    initImageParameters()
                 }
 
                 val totalsScrollRange = appBarLayout.totalScrollRange
@@ -86,8 +85,6 @@ class DrinkDetailActivity : BaseActivity() {
                 val scaleFactor = 1F - offsetFactor
 
                 val currentImageWidth = ((maxImageWidth!! - minImageWidth!!) * scaleFactor) + minImageWidth!!
-
-                val imageViewParams = imageView.layoutParams as LinearLayout.LayoutParams
 
                 imageViewParams.marginStart = (imageMarginStart!! * offsetFactor).toInt()
                 imageViewParams.topMargin = ((maxImageWidth!! / 2 - imageMarginTop!!) * offsetFactor).toInt()
@@ -108,6 +105,19 @@ class DrinkDetailActivity : BaseActivity() {
                     findViewById<ImageView>(R.id.return_button).backgroundTintList = stateList
                 }
             })
+    }
+
+    private fun initImageParameters() {
+        maxImageWidth = imageView.width
+        imageViewContainer.layoutParams.height = imageView.height
+        imageViewContainer.requestLayout()
+        cachedImageWidth = maxImageWidth
+
+        imageMarginStart = (resources.getDimension(R.dimen.iv_detail_margin_start)).toInt()
+        imageMarginTop = (resources.getDimension(R.dimen.iv_detail_margin_top)).toInt()
+        minImageWidth = (resources.getDimension(R.dimen.iv_detail_min_width)).toInt()
+
+        imageViewParams = imageView.layoutParams as LinearLayout.LayoutParams
     }
 
     private fun saveDrinkIntoDb(drink: Drink) {

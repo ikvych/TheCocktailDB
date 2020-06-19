@@ -14,18 +14,18 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.listener.AuthTextWatcher
 import com.ikvych.cocktail.ui.base.BaseActivity
-import com.ikvych.cocktail.widget.custom.CustomLinerLayout
+import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import java.util.regex.Pattern
 
 
-class AuthActivity : BaseActivity(), CustomLinerLayout.KeyBoardListener {
+class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardListener {
 
-    var isValidLogin: Boolean = false
-    var isValidPassword: Boolean = false
-    var isKeyboardShown: Boolean = false
+    private var isValidLogin: Boolean = false
+    private var isValidPassword: Boolean = false
+    private var isKeyboardShown: Boolean = false
 
-    var loginTextWatcher: TextWatcher? = null
-    var passwordTextWatcher: TextWatcher? = null
+    private var loginTextWatcher: TextWatcher? = null
+    private var passwordTextWatcher: TextWatcher? = null
 
     private val passwordPattern: Pattern =
         Pattern.compile("(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z~!@#\$%^&*]{6,}") //не менше 6 символів і містить хоча б одну цифру і хоча б одну літеру
@@ -46,8 +46,8 @@ class AuthActivity : BaseActivity(), CustomLinerLayout.KeyBoardListener {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
-        val keyboardObserver = findViewById<CustomLinerLayout>(R.id.login_root)
-        keyboardObserver.setListener(this)
+        val keyboardObserver = findViewById<LinerLayoutWithKeyboardListener>(R.id.login_root)
+        keyboardObserver.listener = this
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         loginInputLayout = findViewById(R.id.til_login)

@@ -15,7 +15,7 @@ import com.ikvych.cocktail.util.setEmptySearchVisible
 import com.ikvych.cocktail.util.setSearchEmptyListVisible
 import com.ikvych.cocktail.util.setSearchRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
-import com.ikvych.cocktail.widget.custom.ApplicationToolBarView
+import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 
 
 class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOfferListener {
@@ -63,7 +63,7 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
     }
 
     private fun initSearchView() {
-        toolbarSearchView = findViewById<ApplicationToolBarView>(R.id.app_toolbar).searchView
+        toolbarSearchView = findViewById<ApplicationToolBar>(R.id.app_toolbar).searchView
         toolbarSearchView.isIconifiedByDefault = false
         toolbarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 

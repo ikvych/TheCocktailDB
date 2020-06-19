@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.ikvych.cocktail.util.CustomLinerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<com.ikvych.cocktail.widget.custom.CustomLinerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/login_root"
     android:layout_width="match_parent"
@@ -77,4 +78,4 @@
         android:textColor="#FFFFFF"
         app:backgroundTint="@color/design_default_color_primary_dark" />
 
-</com.ikvych.cocktail.util.CustomLinerLayout>
+</com.ikvych.cocktail.widget.custom.CustomLinerLayout>

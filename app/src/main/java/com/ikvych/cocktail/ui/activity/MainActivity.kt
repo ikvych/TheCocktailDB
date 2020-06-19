@@ -5,8 +5,10 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
@@ -16,6 +18,7 @@ import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.widget.custom.ApplicationToolBarView
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -30,6 +33,7 @@ class MainActivity : RecyclerViewActivity<MainActivityViewModel>(), BatteryListe
     private lateinit var batteryPercent: TextView
     private lateinit var batteryIcon: ImageView
     private lateinit var powerConnected: ImageView
+    private lateinit var filterBtn: ImageButton
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -45,7 +49,11 @@ class MainActivity : RecyclerViewActivity<MainActivityViewModel>(), BatteryListe
         initRecyclerView(viewModel.getCurrentData(), R.id.db_recycler_view, MAIN_MODEL_TYPE)
         initLiveDataObserver()
 
-
+        filterBtn = findViewById<ApplicationToolBarView>(R.id.app_toolbar).customBtn
+        filterBtn.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_filter))
+        filterBtn.setOnClickListener {
+            Toast.makeText(this, "Filter", Toast.LENGTH_SHORT).show()
+        }
 
         fab.setOnClickListener {
             startActivity(Intent(this, SearchActivity::class.java))

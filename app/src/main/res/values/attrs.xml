@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ApplicationToolBarView">
+        <attr name="tl_is_for_search" format="boolean"/>
+        <attr name="tl_set_text" format="string"/>
+        <attr name="tl_enable_custom_btn" format="boolean"/>
+    </declare-styleable>
+</resources>

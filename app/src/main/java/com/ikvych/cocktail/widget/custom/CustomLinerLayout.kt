@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.util
+package com.ikvych.cocktail.widget.custom
 
 import android.app.Activity
 import android.content.Context

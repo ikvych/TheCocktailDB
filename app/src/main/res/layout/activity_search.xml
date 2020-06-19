@@ -8,22 +8,17 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.SearchActivity">
 
-
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/search_navigation_view"
+        <com.ikvych.cocktail.widget.custom.ApplicationToolBarView
+            android:id="@+id/app_toolbar"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/navigation_view_height"
+            android:layout_height="56dp"
+            android:elevation="15dp"
+            android:background="@drawable/search_view_shape"
+            app:tl_is_for_search="true"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <SearchView
-                android:id="@+id/search_query"
-                style="@style/AppSearchView"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/search_view_height" />
-
-        </com.google.android.material.navigation.NavigationView>
 
         <LinearLayout
             android:id="@+id/search_container"
@@ -33,7 +28,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/search_navigation_view">
+            app:layout_constraintTop_toBottomOf="@+id/app_toolbar">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/db_recycler_view"

@@ -14,7 +14,7 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.listener.AuthTextWatcher
 import com.ikvych.cocktail.ui.base.BaseActivity
-import com.ikvych.cocktail.util.CustomLinerLayout
+import com.ikvych.cocktail.widget.custom.CustomLinerLayout
 import java.util.regex.Pattern
 
 

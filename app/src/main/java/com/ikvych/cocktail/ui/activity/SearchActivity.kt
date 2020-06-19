@@ -15,11 +15,12 @@ import com.ikvych.cocktail.util.setEmptySearchVisible
 import com.ikvych.cocktail.util.setSearchEmptyListVisible
 import com.ikvych.cocktail.util.setSearchRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
+import com.ikvych.cocktail.widget.custom.ApplicationToolBarView
 
 
 class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOfferListener {
 
-    lateinit var searchView: SearchView
+    lateinit var toolbarSearchView: SearchView
     private val drinkOfferReceiver: DrinkOfferReceiver = DrinkOfferReceiver(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -62,14 +63,14 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
     }
 
     private fun initSearchView() {
-        searchView = findViewById(R.id.search_query)
-        searchView.isIconifiedByDefault = false
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        toolbarSearchView = findViewById<ApplicationToolBarView>(R.id.app_toolbar).searchView
+        toolbarSearchView.isIconifiedByDefault = false
+        toolbarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 val searchQuery: String = query?.trim() ?: ""
                 viewModel.updateDrinksLiveData(searchQuery)
-                searchView.clearFocus()
+                toolbarSearchView.clearFocus()
                 return true
             }
 

@@ -14,6 +14,7 @@ class DrinkDbRepositoryImpl(context: Context):
 
     private val drinkDao: DrinkDao = DrinkDataBase.getInstance(context)!!.drinkDao()
 
+
     override fun getDrinks(): LiveData<List<Drink>> {
         return drinkDao.getAllDrinks()
     }

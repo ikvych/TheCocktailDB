@@ -1,10 +1,15 @@
 package com.ikvych.cocktail.ui.activity
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
@@ -18,6 +23,18 @@ class DrinkDetailActivity : BaseActivity() {
 
     private var drink: Drink? = null
     private var modelType: String? = null
+
+    private lateinit var appBarLayout: AppBarLayout
+    private lateinit var imageView: ImageView
+    private lateinit var imageViewContainer: LinearLayout
+
+    private var maxImageWidth: Int? = null
+    private var minImageWidth: Int? = null
+    private var cachedImageWidth: Int? = null
+    private var imageMarginStart: Int? = null
+    private var imageMarginTop: Int? = null
+
+    private lateinit var imageViewParams: LinearLayout.LayoutParams
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -46,6 +63,61 @@ class DrinkDetailActivity : BaseActivity() {
         val activityDrinkDetailsBinding: ActivityDrinkDetailsBinding =
             DataBindingUtil.setContentView(this, R.layout.activity_drink_details)
         activityDrinkDetailsBinding.drink = drink
+
+        appBarLayout = findViewById(R.id.abl)
+        imageView = findViewById(R.id.iv_drink)
+        imageViewContainer = findViewById(R.id.fl_image)
+
+        initAppBarLayoutListener()
+    }
+
+    private fun initAppBarLayoutListener() {
+        appBarLayout.addOnOffsetChangedListener(
+            AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
+
+                //init image parameters
+                if (maxImageWidth == null) {
+                    initImageParameters()
+                }
+
+                val totalsScrollRange = appBarLayout.totalScrollRange
+                val offsetFactor = (-verticalOffset).toFloat() / totalsScrollRange
+                val scaleFactor = 1F - offsetFactor
+
+                val currentImageWidth = ((maxImageWidth!! - minImageWidth!!) * scaleFactor) + minImageWidth!!
+
+                imageViewParams.marginStart = (imageMarginStart!! * offsetFactor).toInt()
+                imageViewParams.topMargin = ((maxImageWidth!! / 2 - imageMarginTop!!) * offsetFactor).toInt()
+                imageViewParams.width = currentImageWidth.toInt()
+
+                if (imageViewParams.width != cachedImageWidth) {
+                    cachedImageWidth = currentImageWidth.toInt()
+                    imageView.layoutParams = imageViewParams
+                }
+
+                if (scaleFactor == .0F) {
+                    val stateList =
+                        ColorStateList.valueOf(ContextCompat.getColor(this, R.color.color_primary))
+                    findViewById<ImageView>(R.id.return_button).backgroundTintList = stateList
+                } else {
+                    val stateList =
+                        ColorStateList.valueOf(ContextCompat.getColor(this, R.color.iv_return_button_bg))
+                    findViewById<ImageView>(R.id.return_button).backgroundTintList = stateList
+                }
+            })
+    }
+
+    private fun initImageParameters() {
+        maxImageWidth = imageView.width
+        imageViewContainer.layoutParams.height = imageView.height
+        imageViewContainer.requestLayout()
+        cachedImageWidth = maxImageWidth
+
+        imageMarginStart = (resources.getDimension(R.dimen.iv_detail_margin_start)).toInt()
+        imageMarginTop = (resources.getDimension(R.dimen.iv_detail_margin_top)).toInt()
+        minImageWidth = (resources.getDimension(R.dimen.iv_detail_min_width)).toInt()
+
+        imageViewParams = imageView.layoutParams as LinearLayout.LayoutParams
     }
 
     private fun saveDrinkIntoDb(drink: Drink) {

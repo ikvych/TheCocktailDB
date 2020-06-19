@@ -8,30 +8,13 @@
         android:layout_height="match_parent"
         tools:context=".ui.activity.MainActivity">
 
-        <com.google.android.material.navigation.NavigationView
-            android:id="@+id/main_navigation_view"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/navigation_view_height"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <TextView
-                android:id="@+id/drink_name_details"
-                style="@style/NavigationViewTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:text="@string/app_name" />
-
-        </com.google.android.material.navigation.NavigationView>
-
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/main_navigation_view">
+            app:layout_constraintTop_toBottomOf="@+id/app_toolbar">
 
             <LinearLayout
                 android:id="@+id/search_container"
@@ -92,6 +75,17 @@
 
             </LinearLayout>
         </FrameLayout>
+
+        <com.ikvych.cocktail.widget.custom.ApplicationToolBar
+            android:id="@+id/app_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_toolbar_height"
+            android:elevation="@dimen/app_toolbar_elevation"
+            android:background="@drawable/app_bar_bg_shape"
+            app:tl_enable_custom_btn="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab"

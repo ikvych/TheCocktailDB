@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/login_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingStart="@dimen/auth_indents"
+    android:paddingEnd="@dimen/auth_indents"
+    android:paddingTop="@dimen/auth_indents"
+    android:paddingBottom="@dimen/auth_indents">
+
+    <ImageView
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginVertical="@dimen/auth_indents"
+        app:srcCompat="@drawable/ic_logo"
+        style="@style/SplashImage"
+        android:contentDescription="@string/contentDescription" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:hintTextColor="@color/color_on_surface_variant"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_login"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/login"
+            android:textCursorDrawable="@drawable/cursor_shape"
+            android:backgroundTint="@color/color_primary"
+            android:inputType="textPersonName" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/til_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:passwordToggleEnabled="true"
+        app:hintTextColor="@color/color_on_surface_variant"
+        app:errorEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/tiet_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/password"
+            android:textCursorDrawable="@drawable/cursor_shape"
+            android:backgroundTint="@color/color_primary"
+            android:inputType="textPassword" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <Button
+        android:id="@+id/button"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/auth_login_btn_margin_start"
+        android:layout_marginVertical="@dimen/auth_indents"
+        android:text="@string/login"
+        android:textColor="#FFFFFF"
+        app:backgroundTint="@color/design_default_color_primary_dark" />
+
+</com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener>

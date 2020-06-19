@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
 import android.util.Log
-import com.ikvych.cocktail.constant.BOOT_COMPLETED
 import com.ikvych.cocktail.service.ApplicationService
 
 class ActionBootCompletedReceiver : BroadcastReceiver() {
@@ -14,7 +13,6 @@ class ActionBootCompletedReceiver : BroadcastReceiver() {
             Log.d("MyLog", "Start Up Receiver ACTION_BOOT_COMPLETED")
             val newIntent = Intent(context, ApplicationService::class.java)
             newIntent.action = Intent.ACTION_BOOT_COMPLETED
-            Log.d("MyLog", "${context} d")
             context?.startService(newIntent)
         }
     }

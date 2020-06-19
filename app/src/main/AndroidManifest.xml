@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:ndroid="http://schemas.android.com/apk/distribution"
     package="com.ikvych.cocktail">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:allowBackup="false"
@@ -14,12 +13,14 @@
         android:roundIcon="@mipmap/ic_custom_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.App.Main">
-        <activity android:name=".ui.activity.MainActivity" />
+        <activity android:name=".ui.activity.AuthActivity"
+            android:windowSoftInputMode="stateVisible|adjustResize"/>
+        <activity android:name=".ui.activity.MainActivity"/>
         <activity android:name=".ui.activity.DrinkDetailActivity" />
         <activity android:name=".ui.activity.SearchActivity" />
         <activity
             android:name=".ui.activity.SplashActivity"
-            ndroid:label="@string/app_name">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -34,7 +35,6 @@
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
-
     </application>
 
 </manifest>

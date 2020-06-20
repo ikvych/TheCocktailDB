@@ -12,7 +12,7 @@ class ApplicationToolBar(
     attrs: AttributeSet?
 ) : LinearLayout(context, attrs) {
 
-    private var returnBtn: ImageButton
+    var returnBtn: ImageButton
     private var frameLayout: FrameLayout
     var customBtn: ImageButton
     var searchView: SearchView

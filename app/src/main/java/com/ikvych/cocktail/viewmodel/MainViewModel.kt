@@ -8,7 +8,7 @@ import com.ikvych.cocktail.data.repository.base.DrinkDbRepository
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 
-class MainActivityViewModel(
+class MainViewModel(
     application: Application
 ) : BaseViewModel(application) {
 

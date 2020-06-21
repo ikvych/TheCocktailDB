@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.DrinkFilter
+import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.ui.fragment.FilterFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
@@ -17,8 +18,10 @@ import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlin.collections.ArrayList
 
 
-class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, ProfileFragment.ProfileFragmentListener {
+class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener,
+    ProfileFragment.ProfileFragmentListener, FilterResultCallBack {
 
+    override val callbacks: HashSet<FilterFragment.OnFilterResultListener> = hashSetOf()
     lateinit var mainFragment: MainFragment
     lateinit var filterFragment: FilterFragment
     lateinit var filterBtn: ImageButton
@@ -49,7 +52,8 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Prof
         filterBtn.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_filter))
         filterBtn.setOnClickListener {
             val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-            filterFragment = FilterFragment.newInstance(R.layout.fragment_filter/*, *filters.toTypedArray()*/)
+            filterFragment =
+                FilterFragment.newInstance(R.layout.fragment_filter/*, *filters.toTypedArray()*/)
             ft.hide(mainFragment)
             ft.add(R.id.fcv_main, filterFragment)
             ft.addToBackStack(FilterFragment::class.java.name)
@@ -58,8 +62,8 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Prof
         filterBtn.setOnLongClickListener(View.OnLongClickListener { v ->
             if (indicatorView.visibility != View.GONE) {
                 indicatorView.visibility = View.GONE
-            filters.clear()
-            onFilterApply()
+                filters.clear()
+                onFilterApply()
             }
             true
         })
@@ -96,6 +100,14 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Prof
         ft.replace(R.id.fcv_main, testFragment)
         ft.addToBackStack(TestFragment::class.java.name)
         ft.commit()
+    }
+
+    override fun addCallBack(listener: FilterFragment.OnFilterResultListener) {
+        callbacks.add(listener)
+    }
+
+    override fun removeCallBack(listener: FilterFragment.OnFilterResultListener) {
+        callbacks.remove(listener)
     }
 }
 

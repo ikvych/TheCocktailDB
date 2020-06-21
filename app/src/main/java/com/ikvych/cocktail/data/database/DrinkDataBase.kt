@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.ikvych.cocktail.data.entity.Drink
 
 
-@Database(entities = [Drink::class], version = 1, exportSchema = false)
+@Database(entities = [Drink::class], version = 2, exportSchema = false)
 
 abstract class DrinkDataBase : RoomDatabase() {
 

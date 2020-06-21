@@ -109,7 +109,7 @@ class Drink : BaseObservable, Parcelable {
 
     @SerializedName("strCategory")
     @Expose
-    @Ignore
+    @ColumnInfo(name = "str_category")
     private var strCategory: String? = null
 
     @SerializedName("strIBA")

@@ -33,6 +33,7 @@ class FilterFragment : BaseFragment() {
             fragmentListener = activity as FilterFragmentListener
             val activity = requireActivity() as MainActivity
             activity.filterBtn.visibility = View.GONE
+            activity.indicatorView.visibility = View.GONE
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement FilterFragmentListener")
         }
@@ -104,7 +105,7 @@ class FilterFragment : BaseFragment() {
         @JvmStatic
         fun newInstance(
             viewId: Int,
-            vararg drinkFilters: DrinkFilter = arrayOf(AlcoholDrinkFilter.NON_ALCOHOLIC)
+            vararg drinkFilters: DrinkFilter = arrayOf(AlcoholDrinkFilter.NONE)
         ) = FilterFragment().apply {
             arguments = Bundle().apply {
                 putInt(FRAGMENT_ID, viewId)

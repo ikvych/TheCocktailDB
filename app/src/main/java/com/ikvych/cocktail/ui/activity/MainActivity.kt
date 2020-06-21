@@ -8,7 +8,6 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.ui.fragment.FilterFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
@@ -18,7 +17,7 @@ import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlin.collections.ArrayList
 
 
-class MainActivity : BaseActivity(), FilterFragment.FilterFragmentListener, ProfileFragment.ProfileFragmentListener {
+class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, ProfileFragment.ProfileFragmentListener {
 
     lateinit var mainFragment: MainFragment
     lateinit var filterFragment: FilterFragment
@@ -50,7 +49,7 @@ class MainActivity : BaseActivity(), FilterFragment.FilterFragmentListener, Prof
         filterBtn.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_filter))
         filterBtn.setOnClickListener {
             val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-            filterFragment = FilterFragment.newInstance(R.layout.fragment_filter, *filters.toTypedArray())
+            filterFragment = FilterFragment.newInstance(R.layout.fragment_filter/*, *filters.toTypedArray()*/)
             ft.hide(mainFragment)
             ft.add(R.id.fcv_main, filterFragment)
             ft.addToBackStack(FilterFragment::class.java.name)
@@ -60,7 +59,7 @@ class MainActivity : BaseActivity(), FilterFragment.FilterFragmentListener, Prof
             if (indicatorView.visibility != View.GONE) {
                 indicatorView.visibility = View.GONE
             filters.clear()
-            onFilterApply(AlcoholDrinkFilter.NONE)
+            onFilterApply()
             }
             true
         })
@@ -76,10 +75,10 @@ class MainActivity : BaseActivity(), FilterFragment.FilterFragmentListener, Prof
         ft.commit()*/
     }
 
-    override fun onFilterApply(alcoholDrinkFilter: AlcoholDrinkFilter) {
-        mainFragment.filterData(alcoholDrinkFilter)
-        if (AlcoholDrinkFilter.NONE != alcoholDrinkFilter) {
-            filters.add(alcoholDrinkFilter)
+    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
+        mainFragment.filterData(*drinkFilters)
+        if (!drinkFilters.isEmpty()) {
+/*            filters.add(alcoholDrinkFilter)*/
             if (indicatorView.visibility != View.VISIBLE) {
                 indicatorView.visibility = View.VISIBLE
             }

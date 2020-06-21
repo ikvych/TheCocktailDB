@@ -9,33 +9,33 @@ import android.widget.RadioGroup
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
+import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.ui.activity.MainActivity
 import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.ui.base.FRAGMENT_ID
-import java.util.*
 
 class FilterFragment : BaseFragment() {
 
-    lateinit var radioBtn: RadioButton
     lateinit var alcoholRadioGroup: RadioGroup
+    lateinit var categoryRadioGroup: RadioGroup
 
-    lateinit var fragmentListener: FilterFragmentListener
+    val drinkFilters: HashMap<DrinkFilterType, DrinkFilter> = hashMapOf()
+
+    lateinit var fragmentListener: OnFilterResultListener
 
     lateinit var acceptBtn: Button
     lateinit var resetBtn: Button
 
-    private lateinit var alcoholDrinkFilter: AlcoholDrinkFilter
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            fragmentListener = activity as FilterFragmentListener
+            fragmentListener = activity as OnFilterResultListener
             val activity = requireActivity() as MainActivity
             activity.filterBtn.visibility = View.GONE
             activity.indicatorView.visibility = View.GONE
         } catch (exception: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement FilterFragmentListener")
+            throw ClassCastException("${activity.toString()} must implement OnFilterResultListener")
         }
     }
 
@@ -45,14 +45,16 @@ class FilterFragment : BaseFragment() {
             val activity = requireActivity() as MainActivity
             activity.filterBtn.visibility = View.VISIBLE
         } catch (exception: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement FilterFragmentListener")
+            throw ClassCastException("${activity.toString()} must implement OnFilterResultListener")
         }
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+    override fun configureView(savedInstanceState: Bundle?) {
+        super.configureView(savedInstanceState)
 
         alcoholRadioGroup = requireView().findViewById(R.id.alcohol_radio_group)
+        categoryRadioGroup = requireView().findViewById(R.id.category_radio_group)
+        initCategoryFilters()
         initAlcoholFilters()
 
         acceptBtn = requireView().findViewById(R.id.btn_accept)
@@ -61,42 +63,75 @@ class FilterFragment : BaseFragment() {
                 ALCOHOL_FILTER_KEY,
                 bundleOf(ALCOHOL_FILTER_BUNDLE_KEY to alcoholDrinkFilter.name)
             )*/
-            fragmentListener.onFilterApply(alcoholDrinkFilter)
+            fragmentListener.onFilterApply(*drinkFilters.values.toTypedArray())
         }
         resetBtn = requireView().findViewById(R.id.btn_reject)
         resetBtn.setOnClickListener {
-            radioBtn = requireView().findViewById(R.id.rb_none)
-            radioBtn.isChecked = true
         }
     }
 
-    private fun initAlcoholFilters() {
-        var alcoholType = requireArguments().getString(DrinkFilterType.ALCOHOL.key)
-            ?: AlcoholDrinkFilter.ALCOHOLIC.key
-        alcoholType = alcoholType.toUpperCase(Locale.getDefault()).replace(" ", "_")
-        alcoholDrinkFilter = AlcoholDrinkFilter.valueOf(alcoholType)
+    private fun initCategoryFilters() {
+        val categoryType = requireArguments().getString(DrinkFilterType.CATEGORY.key)
+            ?: CategoryDrinkFilter.OTHER_UNKNOWN.key
 
-        radioBtn = when (alcoholDrinkFilter) {
-            AlcoholDrinkFilter.ALCOHOLIC -> requireView().findViewById(R.id.rb_alcoholic)
-            AlcoholDrinkFilter.NON_ALCOHOLIC -> requireView().findViewById(R.id.rb_non_alcoholic)
-            AlcoholDrinkFilter.OPTIONAL_ALCOHOL -> requireView().findViewById(R.id.rb_optional_alcoholic)
-            AlcoholDrinkFilter.NONE -> requireView().findViewById(R.id.rb_none)
+        CategoryDrinkFilter.values().forEach {
+            categoryRadioGroup.addView(
+                RadioButton(requireContext()).apply {
+                    id = View.generateViewId()
+                    text = it.key
+                    if (it.key == categoryType) {
+                        drinkFilters.put(it.type, it)
+                        isChecked = true
+                    }
+                }
+            )
         }
-        radioBtn.isChecked = true
 
-        alcoholRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            radioBtn = requireView().findViewById(checkedId)
-            alcoholDrinkFilter = when (radioBtn.id) {
-                R.id.rb_alcoholic -> AlcoholDrinkFilter.ALCOHOLIC
-                R.id.rb_non_alcoholic -> AlcoholDrinkFilter.NON_ALCOHOLIC
-                R.id.rb_optional_alcoholic -> AlcoholDrinkFilter.OPTIONAL_ALCOHOL
-                else -> AlcoholDrinkFilter.NONE
+        categoryRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            CategoryDrinkFilter.values().forEach { it ->
+                if (it.key == requireView().findViewById<RadioButton>(checkedId).text) {
+                    if (it.key != "None") {
+                        drinkFilters.put(it.type, it)
+                    } else {
+                        drinkFilters.remove(it.type)
+                    }
+                }
             }
         }
     }
 
-    interface FilterFragmentListener {
-        fun onFilterApply(alcoholDrinkFilter: AlcoholDrinkFilter)
+    private fun initAlcoholFilters() {
+        val alcoholType = requireArguments().getString(DrinkFilterType.ALCOHOL.key)
+            ?: AlcoholDrinkFilter.ALCOHOLIC.key
+
+        AlcoholDrinkFilter.values().forEach {
+            if (it.key == alcoholType) {
+                val alcoholRadioBtn: RadioButton = when (it) {
+                    AlcoholDrinkFilter.ALCOHOLIC -> requireView().findViewById(R.id.rb_alcoholic)
+                    AlcoholDrinkFilter.NON_ALCOHOLIC -> requireView().findViewById(R.id.rb_non_alcoholic)
+                    AlcoholDrinkFilter.OPTIONAL_ALCOHOL -> requireView().findViewById(R.id.rb_optional_alcoholic)
+                    AlcoholDrinkFilter.NONE -> requireView().findViewById(R.id.rb_none)
+                }
+                drinkFilters.put(it.type, it)
+                alcoholRadioBtn.isChecked = true
+            }
+        }
+
+        alcoholRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+            AlcoholDrinkFilter.values().forEach { it ->
+                if (it.key == requireView().findViewById<RadioButton>(checkedId).text) {
+                    if (it.key != "None") {
+                        drinkFilters.put(it.type, it)
+                    } else {
+                        drinkFilters.remove(it.type)
+                    }
+                }
+            }
+        }
+    }
+
+    interface OnFilterResultListener {
+        fun onFilterApply(vararg drinkFilters: DrinkFilter)
         fun onFilterRest()
     }
 
@@ -105,7 +140,10 @@ class FilterFragment : BaseFragment() {
         @JvmStatic
         fun newInstance(
             viewId: Int,
-            vararg drinkFilters: DrinkFilter = arrayOf(AlcoholDrinkFilter.NONE)
+            vararg drinkFilters: DrinkFilter = arrayOf(
+                AlcoholDrinkFilter.NON_ALCOHOLIC,
+                CategoryDrinkFilter.COCKTAIL
+            )
         ) = FilterFragment().apply {
             arguments = Bundle().apply {
                 putInt(FRAGMENT_ID, viewId)

@@ -8,7 +8,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
+import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
@@ -45,23 +47,27 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
         drinkAdapter.drinkList = drinks
     }
 
-    fun filterData(drinkFilter: AlcoholDrinkFilter) {
-        val drinks: List<Drink> = viewModel.getCurrentData()
-        drinkAdapter.drinkList = when (drinkFilter) {
-            AlcoholDrinkFilter.ALCOHOLIC ->
-                drinks.filter { drink ->
-                    drink.getStrAlcoholic() == AlcoholDrinkFilter.ALCOHOLIC.key
+    fun filterData(vararg drinkFilters: DrinkFilter) {
+        var drinks: List<Drink> = viewModel.getCurrentData().toMutableList()
+        drinkFilters.forEach {
+            when (it.type) {
+                DrinkFilterType.ALCOHOL -> {
+                    drinks = drinks.filter { drink ->
+                        drink.getStrAlcoholic() == it.key
+                    }
                 }
-            AlcoholDrinkFilter.NON_ALCOHOLIC ->
-                drinks.filter { drink ->
-                    drink.getStrAlcoholic() == AlcoholDrinkFilter.NON_ALCOHOLIC.key
+                DrinkFilterType.CATEGORY -> {
+                    drinks = drinks.filter { drink ->
+                        drink.getStrCategory() == it.key
+                    }
                 }
-            AlcoholDrinkFilter.OPTIONAL_ALCOHOL ->
-                drinks.filter { drink ->
-                    drink.getStrAlcoholic() == AlcoholDrinkFilter.OPTIONAL_ALCOHOL.key
+                DrinkFilterType.INGREDIENT -> {
                 }
-            else -> drinks
+                DrinkFilterType.GLASS -> {
+                }
+            }
         }
+        drinkAdapter.drinkList = drinks
     }
 
     /**

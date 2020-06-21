@@ -22,8 +22,8 @@
 
     <string name="log_out">Log out</string>
     <string name="alcoholic">Alcoholic</string>
-    <string name="non_alcoholic">Non Alcoholic</string>
-    <string name="optional_alcoholic">Optional Alcoholic</string>
+    <string name="non_alcoholic">Non alcoholic</string>
+    <string name="optional_alcoholic">Optional alcohol</string>
     <string name="none">None</string>
     <string name="accept">Accept</string>
     <string name="reset">Reset</string>

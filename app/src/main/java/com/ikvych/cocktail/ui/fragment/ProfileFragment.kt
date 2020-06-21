@@ -27,7 +27,7 @@ class ProfileFragment : BaseFragment() {
         try {
             listener = context as MainActivity
         } catch (exception: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement ProfileFragmentListener")
+            throw ClassCastException("${activity.toString()} must implement OnFilterResultListener")
         }
     }
 

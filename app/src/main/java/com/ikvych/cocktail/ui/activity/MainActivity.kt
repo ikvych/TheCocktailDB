@@ -10,10 +10,8 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.ui.base.BaseActivity
-import com.ikvych.cocktail.ui.fragment.FilterFragment
-import com.ikvych.cocktail.ui.fragment.MainFragment
-import com.ikvych.cocktail.ui.fragment.ProfileFragment
-import com.ikvych.cocktail.ui.fragment.TestFragment
+import com.ikvych.cocktail.ui.fragment.*
+import com.ikvych.cocktail.ui.fragment.HistoryFragment.Companion.newInstance
 import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlin.collections.ArrayList
 
@@ -80,14 +78,14 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener,
     }
 
     override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
-        mainFragment.filterData(*drinkFilters)
+/*        mainFragment.filterData(*drinkFilters)
         if (!drinkFilters.isEmpty()) {
-/*            filters.add(alcoholDrinkFilter)*/
+*//*            filters.add(alcoholDrinkFilter)*//*
             if (indicatorView.visibility != View.VISIBLE) {
                 indicatorView.visibility = View.VISIBLE
             }
         }
-        supportFragmentManager.popBackStack()
+        supportFragmentManager.popBackStack()*/
     }
 
     override fun onFilterRest() {

@@ -40,12 +40,13 @@ abstract class BaseFragment() : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        configureView(savedInstanceState)
+
         Log.d("MyLog", "onViewCreated - ${this.toString()}")
     }
 
     override fun onStart() {
         super.onStart()
+        configureView(null)
         Log.d("MyLog", "onStart - ${this.toString()}")
     }
 

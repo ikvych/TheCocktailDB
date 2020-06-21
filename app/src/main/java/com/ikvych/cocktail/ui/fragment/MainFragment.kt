@@ -8,23 +8,22 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.setFragmentResultListener
+import androidx.viewpager2.widget.ViewPager2
+import com.google.android.material.tabs.TabItem
+import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
-import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
+import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
-import com.ikvych.cocktail.ui.base.ALCOHOL_FILTER_BUNDLE_KEY
-import com.ikvych.cocktail.ui.base.ALCOHOL_FILTER_KEY
+import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.ui.base.FRAGMENT_ID
-import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
-import com.ikvych.cocktail.util.setDbRecyclerViewVisible
-import com.ikvych.cocktail.viewmodel.MainViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.fragment_main.view.*
 
-class MainFragment : RecyclerViewFragment<MainViewModel>(), BatteryListener {
+class MainFragment : BaseFragment(), BatteryListener {
+
     lateinit var batteryReceiver: BatteryReceiver
 
     private var isPowerConnected: Boolean = false
@@ -35,8 +34,14 @@ class MainFragment : RecyclerViewFragment<MainViewModel>(), BatteryListener {
     private lateinit var batteryIcon: ImageView
     private lateinit var powerConnected: ImageView
 
-    companion object {
+    private lateinit var viewPager: ViewPager2
+    private lateinit var drinkPagerAdapter: DrinkPagerAdapter
+    private lateinit var tabLayout: TabLayout
+    private lateinit var tabHistory: TabLayout.Tab
+    private lateinit var tabFavorite: TabLayout.Tab
 
+
+        companion object {
         @JvmStatic
         fun newInstance(fragmentId: Int) =
             MainFragment().apply {
@@ -46,26 +51,24 @@ class MainFragment : RecyclerViewFragment<MainViewModel>(), BatteryListener {
             }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setFragmentResultListener(ALCOHOL_FILTER_KEY) { _, bundle ->
-            val result = bundle.getString(ALCOHOL_FILTER_BUNDLE_KEY)
-            filterData(AlcoholDrinkFilter.valueOf(result!!))
-            requireActivity().supportFragmentManager.popBackStack()
-        }
-    }
+    override fun configureView(savedInstanceState: Bundle?) {
+        viewPager = requireView().findViewById(R.id.pager)
+        drinkPagerAdapter = DrinkPagerAdapter(this)
+        viewPager.adapter = drinkPagerAdapter
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+
+        tabLayout = requireView().findViewById(R.id.tab_layout)
+        tabLayout.addTab(tabLayout.newTab().setText("Favorite"))
+        tabLayout.addTab(tabLayout.newTab().setText("History"))
+        TabLayoutMediator(tabLayout, viewPager) {
+            tab, position ->  tab.text = "OBJECT ${(position + 1)}"
+        }.attach()
+
         batteryReceiver = BatteryReceiver(this)
 
         batteryPercent = requireView().findViewById(R.id.tv_battery_percent)
         batteryIcon = requireView().findViewById(R.id.iv_battery_icon)
         powerConnected = requireView().findViewById(R.id.iv_power_connected)
-
-        initViewModel(MainViewModel::class.java)
-        initRecyclerView(viewModel.getCurrentData(), R.id.db_recycler_view, MAIN_MODEL_TYPE)
-        initLiveDataObserver()
 
         fab.setOnClickListener {
             startActivity(Intent(requireContext(), SearchActivity::class.java))
@@ -87,22 +90,6 @@ class MainFragment : RecyclerViewFragment<MainViewModel>(), BatteryListener {
     override fun onStop() {
         super.onStop()
         requireContext().unregisterReceiver(batteryReceiver)
-    }
-
-    override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(requireActivity())
-        } else {
-            setDbRecyclerViewVisible(requireActivity())
-        }
-    }
-
-    override fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(requireActivity())
-        } else {
-            setDbRecyclerViewVisible(requireActivity())
-        }
     }
 
     override fun onBatteryChange(intent: Intent) {

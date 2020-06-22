@@ -29,7 +29,16 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener,
     lateinit var profileFragment: ProfileFragment
     lateinit var testFragment: TestFragment
 
-    val filters: ArrayList<DrinkFilter> = arrayListOf()
+    var filters: List<DrinkFilter> = arrayListOf()
+
+    override fun onBackPressed() {
+        if (filters.isNotEmpty()) {
+            indicatorView.visibility = View.VISIBLE
+        } else {
+            indicatorView.visibility = View.GONE
+        }
+        super.onBackPressed()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,11 +46,7 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener,
 
         returnBtn = findViewById<ApplicationToolBar>(R.id.app_toolbar).returnBtn
         returnBtn.setOnClickListener {
-            if (supportFragmentManager.backStackEntryCount > 0) {
-                supportFragmentManager.popBackStack()
-            } else {
-                finish()
-            }
+            onBackPressed()
         }
 
         indicatorView = findViewById<ApplicationToolBar>(R.id.app_toolbar).indicatorView
@@ -58,9 +63,8 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener,
             ft.commit()
         }
         filterBtn.setOnLongClickListener(View.OnLongClickListener { v ->
-            if (indicatorView.visibility != View.GONE) {
+            if (filters.isNotEmpty()) {
                 indicatorView.visibility = View.GONE
-                filters.clear()
                 onFilterApply()
             }
             true
@@ -78,6 +82,7 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener,
     }
 
     override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
+        filters = drinkFilters.toList()
         callbacks.forEach {
             it.onFilterApply(*drinkFilters)
         }

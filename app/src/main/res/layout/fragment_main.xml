@@ -8,13 +8,37 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.MainFragment">
 
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nsv_container"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_filter"
+                    style="@style/RecyclerView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal"/>
+
+            </LinearLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
         <FrameLayout
             android:layout_width="0dp"
             android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/nsv_container">
 
             <LinearLayout
                 android:id="@+id/search_container"
@@ -26,6 +50,7 @@
                     android:id="@+id/tab_layout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_primary"
                     app:tabSelectedTextColor="@color/battery_charging">
 
                 </com.google.android.material.tabs.TabLayout>
@@ -34,7 +59,7 @@
                     android:id="@+id/pager"
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1"/>
+                    android:layout_weight="1" />
 
             </LinearLayout>
 
@@ -51,11 +76,11 @@
                     android:id="@+id/iv_power_connected"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:scaleType="fitXY"
                     android:layout_margin="8dp"
-                    android:visibility="gone"
+                    android:contentDescription="@string/info"
+                    android:scaleType="fitXY"
                     android:src="@drawable/ic_power_connected"
-                    android:contentDescription="@string/info"/>
+                    android:visibility="gone" />
 
 
                 <TextView
@@ -63,16 +88,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="8dp"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"/>
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
                 <ImageView
                     android:id="@+id/iv_battery_icon"
                     android:layout_width="32dp"
                     android:layout_height="32dp"
-                    android:scaleType="fitXY"
                     android:layout_margin="8dp"
-                    android:src="@drawable/ic_battery"
-                    android:contentDescription="@string/info"/>
+                    android:contentDescription="@string/info"
+                    android:scaleType="fitXY"
+                    android:src="@drawable/ic_battery" />
 
             </LinearLayout>
         </FrameLayout>

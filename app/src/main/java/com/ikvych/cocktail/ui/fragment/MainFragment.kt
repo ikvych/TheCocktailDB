@@ -1,5 +1,6 @@
 package com.ikvych.cocktail.ui.fragment
 
+import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
@@ -8,27 +9,34 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.core.widget.NestedScrollView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabItem
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
+import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.listener.BatteryListener
+import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.ui.base.FRAGMENT_ID
 import kotlinx.android.synthetic.main.fragment_main.*
-import kotlinx.android.synthetic.main.fragment_main.view.*
 
-class MainFragment : BaseFragment(), BatteryListener {
+class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterResultListener {
 
     lateinit var batteryReceiver: BatteryReceiver
 
     private var isPowerConnected: Boolean = false
     private var isBatteryLow: Boolean = false
     private var percent: Int = 0
+
+    var filters: List<DrinkFilter> = arrayListOf()
+    lateinit var filterAdapter: FilterAdapter
 
     private lateinit var batteryPercent: TextView
     private lateinit var batteryIcon: ImageView
@@ -52,6 +60,24 @@ class MainFragment : BaseFragment(), BatteryListener {
             }
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        try {
+            (requireActivity() as FilterResultCallBack).addCallBack(this)
+        } catch (exception: ClassCastException) {
+            throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
+        }
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        try {
+            (requireActivity() as FilterResultCallBack).removeCallBack(this)
+        } catch (exception: ClassCastException) {
+            throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         historyFragment = HistoryFragment.newInstance(R.layout.fragment_history)
@@ -64,6 +90,8 @@ class MainFragment : BaseFragment(), BatteryListener {
         )
 
         batteryReceiver = BatteryReceiver(this)
+
+
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -82,6 +110,16 @@ class MainFragment : BaseFragment(), BatteryListener {
         batteryPercent = requireView().findViewById(R.id.tv_battery_percent)
         batteryIcon = requireView().findViewById(R.id.iv_battery_icon)
         powerConnected = requireView().findViewById(R.id.iv_power_connected)
+
+        val scrollView: NestedScrollView
+
+        val filterRecyclerView: RecyclerView = requireView().findViewById(R.id.rv_filter)
+        filterAdapter = FilterAdapter(requireContext())
+        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        filterRecyclerView.layoutManager = layoutManager
+        filterRecyclerView.setHasFixedSize(true)
+        filterRecyclerView.adapter = filterAdapter
+        filterAdapter.filterList = filters
 
         fab.setOnClickListener {
             startActivity(Intent(requireContext(), SearchActivity::class.java))
@@ -221,5 +259,15 @@ class MainFragment : BaseFragment(), BatteryListener {
                 )
             )
         }
+    }
+
+    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
+        filters = drinkFilters.toList()
+        filterAdapter.filterList = filters
+    }
+
+    override fun onFilterRest() {
+        filters = arrayListOf()
+        filterAdapter.filterList = filters
     }
 }

@@ -22,12 +22,12 @@ fun setEmptySearchVisible(activity: Activity) {
     activity.findViewById<View>(R.id.db_recycler_view).visibility = View.GONE
 }
 
-fun setDbRecyclerViewVisible(activity: Activity) {
-    activity.findViewById<View>(R.id.empty_history).visibility = View.GONE
-    activity.findViewById<View>(R.id.db_recycler_view).visibility = View.VISIBLE
+fun setDbRecyclerViewVisible(view: View) {
+    view.findViewById<View>(R.id.empty_history).visibility = View.GONE
+    view.findViewById<View>(R.id.db_recycler_view).visibility = View.VISIBLE
 }
 
-fun setDbEmptyHistoryVisible(activity: Activity) {
-    activity.findViewById<View>(R.id.empty_history).visibility = View.VISIBLE
-    activity.findViewById<View>(R.id.db_recycler_view).visibility = View.GONE
+fun setDbEmptyHistoryVisible(view: View) {
+    view.findViewById<View>(R.id.empty_history).visibility = View.VISIBLE
+    view.findViewById<View>(R.id.db_recycler_view).visibility = View.GONE
 }

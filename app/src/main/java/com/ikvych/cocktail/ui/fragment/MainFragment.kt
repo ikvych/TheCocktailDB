@@ -52,24 +52,28 @@ class MainFragment : BaseFragment(), BatteryListener {
             }
     }
 
-    override fun configureView(savedInstanceState: Bundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         historyFragment = HistoryFragment.newInstance(R.layout.fragment_history)
         favoriteFragment = FavoriteFragment.newInstance(R.layout.fragment_favorite)
 
-        viewPager = requireView().findViewById(R.id.pager)
         drinkPagerAdapter = DrinkPagerAdapter(
             arrayListOf(historyFragment, favoriteFragment),
             requireActivity().supportFragmentManager,
             this
         )
+
+        batteryReceiver = BatteryReceiver(this)
+    }
+
+    override fun configureView(view: View, savedInstanceState: Bundle?) {
+        viewPager = requireView().findViewById(R.id.pager)
         viewPager.adapter = drinkPagerAdapter
 
         tabLayout = requireView().findViewById(R.id.tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             tab.text = "OBJECT ${(position + 1)}"
         }.attach()
-
-        batteryReceiver = BatteryReceiver(this)
 
         batteryPercent = requireView().findViewById(R.id.tv_battery_percent)
         batteryIcon = requireView().findViewById(R.id.iv_battery_icon)

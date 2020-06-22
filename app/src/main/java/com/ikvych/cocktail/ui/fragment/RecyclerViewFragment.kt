@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.ui.fragment
 
 import android.content.res.Configuration
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -29,8 +30,8 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
         })
     }
 
-    fun initRecyclerView(drinks: List<Drink>, recyclerViewId: Int, modelType: String) {
-        val recyclerView: RecyclerView = requireView().findViewById(recyclerViewId)
+    fun initRecyclerView(view: View, drinks: List<Drink>, recyclerViewId: Int, modelType: String) {
+        val recyclerView: RecyclerView = view.findViewById(recyclerViewId)
         drinkAdapter = DrinkAdapter(requireContext(), modelType, viewModel)
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {

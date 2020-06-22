@@ -2,6 +2,7 @@ package com.ikvych.cocktail.ui.fragment
 
 import android.graphics.Color
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
@@ -19,7 +20,7 @@ class TestFragment : BaseFragment() {
     var optionalString: String? = null
     var arbitraryNumber: Int? = null
 
-    override fun configureView(savedInstanceState: Bundle?) {
+    override fun configureView(view: View, savedInstanceState: Bundle?) {
         testTextView = requireView().findViewById(R.id.tv_test)
         arbitraryNumber = requireArguments().getInt(ARBITRARY_NUMBER)
 

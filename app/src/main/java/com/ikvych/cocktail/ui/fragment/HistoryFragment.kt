@@ -20,6 +20,8 @@ import com.ikvych.cocktail.viewmodel.MainViewModel
 
 class HistoryFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.OnFilterResultListener {
 
+    lateinit var fragmentView: View
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
@@ -55,29 +57,29 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.On
             filterData(AlcoholDrinkFilter.valueOf(result!!))
             requireActivity().supportFragmentManager.popBackStack()
         }
+        initViewModel(MainViewModel::class.java)
+        initLiveDataObserver()
     }
 
-    override fun configureView(savedInstanceState: Bundle?) {
-        super.configureView(savedInstanceState)
-
-        initViewModel(MainViewModel::class.java)
-        initRecyclerView(viewModel.getCurrentData(), R.id.db_recycler_view, MAIN_MODEL_TYPE)
-        initLiveDataObserver()
+    override fun configureView(view: View, savedInstanceState: Bundle?) {
+        super.configureView(view, savedInstanceState)
+        fragmentView = view
+        initRecyclerView(view, viewModel.getCurrentData(), R.id.db_recycler_view, MAIN_MODEL_TYPE)
     }
 
     override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
         if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(requireActivity())
+            setDbEmptyHistoryVisible(fragmentView)
         } else {
-            setDbRecyclerViewVisible(requireActivity())
+            setDbRecyclerViewVisible(fragmentView)
         }
     }
 
     override fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
         if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(requireActivity())
+            setDbEmptyHistoryVisible(fragmentView)
         } else {
-            setDbRecyclerViewVisible(requireActivity())
+            setDbRecyclerViewVisible(fragmentView)
         }
     }
 

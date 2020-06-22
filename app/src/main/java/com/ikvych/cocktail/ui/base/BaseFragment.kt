@@ -33,18 +33,17 @@ abstract class BaseFragment() : Fragment() {
         return inflater.inflate(requireArguments().getInt(FRAGMENT_ID), container, false)
     }
 
-    protected open fun configureView(savedInstanceState: Bundle?) {
+    protected open fun configureView(view: View, savedInstanceState: Bundle?) {
         // stub
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
+        configureView(view, savedInstanceState)
         Log.d("MyLog", "onViewCreated - ${this.toString()}")
     }
 
     override fun onStart() {
         super.onStart()
-        configureView(null)
         Log.d("MyLog", "onStart - ${this.toString()}")
     }
 

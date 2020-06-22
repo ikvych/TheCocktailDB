@@ -49,8 +49,8 @@ class FilterFragment : BaseFragment() {
         }
     }
 
-    override fun configureView(savedInstanceState: Bundle?) {
-        super.configureView(savedInstanceState)
+    override fun configureView(view: View, savedInstanceState: Bundle?) {
+        super.configureView(view, savedInstanceState)
 
         alcoholRadioGroup = requireView().findViewById(R.id.alcohol_radio_group)
         categoryRadioGroup = requireView().findViewById(R.id.category_radio_group)

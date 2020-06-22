@@ -18,6 +18,7 @@ import com.ikvych.cocktail.viewmodel.MainViewModel
 class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.OnFilterResultListener {
 
     lateinit var fragmentView: View
+    var filters: List<DrinkFilter> = arrayListOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,18 +51,20 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.O
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModel(MainViewModel::class.java)
-        initLiveDataObserver()
+
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
         fragmentView = view
         initRecyclerView(view, viewModel.getFavoriteCurrentData(), R.id.db_recycler_view, MAIN_MODEL_TYPE)
+        initLiveDataObserver()
     }
 
     override fun initLiveDataObserver() {
         viewModel.getFavoriteLiveData().observe(this, Observer { drinks ->
             drinkAdapter.drinkList = drinks
+            filterData(*filters.toTypedArray())
             determineVisibleLayerOnUpdateData(drinks)
         })
     }
@@ -83,11 +86,13 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.O
     }
 
     override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
+        filters = drinkFilters.toList()
         filterData(*drinkFilters)
     }
 
     override fun onFilterRest() {
-
+        filters = arrayListOf()
+        filterData()
     }
 
     override fun filterData(vararg drinkFilters: DrinkFilter) {

@@ -67,6 +67,8 @@ class FilterFragment : BaseFragment() {
         }
         resetBtn = requireView().findViewById(R.id.btn_reject)
         resetBtn.setOnClickListener {
+            drinkFilters.clear()
+            fragmentListener.onFilterRest()
         }
     }
 
@@ -80,7 +82,9 @@ class FilterFragment : BaseFragment() {
                     id = View.generateViewId()
                     text = it.key
                     if (it.key == categoryType) {
-                        drinkFilters.put(it.type, it)
+                        if (it.key != CategoryDrinkFilter.NONE.key) {
+                            drinkFilters.put(it.type, it)
+                        }
                         isChecked = true
                     }
                 }
@@ -112,7 +116,9 @@ class FilterFragment : BaseFragment() {
                     AlcoholDrinkFilter.OPTIONAL_ALCOHOL -> requireView().findViewById(R.id.rb_optional_alcoholic)
                     AlcoholDrinkFilter.NONE -> requireView().findViewById(R.id.rb_none)
                 }
-                drinkFilters.put(it.type, it)
+                if (it.key != AlcoholDrinkFilter.NONE.key) {
+                    drinkFilters.put(it.type, it)
+                }
                 alcoholRadioBtn.isChecked = true
             }
         }

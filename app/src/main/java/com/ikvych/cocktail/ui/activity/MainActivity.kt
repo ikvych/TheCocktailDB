@@ -90,13 +90,19 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener,
             if (indicatorView.visibility != View.VISIBLE) {
                 indicatorView.visibility = View.VISIBLE
             }
-
         }
         supportFragmentManager.popBackStack()
     }
 
     override fun onFilterRest() {
-
+        filters = arrayListOf()
+        callbacks.forEach {
+            it.onFilterRest()
+        }
+        if (indicatorView.visibility == View.VISIBLE) {
+            indicatorView.visibility = View.GONE
+        }
+        supportFragmentManager.popBackStack()
     }
 
     override fun startTestFragment() {

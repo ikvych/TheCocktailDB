@@ -4,6 +4,7 @@ import android.content.Context
 import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.setFragmentResultListener
+import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
 import com.ikvych.cocktail.data.entity.Drink
@@ -21,6 +22,7 @@ import com.ikvych.cocktail.viewmodel.MainViewModel
 class HistoryFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.OnFilterResultListener {
 
     lateinit var fragmentView: View
+    var filters: List<DrinkFilter> = arrayListOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -50,6 +52,14 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.On
             }
     }
 
+    override fun initLiveDataObserver() {
+        viewModel.getLiveData().observe(this, Observer { drinks ->
+            drinkAdapter.drinkList = drinks
+            filterData(*filters.toTypedArray())
+            determineVisibleLayerOnUpdateData(drinks)
+        })
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setFragmentResultListener(ALCOHOL_FILTER_KEY) { _, bundle ->
@@ -58,13 +68,14 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.On
             requireActivity().supportFragmentManager.popBackStack()
         }
         initViewModel(MainViewModel::class.java)
-        initLiveDataObserver()
+
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
         fragmentView = view
         initRecyclerView(view, viewModel.getCurrentData(), R.id.db_recycler_view, MAIN_MODEL_TYPE)
+        initLiveDataObserver()
     }
 
     override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
@@ -84,10 +95,12 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.On
     }
 
     override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
+        filters = drinkFilters.toList()
         filterData(*drinkFilters)
     }
 
     override fun onFilterRest() {
-
+        filters = arrayListOf()
+        filterData()
     }
 }

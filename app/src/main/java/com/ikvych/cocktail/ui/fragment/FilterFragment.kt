@@ -72,7 +72,7 @@ class FilterFragment : BaseFragment() {
 
     private fun initCategoryFilters() {
         val categoryType = requireArguments().getString(DrinkFilterType.CATEGORY.key)
-            ?: CategoryDrinkFilter.OTHER_UNKNOWN.key
+            ?: CategoryDrinkFilter.NONE.key
 
         CategoryDrinkFilter.values().forEach {
             categoryRadioGroup.addView(
@@ -102,7 +102,7 @@ class FilterFragment : BaseFragment() {
 
     private fun initAlcoholFilters() {
         val alcoholType = requireArguments().getString(DrinkFilterType.ALCOHOL.key)
-            ?: AlcoholDrinkFilter.ALCOHOLIC.key
+            ?: AlcoholDrinkFilter.NONE.key
 
         AlcoholDrinkFilter.values().forEach {
             if (it.key == alcoholType) {
@@ -140,10 +140,7 @@ class FilterFragment : BaseFragment() {
         @JvmStatic
         fun newInstance(
             viewId: Int,
-            vararg drinkFilters: DrinkFilter = arrayOf(
-                AlcoholDrinkFilter.NON_ALCOHOLIC,
-                CategoryDrinkFilter.COCKTAIL
-            )
+            vararg drinkFilters: DrinkFilter
         ) = FilterFragment().apply {
             arguments = Bundle().apply {
                 putInt(FRAGMENT_ID, viewId)

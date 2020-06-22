@@ -56,19 +56,19 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener,
         filterBtn.setOnClickListener {
             val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
             filterFragment =
-                FilterFragment.newInstance(R.layout.fragment_filter/*, *filters.toTypedArray()*/)
+                FilterFragment.newInstance(R.layout.fragment_filter, *filters.toTypedArray())
             ft.hide(mainFragment)
             ft.add(R.id.fcv_main, filterFragment)
             ft.addToBackStack(FilterFragment::class.java.name)
             ft.commit()
         }
-        filterBtn.setOnLongClickListener(View.OnLongClickListener { v ->
+        filterBtn.setOnLongClickListener {
             if (filters.isNotEmpty()) {
                 indicatorView.visibility = View.GONE
                 onFilterApply()
             }
             true
-        })
+        }
 
         mainFragment = MainFragment.newInstance(R.layout.fragment_main)
         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()

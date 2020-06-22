@@ -15,14 +15,14 @@ import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
-    private lateinit var drinkAdapter: DrinkAdapter
+    protected lateinit var drinkAdapter: DrinkAdapter
     lateinit var viewModel: T
 
     fun initViewModel(viewModelClass: Class<T>) {
         viewModel = ViewModelProvider(this).get(viewModelClass)
     }
 
-    fun initLiveDataObserver() {
+    open fun initLiveDataObserver() {
         viewModel.getLiveData().observe(this, Observer { drinks ->
             drinkAdapter.drinkList = drinks
             determineVisibleLayerOnUpdateData(drinks)
@@ -31,7 +31,7 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
 
     fun initRecyclerView(drinks: List<Drink>, recyclerViewId: Int, modelType: String) {
         val recyclerView: RecyclerView = requireView().findViewById(recyclerViewId)
-        drinkAdapter = DrinkAdapter(requireContext(), modelType)
+        drinkAdapter = DrinkAdapter(requireContext(), modelType, viewModel)
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -47,7 +47,7 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
         drinkAdapter.drinkList = drinks
     }
 
-    fun filterData(vararg drinkFilters: DrinkFilter) {
+    open fun filterData(vararg drinkFilters: DrinkFilter) {
         var drinks: List<Drink> = viewModel.getCurrentData().toMutableList()
         drinkFilters.forEach {
             when (it.type) {

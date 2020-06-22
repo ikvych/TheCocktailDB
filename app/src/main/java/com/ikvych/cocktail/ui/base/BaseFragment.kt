@@ -33,8 +33,6 @@ abstract class BaseFragment() : Fragment() {
         return inflater.inflate(requireArguments().getInt(FRAGMENT_ID), container, false)
     }
 
-
-
     protected open fun configureView(savedInstanceState: Bundle?) {
         // stub
     }

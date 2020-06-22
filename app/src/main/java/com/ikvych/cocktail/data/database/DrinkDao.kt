@@ -15,4 +15,7 @@ interface DrinkDao {
 
     @Query("SELECT * FROM drink")
     fun getAllDrinks() : LiveData<List<Drink>>
+
+    @Query("SELECT * FROM drink WHERE if_favorite")
+    fun getAllFavoriteDrinks() : LiveData<List<Drink>>
 }

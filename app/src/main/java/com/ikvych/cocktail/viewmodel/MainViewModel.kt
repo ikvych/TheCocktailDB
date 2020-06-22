@@ -14,16 +14,26 @@ class MainViewModel(
 
     private val dbRepository: DrinkDbRepository = DrinkDbRepositoryImpl(application)
     private val drinksLiveData: LiveData<List<Drink>> = dbRepository.getDrinks()
+    private val favoriteDrinksLiveData: LiveData<List<Drink>> = dbRepository.getFavoriteDrinks()
 
     override fun getCurrentData(): List<Drink> {
         return drinksLiveData.value ?: emptyList()
     }
 
-    fun saveDrink(drink: Drink) {
+    fun getFavoriteCurrentData(): List<Drink> {
+        return favoriteDrinksLiveData.value ?: emptyList()
+    }
+
+    override fun saveDrink(drink: Drink) {
         dbRepository.saveDrink(drink)
     }
 
     override fun getLiveData(): LiveData<List<Drink>> {
         return drinksLiveData
     }
+
+    fun getFavoriteLiveData(): LiveData<List<Drink>> {
+        return favoriteDrinksLiveData
+    }
+
 }

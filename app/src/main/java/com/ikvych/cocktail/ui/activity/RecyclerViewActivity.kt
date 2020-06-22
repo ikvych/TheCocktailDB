@@ -28,7 +28,7 @@ abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity() {
 
     fun initRecyclerView(drinks: List<Drink>, recyclerViewId: Int, modelType: String) {
         val recyclerView: RecyclerView = findViewById(recyclerViewId)
-        drinkAdapter = DrinkAdapter(this, modelType)
+        drinkAdapter = DrinkAdapter(this, modelType, viewModel)
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = GridLayoutManager(this, 2)

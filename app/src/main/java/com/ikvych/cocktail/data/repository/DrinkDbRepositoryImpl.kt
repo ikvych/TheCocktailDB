@@ -19,6 +19,10 @@ class DrinkDbRepositoryImpl(context: Context):
         return drinkDao.getAllDrinks()
     }
 
+    override fun getFavoriteDrinks(): LiveData<List<Drink>> {
+        return drinkDao.getAllFavoriteDrinks()
+    }
+
     override fun saveDrink(drink: Drink) {
         SaveDrinkAsyncTask(drinkDao).execute(drink)
     }

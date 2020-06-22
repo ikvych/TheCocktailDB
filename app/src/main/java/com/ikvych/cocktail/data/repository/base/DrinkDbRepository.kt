@@ -8,6 +8,7 @@ interface DrinkDbRepository {
 
     fun getDrinks(): LiveData<List<Drink>>
 
-    fun saveDrink(drink: Drink)
+    fun getFavoriteDrinks(): LiveData<List<Drink>>
 
+    fun saveDrink(drink: Drink)
 }

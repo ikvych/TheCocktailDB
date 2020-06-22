@@ -12,4 +12,7 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
 
     abstract fun getLiveData(): LiveData<List<Drink>>
 
+    open fun saveDrink(drink: Drink) {
+    }
+
 }

@@ -37,11 +37,12 @@ class MainFragment : BaseFragment(), BatteryListener {
     private lateinit var viewPager: ViewPager2
     private lateinit var drinkPagerAdapter: DrinkPagerAdapter
     private lateinit var tabLayout: TabLayout
-    private lateinit var tabHistory: TabLayout.Tab
-    private lateinit var tabFavorite: TabLayout.Tab
+
+    private lateinit var historyFragment: HistoryFragment
+    private lateinit var favoriteFragment: FavoriteFragment
 
 
-        companion object {
+    companion object {
         @JvmStatic
         fun newInstance(fragmentId: Int) =
             MainFragment().apply {
@@ -52,16 +53,20 @@ class MainFragment : BaseFragment(), BatteryListener {
     }
 
     override fun configureView(savedInstanceState: Bundle?) {
+        historyFragment = HistoryFragment.newInstance(R.layout.fragment_history)
+        favoriteFragment = FavoriteFragment.newInstance(R.layout.fragment_favorite)
+
         viewPager = requireView().findViewById(R.id.pager)
-        drinkPagerAdapter = DrinkPagerAdapter(this)
+        drinkPagerAdapter = DrinkPagerAdapter(
+            arrayListOf(historyFragment, favoriteFragment),
+            requireActivity().supportFragmentManager,
+            this
+        )
         viewPager.adapter = drinkPagerAdapter
 
-
         tabLayout = requireView().findViewById(R.id.tab_layout)
-        tabLayout.addTab(tabLayout.newTab().setText("Favorite"))
-        tabLayout.addTab(tabLayout.newTab().setText("History"))
-        TabLayoutMediator(tabLayout, viewPager) {
-            tab, position ->  tab.text = "OBJECT ${(position + 1)}"
+        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+            tab.text = "OBJECT ${(position + 1)}"
         }.attach()
 
         batteryReceiver = BatteryReceiver(this)
@@ -126,20 +131,60 @@ class MainFragment : BaseFragment(), BatteryListener {
         batteryPercent.text = textPercent
 
         if (!isBatteryLow && !isPowerConnected) {
-            batteryPercent.setTextColor(ContextCompat.getColor(requireContext(), R.color.color_on_surface))
-            powerConnected.setColorFilter(ContextCompat.getColor(requireContext(), R.color.color_on_surface))
-            batteryIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_battery))
-            batteryIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.color_on_surface))
+            batteryPercent.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.color_on_surface
+                )
+            )
+            powerConnected.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.color_on_surface
+                )
+            )
+            batteryIcon.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_battery
+                )
+            )
+            batteryIcon.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.color_on_surface
+                )
+            )
         }
     }
 
     private fun isPowerConnected(isPowerConnected: Boolean) {
         if (isPowerConnected) {
             powerConnected.visibility = View.VISIBLE
-            batteryPercent.setTextColor(ContextCompat.getColor(requireContext(), R.color.battery_charging))
-            powerConnected.setColorFilter(ContextCompat.getColor(requireContext(), R.color.battery_charging))
-            batteryIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_battery_charge))
-            batteryIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.battery_charging))
+            batteryPercent.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.battery_charging
+                )
+            )
+            powerConnected.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.battery_charging
+                )
+            )
+            batteryIcon.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_battery_charge
+                )
+            )
+            batteryIcon.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.battery_charging
+                )
+            )
         } else {
             powerConnected.visibility = View.GONE
             isBatteryLow(isBatteryLow)
@@ -149,9 +194,24 @@ class MainFragment : BaseFragment(), BatteryListener {
 
     private fun isBatteryLow(isBatteryLow: Boolean) {
         if (isBatteryLow) {
-            batteryPercent.setTextColor(ContextCompat.getColor(requireContext(), R.color.battery_low))
-            batteryIcon.setImageDrawable(ContextCompat.getDrawable(requireContext(), R.drawable.ic_battery_low))
-            batteryIcon.setColorFilter(ContextCompat.getColor(requireContext(), R.color.battery_low))
+            batteryPercent.setTextColor(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.battery_low
+                )
+            )
+            batteryIcon.setImageDrawable(
+                ContextCompat.getDrawable(
+                    requireContext(),
+                    R.drawable.ic_battery_low
+                )
+            )
+            batteryIcon.setColorFilter(
+                ContextCompat.getColor(
+                    requireContext(),
+                    R.color.battery_low
+                )
+            )
         }
     }
 }

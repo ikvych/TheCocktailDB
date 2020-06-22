@@ -8,9 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.fragment.HistoryFragment">
-
-
+        tools:context=".ui.fragment.FavoriteFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/db_recycler_view"

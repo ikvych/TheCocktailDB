@@ -21,6 +21,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+
+
             <ImageView
                 android:id="@+id/drink_image_view"
                 android:layout_width="match_parent"
@@ -29,6 +31,16 @@
                 android:scaleType="fitXY"
                 android:contentDescription="@string/contentDescription"
                 bind:strDrinkThumb="@{drink.strDrinkThumb}" />
+
+            <CheckBox
+                android:id="@+id/cb_favorite"
+                android:layout_margin="4dp"
+                android:button="@drawable/favorite_checkbox"
+                android:layout_alignStart="@+id/drink_image_view"
+                android:layout_alignTop="@+id/drink_image_view"
+                android:layout_width="wrap_content"
+                android:checked="@{drink.favorite}"
+                android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/drinkName"

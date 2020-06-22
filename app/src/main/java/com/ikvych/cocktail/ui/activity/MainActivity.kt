@@ -78,14 +78,16 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener,
     }
 
     override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
-/*        mainFragment.filterData(*drinkFilters)
-        if (!drinkFilters.isEmpty()) {
-*//*            filters.add(alcoholDrinkFilter)*//*
+        callbacks.forEach {
+            it.onFilterApply(*drinkFilters)
+        }
+        if (drinkFilters.isNotEmpty()) {
             if (indicatorView.visibility != View.VISIBLE) {
                 indicatorView.visibility = View.VISIBLE
             }
+
         }
-        supportFragmentManager.popBackStack()*/
+        supportFragmentManager.popBackStack()
     }
 
     override fun onFilterRest() {

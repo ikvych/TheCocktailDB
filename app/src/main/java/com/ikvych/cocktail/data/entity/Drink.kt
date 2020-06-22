@@ -67,6 +67,9 @@ class Drink : BaseObservable, Parcelable {
     @ColumnInfo(name = "str_drink")
     private var strDrink: String? = null
 
+    @ColumnInfo(name = "if_favorite")
+    private var isFavorite: Boolean = false
+
     @SerializedName("strDrinkAlternate")
     @Expose
     @Ignore
@@ -479,6 +482,16 @@ class Drink : BaseObservable, Parcelable {
     fun setStrDrinkAlternate(strDrinkAlternate: Any?) {
         this.strDrinkAlternate = strDrinkAlternate
         notifyPropertyChanged(BR.strDrinkAlternate)
+    }
+
+    @Bindable
+    fun isFavorite(): Boolean {
+        return isFavorite
+    }
+
+    fun setIsFavorite(isFavorite: Boolean) {
+        this.isFavorite = isFavorite
+        notifyPropertyChanged(BR.favorite)
     }
 
     @Bindable

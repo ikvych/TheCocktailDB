@@ -1,6 +1,7 @@
-package com.ikvych.cocktail.ui.activity
+package com.ikvych.cocktail.ui.fragment
 
 import android.content.res.Configuration
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -9,32 +10,34 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.filter.DrinkFilter
+import com.ikvych.cocktail.filter.type.DrinkFilterType
+import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity() {
-    private lateinit var drinkAdapter: DrinkAdapter
-    lateinit var viewModel : T
+abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
+    protected lateinit var drinkAdapter: DrinkAdapter
+    lateinit var viewModel: T
 
     fun initViewModel(viewModelClass: Class<T>) {
         viewModel = ViewModelProvider(this).get(viewModelClass)
     }
 
-    fun initLiveDataObserver() {
+    open fun initLiveDataObserver() {
         viewModel.getLiveData().observe(this, Observer { drinks ->
             drinkAdapter.drinkList = drinks
             determineVisibleLayerOnUpdateData(drinks)
         })
     }
 
-    fun initRecyclerView(drinks: List<Drink>, recyclerViewId: Int, modelType: String) {
-        val recyclerView: RecyclerView = findViewById(recyclerViewId)
-        drinkAdapter = DrinkAdapter(this, modelType, viewModel)
+    fun initRecyclerView(view: View, drinks: List<Drink>, recyclerViewId: Int, modelType: String) {
+        val recyclerView: RecyclerView = view.findViewById(recyclerViewId)
+        drinkAdapter = DrinkAdapter(requireContext(), modelType, viewModel)
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.layoutManager = GridLayoutManager(this, 2)
+            recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         } else {
-            recyclerView.layoutManager = GridLayoutManager(this, 4)
+            recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
         }
 
         recyclerView.itemAnimator = DefaultItemAnimator()
@@ -42,6 +45,29 @@ abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity() {
 
         determineVisibleLayerOnCreate(drinks)
 
+        drinkAdapter.drinkList = drinks
+    }
+
+    open fun filterData(vararg drinkFilters: DrinkFilter) {
+        var drinks: List<Drink> = viewModel.getCurrentData().toMutableList()
+        drinkFilters.forEach {
+            when (it.type) {
+                DrinkFilterType.ALCOHOL -> {
+                    drinks = drinks.filter { drink ->
+                        drink.getStrAlcoholic() == it.key
+                    }
+                }
+                DrinkFilterType.CATEGORY -> {
+                    drinks = drinks.filter { drink ->
+                        drink.getStrCategory() == it.key
+                    }
+                }
+                DrinkFilterType.INGREDIENT -> {
+                }
+                DrinkFilterType.GLASS -> {
+                }
+            }
+        }
         drinkAdapter.drinkList = drinks
     }
 
@@ -68,5 +94,4 @@ abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity() {
     open fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
         //TO DO
     }
-
 }

@@ -3,7 +3,9 @@ package com.ikvych.cocktail.adapter.list
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.R
@@ -14,11 +16,13 @@ import com.ikvych.cocktail.constant.VIEW_MODEL_TYPE
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 
 class DrinkAdapter(
     private val context: Context,
-    private val activityName: String
+    private val activityName: String,
+    private val viewModel: BaseViewModel
 ) : RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder>() {
 
     var drinkList: List<Drink> = arrayListOf()
@@ -47,7 +51,8 @@ class DrinkAdapter(
     }
 
 
-    inner class DrinkViewHolder(val itemDrinkListBinding: ItemDrinkListBinding) : RecyclerView.ViewHolder(itemDrinkListBinding.root) {
+    inner class DrinkViewHolder(val itemDrinkListBinding: ItemDrinkListBinding) :
+        RecyclerView.ViewHolder(itemDrinkListBinding.root) {
         init {
             itemDrinkListBinding.root.setOnClickListener {
                 val position = adapterPosition
@@ -68,6 +73,23 @@ class DrinkAdapter(
                     intent.putExtra(DRINK, drink)
                     context.startActivity(intent)
                 }
+            }
+
+
+            val favorite = itemDrinkListBinding.root.findViewById<CheckBox>(R.id.cb_favorite)
+            if (activityName == MAIN_MODEL_TYPE) {
+                favorite.setOnClickListener { v ->
+                    val drink = itemDrinkListBinding.drink!!
+                    if (favorite.isChecked) {
+                        drink.setIsFavorite(true)
+                        viewModel.saveDrink(drink)
+                    } else {
+                        drink.setIsFavorite(false)
+                        viewModel.saveDrink(drink)
+                    }
+                }
+            } else {
+                favorite.visibility = View.GONE
             }
         }
     }

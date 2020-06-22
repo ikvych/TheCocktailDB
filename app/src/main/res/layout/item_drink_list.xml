@@ -30,6 +30,17 @@
                 android:contentDescription="@string/contentDescription"
                 bind:strDrinkThumb="@{drink.strDrinkThumb}" />
 
+            <CheckBox
+                android:id="@+id/cb_favorite"
+                android:layout_margin="4dp"
+                android:buttonTint="@drawable/favorite_checkbox_tint"
+                android:button="@drawable/favorite_checkbox"
+                android:layout_alignStart="@+id/drink_image_view"
+                android:layout_alignTop="@+id/drink_image_view"
+                android:layout_width="wrap_content"
+                android:checked="@{drink.favorite}"
+                android:layout_height="wrap_content" />
+
             <TextView
                 android:id="@+id/drinkName"
                 android:layout_width="wrap_content"

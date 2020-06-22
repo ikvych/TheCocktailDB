@@ -12,9 +12,10 @@ class ApplicationToolBar(
     attrs: AttributeSet?
 ) : LinearLayout(context, attrs) {
 
-    private var returnBtn: ImageButton
+    var returnBtn: ImageButton
     private var frameLayout: FrameLayout
     var customBtn: ImageButton
+    var indicatorView: TextView
     var searchView: SearchView
     private var textView: TextView
 
@@ -56,6 +57,7 @@ class ApplicationToolBar(
         View.inflate(context, R.layout.app_toolbar, this)
         this.returnBtn = findViewById(R.id.return_tb_btn)
         this.customBtn = findViewById(R.id.custom_tb_btn)
+        this.indicatorView = findViewById(R.id.tv_filter_indicator)
         this.frameLayout = findViewById(R.id.fl_toolbar)
         this.searchView = findViewById(R.id.sv_toolbar)
         this.textView = findViewById(R.id.tv_toolbar)

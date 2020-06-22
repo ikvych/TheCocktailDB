@@ -16,7 +16,7 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
 import com.ikvych.cocktail.service.ApplicationService
 import com.ikvych.cocktail.ui.base.BaseActivity
-import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.viewmodel.MainViewModel
 
 
 class DrinkDetailActivity : BaseActivity() {
@@ -121,11 +121,11 @@ class DrinkDetailActivity : BaseActivity() {
     }
 
     private fun saveDrinkIntoDb(drink: Drink) {
-        val mainActivityViewModel: MainActivityViewModel =
+        val mainActivityViewModel: MainViewModel =
             ViewModelProvider.AndroidViewModelFactory(
                 application
             )
-                .create(MainActivityViewModel::class.java)
+                .create(MainViewModel::class.java)
         mainActivityViewModel.saveDrink(drink)
     }
 

@@ -11,4 +11,8 @@ abstract class BaseViewModel(application: Application): AndroidViewModel(applica
     abstract fun getCurrentData(): List<Drink>
 
     abstract fun getLiveData(): LiveData<List<Drink>>
+
+    open fun saveDrink(drink: Drink) {
+    }
+
 }

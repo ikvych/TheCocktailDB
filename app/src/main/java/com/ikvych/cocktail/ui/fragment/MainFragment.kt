@@ -72,7 +72,11 @@ class MainFragment : BaseFragment(), BatteryListener {
 
         tabLayout = requireView().findViewById(R.id.tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            tab.text = "OBJECT ${(position + 1)}"
+            if (position == 0) {
+                tab.text = getText(R.string.history)
+            } else {
+                tab.text = getText(R.string.favorite)
+            }
         }.attach()
 
         batteryPercent = requireView().findViewById(R.id.tv_battery_percent)

@@ -21,8 +21,6 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-
-
             <ImageView
                 android:id="@+id/drink_image_view"
                 android:layout_width="match_parent"
@@ -35,6 +33,7 @@
             <CheckBox
                 android:id="@+id/cb_favorite"
                 android:layout_margin="4dp"
+                android:buttonTint="@drawable/favorite_checkbox_tint"
                 android:button="@drawable/favorite_checkbox"
                 android:layout_alignStart="@+id/drink_image_view"
                 android:layout_alignTop="@+id/drink_image_view"

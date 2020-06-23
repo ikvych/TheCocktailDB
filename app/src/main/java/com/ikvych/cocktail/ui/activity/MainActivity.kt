@@ -56,9 +56,9 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
     }
 
 
-    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
+    override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
         callbacks.forEach {
-            it.onFilterApply(*drinkFilters)
+            it.onFilterApply(drinkFilters)
         }
     }
 

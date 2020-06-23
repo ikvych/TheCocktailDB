@@ -61,7 +61,7 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.O
 
     override fun initLiveDataObserver() {
         viewModel.getFavoriteLiveData().observe(this, Observer { drinks ->
-            filterData(drinks, *filters.toTypedArray())
+            filterData(drinks, filters)
             determineVisibleLayerOnUpdateData(drinks)
         })
     }
@@ -82,13 +82,13 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.O
         }
     }
 
-    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
-        filters = drinkFilters.toList()
-        filterData(viewModel.getFavoriteCurrentData(), *filters.toTypedArray())
+    override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
+        filters = drinkFilters
+        filterData(viewModel.getFavoriteCurrentData(), filters)
     }
 
     override fun onFilterReset() {
         filters = arrayListOf()
-        filterData(viewModel.getFavoriteCurrentData())
+        filterData(viewModel.getFavoriteCurrentData(), filters)
     }
 }

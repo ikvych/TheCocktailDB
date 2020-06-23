@@ -18,7 +18,7 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
     private lateinit var drinkAdapter: DrinkAdapter
     lateinit var viewModel: T
-    var filters: List<DrinkFilter> = arrayListOf()
+    var filters: ArrayList<DrinkFilter> = arrayListOf()
 
     fun initViewModel(viewModelClass: Class<T>) {
         viewModel = ViewModelProvider(this).get(viewModelClass)
@@ -26,7 +26,7 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
 
     open fun initLiveDataObserver() {
         viewModel.getLiveData().observe(this, Observer { drinks ->
-            filterData(drinks, *filters.toTypedArray())
+            filterData(drinks, filters)
             determineVisibleLayerOnUpdateData(drinks)
         })
     }
@@ -49,7 +49,7 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
         drinkAdapter.drinkList = drinks
     }
 
-    fun filterData(drinks: List<Drink>, vararg drinkFilters: DrinkFilter) {
+    fun filterData(drinks: List<Drink>, drinkFilters: ArrayList<DrinkFilter>) {
         var drinksCopy = drinks
         drinkFilters.forEach {
             when (it.type) {

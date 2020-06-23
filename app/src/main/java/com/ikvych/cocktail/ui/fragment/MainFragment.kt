@@ -19,6 +19,7 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.filter.DrinkFilter
+import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.receiver.BatteryReceiver
@@ -28,7 +29,8 @@ import com.ikvych.cocktail.ui.base.FRAGMENT_ID
 import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterResultListener {
+class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterResultListener,
+    FilterAdapter.OnClickItemFilterCloseListener {
 
     lateinit var batteryReceiver: BatteryReceiver
     var fragmentListener: FilterFragment.OnFilterResultListener? = null
@@ -38,7 +40,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
     lateinit var filterFragment: FilterFragment
 
-    private var filters: List<DrinkFilter> = arrayListOf()
+    private var filters: ArrayList<DrinkFilter> = arrayListOf()
     private lateinit var filterAdapter: FilterAdapter
 
     private lateinit var viewPager: ViewPager2
@@ -115,7 +117,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
 
         val filterRecyclerView: RecyclerView = view.findViewById(R.id.rv_filter)
-        filterAdapter = FilterAdapter(requireContext())
+        filterAdapter = FilterAdapter(requireContext(), this)
         val layoutManager =
             LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         filterRecyclerView.layoutManager = layoutManager
@@ -136,7 +138,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         filterBtn.setOnClickListener {
             val fragmentTransaction = parentFragmentManager.beginTransaction()
             filterFragment =
-                FilterFragment.newInstance(R.layout.fragment_filter, *filters.toTypedArray())
+                FilterFragment.newInstance(R.layout.fragment_filter, filters)
             fragmentTransaction.hide(this)
             fragmentTransaction.add(R.id.fcv_main, filterFragment)
             fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
@@ -158,8 +160,8 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     }
 
 
-    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
-        filters = drinkFilters.toList()
+    override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
+        filters = drinkFilters
         filterAdapter.filterList = filters
         if (filters.isNotEmpty()) {
             filterIndicator.visibility = View.VISIBLE
@@ -307,5 +309,10 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
                 )
             )
         }
+    }
+
+    override fun onClick(drinkFilter: DrinkFilter) {
+        filters.remove(drinkFilter)
+        fragmentListener!!.onFilterApply(filters)
     }
 }

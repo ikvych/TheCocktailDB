@@ -54,7 +54,8 @@ class FilterFragment : BaseFragment() {
 
         acceptBtn = view.findViewById(R.id.btn_accept)
         acceptBtn.setOnClickListener {
-            fragmentListener!!.onFilterApply(*drinkFilters.values.toTypedArray())
+
+            fragmentListener!!.onFilterApply(arrayListOf(*drinkFilters.values.toTypedArray()))
             parentFragmentManager.popBackStack()
         }
         resetBtn = view.findViewById(R.id.btn_reject)
@@ -135,7 +136,7 @@ class FilterFragment : BaseFragment() {
     }
 
     interface OnFilterResultListener {
-        fun onFilterApply(vararg drinkFilters: DrinkFilter)
+        fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>)
         fun onFilterReset()
     }
 
@@ -144,7 +145,7 @@ class FilterFragment : BaseFragment() {
         @JvmStatic
         fun newInstance(
             viewId: Int,
-            vararg drinkFilters: DrinkFilter
+            drinkFilters: ArrayList<DrinkFilter> = arrayListOf()
         ) = FilterFragment().apply {
             arguments = Bundle().apply {
                 putInt(FRAGMENT_ID, viewId)

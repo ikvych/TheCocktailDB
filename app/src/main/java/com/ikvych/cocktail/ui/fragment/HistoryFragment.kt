@@ -80,13 +80,13 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
         }
     }
 
-    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
-        filters = drinkFilters.toList()
-        filterData(viewModel.getCurrentData(), *filters.toTypedArray())
+    override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
+        filters = drinkFilters
+        filterData(viewModel.getCurrentData(), filters)
     }
 
     override fun onFilterReset() {
         filters = arrayListOf()
-        filterData(viewModel.getCurrentData())
+        filterData(viewModel.getCurrentData(), filters)
     }
 }

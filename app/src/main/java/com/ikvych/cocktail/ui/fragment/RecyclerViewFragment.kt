@@ -16,8 +16,9 @@ import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
-    protected lateinit var drinkAdapter: DrinkAdapter
+    private lateinit var drinkAdapter: DrinkAdapter
     lateinit var viewModel: T
+    var filters: List<DrinkFilter> = arrayListOf()
 
     fun initViewModel(viewModelClass: Class<T>) {
         viewModel = ViewModelProvider(this).get(viewModelClass)
@@ -25,7 +26,7 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
 
     open fun initLiveDataObserver() {
         viewModel.getLiveData().observe(this, Observer { drinks ->
-            drinkAdapter.drinkList = drinks
+            filterData(drinks, *filters.toTypedArray())
             determineVisibleLayerOnUpdateData(drinks)
         })
     }
@@ -48,17 +49,17 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
         drinkAdapter.drinkList = drinks
     }
 
-    open fun filterData(vararg drinkFilters: DrinkFilter) {
-        var drinks: List<Drink> = viewModel.getCurrentData().toMutableList()
+    fun filterData(drinks: List<Drink>, vararg drinkFilters: DrinkFilter) {
+        var drinksCopy = drinks
         drinkFilters.forEach {
             when (it.type) {
                 DrinkFilterType.ALCOHOL -> {
-                    drinks = drinks.filter { drink ->
+                    drinksCopy = drinks.filter { drink ->
                         drink.getStrAlcoholic() == it.key
                     }
                 }
                 DrinkFilterType.CATEGORY -> {
-                    drinks = drinks.filter { drink ->
+                    drinksCopy = drinks.filter { drink ->
                         drink.getStrCategory() == it.key
                     }
                 }
@@ -68,7 +69,8 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
                 }
             }
         }
-        drinkAdapter.drinkList = drinks
+        drinkAdapter.drinkList = drinksCopy
+        determineVisibleLayerOnUpdateData(drinksCopy)
     }
 
     /**

@@ -18,7 +18,6 @@ import com.ikvych.cocktail.viewmodel.MainViewModel
 class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.OnFilterResultListener {
 
     lateinit var fragmentView: View
-    var filters: List<DrinkFilter> = arrayListOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -51,7 +50,6 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.O
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModel(MainViewModel::class.java)
-
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -63,8 +61,7 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.O
 
     override fun initLiveDataObserver() {
         viewModel.getFavoriteLiveData().observe(this, Observer { drinks ->
-            drinkAdapter.drinkList = drinks
-            filterData(*filters.toTypedArray())
+            filterData(drinks, *filters.toTypedArray())
             determineVisibleLayerOnUpdateData(drinks)
         })
     }
@@ -87,34 +84,11 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.O
 
     override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
         filters = drinkFilters.toList()
-        filterData(*drinkFilters)
+        filterData(viewModel.getFavoriteCurrentData(), *filters.toTypedArray())
     }
 
-    override fun onFilterRest() {
+    override fun onFilterReset() {
         filters = arrayListOf()
-        filterData()
-    }
-
-    override fun filterData(vararg drinkFilters: DrinkFilter) {
-        var drinks: List<Drink> = viewModel.getFavoriteCurrentData().toMutableList()
-        drinkFilters.forEach {
-            when (it.type) {
-                DrinkFilterType.ALCOHOL -> {
-                    drinks = drinks.filter { drink ->
-                        drink.getStrAlcoholic() == it.key
-                    }
-                }
-                DrinkFilterType.CATEGORY -> {
-                    drinks = drinks.filter { drink ->
-                        drink.getStrCategory() == it.key
-                    }
-                }
-                DrinkFilterType.INGREDIENT -> {
-                }
-                DrinkFilterType.GLASS -> {
-                }
-            }
-        }
-        drinkAdapter.drinkList = drinks
+        filterData(viewModel.getFavoriteCurrentData())
     }
 }

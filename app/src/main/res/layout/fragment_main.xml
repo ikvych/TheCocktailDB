@@ -8,13 +8,25 @@
         android:layout_height="match_parent"
         tools:context=".ui.fragment.MainFragment">
 
+        <com.ikvych.cocktail.widget.custom.ApplicationToolBar
+            android:id="@+id/atb_fragment_main"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/app_toolbar_height"
+            android:elevation="@dimen/app_toolbar_elevation"
+            android:background="@drawable/app_bar_bg_shape"
+            app:tl_enable_custom_btn="true"
+            app:tl_disable_return_btn="true"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
         <androidx.core.widget.NestedScrollView
             android:id="@+id/nsv_container"
             android:layout_width="match_parent"
             android:layout_height="48dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@+id/atb_fragment_main">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -26,7 +38,7 @@
                     style="@style/RecyclerView"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:orientation="horizontal"/>
+                    android:orientation="horizontal" />
 
             </LinearLayout>
 

@@ -3,9 +3,7 @@ package com.ikvych.cocktail.ui.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
@@ -14,26 +12,24 @@ import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.ui.activity.MainActivity
 import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.ui.base.FRAGMENT_ID
+import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 
 class FilterFragment : BaseFragment() {
 
-    lateinit var alcoholRadioGroup: RadioGroup
-    lateinit var categoryRadioGroup: RadioGroup
+    private lateinit var alcoholRadioGroup: RadioGroup
+    private lateinit var categoryRadioGroup: RadioGroup
+    private lateinit var returnBtn: ImageButton
+    private lateinit var acceptBtn: Button
+    private lateinit var resetBtn: Button
 
-    val drinkFilters: HashMap<DrinkFilterType, DrinkFilter> = hashMapOf()
+    private val drinkFilters: HashMap<DrinkFilterType, DrinkFilter> = hashMapOf()
 
-    lateinit var fragmentListener: OnFilterResultListener
-
-    lateinit var acceptBtn: Button
-    lateinit var resetBtn: Button
+    private var fragmentListener: OnFilterResultListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
             fragmentListener = activity as OnFilterResultListener
-            val activity = requireActivity() as MainActivity
-            activity.filterBtn.visibility = View.GONE
-            activity.indicatorView.visibility = View.GONE
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement OnFilterResultListener")
         }
@@ -42,8 +38,7 @@ class FilterFragment : BaseFragment() {
     override fun onDestroy() {
         super.onDestroy()
         try {
-            val activity = requireActivity() as MainActivity
-            activity.filterBtn.visibility = View.VISIBLE
+            fragmentListener = null
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement OnFilterResultListener")
         }
@@ -57,18 +52,19 @@ class FilterFragment : BaseFragment() {
         initCategoryFilters()
         initAlcoholFilters()
 
-        acceptBtn = requireView().findViewById(R.id.btn_accept)
+        acceptBtn = view.findViewById(R.id.btn_accept)
         acceptBtn.setOnClickListener {
-/*            setFragmentResult(
-                ALCOHOL_FILTER_KEY,
-                bundleOf(ALCOHOL_FILTER_BUNDLE_KEY to alcoholDrinkFilter.name)
-            )*/
-            fragmentListener.onFilterApply(*drinkFilters.values.toTypedArray())
+            fragmentListener!!.onFilterApply(*drinkFilters.values.toTypedArray())
         }
-        resetBtn = requireView().findViewById(R.id.btn_reject)
+        resetBtn = view.findViewById(R.id.btn_reject)
         resetBtn.setOnClickListener {
             drinkFilters.clear()
-            fragmentListener.onFilterRest()
+            fragmentListener!!.onFilterReset()
+        }
+
+        returnBtn = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_filter).returnBtn
+        returnBtn.setOnClickListener {
+            parentFragmentManager.popBackStack()
         }
     }
 
@@ -83,7 +79,7 @@ class FilterFragment : BaseFragment() {
                     text = it.key
                     if (it.key == categoryType) {
                         if (it.key != CategoryDrinkFilter.NONE.key) {
-                            drinkFilters.put(it.type, it)
+                            drinkFilters[it.type] = it
                         }
                         isChecked = true
                     }
@@ -92,10 +88,10 @@ class FilterFragment : BaseFragment() {
         }
 
         categoryRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            CategoryDrinkFilter.values().forEach { it ->
+            CategoryDrinkFilter.values().forEach {
                 if (it.key == requireView().findViewById<RadioButton>(checkedId).text) {
-                    if (it.key != "None") {
-                        drinkFilters.put(it.type, it)
+                    if (it.key != CategoryDrinkFilter.NONE.key) {
+                        drinkFilters[it.type] = it
                     } else {
                         drinkFilters.remove(it.type)
                     }
@@ -124,10 +120,10 @@ class FilterFragment : BaseFragment() {
         }
 
         alcoholRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            AlcoholDrinkFilter.values().forEach { it ->
+            AlcoholDrinkFilter.values().forEach {
                 if (it.key == requireView().findViewById<RadioButton>(checkedId).text) {
-                    if (it.key != "None") {
-                        drinkFilters.put(it.type, it)
+                    if (it.key != AlcoholDrinkFilter.NONE.key) {
+                        drinkFilters[it.type] = it
                     } else {
                         drinkFilters.remove(it.type)
                     }
@@ -138,7 +134,7 @@ class FilterFragment : BaseFragment() {
 
     interface OnFilterResultListener {
         fun onFilterApply(vararg drinkFilters: DrinkFilter)
-        fun onFilterRest()
+        fun onFilterReset()
     }
 
     companion object {

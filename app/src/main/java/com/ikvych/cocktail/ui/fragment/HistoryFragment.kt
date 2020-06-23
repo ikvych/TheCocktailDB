@@ -19,10 +19,10 @@ import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.MainViewModel
 
-class HistoryFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.OnFilterResultListener {
+class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
+    FilterFragment.OnFilterResultListener {
 
-    lateinit var fragmentView: View
-    var filters: List<DrinkFilter> = arrayListOf()
+    private lateinit var fragmentView: View
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -52,23 +52,9 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.On
             }
     }
 
-    override fun initLiveDataObserver() {
-        viewModel.getLiveData().observe(this, Observer { drinks ->
-            drinkAdapter.drinkList = drinks
-            filterData(*filters.toTypedArray())
-            determineVisibleLayerOnUpdateData(drinks)
-        })
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setFragmentResultListener(ALCOHOL_FILTER_KEY) { _, bundle ->
-            val result = bundle.getString(ALCOHOL_FILTER_BUNDLE_KEY)
-            filterData(AlcoholDrinkFilter.valueOf(result!!))
-            requireActivity().supportFragmentManager.popBackStack()
-        }
         initViewModel(MainViewModel::class.java)
-
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -96,11 +82,11 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.On
 
     override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
         filters = drinkFilters.toList()
-        filterData(*drinkFilters)
+        filterData(viewModel.getCurrentData(), *filters.toTypedArray())
     }
 
-    override fun onFilterRest() {
+    override fun onFilterReset() {
         filters = arrayListOf()
-        filterData()
+        filterData(viewModel.getCurrentData())
     }
 }

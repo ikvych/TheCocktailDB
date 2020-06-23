@@ -53,6 +53,18 @@ class ApplicationToolBar(
         requestLayout()
     }
 
+    var isReturnBtnDisabled: Boolean = false
+        set(value) {
+            field = value
+            if (field) {
+                returnBtn.visibility = View.GONE
+            } else {
+                returnBtn.visibility = View.VISIBLE
+            }
+            invalidate()
+            requestLayout()
+        }
+
     init {
         View.inflate(context, R.layout.app_toolbar, this)
         this.returnBtn = findViewById(R.id.return_tb_btn)
@@ -70,6 +82,7 @@ class ApplicationToolBar(
                 isForSearch = getBoolean(R.styleable.ApplicationToolBar_tl_is_for_search, false)
                 mainTitle = getString(R.styleable.ApplicationToolBar_tl_set_text) ?: context.getString(R.string.app_name)
                 isCustomBtnEnabled = getBoolean(R.styleable.ApplicationToolBar_tl_enable_custom_btn, false)
+                isReturnBtnDisabled = getBoolean(R.styleable.ApplicationToolBar_tl_disable_return_btn, false)
             } finally {
                 recycle()
             }

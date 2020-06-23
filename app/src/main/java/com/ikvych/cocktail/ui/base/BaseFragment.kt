@@ -6,13 +6,25 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import com.ikvych.cocktail.data.entity.Drink
 
 const val FRAGMENT_ID = "com.ikvych.cocktail.ViewId"
 const val ALCOHOL_FILTER_KEY = "com.ikvych.cocktail.AlcoholFilterKey"
 const val ALCOHOL_FILTER_BUNDLE_KEY = "com.ikvych.cocktail.AlcoholFilterBundleKey"
 
-abstract class BaseFragment() : Fragment() {
+abstract class BaseFragment() : Fragment(),
+    BaseDialogFragment.OnDialogFragmentClickListener<Drink>,
+    BaseDialogFragment.OnDialogFragmentDismissListener<Drink> {
+
+    override fun onBottomSheetDialogFragmentDismiss(dialog: DialogFragment, data: Drink?) {
+
+    }
+
+    override fun onBottomSheetDialogFragmentClick(dialog: DialogFragment, data: Drink?) {
+
+    }
 
     override fun onAttach(context: Context) {
         super.onAttach(context)

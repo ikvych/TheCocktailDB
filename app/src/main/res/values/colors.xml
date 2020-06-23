@@ -19,6 +19,7 @@
     <color name="text_invalid">#B00020</color>
 
     <color name="iv_return_button_bg">#E0E0E0</color>
+    <color name="color_transparent">#00FFFFFF</color>
 
 
 </resources>

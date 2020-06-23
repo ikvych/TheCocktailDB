@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.R
@@ -17,6 +18,7 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import java.nio.file.Files.delete
 
 
 class DrinkAdapter(
@@ -74,6 +76,45 @@ class DrinkAdapter(
                     context.startActivity(intent)
                 }
             }
+
+            itemDrinkListBinding.root.setOnLongClickListener(View.OnLongClickListener { v ->
+                PopupMenu(context, v).apply {
+                    // MainActivity implements OnMenuItemClickListener
+                    setOnMenuItemClickListener(PopupMenu.OnMenuItemClickListener {
+                        when (it.itemId) {
+                            R.id.menu_drink_open -> {
+                                val position = adapterPosition
+
+                                if (position != RecyclerView.NO_POSITION) {
+                                    val drink: Drink = drinkList[position]
+                                    val intent = Intent(context, DrinkDetailActivity::class.java)
+                                    when (activityName) {
+                                        MAIN_MODEL_TYPE -> intent.putExtra(
+                                            VIEW_MODEL_TYPE,
+                                            MAIN_MODEL_TYPE
+                                        )
+                                        SEARCH_MODEL_TYPE -> intent.putExtra(
+                                            VIEW_MODEL_TYPE,
+                                            SEARCH_MODEL_TYPE
+                                        )
+                                    }
+                                    intent.putExtra(DRINK, drink)
+                                    context.startActivity(intent)
+                                }
+                                true
+                            }
+                            R.id.menu_drink_quick_preview -> {
+
+                                true
+                            }
+                            else -> false
+                        }
+                    })
+                    inflate(R.menu.menu_drink_item_shortcut)
+                    show()
+                }
+                true
+            })
 
 
             val favorite = itemDrinkListBinding.root.findViewById<CheckBox>(R.id.cb_favorite)

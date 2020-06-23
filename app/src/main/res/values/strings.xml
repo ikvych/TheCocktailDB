@@ -31,5 +31,12 @@
     <string name="start_test_fragment">start test fragment</string>
     <string name="history">History</string>
     <string name="favorite">Favorite</string>
+    <string name="remove">Remove</string>
+    <string name="quick_preview">Quick Preview</string>
+    <string name="add_favorite">Add Favorite</string>
+    <string name="open">Open</string>
+    <string name="remove_favorite">remove_favorite</string>
+    <string name="menu_main_fragment_title">Main</string>
+    <string name="menu_profile_fragment_title">Profile</string>
 
 </resources>

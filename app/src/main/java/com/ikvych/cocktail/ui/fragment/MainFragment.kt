@@ -6,10 +6,10 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.widget.NestedScrollView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -25,22 +25,21 @@ import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.ui.base.FRAGMENT_ID
+import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterResultListener {
 
     lateinit var batteryReceiver: BatteryReceiver
+    var fragmentListener: FilterFragment.OnFilterResultListener? = null
 
-    private var isPowerConnected: Boolean = false
-    private var isBatteryLow: Boolean = false
-    private var percent: Int = 0
+    lateinit var filterBtn: ImageButton
+    lateinit var filterIndicator: TextView
 
-    var filters: List<DrinkFilter> = arrayListOf()
-    lateinit var filterAdapter: FilterAdapter
+    lateinit var filterFragment: FilterFragment
 
-    private lateinit var batteryPercent: TextView
-    private lateinit var batteryIcon: ImageView
-    private lateinit var powerConnected: ImageView
+    private var filters: List<DrinkFilter> = arrayListOf()
+    private lateinit var filterAdapter: FilterAdapter
 
     private lateinit var viewPager: ViewPager2
     private lateinit var drinkPagerAdapter: DrinkPagerAdapter
@@ -48,6 +47,14 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
     private lateinit var historyFragment: HistoryFragment
     private lateinit var favoriteFragment: FavoriteFragment
+
+    private var isPowerConnected: Boolean = false
+    private var isBatteryLow: Boolean = false
+    private var percent: Int = 0
+
+    private lateinit var batteryPercent: TextView
+    private lateinit var batteryIcon: ImageView
+    private lateinit var powerConnected: ImageView
 
 
     companion object {
@@ -63,9 +70,10 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            (requireActivity() as FilterResultCallBack).addCallBack(this)
+            fragmentListener = activity as FilterFragment.OnFilterResultListener
+            (activity as FilterResultCallBack).addCallBack(this)
         } catch (exception: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
+            throw ClassCastException("${activity.toString()} must implement FilterResultCallBack | FilterFragment.OnFilterResultListener")
         }
     }
 
@@ -73,6 +81,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         super.onDetach()
         try {
             (requireActivity() as FilterResultCallBack).removeCallBack(this)
+            fragmentListener = null
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
         }
@@ -80,25 +89,22 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         historyFragment = HistoryFragment.newInstance(R.layout.fragment_history)
         favoriteFragment = FavoriteFragment.newInstance(R.layout.fragment_favorite)
 
         drinkPagerAdapter = DrinkPagerAdapter(
             arrayListOf(historyFragment, favoriteFragment),
-            requireActivity().supportFragmentManager,
             this
         )
-
         batteryReceiver = BatteryReceiver(this)
-
-
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
-        viewPager = requireView().findViewById(R.id.pager)
+        viewPager = view.findViewById(R.id.pager)
         viewPager.adapter = drinkPagerAdapter
 
-        tabLayout = requireView().findViewById(R.id.tab_layout)
+        tabLayout = view.findViewById(R.id.tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             if (position == 0) {
                 tab.text = getText(R.string.history)
@@ -107,23 +113,65 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
             }
         }.attach()
 
-        batteryPercent = requireView().findViewById(R.id.tv_battery_percent)
-        batteryIcon = requireView().findViewById(R.id.iv_battery_icon)
-        powerConnected = requireView().findViewById(R.id.iv_power_connected)
 
-        val scrollView: NestedScrollView
-
-        val filterRecyclerView: RecyclerView = requireView().findViewById(R.id.rv_filter)
+        val filterRecyclerView: RecyclerView = view.findViewById(R.id.rv_filter)
         filterAdapter = FilterAdapter(requireContext())
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         filterRecyclerView.layoutManager = layoutManager
         filterRecyclerView.setHasFixedSize(true)
         filterRecyclerView.adapter = filterAdapter
         filterAdapter.filterList = filters
 
+        filterIndicator = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).indicatorView
+
+        filterBtn = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).customBtn
+        filterBtn.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_app_tool_bar_filter
+            )
+        )
+
+        filterBtn.setOnClickListener {
+            val fragmentTransaction = parentFragmentManager.beginTransaction()
+            filterFragment =
+                FilterFragment.newInstance(R.layout.fragment_filter, *filters.toTypedArray())
+            fragmentTransaction.hide(this)
+            fragmentTransaction.add(R.id.fcv_main, filterFragment)
+            fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
+            fragmentTransaction.commit()
+        }
+
+        filterBtn.setOnLongClickListener {
+            fragmentListener!!.onFilterReset()
+            true
+        }
+
         fab.setOnClickListener {
             startActivity(Intent(requireContext(), SearchActivity::class.java))
         }
+
+        batteryPercent = view.findViewById(R.id.tv_battery_percent)
+        batteryIcon = view.findViewById(R.id.iv_battery_icon)
+        powerConnected = view.findViewById(R.id.iv_power_connected)
+    }
+
+
+    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
+        filters = drinkFilters.toList()
+        filterAdapter.filterList = filters
+        if (filters.isNotEmpty()) {
+            filterIndicator.visibility = View.VISIBLE
+        } else {
+            filterIndicator.visibility = View.GONE
+        }
+    }
+
+    override fun onFilterReset() {
+        filters = arrayListOf()
+        filterAdapter.filterList = filters
+        filterIndicator.visibility = View.GONE
     }
 
     override fun onStart() {
@@ -259,15 +307,5 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
                 )
             )
         }
-    }
-
-    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
-        filters = drinkFilters.toList()
-        filterAdapter.filterList = filters
-    }
-
-    override fun onFilterRest() {
-        filters = arrayListOf()
-        filterAdapter.filterList = filters
     }
 }

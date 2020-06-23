@@ -55,11 +55,13 @@ class FilterFragment : BaseFragment() {
         acceptBtn = view.findViewById(R.id.btn_accept)
         acceptBtn.setOnClickListener {
             fragmentListener!!.onFilterApply(*drinkFilters.values.toTypedArray())
+            parentFragmentManager.popBackStack()
         }
         resetBtn = view.findViewById(R.id.btn_reject)
         resetBtn.setOnClickListener {
             drinkFilters.clear()
             fragmentListener!!.onFilterReset()
+            parentFragmentManager.popBackStack()
         }
 
         returnBtn = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_filter).returnBtn

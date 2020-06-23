@@ -19,15 +19,6 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
     lateinit var mainFragment: MainFragment
     lateinit var profileFragment: ProfileFragment
 
-    override fun onBackPressed() {
-/*        if (filters.isNotEmpty()) {
-            indicatorView.visibility = View.VISIBLE
-        } else {
-            indicatorView.visibility = View.GONE
-        }*/
-        super.onBackPressed()
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -57,45 +48,24 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
 
         profileFragment = ProfileFragment.newInstance(R.layout.fragment_profile)
         mainFragment = MainFragment.newInstance(R.layout.fragment_main)
-        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        ft.add(R.id.fcv_main, profileFragment, ProfileFragment::class.java.simpleName)
-        ft.hide(profileFragment)
-        ft.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
-        ft.commit()
-
-
-/*        supportFragmentManager.commit {
-            this.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
-            this.addToBackStack(MainFragment::class.java.toString())
-        }*/
-/*
-        RegularBottomSheetDialogFragment.newInstance {
-//            title="Test"
-            this.titleText="Test"
-
-        }.show(supportFragmentManager)*/
+        val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(R.id.fcv_main, profileFragment, ProfileFragment::class.java.simpleName)
+        fragmentTransaction.hide(profileFragment)
+        fragmentTransaction.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
+        fragmentTransaction.commit()
     }
+
 
     override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
         callbacks.forEach {
             it.onFilterApply(*drinkFilters)
         }
-/*        if (drinkFilters.isNotEmpty()) {
-            if (indicatorView.visibility != View.VISIBLE) {
-                indicatorView.visibility = View.VISIBLE
-            }
-        }*/
-        supportFragmentManager.popBackStack()
     }
 
     override fun onFilterReset() {
         callbacks.forEach {
             it.onFilterReset()
         }
-/*        if (indicatorView.visibility == View.VISIBLE) {
-            indicatorView.visibility = View.GONE
-        }*/
-        supportFragmentManager.popBackStack()
     }
 
     override fun addCallBack(listener: FilterFragment.OnFilterResultListener) {

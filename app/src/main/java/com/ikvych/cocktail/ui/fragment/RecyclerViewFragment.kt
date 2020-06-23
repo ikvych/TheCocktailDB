@@ -54,12 +54,12 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
         drinkFilters.forEach {
             when (it.type) {
                 DrinkFilterType.ALCOHOL -> {
-                    drinksCopy = drinks.filter { drink ->
+                    drinksCopy = drinksCopy.filter { drink ->
                         drink.getStrAlcoholic() == it.key
                     }
                 }
                 DrinkFilterType.CATEGORY -> {
-                    drinksCopy = drinks.filter { drink ->
+                    drinksCopy = drinksCopy.filter { drink ->
                         drink.getStrCategory() == it.key
                     }
                 }

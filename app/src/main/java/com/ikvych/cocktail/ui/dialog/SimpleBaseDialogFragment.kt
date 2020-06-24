@@ -12,11 +12,17 @@ import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.ui.base.BaseDialogFragment
+import com.ikvych.cocktail.ui.base.DialogButton
+import com.ikvych.cocktail.ui.base.DialogType
 import kotlinx.android.synthetic.main.layout_dialog_simple.*
 
 
-abstract class SimpleBaseDialogFragment<Data, Builder : SimpleBaseDialogFragment.SimpleDialogBuilder>
-protected constructor() : BaseDialogFragment<Data>() {
+abstract class SimpleBaseDialogFragment<
+        Data,
+        ButtonType : DialogButton,
+        Type : DialogType<ButtonType>,
+        Builder : SimpleBaseDialogFragment.SimpleDialogBuilder>
+protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
 
     override val contentLayoutResId = R.layout.layout_dialog_simple
     protected open val extraContentLayoutResId: Int = 0
@@ -51,7 +57,8 @@ protected constructor() : BaseDialogFragment<Data>() {
 
         lb_dialog_bs_left.isVisible = !leftButtonText.isNullOrEmpty()
         lb_dialog_bs_right.isVisible = !rightButtonText.isNullOrEmpty()
-        space_dialog_bs_buttons.isVisible = lb_dialog_bs_left.isVisible && lb_dialog_bs_right.isVisible
+        space_dialog_bs_buttons.isVisible =
+            lb_dialog_bs_left.isVisible && lb_dialog_bs_right.isVisible
         vg_dialog_bs_buttons.isVisible = lb_dialog_bs_left.isVisible || lb_dialog_bs_right.isVisible
 
         lb_dialog_bs_left.text = leftButtonText ?: ""
@@ -83,6 +90,11 @@ protected constructor() : BaseDialogFragment<Data>() {
     protected open fun configureExtraContent(container: FrameLayout, savedInstanceState: Bundle?) {
         //stub
     }
+
+    override fun obtainClickableViews(): List<View> = listOf(
+        lb_dialog_bs_left,
+        lb_dialog_bs_right
+    )
 
 
     open class SimpleDialogBuilder constructor() : Parcelable {

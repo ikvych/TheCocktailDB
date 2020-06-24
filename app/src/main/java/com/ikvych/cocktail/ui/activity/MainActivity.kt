@@ -7,6 +7,7 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.FilterFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
@@ -53,6 +54,12 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
         fragmentTransaction.hide(profileFragment)
         fragmentTransaction.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
         fragmentTransaction.commit()
+
+        RegularBottomSheetDialogFragment.newInstance {
+//            title="Test"
+            this.titleText="Test"
+
+        }.show(supportFragmentManager)
     }
 
 

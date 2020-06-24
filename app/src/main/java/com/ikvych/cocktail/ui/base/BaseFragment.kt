@@ -15,14 +15,23 @@ const val ALCOHOL_FILTER_KEY = "com.ikvych.cocktail.AlcoholFilterKey"
 const val ALCOHOL_FILTER_BUNDLE_KEY = "com.ikvych.cocktail.AlcoholFilterBundleKey"
 
 abstract class BaseFragment() : Fragment(),
-    BaseDialogFragment.OnDialogFragmentClickListener<Drink>,
-    BaseDialogFragment.OnDialogFragmentDismissListener<Drink> {
+    BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
+    BaseDialogFragment.OnDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>> {
 
-    override fun onBottomSheetDialogFragmentDismiss(dialog: DialogFragment, data: Drink?) {
+    override fun onBottomSheetDialogFragmentDismiss(
+        dialog: DialogFragment,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
 
     }
 
-    override fun onBottomSheetDialogFragmentClick(dialog: DialogFragment, data: Drink?) {
+    override fun onBottomSheetDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
 
     }
 

@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
-import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel

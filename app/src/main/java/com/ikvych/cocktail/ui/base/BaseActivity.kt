@@ -2,24 +2,42 @@ package com.ikvych.cocktail.ui.base
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Bundle
-import android.provider.ContactsContract
+import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
-import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.receiver.FlyModeReceiver
 
 
 abstract class BaseActivity : AppCompatActivity(),
-    BaseDialogFragment.OnDialogFragmentClickListener<Drink>,
-    BaseDialogFragment.OnDialogFragmentDismissListener<Drink> {
+    BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
+    BaseDialogFragment.OnDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>> {
 
-    override fun onBottomSheetDialogFragmentDismiss(dialog: DialogFragment, data: Drink?) {
-
+    @CallSuper
+    override fun onBottomSheetDialogFragmentDismiss(
+        dialog: DialogFragment,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        (dialog.parentFragment as? BaseFragment)?.onBottomSheetDialogFragmentDismiss(
+            dialog,
+            type,
+            data
+        )
     }
 
-    override fun onBottomSheetDialogFragmentClick(dialog: DialogFragment, data: Drink?) {
-
+    @CallSuper
+    override fun onBottomSheetDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        (dialog.parentFragment as? BaseFragment)?.onBottomSheetDialogFragmentClick(
+            dialog,
+            buttonType,
+            type,
+            data
+        )
     }
 
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()

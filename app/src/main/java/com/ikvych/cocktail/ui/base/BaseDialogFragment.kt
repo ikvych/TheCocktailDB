@@ -16,19 +16,22 @@ import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ikvych.cocktail.R
 
-abstract class BaseDialogFragment<Data> protected constructor() :
+abstract class BaseDialogFragment<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> protected constructor() :
     DialogFragment(),
-    View.OnClickListener{
+    View.OnClickListener {
 
-    protected var onDialogClickListener: OnDialogFragmentClickListener<Data>? =
+    protected var onDialogClickListener: OnDialogFragmentClickListener<Data, ButtonType, Type>? =
         null
         private set
-    protected var onDialogDismissListener: OnDialogFragmentDismissListener<Data>? =
+    protected var onDialogDismissListener: OnDialogFragmentDismissListener<Data, ButtonType, Type>? =
         null
         private set
 
+    protected abstract val dialogType: Type
     protected open var data: Data? = null
     protected abstract val contentLayoutResId: Int
+
+    private val clickableViews = mutableListOf<View>()
 
     init {
         this.setStyle(STYLE_NO_TITLE, R.style.DialogFragment)
@@ -44,7 +47,18 @@ abstract class BaseDialogFragment<Data> protected constructor() :
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        clickableViews.clear()
+        clickableViews.addAll(obtainClickableViews())
+        clickableViews.forEach {
+            it.setOnClickListener(this)
+        }
     }
+
+    protected open fun obtainClickableViews(): List<View> {
+        return emptyList()
+    }
+
+    protected abstract fun getButtonType(view: View): ButtonType
 
     @Suppress("UNUSED_PARAMETER")
     protected open fun obtainDataForView(view: View): Data? {
@@ -52,17 +66,31 @@ abstract class BaseDialogFragment<Data> protected constructor() :
     }
 
     override fun onClick(v: View?) {
-        callOnClick(v?:return)
+        val buttonType = getButtonType(v ?: return)
+        callOnClick(v, buttonType)
     }
 
-    protected open fun callOnClick(v: View) {
+    protected open fun callOnClick(v: View, buttonType: ButtonType) {
         onDialogClickListener?.apply {
             val data = obtainDataForView(v)
+
+            val acceptClick = this.shouldBottomSheetDialogFragmentAcceptClick(
+                this@BaseDialogFragment,
+                dialogType,
+                buttonType,
+                data
+            )
+
+            if (!acceptClick) return
+
             this.onBottomSheetDialogFragmentClick(
                 this@BaseDialogFragment,
+                buttonType,
+                dialogType,
                 data
             )
         }
+
         dismiss()
     }
 
@@ -84,7 +112,7 @@ abstract class BaseDialogFragment<Data> protected constructor() :
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        onDialogDismissListener?.onBottomSheetDialogFragmentDismiss(this, data)
+        onDialogDismissListener?.onBottomSheetDialogFragmentDismiss(this, dialogType,  data)
     }
 
     //region Show Dialog Methods
@@ -108,7 +136,11 @@ abstract class BaseDialogFragment<Data> protected constructor() :
         showFragmentInternal(manager, this::class.java.name, true)
     }
 
-    protected open fun showFragmentInternal(manager: FragmentManager, tag: String, showNow: Boolean = false): Int {
+    protected open fun showFragmentInternal(
+        manager: FragmentManager,
+        tag: String,
+        showNow: Boolean = false
+    ): Int {
         // workaround to handle gap if multiple dialog instances are called
         // before first fragment begin transaction and added
         // Note that fragments are not added to manager backstack
@@ -183,18 +215,19 @@ abstract class BaseDialogFragment<Data> protected constructor() :
     @Suppress("UNCHECKED_CAST")
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        check(context is OnDialogFragmentClickListener<*>) {
+        check(context is OnDialogFragmentClickListener<*, *, *>) {
             "Bottom Sheet Dialog must be attached to context " +
                     "(activity/fragment) that implements ${OnDialogFragmentClickListener::class.java.simpleName} " +
                     "listener"
         }
-        onDialogClickListener = context as? OnDialogFragmentClickListener<Data>
-        check(context is OnDialogFragmentDismissListener<*>) {
+        onDialogClickListener = context as? OnDialogFragmentClickListener<Data, ButtonType, Type>
+        check(context is OnDialogFragmentDismissListener<*, *, *>) {
             "Bottom Sheet Dialog must be attached to context " +
                     "(activity/fragment) that implements ${OnDialogFragmentDismissListener::class.java.simpleName} " +
                     "listener"
         }
-        onDialogDismissListener = context as? OnDialogFragmentDismissListener<Data>
+        onDialogDismissListener =
+            context as? OnDialogFragmentDismissListener<Data, ButtonType, Type>
     }
 
     override fun onDetach() {
@@ -203,19 +236,32 @@ abstract class BaseDialogFragment<Data> protected constructor() :
         onDialogDismissListener = null
     }
 
-    interface OnDialogFragmentDismissListener<Data> {
+    interface OnDialogFragmentDismissListener<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> {
         fun onBottomSheetDialogFragmentDismiss(
             dialog: DialogFragment,
+            type: Type,
             data: Data?
         )
     }
 
-    interface OnDialogFragmentClickListener<Data> {
+    interface OnDialogFragmentClickListener<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> {
         fun onBottomSheetDialogFragmentClick(
             dialog: DialogFragment,
+            buttonType: ButtonType,
+            type: Type,
             data: Data?
         )
+
+        fun shouldBottomSheetDialogFragmentAcceptClick(
+            dialog: DialogFragment,
+            dialogType: Type,
+            buttonType: ButtonType,
+            data: Data?
+        ): Boolean {
+            return true
+        }
     }
+
     companion object {
         private val instanceSet = mutableSetOf<Pair<String, String>>()
     }

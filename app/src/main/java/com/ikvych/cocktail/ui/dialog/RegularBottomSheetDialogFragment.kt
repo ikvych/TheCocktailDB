@@ -1,21 +1,39 @@
 package com.ikvych.cocktail.ui.dialog
 
 import android.os.Bundle
+import android.view.View
 import androidx.core.os.bundleOf
+import com.ikvych.cocktail.R
+import com.ikvych.cocktail.ui.base.LeftDialogButton
+import com.ikvych.cocktail.ui.base.RegularDialogButton
+import com.ikvych.cocktail.ui.base.RegularDialogType
+import com.ikvych.cocktail.ui.base.RightDialogButton
 
 
 class RegularBottomSheetDialogFragment<Data> :
-    SimpleBaseDialogFragment<Data, SimpleBaseDialogFragment.SimpleDialogBuilder>() {
+    SimpleBaseDialogFragment<Data, RegularDialogButton, RegularDialogType, SimpleBaseDialogFragment.SimpleDialogBuilder>() {
 
+    override val dialogType: RegularDialogType = RegularDialogType
+/*    override val dialogBuilder: SimpleDialogBuilder by instanceState(SimpleDialogBuilder(), EXTRA_KEY_BUILDER)
+    override val data: Data? by instanceStateNullable(customKey = EXTRA_KEY_DATA)*/
+
+    override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
+    override var data: Data? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         dialogBuilder= requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
     }
 
-    override var dialogBuilder: SimpleDialogBuilder =SimpleDialogBuilder()
-    override var data: Data? =null
+    override fun getButtonType(view: View): RegularDialogButton {
+        return when (view.id) {
+            R.id.lb_dialog_bs_left -> LeftDialogButton
+            R.id.lb_dialog_bs_right -> RightDialogButton
+            else -> throw NotImplementedError("handle another dialog button types")
+        }
+    }
+
+
 
 
     companion object {

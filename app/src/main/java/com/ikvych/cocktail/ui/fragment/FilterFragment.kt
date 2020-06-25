@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.entity.Ingredient
@@ -14,7 +13,6 @@ import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
-import com.ikvych.cocktail.ui.activity.MainActivity
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.FilterDrinkAlcoholDialogFragment
 import com.ikvych.cocktail.ui.dialog.FilterDrinkCategoryDialogFragment
@@ -25,15 +23,16 @@ import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 
 class FilterFragment : BaseFragment() {
 
-    private lateinit var alcoholRadioGroup: RadioGroup
-    private lateinit var categoryRadioGroup: RadioGroup
     private lateinit var returnBtn: ImageButton
     private lateinit var acceptBtn: Button
     private lateinit var resetBtn: Button
 
-    private lateinit var alcoholFilter: ImageButton
-    private lateinit var categoryFilter: ImageButton
-    private lateinit var ingredientFilter: ImageButton
+    private lateinit var alcoholFilter: LinearLayout
+    private lateinit var chosenAlcoholFilter: TextView
+    private lateinit var categoryFilter: LinearLayout
+    private lateinit var chosenCategoryFilter: TextView
+    private lateinit var ingredientFilter: LinearLayout
+    private lateinit var chosenIngredientFilter: TextView
 
     private val drinkFilters: HashMap<DrinkFilterType, DrinkFilter> = hashMapOf()
 
@@ -61,28 +60,32 @@ class FilterFragment : BaseFragment() {
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
 
+        initCategoryFilters()
+        initAlcoholFilters()
+
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         alcoholFilter = view.findViewById(R.id.im_alcohol_filter)
         alcoholFilter.setOnClickListener { v ->
             FilterDrinkAlcoholDialogFragment.newInstance().show(childFragmentManager)
         }
+        chosenAlcoholFilter = view.findViewById(R.id.tv_chosen_alcohol_filter)
+        chosenAlcoholFilter.text = drinkFilters[DrinkFilterType.ALCOHOL]?.key ?: AlcoholDrinkFilter.NONE.key
 
         categoryFilter = view.findViewById(R.id.im_category_filter)
         categoryFilter.setOnClickListener { v ->
             FilterDrinkCategoryDialogFragment.newInstance().show(childFragmentManager)
         }
+        chosenCategoryFilter = view.findViewById(R.id.tv_chosen_category_filter)
+        chosenCategoryFilter.text = drinkFilters[DrinkFilterType.CATEGORY]?.key ?: CategoryDrinkFilter.NONE.key
 
         ingredientFilter = view.findViewById(R.id.im_ingredient_filter)
         ingredientFilter.setOnClickListener { v ->
             FilterDrinkIngredientDialogFragment.newInstance(viewModel.getAllIngredient())
                 .show(childFragmentManager)
         }
-
-        alcoholRadioGroup = requireView().findViewById(R.id.alcohol_radio_group)
-        categoryRadioGroup = requireView().findViewById(R.id.category_radio_group)
-/*        initCategoryFilters()*/
-/*        initAlcoholFilters()*/
+        chosenIngredientFilter = view.findViewById(R.id.tv_chosen_category_filter)
+        chosenIngredientFilter.text = drinkFilters[DrinkFilterType.INGREDIENT]?.key ?: CategoryDrinkFilter.NONE.key
 
         acceptBtn = view.findViewById(R.id.btn_accept)
         acceptBtn.setOnClickListener {
@@ -104,65 +107,41 @@ class FilterFragment : BaseFragment() {
     }
 
     private fun initCategoryFilters() {
-        val categoryType = requireArguments().getString(DrinkFilterType.CATEGORY.key)
+        val categoryKey = requireArguments().getString(DrinkFilterType.CATEGORY.key)
             ?: CategoryDrinkFilter.NONE.key
 
-        CategoryDrinkFilter.values().forEach {
-            categoryRadioGroup.addView(
-                RadioButton(requireContext()).apply {
-                    id = View.generateViewId()
-                    text = it.key
-                    if (it.key == categoryType) {
-                        if (it.key != CategoryDrinkFilter.NONE.key) {
-                            drinkFilters[it.type] = it
-                        }
-                        isChecked = true
-                    }
-                }
-            )
-        }
-
-        categoryRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+        if (categoryKey != CategoryDrinkFilter.NONE.key) {
             CategoryDrinkFilter.values().forEach {
-                if (it.key == requireView().findViewById<RadioButton>(checkedId).text) {
-                    if (it.key != CategoryDrinkFilter.NONE.key) {
-                        drinkFilters[it.type] = it
-                    } else {
-                        drinkFilters.remove(it.type)
-                    }
+                if (it.key == categoryKey) {
+                    drinkFilters[AlcoholDrinkFilter.ALCOHOLIC.type] = it
                 }
+
             }
         }
     }
 
     private fun initAlcoholFilters() {
-        val alcoholType = requireArguments().getString(DrinkFilterType.ALCOHOL.key)
+        val alcoholKey = requireArguments().getString(DrinkFilterType.ALCOHOL.key)
             ?: AlcoholDrinkFilter.NONE.key
 
-        AlcoholDrinkFilter.values().forEach {
-            if (it.key == alcoholType) {
-                val alcoholRadioBtn: RadioButton = when (it) {
-                    AlcoholDrinkFilter.ALCOHOLIC -> requireView().findViewById(R.id.rb_alcoholic)
-                    AlcoholDrinkFilter.NON_ALCOHOLIC -> requireView().findViewById(R.id.rb_non_alcoholic)
-                    AlcoholDrinkFilter.OPTIONAL_ALCOHOL -> requireView().findViewById(R.id.rb_optional_alcoholic)
-                    AlcoholDrinkFilter.NONE -> requireView().findViewById(R.id.rb_none)
+        if (alcoholKey != AlcoholDrinkFilter.NONE.key) {
+            AlcoholDrinkFilter.values().forEach {
+                if (it.key == alcoholKey) {
+                    drinkFilters[AlcoholDrinkFilter.ALCOHOLIC.type] = it
                 }
-                if (it.key != AlcoholDrinkFilter.NONE.key) {
-                    drinkFilters.put(it.type, it)
-                }
-                alcoholRadioBtn.isChecked = true
             }
         }
+    }
 
-        alcoholRadioGroup.setOnCheckedChangeListener { _, checkedId ->
+    private fun initIngredientFilters() {
+        val ingredientKey = requireArguments().getString(DrinkFilterType.INGREDIENT.key)
+            ?: IngredientDrinkFilter.INGREDIENT.key
+
+        if (ingredientKey != IngredientDrinkFilter.INGREDIENT.key) {
             AlcoholDrinkFilter.values().forEach {
-                if (it.key == requireView().findViewById<RadioButton>(checkedId).text) {
-                    if (it.key != AlcoholDrinkFilter.NONE.key) {
-                        drinkFilters[it.type] = it
-                    } else {
-                        drinkFilters.remove(it.type)
-                    }
-                }
+/*                if (it.key == alcoholKey) {
+                    drinkFilters[AlcoholDrinkFilter.ALCOHOLIC.type] = it
+                }*/
             }
         }
     }
@@ -181,7 +160,7 @@ class FilterFragment : BaseFragment() {
                 } else {
                     drinkFilters.remove(alcoholType.type)
                 }
-                println(alcoholType.key + " alcoholType from alcohol filter")
+                chosenAlcoholFilter.text = alcoholType.key
             }
             CategoryDrinkType -> {
                 val categoryType = data as CategoryDrinkFilter
@@ -190,7 +169,7 @@ class FilterFragment : BaseFragment() {
                 } else {
                     drinkFilters.remove(categoryType.type)
                 }
-                println(categoryType.key + " categoryType from alcohol filter")
+                chosenCategoryFilter.text = categoryType.key
             }
             IngredientDrinkType -> {
                 val categoryType = data as Ingredient

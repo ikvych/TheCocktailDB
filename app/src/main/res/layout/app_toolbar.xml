@@ -46,6 +46,33 @@
         android:layout_weight="1">
 
         <ImageButton
+            android:id="@+id/sort_tb_btn"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_centerInParent="true"
+            android:background="@android:color/transparent"
+            android:src="@drawable/ic_app_tool_bar_sort"
+            android:padding="12dp" />
+
+        <TextView
+            android:id="@+id/tv_sort_indicator"
+            android:height="14dp"
+            android:width="14dp"
+            android:visibility="gone"
+            android:layout_alignEnd="@+id/sort_tb_btn"
+            android:layout_alignTop="@+id/sort_tb_btn"
+            android:background="@drawable/indicator_filter_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+        <ImageButton
             android:id="@+id/custom_tb_btn"
             android:layout_width="32dp"
             android:layout_height="32dp"

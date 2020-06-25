@@ -6,11 +6,13 @@ import android.view.View
 import androidx.fragment.app.setFragmentResultListener
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.listener.FilterResultCallBack
+import com.ikvych.cocktail.listener.SortResultCallBack
 import com.ikvych.cocktail.ui.activity.MainActivity
 import com.ikvych.cocktail.ui.base.ALCOHOL_FILTER_BUNDLE_KEY
 import com.ikvych.cocktail.ui.base.ALCOHOL_FILTER_KEY
@@ -20,14 +22,16 @@ import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.MainViewModel
 
 class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
-    FilterFragment.OnFilterResultListener {
+    FilterFragment.OnFilterResultListener, MainFragment.OnSortResultListener {
 
     private lateinit var fragmentView: View
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
             (requireActivity() as FilterResultCallBack).addCallBack(this)
+            (parentFragment as SortResultCallBack).addCallBack(this)
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
         }
@@ -37,6 +41,7 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
         super.onDetach()
         try {
             (requireActivity() as FilterResultCallBack).removeCallBack(this)
+            (parentFragment as SortResultCallBack).removeCallBack(this)
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
         }
@@ -83,10 +88,17 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
     override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
         filters = drinkFilters
         filterData(viewModel.getCurrentData(), filters)
+        sortData(sortDrinkType)
     }
 
     override fun onFilterReset() {
         filters = arrayListOf()
         filterData(viewModel.getCurrentData(), filters)
+        sortData(sortDrinkType)
+    }
+
+    override fun onResult(sortDrinkType: SortDrinkType) {
+        super.sortDrinkType = sortDrinkType
+        sortData(sortDrinkType)
     }
 }

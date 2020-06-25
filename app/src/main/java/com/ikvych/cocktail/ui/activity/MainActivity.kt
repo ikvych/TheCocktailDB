@@ -1,12 +1,17 @@
 package com.ikvych.cocktail.ui.activity
 
 import android.os.Bundle
+import androidx.annotation.CallSuper
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.ui.base.BaseFragment
+import com.ikvych.cocktail.ui.base.DialogButton
+import com.ikvych.cocktail.ui.base.DialogType
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.FilterFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
@@ -55,11 +60,17 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
         fragmentTransaction.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
         fragmentTransaction.commit()
 
-        RegularBottomSheetDialogFragment.newInstance {
-//            title="Test"
-            this.titleText="Test"
 
-        }.show(supportFragmentManager)
+    }
+
+    override fun onBottomSheetDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        super.onBottomSheetDialogFragmentClick(dialog, buttonType, type, data)
+
     }
 
 

@@ -10,6 +10,7 @@ import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -18,25 +19,43 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
+import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.listener.FilterResultCallBack
+import com.ikvych.cocktail.listener.SortResultCallBack
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
-import com.ikvych.cocktail.ui.base.BaseFragment
-import com.ikvych.cocktail.ui.base.FRAGMENT_ID
+import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.SexListBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
 import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterResultListener,
-    FilterAdapter.OnClickItemFilterCloseListener {
+    FilterAdapter.OnClickItemFilterCloseListener, SortResultCallBack {
+
+    override val callbacks: HashSet<OnSortResultListener> = hashSetOf()
+    override fun addCallBack(listener: OnSortResultListener) {
+        callbacks.add(listener)
+    }
+
+    override fun removeCallBack(listener: OnSortResultListener) {
+        callbacks.remove(listener)
+    }
 
     lateinit var batteryReceiver: BatteryReceiver
     var fragmentListener: FilterFragment.OnFilterResultListener? = null
 
     lateinit var filterBtn: ImageButton
     lateinit var filterIndicator: TextView
+
+    var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
+
+    lateinit var sortBtn: ImageButton
+    lateinit var sortIndicator: TextView
 
     lateinit var filterFragment: FilterFragment
 
@@ -58,6 +77,9 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     private lateinit var batteryIcon: ImageView
     private lateinit var powerConnected: ImageView
 
+    interface OnSortResultListener {
+        fun onResult(sortDrinkType: SortDrinkType)
+    }
 
     companion object {
         @JvmStatic
@@ -125,7 +147,8 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         filterRecyclerView.adapter = filterAdapter
         filterAdapter.filterList = filters
 
-        filterIndicator = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).indicatorView
+        filterIndicator =
+            view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).indicatorView
 
         filterBtn = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).customBtn
         filterBtn.setImageDrawable(
@@ -147,7 +170,33 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
         filterBtn.setOnLongClickListener {
             fragmentListener!!.onFilterReset()
+            callbacks.forEach {
+                it.onResult(sortDrinkType)
+            }
             true
+        }
+
+        sortBtn = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).sortBtn
+        sortBtn.setOnClickListener { v ->
+            SortDrinkDialogFragment.newInstance(sortDrinkType) {
+                this.titleText = "Sort history"
+                this.leftButtonText = "Cancel"
+                this.rightButtonText = "Accept"
+            }.show(childFragmentManager)
+        }
+        sortIndicator =
+            view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).sortIndicatorView
+        sortBtn.setOnLongClickListener { v ->
+            if (sortDrinkType != SortDrinkType.RECENT) {
+                sortDrinkType = SortDrinkType.RECENT
+                callbacks.forEach {
+                    it.onResult(sortDrinkType)
+                }
+                sortIndicator.visibility = View.GONE
+                true
+            } else {
+                false
+            }
         }
 
         fab.setOnClickListener {
@@ -157,6 +206,32 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         batteryPercent = view.findViewById(R.id.tv_battery_percent)
         batteryIcon = view.findViewById(R.id.iv_battery_icon)
         powerConnected = view.findViewById(R.id.iv_power_connected)
+    }
+
+    override fun onBottomSheetDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        when (type) {
+            RegularDialogType -> {
+                when (buttonType) {
+                    RightDialogButton -> {
+                        val supportData = data as SortDrinkType ?: return
+                        sortDrinkType = supportData
+                        callbacks.forEach {
+                            it.onResult(sortDrinkType)
+                        }
+                        if (sortDrinkType != SortDrinkType.RECENT) {
+                            sortIndicator.visibility = View.VISIBLE
+                        } else {
+                            sortIndicator.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
     }
 
 

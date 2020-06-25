@@ -44,10 +44,10 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
             ?: runCatching { requireContext().getString(dialogBuilder.titleTextResId) }
                 .getOrElse { throw NotImplementedError("Must supply dialog title for ${this::class.java.simpleName}") }
 
-        txt_dialog_bs_description.setText(
+/*        txt_dialog_bs_description.setText(
             dialogBuilder.descriptionText.takeIf { it.isNotEmpty() }
                 ?: runCatching { requireContext().getString(dialogBuilder.descriptionTextResId) }.getOrNull()
-        )
+        )*/
 
         val leftButtonText = dialogBuilder.leftButtonText.takeIf { it.isNotEmpty() }
             ?: runCatching { requireContext().getString(dialogBuilder.leftButtonTextResId) }.getOrNull()
@@ -57,6 +57,7 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
 
         lb_dialog_bs_left.isVisible = !leftButtonText.isNullOrEmpty()
         lb_dialog_bs_right.isVisible = !rightButtonText.isNullOrEmpty()
+
         space_dialog_bs_buttons.isVisible =
             lb_dialog_bs_left.isVisible && lb_dialog_bs_right.isVisible
         vg_dialog_bs_buttons.isVisible = lb_dialog_bs_left.isVisible || lb_dialog_bs_right.isVisible
@@ -76,15 +77,18 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
 
         isCancelable = dialogBuilder.isCancelable
 
-        if (extraContentLayoutResId != 0) {
-            vg_dialog_bs_extra_content?.let {
-                layoutInflater.inflate(extraContentLayoutResId, vg_dialog_bs_extra_content)
-                configureExtraContent(vg_dialog_bs_extra_content, savedInstanceState)
-            }
-        }
+
         lb_dialog_bs_left.setOnClickListener(this)
         lb_dialog_bs_right.setOnClickListener(this)
         btn_dialog_bs_close.setOnClickListener(this)
+
+        if (extraContentLayoutResId != 0) {
+            vg_dialog_bs_extra_contents?.let {
+                layoutInflater.inflate(extraContentLayoutResId, vg_dialog_bs_extra_contents)
+                configureExtraContent(vg_dialog_bs_extra_contents, savedInstanceState)
+            }
+        }
+        isCancelable = dialogBuilder.isCancelable
     }
 
     protected open fun configureExtraContent(container: FrameLayout, savedInstanceState: Bundle?) {

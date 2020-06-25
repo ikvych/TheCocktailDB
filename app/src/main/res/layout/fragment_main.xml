@@ -18,7 +18,8 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:tl_disable_return_btn="true"
-            app:tl_enable_custom_btn="true" />
+            app:tl_enable_custom_btn="true"
+            app:tl_enable_sort_btn="true"/>
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/coordinator"

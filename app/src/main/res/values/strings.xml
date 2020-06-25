@@ -18,6 +18,8 @@
     <string name="invalid_password_text">Більше 6 символів, одна літера і одна цифра</string>
     <string name="invalid_login_text">Логін повинний містити більше 6 символів</string>
 
+    <string name="dialog_sort_title">Sort By</string>
+
 
     <string name="hello_blank_fragment">Hello blank fragment</string>
 

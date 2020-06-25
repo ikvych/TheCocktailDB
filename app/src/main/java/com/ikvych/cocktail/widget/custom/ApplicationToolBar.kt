@@ -16,6 +16,8 @@ class ApplicationToolBar(
     private var frameLayout: FrameLayout
     var customBtn: ImageButton
     var indicatorView: TextView
+    var sortBtn: ImageButton
+    var sortIndicatorView: TextView
     var searchView: SearchView
     private var textView: TextView
 
@@ -64,6 +66,17 @@ class ApplicationToolBar(
             invalidate()
             requestLayout()
         }
+    var isSortBtnEnabled: Boolean = false
+        set(value) {
+            field = value
+            if (field) {
+                sortBtn.visibility = View.VISIBLE
+            } else {
+                sortBtn.visibility = View.GONE
+            }
+            invalidate()
+            requestLayout()
+        }
 
     init {
         View.inflate(context, R.layout.app_toolbar, this)
@@ -73,6 +86,8 @@ class ApplicationToolBar(
         this.frameLayout = findViewById(R.id.fl_toolbar)
         this.searchView = findViewById(R.id.sv_toolbar)
         this.textView = findViewById(R.id.tv_toolbar)
+        this.sortBtn = findViewById(R.id.sort_tb_btn)
+        this.sortIndicatorView = findViewById(R.id.tv_sort_indicator)
 
         context!!.theme.obtainStyledAttributes(
             attrs,
@@ -83,6 +98,7 @@ class ApplicationToolBar(
                 mainTitle = getString(R.styleable.ApplicationToolBar_tl_set_text) ?: context.getString(R.string.app_name)
                 isCustomBtnEnabled = getBoolean(R.styleable.ApplicationToolBar_tl_enable_custom_btn, false)
                 isReturnBtnDisabled = getBoolean(R.styleable.ApplicationToolBar_tl_disable_return_btn, false)
+                isSortBtnEnabled = getBoolean(R.styleable.ApplicationToolBar_tl_enable_sort_btn, false)
             } finally {
                 recycle()
             }

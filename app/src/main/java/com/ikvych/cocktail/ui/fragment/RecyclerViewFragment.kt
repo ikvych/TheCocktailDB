@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
 import com.ikvych.cocktail.adapter.list.FilterAdapter
+import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
+import com.ikvych.cocktail.comparator.type.SortDrinkType
+import com.ikvych.cocktail.comparator.type.SortOrder
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
@@ -19,6 +22,9 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
     private lateinit var drinkAdapter: DrinkAdapter
     lateinit var viewModel: T
     var filters: ArrayList<DrinkFilter> = arrayListOf()
+    protected var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
+
+    val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
 
     fun initViewModel(viewModelClass: Class<T>) {
         viewModel = ViewModelProvider(this).get(viewModelClass)
@@ -27,6 +33,7 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
     open fun initLiveDataObserver() {
         viewModel.getLiveData().observe(this, Observer { drinks ->
             filterData(drinks, filters)
+            sortData(sortDrinkType)
             determineVisibleLayerOnUpdateData(drinks)
         })
     }
@@ -66,6 +73,57 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
                 DrinkFilterType.INGREDIENT -> {
                 }
                 DrinkFilterType.GLASS -> {
+                }
+            }
+        }
+        drinkAdapter.drinkList = drinksCopy
+        determineVisibleLayerOnUpdateData(drinksCopy)
+    }
+
+    fun sortData(sortDrinkType: SortDrinkType) {
+        var drinksCopy = drinkAdapter.drinkList
+        when (sortDrinkType) {
+            SortDrinkType.RECENT -> {
+                drinksCopy = drinksCopy.sortedByDescending { drink ->
+                    drink.getCreated()
+                }
+            }
+            SortDrinkType.NAME -> {
+                drinksCopy = when (sortDrinkType.sortOrder) {
+                    SortOrder.Descending -> {
+                        drinksCopy.sortedByDescending { drink ->
+                            drink.getStrDrink()
+                        }
+                    }
+                    SortOrder.Ascending -> {
+                        drinksCopy.sortedBy { drink ->
+                            drink.getStrDrink()
+                        }
+                    }
+                }
+            }
+            SortDrinkType.ALCOHOL -> {
+                drinksCopy = when (sortDrinkType.sortOrder) {
+                    SortOrder.Descending -> {
+                        drinksCopy.sortedWith(alcoholComparator).asReversed()
+                    }
+                    SortOrder.Ascending -> {
+                        drinksCopy.sortedWith(alcoholComparator)
+                    }
+                }
+            }
+            SortDrinkType.INGREDIENT_COUNT -> {
+                drinksCopy = when (sortDrinkType.sortOrder) {
+                    SortOrder.Descending -> {
+                        drinksCopy.sortedByDescending { drink ->
+                            drink.getIngredients().size
+                        }
+                    }
+                    SortOrder.Ascending -> {
+                        drinksCopy.sortedBy { drink ->
+                            drink.getIngredients().size
+                        }
+                    }
                 }
             }
         }

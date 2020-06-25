@@ -9,9 +9,14 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 
 class SearchActivityViewModel(application: Application) : BaseViewModel(application) {
-    private val apiRepository: DrinkApiRepository = DrinkApiRepositoryImpl()
+    private val apiRepository: DrinkApiRepository = DrinkApiRepositoryImpl(application)
+
+    init {
+        apiRepository.initAllIngredient()
+    }
 
     fun updateDrinksLiveData(query: String) {
+
         apiRepository.updateDrinksLiveData(query)
     }
 

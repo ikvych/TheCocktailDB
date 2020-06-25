@@ -71,6 +71,16 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
                     }
                 }
                 DrinkFilterType.INGREDIENT -> {
+                    drinksCopy = drinksCopy.filter { drink ->
+                        var isValid = false
+                        for ((key, value) in drink.getIngredients()) {
+                            if (key.equals(it.key)) {
+                                isValid = true
+                                break
+                            }
+                        }
+                        isValid
+                    }
                 }
                 DrinkFilterType.GLASS -> {
                 }

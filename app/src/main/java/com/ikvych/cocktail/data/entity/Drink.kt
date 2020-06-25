@@ -1015,7 +1015,6 @@ class Drink : BaseObservable, Parcelable {
 
     override fun writeToParcel(dest: Parcel, flags: Int) {
         dest.writeValue(idDrink)
-
         dest.writeValue(strDrink)
         dest.writeValue(strDrinkAlternate)
         dest.writeValue(strDrinkES)

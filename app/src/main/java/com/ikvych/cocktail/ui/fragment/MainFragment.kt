@@ -21,15 +21,12 @@ import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.listener.SortResultCallBack
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.base.*
-import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
-import com.ikvych.cocktail.ui.dialog.SexListBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
 import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.fragment_main.*

@@ -17,9 +17,6 @@ interface DrinkDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveIngredient(ingredient: Ingredient)
 
-    @Query("DROP TABLE ingredient")
-    fun clearTable()
-
     @Query("SELECT * FROM ingredient ORDER BY str_ingredient ASC")
     fun getAllIngredients() : List<Ingredient>
 

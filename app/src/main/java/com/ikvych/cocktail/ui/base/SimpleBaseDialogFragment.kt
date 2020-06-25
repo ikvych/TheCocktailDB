@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ui.dialog
+package com.ikvych.cocktail.ui.base
 
 import android.os.Bundle
 import android.os.Parcel
@@ -158,7 +158,9 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
 
         companion object CREATOR : Parcelable.Creator<SimpleDialogBuilder> {
             override fun createFromParcel(parcel: Parcel): SimpleDialogBuilder {
-                return SimpleDialogBuilder(parcel)
+                return SimpleDialogBuilder(
+                    parcel
+                )
             }
 
             override fun newArray(size: Int): Array<SimpleDialogBuilder?> {

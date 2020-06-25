@@ -62,6 +62,7 @@ class FilterFragment : BaseFragment() {
 
         initCategoryFilters()
         initAlcoholFilters()
+        initIngredientFilters()
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
@@ -70,22 +71,25 @@ class FilterFragment : BaseFragment() {
             FilterDrinkAlcoholDialogFragment.newInstance().show(childFragmentManager)
         }
         chosenAlcoholFilter = view.findViewById(R.id.tv_chosen_alcohol_filter)
-        chosenAlcoholFilter.text = drinkFilters[DrinkFilterType.ALCOHOL]?.key ?: AlcoholDrinkFilter.NONE.key
+        chosenAlcoholFilter.text =
+            drinkFilters[DrinkFilterType.ALCOHOL]?.key ?: AlcoholDrinkFilter.NONE.key
 
         categoryFilter = view.findViewById(R.id.im_category_filter)
         categoryFilter.setOnClickListener { v ->
             FilterDrinkCategoryDialogFragment.newInstance().show(childFragmentManager)
         }
         chosenCategoryFilter = view.findViewById(R.id.tv_chosen_category_filter)
-        chosenCategoryFilter.text = drinkFilters[DrinkFilterType.CATEGORY]?.key ?: CategoryDrinkFilter.NONE.key
+        chosenCategoryFilter.text =
+            drinkFilters[DrinkFilterType.CATEGORY]?.key ?: CategoryDrinkFilter.NONE.key
 
         ingredientFilter = view.findViewById(R.id.im_ingredient_filter)
         ingredientFilter.setOnClickListener { v ->
             FilterDrinkIngredientDialogFragment.newInstance(viewModel.getAllIngredient())
                 .show(childFragmentManager)
         }
-        chosenIngredientFilter = view.findViewById(R.id.tv_chosen_category_filter)
-        chosenIngredientFilter.text = drinkFilters[DrinkFilterType.INGREDIENT]?.key ?: CategoryDrinkFilter.NONE.key
+        chosenIngredientFilter = view.findViewById(R.id.tv_chosen_ingredient_filter)
+        chosenIngredientFilter.text =
+            drinkFilters[DrinkFilterType.INGREDIENT]?.key ?: CategoryDrinkFilter.NONE.key
 
         acceptBtn = view.findViewById(R.id.btn_accept)
         acceptBtn.setOnClickListener {
@@ -136,14 +140,6 @@ class FilterFragment : BaseFragment() {
     private fun initIngredientFilters() {
         val ingredientKey = requireArguments().getString(DrinkFilterType.INGREDIENT.key)
             ?: IngredientDrinkFilter.INGREDIENT.key
-
-        if (ingredientKey != IngredientDrinkFilter.INGREDIENT.key) {
-            AlcoholDrinkFilter.values().forEach {
-/*                if (it.key == alcoholKey) {
-                    drinkFilters[AlcoholDrinkFilter.ALCOHOLIC.type] = it
-                }*/
-            }
-        }
     }
 
     override fun onBottomSheetDialogFragmentClick(
@@ -172,10 +168,11 @@ class FilterFragment : BaseFragment() {
                 chosenCategoryFilter.text = categoryType.key
             }
             IngredientDrinkType -> {
-                val categoryType = data as Ingredient
+                val ingredientType = data as Ingredient
                 val ingredient = IngredientDrinkFilter.INGREDIENT
-                ingredient.key = categoryType.strIngredient1!!
+                ingredient.key = ingredientType.strIngredient1!!
                 drinkFilters[ingredient.type] = ingredient
+                chosenIngredientFilter.text = ingredient.key
             }
         }
 

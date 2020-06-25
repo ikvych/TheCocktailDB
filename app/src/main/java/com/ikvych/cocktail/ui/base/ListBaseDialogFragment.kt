@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ui.dialog
+package com.ikvych.cocktail.ui.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -9,8 +9,6 @@ import android.widget.FrameLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.base.BaseAdapter
 import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
-import com.ikvych.cocktail.ui.base.DialogButton
-import com.ikvych.cocktail.ui.base.DialogType
 import kotlinx.android.synthetic.main.layout_dialog_sort_list_component.*
 
 abstract class ListBaseDialogFragment<

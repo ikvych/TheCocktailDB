@@ -5,23 +5,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.base.BaseAdapter
 import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
 import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.ui.base.ItemListDialogButton
-import com.ikvych.cocktail.ui.base.ListDialogButton
-import com.ikvych.cocktail.ui.base.AlcoholDrinkType
-import com.ikvych.cocktail.ui.base.IngredientDrinkType
+import com.ikvych.cocktail.ui.base.*
 
 
 class FilterDrinkIngredientDialogFragment :
     ListBaseDialogFragment<Ingredient?, ListDialogButton, IngredientDrinkType>() {
 
     override val dialogType: IngredientDrinkType = IngredientDrinkType
-    override var data: Ingredient? = Ingredient().apply { strIngredient1 = "None" }
+    override var data: Ingredient? = null
     private val selectedAlcoholDrinkFilter: Ingredient? = null
     private var ingredientList: ArrayList<Ingredient> = arrayListOf()
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
@@ -62,7 +60,7 @@ class FilterDrinkIngredientDialogFragment :
         }
 
         override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            with(holder.itemView as MaterialTextView) {
+            with(holder.itemView as MaterialButton) {
                 text = dialogListDataAdapter.getName(newData[position])
                 tag = newData[position]
                 isSelected = (data == selectedAlcoholDrinkFilter)
@@ -114,7 +112,6 @@ class FilterDrinkIngredientDialogFragment :
                     EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
-                        isCloseButtonVisible = true
                     },
                     EXTRA_KEY_SELECTED_INGREDIENT to selectedAlcohol
                 )

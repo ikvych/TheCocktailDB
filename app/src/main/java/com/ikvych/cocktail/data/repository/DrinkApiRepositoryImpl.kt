@@ -64,11 +64,7 @@ class DrinkApiRepositoryImpl(context: Context) :
             ) {
                 val drinkApiResponse = response.body()
                 if (drinkApiResponse?.ingredients != null) {
-                    val noneIngredient = Ingredient().apply {
-                        id = 0
-                        strIngredient1 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAA"
-                    }
-                    SaveIngredientsAsyncTask(drinkDao).execute(*drinkApiResponse.ingredients.toTypedArray(), noneIngredient)
+                    SaveIngredientsAsyncTask(drinkDao).execute(*drinkApiResponse.ingredients.toTypedArray())
                 }
             }
 
@@ -88,7 +84,6 @@ class DrinkApiRepositoryImpl(context: Context) :
         AsyncTask<Ingredient, Unit, Unit>() {
 
         override fun doInBackground(vararg params: Ingredient) {
-            drinkDao.clearTable()
             params.forEach { ingredient -> drinkDao.saveIngredient(ingredient) }
         }
 

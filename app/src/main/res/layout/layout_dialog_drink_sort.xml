@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -8,9 +7,11 @@
     <LinearLayout
         android:id="@+id/ll_recent_order"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
         android:layout_width="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@drawable/iten_drink_filter_shape">
 
         <TextView
             android:id="@+id/tv_recent_order"
@@ -20,14 +21,24 @@
             android:text="Recent"
             android:textSize="16sp" />
 
+        <CheckBox
+            android:button="@drawable/drink_sort_order_checkbox"
+            android:id="@+id/cb_sort_order_recent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:visibility="invisible"/>
+
     </LinearLayout>
 
     <LinearLayout
         android:id="@+id/ll_name_order"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
         android:layout_width="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@drawable/iten_drink_filter_shape">
 
         <TextView
             android:id="@+id/tv_name_order"
@@ -49,9 +60,11 @@
     <LinearLayout
         android:id="@+id/ll_alcohol_order"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
         android:layout_width="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@drawable/iten_drink_filter_shape">
 
         <TextView
             android:id="@+id/tv_alcohol_order"
@@ -73,9 +86,11 @@
     <LinearLayout
         android:id="@+id/ll_ingredient_order"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp"
+        android:layout_margin="4dp"
         android:layout_width="match_parent"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:padding="8dp"
+        android:background="@drawable/iten_drink_filter_shape">
 
         <TextView
             android:id="@+id/tv_ingredient_order"

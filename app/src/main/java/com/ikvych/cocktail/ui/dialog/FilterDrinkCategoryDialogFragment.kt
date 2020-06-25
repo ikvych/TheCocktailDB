@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
+import com.google.android.material.button.MaterialButton
 import com.google.android.material.textview.MaterialTextView
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.base.BaseAdapter
@@ -13,6 +14,7 @@ import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.ui.base.ItemListDialogButton
 import com.ikvych.cocktail.ui.base.ListDialogButton
 import com.ikvych.cocktail.ui.base.CategoryDrinkType
+import com.ikvych.cocktail.ui.base.ListBaseDialogFragment
 
 
 class FilterDrinkCategoryDialogFragment :
@@ -51,7 +53,7 @@ class FilterDrinkCategoryDialogFragment :
         }
 
         override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            with(holder.itemView as MaterialTextView) {
+            with(holder.itemView as MaterialButton) {
                 text = dialogListDataAdapter.getName(newData[position])
                 tag = newData[position]
                 isSelected = (data == selectedAlcoholDrinkFilter)
@@ -100,7 +102,6 @@ class FilterDrinkCategoryDialogFragment :
                     EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
-                        isCloseButtonVisible = true
                     },
                     EXTRA_KEY_SELECTED_CATEGORY to selectedAlcohol
                 )

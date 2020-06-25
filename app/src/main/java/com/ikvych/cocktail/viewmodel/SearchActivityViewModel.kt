@@ -16,7 +16,6 @@ class SearchActivityViewModel(application: Application) : BaseViewModel(applicat
     }
 
     fun updateDrinksLiveData(query: String) {
-
         apiRepository.updateDrinksLiveData(query)
     }
 

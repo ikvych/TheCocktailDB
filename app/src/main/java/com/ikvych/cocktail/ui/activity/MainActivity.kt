@@ -11,28 +11,24 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
 import androidx.core.view.drawToBitmap
+import androidx.core.view.forEach
 import androidx.core.view.get
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.ui.base.BaseActivity
-import com.ikvych.cocktail.ui.base.DialogButton
-import com.ikvych.cocktail.ui.base.DialogType
 import com.ikvych.cocktail.ui.fragment.FilterFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainViewModel
-import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
-import java.util.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
@@ -40,7 +36,7 @@ import kotlin.collections.HashSet
 class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, FilterResultCallBack {
 
     override val callbacks: HashSet<FilterFragment.OnFilterResultListener> = hashSetOf()
-    lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainViewModel
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mainFragment: MainFragment
@@ -74,6 +70,15 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
         setContentView(R.layout.activity_main)
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
+            override fun onChanged(t: Boolean?) {
+                if (t!!) {
+                    bottomNavigationView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+                } else {
+                    bottomNavigationView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
+                }
+            }
+        })
 
         bottomNavigationView = findViewById(R.id.bnv_main)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->

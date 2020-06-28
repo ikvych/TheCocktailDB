@@ -2,6 +2,7 @@ package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
@@ -13,6 +14,7 @@ class MainViewModel(
 
     private val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinks()
     private val favoriteDrinksLiveData: LiveData<List<Drink>> = drinkRepository.getFavoriteDrinks()
+    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     override fun getCurrentData(): List<Drink> {
         val drinkApiService = drinksLiveData.value

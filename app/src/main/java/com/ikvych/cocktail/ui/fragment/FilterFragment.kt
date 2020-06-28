@@ -67,7 +67,7 @@ class FilterFragment : BaseFragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         alcoholFilter = view.findViewById(R.id.im_alcohol_filter)
-        alcoholFilter.setOnClickListener { v ->
+        alcoholFilter.setOnClickListener {
             FilterDrinkAlcoholDialogFragment.newInstance()
                 .show(childFragmentManager, FilterDrinkAlcoholDialogFragment::class.java.simpleName)
         }
@@ -76,7 +76,7 @@ class FilterFragment : BaseFragment() {
             drinkFilters[DrinkFilterType.ALCOHOL]?.key ?: AlcoholDrinkFilter.NONE.key
 
         categoryFilter = view.findViewById(R.id.im_category_filter)
-        categoryFilter.setOnClickListener { v ->
+        categoryFilter.setOnClickListener {
             FilterDrinkCategoryDialogFragment.newInstance().show(
                 childFragmentManager,
                 FilterDrinkCategoryDialogFragment::class.java.simpleName
@@ -87,7 +87,7 @@ class FilterFragment : BaseFragment() {
             drinkFilters[DrinkFilterType.CATEGORY]?.key ?: CategoryDrinkFilter.NONE.key
 
         ingredientFilter = view.findViewById(R.id.im_ingredient_filter)
-        ingredientFilter.setOnClickListener { v ->
+        ingredientFilter.setOnClickListener {
             FilterDrinkIngredientDialogFragment.newInstance(viewModel.getAllIngredient())
                 .show(
                     childFragmentManager,

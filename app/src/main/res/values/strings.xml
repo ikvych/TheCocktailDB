@@ -53,6 +53,7 @@
     <string name="tv_filter_fragment_alcohol_filter">Alcohol Filter</string>
     <string name="tv_filter_fragment_category_filter">Category Filter</string>
     <string name="tv_filter_fragment_ingredient_filter">Ingredient Filter</string>
+    <string name="profile_fragment_show_hide_main_navigation_bar_titles">Show/Hide Main Navigation Bar Titles</string>
 
 
 </resources>

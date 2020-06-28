@@ -1,11 +1,17 @@
 package com.ikvych.cocktail.data.repository.base
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.data.entity.Ingredient
 
+interface DrinkRepository {
 
-interface DrinkDbRepository {
+    fun getLiveData(): MutableLiveData<List<Drink>>
+    fun updateDrinksLiveData(query: String)
+
+    fun getCurrentData(): List<Drink>
+    fun initAllIngredient()
 
     fun getDrinks(): LiveData<List<Drink>>
 

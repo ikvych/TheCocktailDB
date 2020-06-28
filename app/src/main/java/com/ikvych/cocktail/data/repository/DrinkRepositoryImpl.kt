@@ -1,7 +1,7 @@
 package com.ikvych.cocktail.data.repository
 
-import android.content.Context
-import android.os.AsyncTask
+import android.app.Application
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.ikvych.cocktail.data.database.DrinkDao
 import com.ikvych.cocktail.data.database.DrinkDataBase
@@ -11,19 +11,16 @@ import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.data.entity.IngredientApiResponse
 import com.ikvych.cocktail.data.network.DrinkApiService
 import com.ikvych.cocktail.data.network.RetrofitInstance
-import com.ikvych.cocktail.data.repository.base.DrinkApiRepository
+import com.ikvych.cocktail.data.repository.base.DrinkRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+class DrinkRepositoryImpl (application: Application) : DrinkRepository {
 
-class DrinkApiRepositoryImpl(context: Context) :
-    DrinkApiRepository {
-
+    private val drinkDao: DrinkDao = DrinkDataBase.getInstance(application)!!.drinkDao()
     private val apiService: DrinkApiService = RetrofitInstance.service
     val drinksLiveData: MutableLiveData<List<Drink>> = MutableLiveData()
-
-    private val drinkDao: DrinkDao = DrinkDataBase.getInstance(context)!!.drinkDao()
 
     override fun updateDrinksLiveData(query: String) {
         val call: Call<DrinkApiResponse?> = apiService.getDrinksByName(query)
@@ -31,7 +28,7 @@ class DrinkApiRepositoryImpl(context: Context) :
         call.enqueue(object : Callback<DrinkApiResponse?> {
 
             override fun onFailure(call: Call<DrinkApiResponse?>, t: Throwable) {
-                println("Jello")
+                println("Can't get drinks list from Api")
             }
 
             override fun onResponse(
@@ -55,7 +52,7 @@ class DrinkApiRepositoryImpl(context: Context) :
         call.enqueue(object : Callback<IngredientApiResponse?> {
 
             override fun onFailure(call: Call<IngredientApiResponse?>, t: Throwable) {
-                println("Jello")
+                println("Can't get ingredients from Api")
             }
 
             override fun onResponse(
@@ -71,21 +68,35 @@ class DrinkApiRepositoryImpl(context: Context) :
         })
     }
 
+    override fun getDrinks(): LiveData<List<Drink>> {
+        return drinkDao.getAllDrinks()
+    }
+
+    override fun getFavoriteDrinks(): LiveData<List<Drink>> {
+        return drinkDao.getAllFavoriteDrinks()
+    }
+
+    override fun saveDrink(drink: Drink) {
+        SaveDrinkAsyncTask(drinkDao).execute(drink)
+    }
+
+    override fun getAllIngredient(): List<Ingredient> {
+        return DbAsyncTask(drinkDao).execute().get()
+    }
+
+    override fun findDrinkById(drinkId: Long): Drink {
+        return FindDrinkAsyncTask(drinkDao).execute(drinkId).get()
+    }
+
+    override fun findDrinkByName(drinkName: String): Drink {
+        return FindDrinkByNameAsyncTask(drinkDao).execute(drinkName).get()
+    }
+
     override fun getLiveData(): MutableLiveData<List<Drink>> {
         return drinksLiveData
     }
 
     override fun getCurrentData(): List<Drink> {
         return drinksLiveData.value ?: emptyList()
-    }
-
-    private companion object
-    class SaveIngredientsAsyncTask(private val drinkDao: DrinkDao) :
-        AsyncTask<Ingredient, Unit, Unit>() {
-
-        override fun doInBackground(vararg params: Ingredient) {
-            params.forEach { ingredient -> drinkDao.saveIngredient(ingredient) }
-        }
-
     }
 }

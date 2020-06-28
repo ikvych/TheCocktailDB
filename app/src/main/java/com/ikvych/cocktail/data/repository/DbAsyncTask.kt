@@ -31,3 +31,20 @@ class FindDrinkByNameAsyncTask(private val drinkDao: DrinkDao) :
     }
 
 }
+
+class SaveIngredientsAsyncTask(private val drinkDao: DrinkDao) :
+    AsyncTask<Ingredient, Unit, Unit>() {
+
+    override fun doInBackground(vararg params: Ingredient) {
+        params.forEach { ingredient -> drinkDao.saveIngredient(ingredient) }
+    }
+
+}
+
+class SaveDrinkAsyncTask(private val drinkDao: DrinkDao) :
+    AsyncTask<Drink, Unit, Unit>() {
+
+    override fun doInBackground(vararg params: Drink) {
+        params.forEach { drink ->  drinkDao.insert(drink)}
+    }
+}

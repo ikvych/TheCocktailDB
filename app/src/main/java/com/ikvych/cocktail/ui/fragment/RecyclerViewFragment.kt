@@ -38,7 +38,7 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
     }
 
     open fun initLiveDataObserver() {
-        viewModel.getLiveData().observe(this, Observer { drinks ->
+        viewModel.getLiveData()!!.observe(this, Observer { drinks ->
             filterData(drinks, filters)
             sortData(sortDrinkType)
             determineVisibleLayerOnUpdateData(drinks)

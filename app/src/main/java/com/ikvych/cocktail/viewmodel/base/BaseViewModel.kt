@@ -5,13 +5,21 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.data.entity.Ingredient
+import com.ikvych.cocktail.data.repository.DrinkRepositoryImpl
+import com.ikvych.cocktail.data.repository.base.DrinkRepository
 
 
-abstract class BaseViewModel(application: Application): AndroidViewModel(application) {
+open class BaseViewModel(application: Application): AndroidViewModel(application) {
 
-    abstract fun getCurrentData(): List<Drink>
+    protected val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
 
-    abstract fun getLiveData(): LiveData<List<Drink>>
+    open fun getCurrentData(): List<Drink> {
+        return arrayListOf()
+    }
+
+    open fun getLiveData(): LiveData<List<Drink>>? {
+        return null
+    }
 
     open fun saveDrink(drink: Drink) {
         //stub

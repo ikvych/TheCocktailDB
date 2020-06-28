@@ -4,10 +4,6 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.data.entity.Ingredient
-import com.ikvych.cocktail.data.repository.DrinkApiRepositoryImpl
-import com.ikvych.cocktail.data.repository.DrinkDbRepositoryImpl
-import com.ikvych.cocktail.data.repository.base.DrinkApiRepository
-import com.ikvych.cocktail.data.repository.base.DrinkDbRepository
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 
@@ -15,10 +11,8 @@ class MainViewModel(
     application: Application
 ) : BaseViewModel(application) {
 
-    private val apiRepository: DrinkApiRepository = DrinkApiRepositoryImpl(application)
-    private val dbRepository: DrinkDbRepository = DrinkDbRepositoryImpl(application)
-    private val drinksLiveData: LiveData<List<Drink>> = dbRepository.getDrinks()
-    private val favoriteDrinksLiveData: LiveData<List<Drink>> = dbRepository.getFavoriteDrinks()
+    private val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinks()
+    private val favoriteDrinksLiveData: LiveData<List<Drink>> = drinkRepository.getFavoriteDrinks()
 
     override fun getCurrentData(): List<Drink> {
         val drinkApiService = drinksLiveData.value
@@ -30,15 +24,15 @@ class MainViewModel(
     }
 
     fun findDrinkById(drinkId: Long): Drink {
-        return dbRepository.findDrinkById(drinkId)
+        return drinkRepository.findDrinkById(drinkId)
     }
 
     fun findDrinkByName(drinkName: String): Drink {
-        return dbRepository.findDrinkByName(drinkName)
+        return drinkRepository.findDrinkByName(drinkName)
     }
 
     override fun saveDrink(drink: Drink) {
-        dbRepository.saveDrink(drink)
+        drinkRepository.saveDrink(drink)
     }
 
     override fun getLiveData(): LiveData<List<Drink>> {
@@ -50,10 +44,10 @@ class MainViewModel(
     }
 
     override fun getAllIngredient(): List<Ingredient> {
-        val ingredientList: List<Ingredient> = dbRepository.getAllIngredient()
+        val ingredientList: List<Ingredient> = drinkRepository.getAllIngredient()
         if (ingredientList.isEmpty()) {
-            apiRepository.initAllIngredient()
+            drinkRepository.initAllIngredient()
         }
-        return dbRepository.getAllIngredient()
+        return drinkRepository.getAllIngredient()
     }
 }

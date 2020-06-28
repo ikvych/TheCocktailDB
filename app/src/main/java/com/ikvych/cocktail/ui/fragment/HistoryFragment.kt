@@ -3,19 +3,13 @@ package com.ikvych.cocktail.ui.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.setFragmentResultListener
-import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.listener.SortResultCallBack
-import com.ikvych.cocktail.ui.activity.MainActivity
-import com.ikvych.cocktail.ui.base.ALCOHOL_FILTER_BUNDLE_KEY
-import com.ikvych.cocktail.ui.base.ALCOHOL_FILTER_KEY
 import com.ikvych.cocktail.ui.base.FRAGMENT_ID
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
@@ -26,14 +20,13 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
 
     private lateinit var fragmentView: View
 
-
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            (requireActivity() as FilterResultCallBack).addCallBack(this)
+            (context as FilterResultCallBack).addCallBack(this)
             (parentFragment as SortResultCallBack).addCallBack(this)
         } catch (exception: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
+            throw ClassCastException("${context.toString()} must implement FilterResultCallBack")
         }
     }
 
@@ -47,16 +40,6 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(fragmentId: Int) =
-            HistoryFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(FRAGMENT_ID, fragmentId)
-                }
-            }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModel(MainViewModel::class.java)
@@ -65,9 +48,10 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
         fragmentView = view
-        initRecyclerView(view, viewModel.getCurrentData(), R.id.db_recycler_view, MAIN_MODEL_TYPE)
+        initRecyclerView(view, viewModel.getCurrentData(), R.id.db_recycler_view)
         initLiveDataObserver()
     }
+
 
     override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
         if (drinks!!.isEmpty()) {
@@ -100,5 +84,15 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
     override fun onResult(sortDrinkType: SortDrinkType) {
         super.sortDrinkType = sortDrinkType
         sortData(sortDrinkType)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance(fragmentId: Int) =
+            HistoryFragment().apply {
+                arguments = Bundle().apply {
+                    putInt(FRAGMENT_ID, fragmentId)
+                }
+            }
     }
 }

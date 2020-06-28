@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.base.BaseAdapter
 import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
@@ -43,7 +42,7 @@ class FilterDrinkAlcoholDialogFragment :
     }.toList()
 
     inner class SortDrinkListAdapter :
-        BaseAdapter<AlcoholDrinkFilter?, BaseViewHolder>(R.layout.item_dialog_sort_list),
+        BaseAdapter<AlcoholDrinkFilter?, BaseViewHolder>(R.layout.item_dialog_filter_list),
         View.OnClickListener {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -68,16 +67,6 @@ class FilterDrinkAlcoholDialogFragment :
              */
             callOnClick(v ?: return, getButtonType(v))
         }
-
-/*        override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-            super.onAttachedToRecyclerView(recyclerView)
-
-            if (recyclerView.onFlingListener == null) {
-                OffsetGravitySnapHelper(
-                    Gravity.TOP
-                ).attachToRecyclerView(recyclerView)
-            }
-        }*/
     }
 
     override fun getButtonType(view: View): ListDialogButton {

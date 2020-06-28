@@ -14,4 +14,8 @@ interface DrinkDbRepository {
     fun saveDrink(drink: Drink)
 
     fun getAllIngredient(): List<Ingredient>
+
+    fun findDrinkById(drinkId: Long): Drink
+
+    fun findDrinkByName(drinkName: String): Drink
 }

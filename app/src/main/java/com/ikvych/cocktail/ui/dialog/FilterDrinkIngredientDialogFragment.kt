@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.os.bundleOf
 import com.google.android.material.button.MaterialButton
-import com.google.android.material.textview.MaterialTextView
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.base.BaseAdapter
 import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
@@ -40,6 +39,9 @@ class FilterDrinkIngredientDialogFragment :
             ingredientList.add(Ingredient().apply {
                 id = i.toLong()
                 strIngredient1 = requireArguments().getString(i.toString())
+                if (strIngredient1 == null || strIngredient1!!.isBlank()) {
+                    strIngredient1 = "None"
+                }
             })
         }
         listData = mutableListOf<Ingredient?>().apply {
@@ -50,7 +52,7 @@ class FilterDrinkIngredientDialogFragment :
     override var listData: List<Ingredient?> = arrayListOf()
 
     inner class SortDrinkListAdapter :
-        BaseAdapter<Ingredient?, BaseViewHolder>(R.layout.item_dialog_sort_list),
+        BaseAdapter<Ingredient?, BaseViewHolder>(R.layout.item_dialog_filter_list),
         View.OnClickListener {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -75,16 +77,6 @@ class FilterDrinkIngredientDialogFragment :
              */
             callOnClick(v ?: return, getButtonType(v))
         }
-
-/*        override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-            super.onAttachedToRecyclerView(recyclerView)
-
-            if (recyclerView.onFlingListener == null) {
-                OffsetGravitySnapHelper(
-                    Gravity.TOP
-                ).attachToRecyclerView(recyclerView)
-            }
-        }*/
     }
 
     override fun getButtonType(view: View): ListDialogButton {

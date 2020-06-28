@@ -3,7 +3,6 @@
     <item
         android:id="@+id/menu_main_fragment"
         android:icon="@drawable/ic_nav_main_item"
-
         android:title="@string/menu_main_fragment_title" />
     <item
         android:id="@+id/menu_profile_fragment"

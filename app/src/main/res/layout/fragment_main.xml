@@ -3,9 +3,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:background="#FFFFFF"
         tools:context=".ui.fragment.MainFragment">
 
         <com.ikvych.cocktail.widget.custom.ApplicationToolBar
@@ -132,4 +137,11 @@
             app:srcCompat="@drawable/search" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fcv_main_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </FrameLayout>
 </layout>

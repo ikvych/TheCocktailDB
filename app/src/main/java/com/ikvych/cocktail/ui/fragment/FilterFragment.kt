@@ -36,15 +36,15 @@ class FilterFragment : BaseFragment() {
 
     private val drinkFilters: HashMap<DrinkFilterType, DrinkFilter> = hashMapOf()
 
-    lateinit var viewModel: BaseViewModel
+    private lateinit var viewModel: BaseViewModel
     private var fragmentListener: OnFilterResultListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            fragmentListener = activity as OnFilterResultListener
+            fragmentListener = context as OnFilterResultListener
         } catch (exception: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement OnFilterResultListener")
+            throw ClassCastException("${context.toString()} must implement OnFilterResultListener")
         }
     }
 
@@ -68,7 +68,8 @@ class FilterFragment : BaseFragment() {
 
         alcoholFilter = view.findViewById(R.id.im_alcohol_filter)
         alcoholFilter.setOnClickListener { v ->
-            FilterDrinkAlcoholDialogFragment.newInstance().show(childFragmentManager)
+            FilterDrinkAlcoholDialogFragment.newInstance()
+                .show(childFragmentManager, FilterDrinkAlcoholDialogFragment::class.java.simpleName)
         }
         chosenAlcoholFilter = view.findViewById(R.id.tv_chosen_alcohol_filter)
         chosenAlcoholFilter.text =
@@ -76,7 +77,10 @@ class FilterFragment : BaseFragment() {
 
         categoryFilter = view.findViewById(R.id.im_category_filter)
         categoryFilter.setOnClickListener { v ->
-            FilterDrinkCategoryDialogFragment.newInstance().show(childFragmentManager)
+            FilterDrinkCategoryDialogFragment.newInstance().show(
+                childFragmentManager,
+                FilterDrinkCategoryDialogFragment::class.java.simpleName
+            )
         }
         chosenCategoryFilter = view.findViewById(R.id.tv_chosen_category_filter)
         chosenCategoryFilter.text =
@@ -85,7 +89,10 @@ class FilterFragment : BaseFragment() {
         ingredientFilter = view.findViewById(R.id.im_ingredient_filter)
         ingredientFilter.setOnClickListener { v ->
             FilterDrinkIngredientDialogFragment.newInstance(viewModel.getAllIngredient())
-                .show(childFragmentManager)
+                .show(
+                    childFragmentManager,
+                    FilterDrinkIngredientDialogFragment::class.java.simpleName
+                )
         }
         chosenIngredientFilter = view.findViewById(R.id.tv_chosen_ingredient_filter)
         chosenIngredientFilter.text =
@@ -117,9 +124,8 @@ class FilterFragment : BaseFragment() {
         if (categoryKey != CategoryDrinkFilter.NONE.key) {
             CategoryDrinkFilter.values().forEach {
                 if (it.key == categoryKey) {
-                    drinkFilters[AlcoholDrinkFilter.ALCOHOLIC.type] = it
+                    drinkFilters[CategoryDrinkFilter.COCKTAIL.type] = it
                 }
-
             }
         }
     }
@@ -139,10 +145,18 @@ class FilterFragment : BaseFragment() {
 
     private fun initIngredientFilters() {
         val ingredientKey = requireArguments().getString(DrinkFilterType.INGREDIENT.key)
-            ?: IngredientDrinkFilter.INGREDIENT.key
+            ?: "None"
+
+        if (ingredientKey == "None") {
+            drinkFilters.remove(DrinkFilterType.INGREDIENT)
+        } else {
+            val ingredient = IngredientDrinkFilter.INGREDIENT
+            ingredient.key = ingredientKey
+            drinkFilters.put(DrinkFilterType.INGREDIENT, ingredient)
+        }
     }
 
-    override fun onBottomSheetDialogFragmentClick(
+    override fun onDialogFragmentClick(
         dialog: DialogFragment,
         buttonType: DialogButton,
         type: DialogType<DialogButton>,
@@ -171,7 +185,11 @@ class FilterFragment : BaseFragment() {
                 val ingredientType = data as Ingredient
                 val ingredient = IngredientDrinkFilter.INGREDIENT
                 ingredient.key = ingredientType.strIngredient1!!
-                drinkFilters[ingredient.type] = ingredient
+                if (ingredientType.strIngredient1 == "None") {
+                    drinkFilters.remove(DrinkFilterType.INGREDIENT)
+                } else {
+                    drinkFilters[ingredient.type] = ingredient
+                }
                 chosenIngredientFilter.text = ingredient.key
             }
         }

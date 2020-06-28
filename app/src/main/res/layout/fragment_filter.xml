@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ui.fragment.FilterFragment">
+    android:background="#FFFFFF"
+    android:clickable="true"
+    tools:context=".ui.fragment.FilterFragment"
+    android:focusable="true">
 
     <com.ikvych.cocktail.widget.custom.ApplicationToolBar
         android:id="@+id/atb_fragment_filter"
@@ -36,7 +40,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="4"
-            android:text="Alcohol Filter"
+            android:text="@string/tv_filter_fragment_alcohol_filter"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
@@ -75,7 +79,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="4"
-            android:text="Category Filter"
+            android:text="@string/tv_filter_fragment_category_filter"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
@@ -113,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="4"
-            android:text="Ingredient Filter"
+            android:text="@string/tv_filter_fragment_ingredient_filter"
             android:textAlignment="center"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
@@ -141,7 +145,8 @@
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent">
+        app:layout_constraintStart_toStartOf="parent"
+        style="?android:attr/buttonBarStyle">
 
         <Button
             android:id="@+id/btn_accept"
@@ -151,6 +156,7 @@
             android:layout_marginVertical="@dimen/auth_indents"
             android:layout_weight="1"
             android:text="@string/accept"
+            style="?android:attr/buttonBarButtonStyle"
             android:textColor="#FFFFFF"
             app:backgroundTint="@color/design_default_color_primary_dark" />
 
@@ -162,6 +168,7 @@
             android:layout_marginVertical="@dimen/auth_indents"
             android:layout_weight="1"
             android:text="@string/reset"
+            style="?android:attr/buttonBarButtonStyle"
             android:textColor="#FFFFFF"
             app:backgroundTint="@color/design_default_color_primary_dark" />
 

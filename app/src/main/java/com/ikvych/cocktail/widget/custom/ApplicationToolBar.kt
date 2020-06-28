@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.*
 import com.ikvych.cocktail.R
+import kotlinx.android.synthetic.main.app_toolbar.view.*
 
 class ApplicationToolBar(
     context: Context?,
@@ -48,8 +49,10 @@ class ApplicationToolBar(
         field = value
         if (field) {
             customBtn.visibility = View.VISIBLE
+            relativeLayoutCustomBtn.visibility = View.VISIBLE
         } else {
             customBtn.visibility = View.GONE
+            relativeLayoutCustomBtn.visibility = View.GONE
         }
         invalidate()
         requestLayout()
@@ -71,12 +74,16 @@ class ApplicationToolBar(
             field = value
             if (field) {
                 sortBtn.visibility = View.VISIBLE
+                rl_sort_btn.visibility = View.VISIBLE
             } else {
                 sortBtn.visibility = View.GONE
+                rl_sort_btn.visibility = View.GONE
             }
             invalidate()
             requestLayout()
         }
+    var relativeLayoutCustomBtn: RelativeLayout
+    var relativeLayoutSortBtn: RelativeLayout
 
     init {
         View.inflate(context, R.layout.app_toolbar, this)
@@ -88,6 +95,8 @@ class ApplicationToolBar(
         this.textView = findViewById(R.id.tv_toolbar)
         this.sortBtn = findViewById(R.id.sort_tb_btn)
         this.sortIndicatorView = findViewById(R.id.tv_sort_indicator)
+        this.relativeLayoutCustomBtn = rl_custom_btn
+        this.relativeLayoutSortBtn = rl_sort_btn
 
         context!!.theme.obtainStyledAttributes(
             attrs,

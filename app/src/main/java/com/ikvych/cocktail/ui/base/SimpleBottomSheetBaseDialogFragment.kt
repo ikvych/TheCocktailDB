@@ -11,20 +11,17 @@ import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.base.BaseDialogFragment
-import com.ikvych.cocktail.ui.base.DialogButton
-import com.ikvych.cocktail.ui.base.DialogType
 import kotlinx.android.synthetic.main.layout_dialog_simple.*
 
 
-abstract class SimpleBaseDialogFragment<
+abstract class SimpleBottomSheetBaseDialogFragment<
         Data,
         ButtonType : DialogButton,
         Type : DialogType<ButtonType>,
-        Builder : SimpleBaseDialogFragment.SimpleDialogBuilder>
-protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
+        Builder : SimpleBottomSheetBaseDialogFragment.SimpleBottomSheetDialogBuilder>
+protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>() {
 
-    override val contentLayoutResId = R.layout.layout_dialog_simple
+    override val contentLayoutResId = R.layout.layout_bottom_sheet_dialog_simple
     protected open val extraContentLayoutResId: Int = 0
 
     protected open lateinit var dialogBuilder: Builder
@@ -36,7 +33,7 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
 
         @Suppress("SENSELESS_COMPARISON")
         check(dialogBuilder != null) {
-            "${SimpleBaseDialogFragment::class.java.simpleName}. " +
+            "${SimpleBottomSheetBaseDialogFragment::class.java.simpleName}. " +
                     "Property dialogBuilder must not be implemented and must not be null after " +
                     "super.onViewCreated(view, savedInstanceState) called and afterwards"
         }
@@ -104,7 +101,7 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
     )
 
 
-    open class SimpleDialogBuilder constructor() : Parcelable {
+    open class SimpleBottomSheetDialogBuilder constructor() : Parcelable {
         /**
          * Use either [titleTextResId] or [titleText].
          * If both defined - text takes precedence.
@@ -159,14 +156,14 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
             return 0
         }
 
-        companion object CREATOR : Parcelable.Creator<SimpleDialogBuilder> {
-            override fun createFromParcel(parcel: Parcel): SimpleDialogBuilder {
-                return SimpleDialogBuilder(
+        companion object CREATOR : Parcelable.Creator<SimpleBottomSheetDialogBuilder> {
+            override fun createFromParcel(parcel: Parcel): SimpleBottomSheetDialogBuilder {
+                return SimpleBottomSheetDialogBuilder(
                     parcel
                 )
             }
 
-            override fun newArray(size: Int): Array<SimpleDialogBuilder?> {
+            override fun newArray(size: Int): Array<SimpleBottomSheetDialogBuilder?> {
                 return arrayOfNulls(size)
             }
         }

@@ -9,7 +9,7 @@ import android.widget.FrameLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.base.BaseAdapter
 import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
-import kotlinx.android.synthetic.main.layout_dialog_sort_list_component.*
+import kotlinx.android.synthetic.main.layout_dialog_filter_list_component.*
 
 abstract class ListBaseDialogFragment<
         Data,
@@ -18,7 +18,7 @@ abstract class ListBaseDialogFragment<
 protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, SimpleBaseDialogFragment.SimpleDialogBuilder>() {
 
     override val contentLayoutResId = R.layout.layout_dialog_simple
-    override val extraContentLayoutResId: Int = R.layout.layout_dialog_sort_list_component
+    override val extraContentLayoutResId: Int = R.layout.layout_dialog_filter_list_component
 
     abstract val dialogListDataAdapter: DialogListDataAdapter<Data>
     protected open val listAdapter: BaseAdapter<Data, *> = DialogListAdapter()
@@ -34,7 +34,7 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
         }
     }
 
-    protected inner class DialogListAdapter : BaseAdapter<Data, BaseViewHolder>(R.layout.item_dialog_sort_list),
+    protected inner class DialogListAdapter : BaseAdapter<Data, BaseViewHolder>(R.layout.item_dialog_filter_list),
         View.OnClickListener {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -51,14 +51,6 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
             }
         }
 
-/*        override fun convert(helper: BaseViewHolder, data: Data) {
-            with(helper.itemView as CheckedTextView) {
-                text = dialogListDataAdapter.getName(data)
-                tag = data
-                setOnClickListener(this@DialogListAdapter)
-            }
-        }*/
-
         @Suppress("UNCHECKED_CAST")
         override fun onClick(v: View?) {
             /**
@@ -67,24 +59,7 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
             callOnClick(v ?: return, getButtonType(v))
         }
 
-/*        override fun onAttachedToRecyclerView(recyclerView: RecyclerView) {
-            super.onAttachedToRecyclerView(recyclerView)
-
-            if (recyclerView.onFlingListener == null) {
-                OffsetGravitySnapHelper(
-                    Gravity.TOP
-                ).attachToRecyclerView(recyclerView)
-            }
-        }*/
-
     }
-
-/*    override fun stopAllLoadingButtonsIfNeeded() {
-        super.stopAllLoadingButtonsIfNeeded()
-        rv_dialog_bs_list?.forEach {
-            setLoadingIfEligible(it, getButtonType(it), false)
-        }
-    }*/
 
     interface DialogListDataAdapter<Data> {
         fun getName(data: Data): CharSequence

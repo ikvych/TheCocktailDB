@@ -48,7 +48,7 @@ class FilterAdapter(
                 holder.linearLayout.setBackgroundColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.item_drink_filter_favorite_bg
+                        R.color.item_drink_filter_ingredient_bg
                     )
                 )
                 holder.closeButton.setOnClickListener { listener.onClick(filter) }
@@ -63,12 +63,25 @@ class FilterAdapter(
                 holder.linearLayout.setBackgroundColor(
                     ContextCompat.getColor(
                         context,
-                        R.color.item_drink_filter_alcohol_bg
+                        R.color.item_drink_filter_ingredient_bg
                     )
                 )
                 holder.closeButton.setOnClickListener { listener.onClick(filter) }
             }
             DrinkFilterType.INGREDIENT -> {
+                holder.filterIcon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        context,
+                        R.drawable.ic_item_drink_filter_ingredient
+                    )
+                )
+                holder.linearLayout.setBackgroundColor(
+                    ContextCompat.getColor(
+                        context,
+                        R.color.item_drink_filter_ingredient_bg
+                    )
+                )
+                holder.closeButton.setOnClickListener { listener.onClick(filter) }
             }
             DrinkFilterType.GLASS -> {
             }

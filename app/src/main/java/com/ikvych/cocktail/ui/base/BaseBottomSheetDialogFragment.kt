@@ -15,14 +15,14 @@ import androidx.fragment.app.FragmentTransaction
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ikvych.cocktail.R
 
-abstract class BaseDialogFragment<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> protected constructor() :
-    DialogFragment(),
+abstract class BaseBottomSheetDialogFragment<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> protected constructor() :
+    BottomSheetDialogFragment(),
     View.OnClickListener {
 
-    protected var onDialogClickListener: OnDialogFragmentClickListener<Data, ButtonType, Type>? =
+    protected var onDialogClickListener: OnBottomSheetDialogFragmentClickListener<Data, ButtonType, Type>? =
         null
         private set
-    protected var onDialogDismissListener: OnDialogFragmentDismissListener<Data, ButtonType, Type>? =
+    protected var onDialogDismissListener: OnBottomSheetDialogFragmentDismissListener<Data, ButtonType, Type>? =
         null
         private set
 
@@ -73,8 +73,8 @@ abstract class BaseDialogFragment<Data, ButtonType : DialogButton, Type : Dialog
         onDialogClickListener?.apply {
             val data = obtainDataForView(v)
 
-            val acceptClick = this.shouldDialogFragmentAcceptClick(
-                this@BaseDialogFragment,
+            val acceptClick = this.shouldBottomSheetDialogFragmentAcceptClick(
+                this@BaseBottomSheetDialogFragment,
                 dialogType,
                 buttonType,
                 data
@@ -82,8 +82,8 @@ abstract class BaseDialogFragment<Data, ButtonType : DialogButton, Type : Dialog
 
             if (!acceptClick) return
 
-            this.onDialogFragmentClick(
-                this@BaseDialogFragment,
+            this.onBottomSheetDialogFragmentClick(
+                this@BaseBottomSheetDialogFragment,
                 buttonType,
                 dialogType,
                 data
@@ -111,25 +111,25 @@ abstract class BaseDialogFragment<Data, ButtonType : DialogButton, Type : Dialog
 
     override fun onDismiss(dialog: DialogInterface) {
         super.onDismiss(dialog)
-        onDialogDismissListener?.onDialogFragmentDismiss(this, dialogType,  data)
+        onDialogDismissListener?.onBottomSheetDialogFragmentDismiss(this, dialogType,  data)
     }
 
     @Suppress("UNCHECKED_CAST")
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        check(context is OnDialogFragmentClickListener<*, *, *>) {
+        check(context is OnBottomSheetDialogFragmentClickListener<*, *, *>) {
             "Bottom Sheet Dialog must be attached to context " +
-                    "(activity/fragment) that implements ${OnDialogFragmentClickListener::class.java.simpleName} " +
+                    "(activity/fragment) that implements ${OnBottomSheetDialogFragmentClickListener::class.java.simpleName} " +
                     "listener"
         }
-        onDialogClickListener = context as? OnDialogFragmentClickListener<Data, ButtonType, Type>
-        check(context is OnDialogFragmentDismissListener<*, *, *>) {
+        onDialogClickListener = context as? OnBottomSheetDialogFragmentClickListener<Data, ButtonType, Type>
+        check(context is OnBottomSheetDialogFragmentDismissListener<*, *, *>) {
             "Bottom Sheet Dialog must be attached to context " +
-                    "(activity/fragment) that implements ${OnDialogFragmentDismissListener::class.java.simpleName} " +
+                    "(activity/fragment) that implements ${OnBottomSheetDialogFragmentDismissListener::class.java.simpleName} " +
                     "listener"
         }
         onDialogDismissListener =
-            context as? OnDialogFragmentDismissListener<Data, ButtonType, Type>
+            context as? OnBottomSheetDialogFragmentDismissListener<Data, ButtonType, Type>
     }
 
     override fun onDetach() {
@@ -138,23 +138,23 @@ abstract class BaseDialogFragment<Data, ButtonType : DialogButton, Type : Dialog
         onDialogDismissListener = null
     }
 
-    interface OnDialogFragmentDismissListener<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> {
-        fun onDialogFragmentDismiss(
+    interface OnBottomSheetDialogFragmentDismissListener<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> {
+        fun onBottomSheetDialogFragmentDismiss(
             dialog: DialogFragment,
             type: Type,
             data: Data?
         )
     }
 
-    interface OnDialogFragmentClickListener<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> {
-        fun onDialogFragmentClick(
+    interface OnBottomSheetDialogFragmentClickListener<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> {
+        fun onBottomSheetDialogFragmentClick(
             dialog: DialogFragment,
             buttonType: ButtonType,
             type: Type,
             data: Data?
         )
 
-        fun shouldDialogFragmentAcceptClick(
+        fun shouldBottomSheetDialogFragmentAcceptClick(
             dialog: DialogFragment,
             dialogType: Type,
             buttonType: ButtonType,

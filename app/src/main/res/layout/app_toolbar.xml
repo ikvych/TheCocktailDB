@@ -11,7 +11,8 @@
         android:layout_weight="1"
         android:src="@drawable/ic_arrow_back"
         android:background="@android:color/transparent"
-        android:padding="12dp"/>
+        android:padding="12dp"
+        android:contentDescription="@string/content_description_return_button"/>
 
     <FrameLayout
         android:id="@+id/fl_toolbar"
@@ -41,6 +42,7 @@
     </FrameLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_sort_btn"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1">
@@ -51,8 +53,10 @@
             android:layout_height="32dp"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
+            android:visibility="gone"
             android:src="@drawable/ic_app_tool_bar_sort"
-            android:padding="12dp" />
+            android:padding="12dp"
+            android:contentDescription="@string/content_description_sort_history"/>
 
         <TextView
             android:id="@+id/tv_sort_indicator"
@@ -68,6 +72,7 @@
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/rl_custom_btn"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1">
@@ -78,7 +83,8 @@
             android:layout_height="32dp"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
-            android:padding="12dp" />
+            android:padding="12dp"
+            android:contentDescription="@string/content_description_custom_button"/>
 
         <TextView
             android:id="@+id/tv_filter_indicator"

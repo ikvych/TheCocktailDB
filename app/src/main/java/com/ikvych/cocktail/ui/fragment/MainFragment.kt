@@ -27,6 +27,7 @@ import com.ikvych.cocktail.listener.SortResultCallBack
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
 import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -35,26 +36,19 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     FilterAdapter.OnClickItemFilterCloseListener, SortResultCallBack {
 
     override val callbacks: HashSet<OnSortResultListener> = hashSetOf()
-    override fun addCallBack(listener: OnSortResultListener) {
-        callbacks.add(listener)
-    }
 
-    override fun removeCallBack(listener: OnSortResultListener) {
-        callbacks.remove(listener)
-    }
+    private lateinit var batteryReceiver: BatteryReceiver
+    private var fragmentListener: FilterFragment.OnFilterResultListener? = null
 
-    lateinit var batteryReceiver: BatteryReceiver
-    var fragmentListener: FilterFragment.OnFilterResultListener? = null
+    private lateinit var filterBtn: ImageButton
+    private lateinit var filterIndicator: TextView
 
-    lateinit var filterBtn: ImageButton
-    lateinit var filterIndicator: TextView
+    private var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
 
-    var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
+    private lateinit var sortBtn: ImageButton
+    private lateinit var sortIndicator: TextView
 
-    lateinit var sortBtn: ImageButton
-    lateinit var sortIndicator: TextView
-
-    lateinit var filterFragment: FilterFragment
+    private lateinit var filterFragment: FilterFragment
 
     private var filters: ArrayList<DrinkFilter> = arrayListOf()
     private lateinit var filterAdapter: FilterAdapter
@@ -74,6 +68,8 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     private lateinit var batteryIcon: ImageView
     private lateinit var powerConnected: ImageView
 
+    private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
+
     interface OnSortResultListener {
         fun onResult(sortDrinkType: SortDrinkType)
     }
@@ -91,10 +87,10 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            fragmentListener = activity as FilterFragment.OnFilterResultListener
-            (activity as FilterResultCallBack).addCallBack(this)
+            fragmentListener = context as FilterFragment.OnFilterResultListener
+            (context as FilterResultCallBack).addCallBack(this)
         } catch (exception: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement FilterResultCallBack | FilterFragment.OnFilterResultListener")
+            throw ClassCastException("${context.toString()} must implement FilterResultCallBack | FilterFragment.OnFilterResultListener")
         }
     }
 
@@ -119,6 +115,13 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
             this
         )
         batteryReceiver = BatteryReceiver(this)
+
+        bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance{
+            titleText = "Log Out"
+            descriptionText = "Are you Really want to exit?"
+            leftButtonText = "Cancel"
+            rightButtonText = "Accept"
+        }
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -156,11 +159,9 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         )
 
         filterBtn.setOnClickListener {
-            val fragmentTransaction = parentFragmentManager.beginTransaction()
-            filterFragment =
-                FilterFragment.newInstance(R.layout.fragment_filter, filters)
-            fragmentTransaction.hide(this)
-            fragmentTransaction.add(R.id.fcv_main, filterFragment)
+            val fragmentTransaction = childFragmentManager.beginTransaction()
+            filterFragment = FilterFragment.newInstance(R.layout.fragment_filter, filters)
+            fragmentTransaction.add(R.id.fcv_main_fragment, filterFragment, FilterFragment::class.java.simpleName)
             fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
             fragmentTransaction.commit()
         }
@@ -179,7 +180,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
                 this.titleText = "Sort history"
                 this.leftButtonText = "Cancel"
                 this.rightButtonText = "Accept"
-            }.show(childFragmentManager)
+            }.show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
         }
         sortIndicator =
             view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).sortIndicatorView
@@ -205,7 +206,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         powerConnected = view.findViewById(R.id.iv_power_connected)
     }
 
-    override fun onBottomSheetDialogFragmentClick(
+    override fun onDialogFragmentClick(
         dialog: DialogFragment,
         buttonType: DialogButton,
         type: DialogType<DialogButton>,
@@ -215,7 +216,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
             RegularDialogType -> {
                 when (buttonType) {
                     RightDialogButton -> {
-                        val supportData = data as SortDrinkType ?: return
+                        val supportData = data as SortDrinkType
                         sortDrinkType = supportData
                         callbacks.forEach {
                             it.onResult(sortDrinkType)

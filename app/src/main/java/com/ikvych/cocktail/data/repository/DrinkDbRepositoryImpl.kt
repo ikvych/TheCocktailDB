@@ -32,6 +32,14 @@ class DrinkDbRepositoryImpl(context: Context):
         return DbAsyncTask(drinkDao).execute().get()
     }
 
+    override fun findDrinkById(drinkId: Long): Drink {
+        return FindDrinkAsyncTask(drinkDao).execute(drinkId).get()
+    }
+
+    override fun findDrinkByName(drinkName: String): Drink {
+        return FindDrinkByNameAsyncTask(drinkDao).execute(drinkName).get()
+    }
+
     private companion object class SaveDrinkAsyncTask(private val drinkDao: DrinkDao): AsyncTask<Drink, Unit, Unit>() {
 
         override fun doInBackground(vararg params: Drink) {

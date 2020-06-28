@@ -2,12 +2,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/menu_drink_open"
         android:title="@string/open"/>
-    <item android:id="@+id/menu_drink_add_favorite"
-        android:title="@string/add_favorite"/>
+    <item android:id="@+id/menu_drink_pin_shortcut"
+        android:title="@string/pin_shortcut"/>
     <item android:id="@+id/menu_drink_quick_preview"
         android:title="@string/quick_preview"/>
-    <item android:id="@+id/menu_drink_remove"
-        android:title="@string/remove"/>
+    <item android:id="@+id/menu_drink_add_favorite"
+        android:title="@string/add_favorite"/>
     <item android:id="@+id/menu_drink_remove_favorite"
         android:title="@string/remove_favorite"/>
+    <item android:id="@+id/menu_drink_remove"
+        android:title="@string/remove"/>
 </menu>

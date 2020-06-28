@@ -1,30 +1,37 @@
 package com.ikvych.cocktail.ui.fragment
 
+import android.content.Intent
 import android.content.res.Configuration
 import android.view.View
+import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.comparator.type.SortOrder
+import com.ikvych.cocktail.constant.DRINK
+import com.ikvych.cocktail.constant.SEARCH_MODEL_TYPE
+import com.ikvych.cocktail.constant.VIEW_MODEL_TYPE
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
+import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
-    private lateinit var drinkAdapter: DrinkAdapter
+    protected lateinit var drinkAdapter: DrinkAdapter
     lateinit var viewModel: T
     var filters: ArrayList<DrinkFilter> = arrayListOf()
     protected var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
 
-    val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
+    private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
 
     fun initViewModel(viewModelClass: Class<T>) {
         viewModel = ViewModelProvider(this).get(viewModelClass)
@@ -38,9 +45,9 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
         })
     }
 
-    fun initRecyclerView(view: View, drinks: List<Drink>, recyclerViewId: Int, modelType: String) {
+    fun initRecyclerView(view: View, drinks: List<Drink>, recyclerViewId: Int) {
         val recyclerView: RecyclerView = view.findViewById(recyclerViewId)
-        drinkAdapter = DrinkAdapter(requireContext(), modelType, viewModel)
+        drinkAdapter = DrinkAdapter(requireContext())
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -73,7 +80,7 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
                 DrinkFilterType.INGREDIENT -> {
                     drinksCopy = drinksCopy.filter { drink ->
                         var isValid = false
-                        for ((key, value) in drink.getIngredients()) {
+                        for ((key, _) in drink.getIngredients()) {
                             if (key.equals(it.key)) {
                                 isValid = true
                                 break
@@ -92,50 +99,14 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
 
     fun sortData(sortDrinkType: SortDrinkType) {
         var drinksCopy = drinkAdapter.drinkList
-        when (sortDrinkType) {
-            SortDrinkType.RECENT -> {
-                drinksCopy = drinksCopy.sortedByDescending { drink ->
-                    drink.getCreated()
-                }
-            }
-            SortDrinkType.NAME -> {
-                drinksCopy = when (sortDrinkType.sortOrder) {
-                    SortOrder.Descending -> {
-                        drinksCopy.sortedByDescending { drink ->
-                            drink.getStrDrink()
-                        }
-                    }
-                    SortOrder.Ascending -> {
-                        drinksCopy.sortedBy { drink ->
-                            drink.getStrDrink()
-                        }
-                    }
-                }
-            }
-            SortDrinkType.ALCOHOL -> {
-                drinksCopy = when (sortDrinkType.sortOrder) {
-                    SortOrder.Descending -> {
-                        drinksCopy.sortedWith(alcoholComparator).asReversed()
-                    }
-                    SortOrder.Ascending -> {
-                        drinksCopy.sortedWith(alcoholComparator)
-                    }
-                }
-            }
-            SortDrinkType.INGREDIENT_COUNT -> {
-                drinksCopy = when (sortDrinkType.sortOrder) {
-                    SortOrder.Descending -> {
-                        drinksCopy.sortedByDescending { drink ->
-                            drink.getIngredients().size
-                        }
-                    }
-                    SortOrder.Ascending -> {
-                        drinksCopy.sortedBy { drink ->
-                            drink.getIngredients().size
-                        }
-                    }
-                }
-            }
+        drinksCopy = when (sortDrinkType) {
+            SortDrinkType.RECENT -> drinksCopy.sortedByDescending { drink -> drink.getCreated() }
+            SortDrinkType.NAME_ASC -> drinksCopy.sortedBy { drink -> drink.getStrDrink() }
+            SortDrinkType.NAME_DESC -> drinksCopy.sortedByDescending { drink -> drink.getStrDrink() }
+            SortDrinkType.ALCOHOL_ASC -> drinksCopy.sortedWith(alcoholComparator)
+            SortDrinkType.ALCOHOL_DESC -> drinksCopy.sortedWith(alcoholComparator).asReversed()
+            SortDrinkType.INGREDIENT_COUNT_ASC -> drinksCopy.sortedBy { drink -> drink.getIngredients().size }
+            SortDrinkType.INGREDIENT_COUNT_DESC -> drinksCopy.sortedByDescending { drink -> drink.getIngredients().size }
         }
         drinkAdapter.drinkList = drinksCopy
         determineVisibleLayerOnUpdateData(drinksCopy)
@@ -164,4 +135,5 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
     open fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
         //TO DO
     }
+
 }

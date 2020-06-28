@@ -25,7 +25,7 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(),
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            (requireActivity() as FilterResultCallBack).addCallBack(this)
+            (context as FilterResultCallBack).addCallBack(this)
             (parentFragment as SortResultCallBack).addCallBack(this)
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
@@ -63,8 +63,7 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(),
         initRecyclerView(
             view,
             viewModel.getFavoriteCurrentData(),
-            R.id.db_recycler_view,
-            MAIN_MODEL_TYPE
+            R.id.db_recycler_view
         )
         initLiveDataObserver()
     }

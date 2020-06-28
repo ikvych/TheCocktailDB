@@ -15,7 +15,7 @@
     <string name="basic_information">Basic information</string>
     <string name="login">Login</string>
     <string name="password">Password</string>
-    <string name="invalid_password_text">Більше 6 символів, одна літера і одна цифра</string>
+    <string name="invalid_password_text">Пароль повинний містити більше 6 символів, одну літеру і одну цифру</string>
     <string name="invalid_login_text">Логін повинний містити більше 6 символів</string>
 
     <string name="dialog_sort_title">Sort By</string>
@@ -37,8 +37,22 @@
     <string name="quick_preview">Quick Preview</string>
     <string name="add_favorite">Add Favorite</string>
     <string name="open">Open</string>
-    <string name="remove_favorite">remove_favorite</string>
+    <string name="remove_favorite">Remove favorite</string>
+    <string name="pin_shortcut">Pin shortcut</string>
     <string name="menu_main_fragment_title">Main</string>
     <string name="menu_profile_fragment_title">Profile</string>
+
+   <!-- bottom sheet dialog strings-->
+    <string name="bottom_sheet_option_camera">Use Camera</string>
+    <string name="bottom_sheet_option_gallery">Upload from Gallery</string>
+    <string name="bottom_sheet_option_heading">Add Photo</string>
+    <string name="bottom_sheet_option_remove_photo">Remove Photo</string>
+    <string name="content_description_return_button">Return button</string>
+    <string name="content_description_sort_history">Sort history</string>
+    <string name="content_description_custom_button">Custom button</string>
+    <string name="tv_filter_fragment_alcohol_filter">Alcohol Filter</string>
+    <string name="tv_filter_fragment_category_filter">Category Filter</string>
+    <string name="tv_filter_fragment_ingredient_filter">Ingredient Filter</string>
+
 
 </resources>

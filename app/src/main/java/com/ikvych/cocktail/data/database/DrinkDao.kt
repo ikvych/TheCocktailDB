@@ -17,6 +17,12 @@ interface DrinkDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveIngredient(ingredient: Ingredient)
 
+    @Query("SELECT * FROM drink WHERE id_drink=:drinkId")
+    fun findDrinkById(drinkId: Long) : Drink
+
+    @Query("SELECT * FROM drink WHERE str_drink=:drinkName")
+    fun findDrinkByName(drinkName: String) : Drink
+
     @Query("SELECT * FROM ingredient ORDER BY str_ingredient ASC")
     fun getAllIngredients() : List<Ingredient>
 

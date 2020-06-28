@@ -2,27 +2,41 @@ package com.ikvych.cocktail.adapter.list
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.graphics.Bitmap
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.Icon
+import android.os.Build
+import android.os.PersistableBundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
+import android.widget.PopupMenu
+import android.widget.Toast
+import androidx.core.content.ContextCompat.getSystemService
+import androidx.core.graphics.drawable.toAdaptiveIcon
+import androidx.core.graphics.scale
+import androidx.core.view.drawToBitmap
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.target.CustomTarget
+import com.bumptech.glide.request.transition.Transition
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.constant.DRINK
-import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
-import com.ikvych.cocktail.constant.SEARCH_MODEL_TYPE
-import com.ikvych.cocktail.constant.VIEW_MODEL_TYPE
+import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
+import com.ikvych.cocktail.ui.activity.MainActivity
+import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import java.util.*
 
 
 class DrinkAdapter(
-    private val context: Context,
-    private val activityName: String,
-    private val viewModel: BaseViewModel
+    private val context: Context
 ) : RecyclerView.Adapter<DrinkAdapter.DrinkViewHolder>() {
 
     var drinkList: List<Drink> = arrayListOf()
@@ -50,47 +64,17 @@ class DrinkAdapter(
         return drinkList.size
     }
 
-
     inner class DrinkViewHolder(val itemDrinkListBinding: ItemDrinkListBinding) :
         RecyclerView.ViewHolder(itemDrinkListBinding.root) {
+
         init {
-            itemDrinkListBinding.root.setOnClickListener {
-                val position = adapterPosition
-
-                if (position != RecyclerView.NO_POSITION) {
-                    val drink: Drink = drinkList[position]
-                    val intent = Intent(context, DrinkDetailActivity::class.java)
-                    when (activityName) {
-                        MAIN_MODEL_TYPE -> intent.putExtra(
-                            VIEW_MODEL_TYPE,
-                            MAIN_MODEL_TYPE
-                        )
-                        SEARCH_MODEL_TYPE -> intent.putExtra(
-                            VIEW_MODEL_TYPE,
-                            SEARCH_MODEL_TYPE
-                        )
-                    }
-                    intent.putExtra(DRINK, drink)
-                    context.startActivity(intent)
-                }
-            }
-
-
+            itemDrinkListBinding.root.setOnClickListener(context as View.OnClickListener)
+            itemDrinkListBinding.root.setOnLongClickListener(context as View.OnLongClickListener)
             val favorite = itemDrinkListBinding.root.findViewById<CheckBox>(R.id.cb_favorite)
-            if (activityName == MAIN_MODEL_TYPE) {
-                favorite.setOnClickListener { v ->
-                    val drink = itemDrinkListBinding.drink!!
-                    if (favorite.isChecked) {
-                        drink.setIsFavorite(true)
-                        viewModel.saveDrink(drink)
-                    } else {
-                        drink.setIsFavorite(false)
-                        viewModel.saveDrink(drink)
-                    }
-                }
-            } else {
+            if (context is SearchActivity) {
                 favorite.visibility = View.GONE
             }
+            favorite.setOnClickListener(context as View.OnClickListener)
         }
     }
 }

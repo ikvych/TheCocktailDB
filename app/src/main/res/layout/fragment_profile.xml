@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="#FFFFFF"
     tools:context=".ui.fragment.ProfileFragment">
 
     <Space
@@ -17,7 +18,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/auth_login_btn_margin_start"
         android:layout_margin="@dimen/auth_indents"
-        android:text="@string/login"
+        android:text="@string/log_out"
         android:layout_gravity="center"
         android:textColor="#FFFFFF"
         app:backgroundTint="@color/design_default_color_primary_dark" />

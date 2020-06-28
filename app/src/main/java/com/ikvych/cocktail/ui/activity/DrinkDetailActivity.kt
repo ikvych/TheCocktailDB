@@ -23,6 +23,8 @@ class DrinkDetailActivity : BaseActivity() {
 
     private var drink: Drink? = null
     private var modelType: String? = null
+    private lateinit var viewModel : MainViewModel
+
 
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var imageView: ImageView
@@ -39,6 +41,8 @@ class DrinkDetailActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_drink_details)
+
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         val intent = intent
 
@@ -57,6 +61,14 @@ class DrinkDetailActivity : BaseActivity() {
                         }
                     }
                 }
+            }
+        }
+        if (intent != null && intent.hasExtra(DRINK_ID)) {
+            val drinkId: Long = intent.getLongExtra(DRINK_ID, -1L)
+            if (drinkId != -1L) {
+                drink = viewModel.findDrinkById(drinkId)
+            } else {
+                finish()
             }
         }
 

@@ -1,19 +1,19 @@
 package com.ikvych.cocktail.ui.activity
 
 import android.content.res.Configuration
+import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
-import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity() {
-    private lateinit var drinkAdapter: DrinkAdapter
+abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity(), View.OnClickListener, View.OnLongClickListener {
+    protected lateinit var drinkAdapter: DrinkAdapter
     lateinit var viewModel : T
 
     fun initViewModel(viewModelClass: Class<T>) {
@@ -27,9 +27,9 @@ abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity() {
         })
     }
 
-    fun initRecyclerView(drinks: List<Drink>, recyclerViewId: Int, modelType: String) {
+    fun initRecyclerView(drinks: List<Drink>, recyclerViewId: Int) {
         val recyclerView: RecyclerView = findViewById(recyclerViewId)
-        drinkAdapter = DrinkAdapter(this, modelType, viewModel)
+        drinkAdapter = DrinkAdapter(this)
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = GridLayoutManager(this, 2)
@@ -69,4 +69,11 @@ abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity() {
         //TO DO
     }
 
+    override fun onClick(v: View?) {
+
+    }
+
+    override fun onLongClick(v: View?): Boolean {
+        return false
+    }
 }

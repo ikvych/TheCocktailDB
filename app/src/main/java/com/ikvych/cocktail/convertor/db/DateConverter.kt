@@ -3,7 +3,7 @@ package com.ikvych.cocktail.convertor.db
 import androidx.room.TypeConverter
 import java.util.*
 
-object DateConverter {
+class DateConverter {
     @TypeConverter
     fun fromTimestamp(value: Long?): Date? {
         return value?.let { Date(it) }
@@ -11,6 +11,6 @@ object DateConverter {
 
     @TypeConverter
     fun dateToTimestamp(date: Date?): Long? {
-        return date?.time
+        return date?.time?.toLong()
     }
 }

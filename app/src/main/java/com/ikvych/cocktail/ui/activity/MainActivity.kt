@@ -1,124 +1,270 @@
 package com.ikvych.cocktail.ui.activity
 
+import android.content.Intent
+import android.content.pm.ShortcutInfo
+import android.content.pm.ShortcutManager
+import android.os.Build
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
-import android.widget.TextView
+import android.widget.*
+import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toAdaptiveIcon
+import androidx.core.view.drawToBitmap
+import androidx.core.view.get
+import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.ui.setupWithNavController
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.constant.*
+import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.ui.base.BaseActivity
-import com.ikvych.cocktail.ui.fragment.*
-import com.ikvych.cocktail.ui.fragment.HistoryFragment.Companion.newInstance
-import com.ikvych.cocktail.widget.custom.ApplicationToolBar
+import com.ikvych.cocktail.ui.base.DialogButton
+import com.ikvych.cocktail.ui.base.DialogType
+import com.ikvych.cocktail.ui.fragment.FilterFragment
+import com.ikvych.cocktail.ui.fragment.MainFragment
+import com.ikvych.cocktail.ui.fragment.ProfileFragment
+import com.ikvych.cocktail.viewmodel.MainViewModel
+import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
+import java.util.*
 import kotlin.collections.ArrayList
+import kotlin.collections.HashSet
 
 
-class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener,
-    ProfileFragment.ProfileFragmentListener, FilterResultCallBack {
+class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, FilterResultCallBack {
 
     override val callbacks: HashSet<FilterFragment.OnFilterResultListener> = hashSetOf()
-    lateinit var mainFragment: MainFragment
-    lateinit var filterFragment: FilterFragment
-    lateinit var filterBtn: ImageButton
-    lateinit var indicatorView: TextView
-    private lateinit var returnBtn: ImageButton
+    lateinit var viewModel: MainViewModel
 
-    lateinit var profileFragment: ProfileFragment
-    lateinit var testFragment: TestFragment
-
-    var filters: List<DrinkFilter> = arrayListOf()
+    private lateinit var bottomNavigationView: BottomNavigationView
+    private lateinit var mainFragment: MainFragment
+    private lateinit var profileFragment: ProfileFragment
 
     override fun onBackPressed() {
-        if (filters.isNotEmpty()) {
-            indicatorView.visibility = View.VISIBLE
-        } else {
-            indicatorView.visibility = View.GONE
-        }
         super.onBackPressed()
+        // Відстежує активний елементи BottomNavigationView і переключає на відповідний таб
+        val lastIndex = supportFragmentManager.backStackEntryCount
+        val lastEntry: FragmentManager.BackStackEntry?
+        if (lastIndex != 0) {
+            lastEntry = supportFragmentManager.getBackStackEntryAt(lastIndex - 1)
+            when (lastEntry.name) {
+                MainFragment::class.java.simpleName -> {
+                    val mainMenu = bottomNavigationView.menu[0]
+                    mainMenu.isChecked = true
+                }
+                ProfileFragment::class.java.simpleName -> {
+                    val profileMenu = bottomNavigationView.menu[1]
+                    profileMenu.isChecked = true
+                }
+            }
+        } else {
+            val mainMenu = bottomNavigationView.menu[0]
+            mainMenu.isChecked = true
+        }
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        returnBtn = findViewById<ApplicationToolBar>(R.id.app_toolbar).returnBtn
-        returnBtn.setOnClickListener {
-            onBackPressed()
-        }
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        indicatorView = findViewById<ApplicationToolBar>(R.id.app_toolbar).indicatorView
-
-        filterBtn = findViewById<ApplicationToolBar>(R.id.app_toolbar).customBtn
-        filterBtn.setImageDrawable(ContextCompat.getDrawable(this, R.drawable.ic_filter))
-        filterBtn.setOnClickListener {
-            val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-            filterFragment =
-                FilterFragment.newInstance(R.layout.fragment_filter, *filters.toTypedArray())
-            ft.hide(mainFragment)
-            ft.add(R.id.fcv_main, filterFragment)
-            ft.addToBackStack(FilterFragment::class.java.name)
-            ft.commit()
-        }
-        filterBtn.setOnLongClickListener {
-            if (filters.isNotEmpty()) {
-                indicatorView.visibility = View.GONE
-                onFilterApply()
+        bottomNavigationView = findViewById(R.id.bnv_main)
+        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
+            // знаходить останню транзацію і порівнює з поточною, щоб не зберігалися до BackStack
+            // виклики однієї і тієї самої таби підряд
+            val lastIndex = supportFragmentManager.backStackEntryCount
+            var lastEntry: FragmentManager.BackStackEntry? = null
+            if (lastIndex != 0) {
+                lastEntry = supportFragmentManager.getBackStackEntryAt(lastIndex - 1)
             }
-            true
+            when (item.itemId) {
+                R.id.menu_main_fragment -> {
+                    if (lastEntry != null && lastEntry.name != MainFragment::class.java.simpleName) {
+                        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+                        ft.hide(profileFragment)
+                        ft.show(mainFragment)
+                        ft.setPrimaryNavigationFragment(mainFragment)
+                        ft.addToBackStack(MainFragment::class.java.simpleName)
+                        ft.commit()
+                        true
+                    } else {
+                        false
+                    }
+                }
+
+                R.id.menu_profile_fragment -> {
+                    if (lastEntry == null || lastEntry.name != ProfileFragment::class.java.simpleName) {
+                        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+                        ft.hide(mainFragment)
+                        ft.show(profileFragment)
+                        ft.setPrimaryNavigationFragment(profileFragment)
+                        ft.addToBackStack(ProfileFragment::class.java.simpleName)
+                        ft.commit()
+                        true
+                    } else {
+                        false
+                    }
+                }
+                else -> false
+            }
         }
 
+        profileFragment = ProfileFragment.newInstance(R.layout.fragment_profile)
         mainFragment = MainFragment.newInstance(R.layout.fragment_main)
-        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        ft.add(R.id.fcv_main, mainFragment)
-        ft.commit()
-
-/*        profileFragment = ProfileFragment.newInstance(R.layout.fragment_profile)
-        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        ft.add(R.id.fcv_main, profileFragment)
-        ft.commit()*/
+        val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
+        fragmentTransaction.replace(
+            R.id.fcv_main,
+            profileFragment,
+            ProfileFragment::class.java.simpleName
+        )
+        fragmentTransaction.hide(profileFragment)
+        fragmentTransaction.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
+        fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
+        fragmentTransaction.commit()
     }
 
-    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
-        filters = drinkFilters.toList()
+    override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
         callbacks.forEach {
-            it.onFilterApply(*drinkFilters)
+            it.onFilterApply(drinkFilters)
         }
-        if (drinkFilters.isNotEmpty()) {
-            if (indicatorView.visibility != View.VISIBLE) {
-                indicatorView.visibility = View.VISIBLE
+    }
+
+    override fun onFilterReset() {
+        callbacks.forEach {
+            it.onFilterReset()
+        }
+    }
+
+    override fun onClick(v: View?) {
+        // відкриває деталізацію коктейлю
+        if (v is CardView) {
+            val view = v.findViewById<TextView>(R.id.drinkName)
+            val drinkName = view?.text
+            if (drinkName != null) {
+                val drink = viewModel.findDrinkByName(drinkName.toString())
+                val intent = Intent(this, DrinkDetailActivity::class.java)
+                intent.putExtra(DRINK, drink)
+                startActivity(intent)
             }
         }
-        supportFragmentManager.popBackStack()
-    }
-
-    override fun onFilterRest() {
-        filters = arrayListOf()
-        callbacks.forEach {
-            it.onFilterRest()
+        // додає і видаляє з улюблених
+        if (v is CheckBox) {
+            val drinkName = v.tag as String
+            val drink = viewModel.findDrinkByName(drinkName)
+            if (v.isChecked) {
+                drink.setIsFavorite(true)
+                viewModel.saveDrink(drink)
+            } else {
+                drink.setIsFavorite(false)
+                viewModel.saveDrink(drink)
+            }
         }
-        if (indicatorView.visibility == View.VISIBLE) {
-            indicatorView.visibility = View.GONE
+    }
+
+    override fun onLongClick(v: View?): Boolean {
+        PopupMenu(this, v).apply {
+            setOnMenuItemClickListener {
+                when (it.itemId) {
+                    // відкриває деталізацію напою
+                    R.id.menu_drink_open -> {
+                        val view = v?.findViewById<TextView>(R.id.drinkName)
+                        val drinkName = view?.text ?: ""
+                        val drink = viewModel.findDrinkByName(drinkName.toString())
+
+                        val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
+                        intent.putExtra(DRINK, drink)
+                        startActivity(intent)
+                        true
+                    }
+                    // створює pinned shortcut
+                    R.id.menu_drink_pin_shortcut -> {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                            val textViewDrinkName = v?.findViewById<TextView>(R.id.drinkName)
+                            val drinkName = textViewDrinkName?.text ?: ""
+                            val drink: Drink = viewModel.findDrinkByName(drinkName.toString())
+                            val shortcutManager: ShortcutManager? =
+                                ContextCompat.getSystemService(
+                                    this@MainActivity,
+                                    ShortcutManager::class.java
+                                )
+                            val drinkImageView = v!!.findViewById<ImageView>(R.id.drink_image_view)
+                            val drinkAdaptiveIcon = drinkImageView.drawToBitmap().toAdaptiveIcon()
+                            val shortcut =
+                                ShortcutInfo.Builder(this@MainActivity, drink.getStrDrink())
+                                    .setShortLabel(drink.getStrDrink()!!)
+                                    .setLongLabel("Launch ${drink.getStrDrink()}")
+                                    .setIcon(drinkAdaptiveIcon)
+                                    .setIntents(
+                                        arrayOf(
+                                            Intent(
+                                                this@MainActivity,
+                                                MainActivity::class.java
+                                            ).apply {
+                                                action = Intent.ACTION_CREATE_SHORTCUT
+                                                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                            },
+                                            Intent(
+                                                this@MainActivity,
+                                                DrinkDetailActivity::class.java
+                                            ).apply {
+                                                putExtra(DRINK_ID, drink.getIdDrink())
+                                                action = Intent.ACTION_CREATE_SHORTCUT
+                                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                            })
+                                    )
+                                    .build()
+
+                            shortcutManager!!.dynamicShortcuts = listOf(shortcut)
+
+                            if (alreadyExist(shortcut)) {
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "Shortcut already exist",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            } else {
+                                shortcutManager.requestPinShortcut(shortcut, null)
+                            }
+
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Your Device don't supports current action",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        true
+                    }
+                    else -> false
+                }
+            }
+            inflate(R.menu.menu_drink_item_shortcut)
+            show()
         }
-        supportFragmentManager.popBackStack()
+        return true
     }
 
-    override fun startTestFragment() {
-        testFragment = TestFragment.newInstance(R.layout.fragment_test, 5, "Ivan Kvych")
-        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-        ft.replace(R.id.fcv_main, testFragment)
-        ft.addToBackStack(TestFragment::class.java.name)
-        ft.commit()
-    }
+    private fun alreadyExist(shortCut: ShortcutInfo): Boolean {
+        var isExist = false
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val shortcutManager: ShortcutManager? =
+                ContextCompat.getSystemService(this, ShortcutManager::class.java)
 
-    override fun addCallBack(listener: FilterFragment.OnFilterResultListener) {
-        callbacks.add(listener)
-    }
-
-    override fun removeCallBack(listener: FilterFragment.OnFilterResultListener) {
-        callbacks.remove(listener)
+            shortcutManager!!.pinnedShortcuts.forEach { shortcutInfo: ShortcutInfo? ->
+                if (shortCut.id == shortcutInfo!!.id) {
+                    isExist = true
+                    return isExist
+                }
+            }
+        }
+        return isExist
     }
 }
 

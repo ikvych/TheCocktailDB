@@ -21,7 +21,7 @@ class TestFragment : BaseFragment() {
     var arbitraryNumber: Int? = null
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
-        testTextView = requireView().findViewById(R.id.tv_test)
+        testTextView = view.findViewById(R.id.tv_test)
         arbitraryNumber = requireArguments().getInt(ARBITRARY_NUMBER)
 
         if (requireArguments().containsKey(OPTIONAL_STRING)) {

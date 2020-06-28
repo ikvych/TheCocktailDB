@@ -39,6 +39,7 @@
                 android:layout_alignTop="@+id/drink_image_view"
                 android:layout_width="wrap_content"
                 android:checked="@{drink.favorite}"
+                android:tag="@{drink.strDrink}"
                 android:layout_height="wrap_content" />
 
             <TextView

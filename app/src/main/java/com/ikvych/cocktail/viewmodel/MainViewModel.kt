@@ -3,7 +3,10 @@ package com.ikvych.cocktail.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.entity.Ingredient
+import com.ikvych.cocktail.data.repository.DrinkApiRepositoryImpl
 import com.ikvych.cocktail.data.repository.DrinkDbRepositoryImpl
+import com.ikvych.cocktail.data.repository.base.DrinkApiRepository
 import com.ikvych.cocktail.data.repository.base.DrinkDbRepository
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
@@ -12,16 +15,26 @@ class MainViewModel(
     application: Application
 ) : BaseViewModel(application) {
 
+    private val apiRepository: DrinkApiRepository = DrinkApiRepositoryImpl(application)
     private val dbRepository: DrinkDbRepository = DrinkDbRepositoryImpl(application)
     private val drinksLiveData: LiveData<List<Drink>> = dbRepository.getDrinks()
     private val favoriteDrinksLiveData: LiveData<List<Drink>> = dbRepository.getFavoriteDrinks()
 
     override fun getCurrentData(): List<Drink> {
-        return drinksLiveData.value ?: emptyList()
+        val drinkApiService = drinksLiveData.value
+        return drinkApiService ?: emptyList()
     }
 
     fun getFavoriteCurrentData(): List<Drink> {
         return favoriteDrinksLiveData.value ?: emptyList()
+    }
+
+    fun findDrinkById(drinkId: Long): Drink {
+        return dbRepository.findDrinkById(drinkId)
+    }
+
+    fun findDrinkByName(drinkName: String): Drink {
+        return dbRepository.findDrinkByName(drinkName)
     }
 
     override fun saveDrink(drink: Drink) {
@@ -36,4 +49,11 @@ class MainViewModel(
         return favoriteDrinksLiveData
     }
 
+    override fun getAllIngredient(): List<Ingredient> {
+        val ingredientList: List<Ingredient> = dbRepository.getAllIngredient()
+        if (ingredientList.isEmpty()) {
+            apiRepository.initAllIngredient()
+        }
+        return dbRepository.getAllIngredient()
+    }
 }

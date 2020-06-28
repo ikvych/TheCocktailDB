@@ -10,4 +10,5 @@ interface DrinkApiRepository {
     fun updateDrinksLiveData(query: String)
 
     fun getCurrentData(): List<Drink>
+    fun initAllIngredient()
 }

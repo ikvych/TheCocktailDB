@@ -6,10 +6,11 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Bundle
 import android.view.View
+import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
-import androidx.core.widget.NestedScrollView
+import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -18,29 +19,39 @@ import com.google.android.material.tabs.TabLayoutMediator
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
+import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.listener.FilterResultCallBack
+import com.ikvych.cocktail.listener.SortResultCallBack
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
-import com.ikvych.cocktail.ui.base.BaseFragment
-import com.ikvych.cocktail.ui.base.FRAGMENT_ID
+import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
+import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterResultListener {
+class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterResultListener,
+    FilterAdapter.OnClickItemFilterCloseListener, SortResultCallBack {
 
-    lateinit var batteryReceiver: BatteryReceiver
+    override val callbacks: HashSet<OnSortResultListener> = hashSetOf()
 
-    private var isPowerConnected: Boolean = false
-    private var isBatteryLow: Boolean = false
-    private var percent: Int = 0
+    private lateinit var batteryReceiver: BatteryReceiver
+    private var fragmentListener: FilterFragment.OnFilterResultListener? = null
 
-    var filters: List<DrinkFilter> = arrayListOf()
-    lateinit var filterAdapter: FilterAdapter
+    private lateinit var filterBtn: ImageButton
+    private lateinit var filterIndicator: TextView
 
-    private lateinit var batteryPercent: TextView
-    private lateinit var batteryIcon: ImageView
-    private lateinit var powerConnected: ImageView
+    private var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
+
+    private lateinit var sortBtn: ImageButton
+    private lateinit var sortIndicator: TextView
+
+    private lateinit var filterFragment: FilterFragment
+
+    private var filters: ArrayList<DrinkFilter> = arrayListOf()
+    private lateinit var filterAdapter: FilterAdapter
 
     private lateinit var viewPager: ViewPager2
     private lateinit var drinkPagerAdapter: DrinkPagerAdapter
@@ -49,6 +60,19 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     private lateinit var historyFragment: HistoryFragment
     private lateinit var favoriteFragment: FavoriteFragment
 
+    private var isPowerConnected: Boolean = false
+    private var isBatteryLow: Boolean = false
+    private var percent: Int = 0
+
+    private lateinit var batteryPercent: TextView
+    private lateinit var batteryIcon: ImageView
+    private lateinit var powerConnected: ImageView
+
+    private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
+
+    interface OnSortResultListener {
+        fun onResult(sortDrinkType: SortDrinkType)
+    }
 
     companion object {
         @JvmStatic
@@ -63,9 +87,10 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            (requireActivity() as FilterResultCallBack).addCallBack(this)
+            fragmentListener = context as FilterFragment.OnFilterResultListener
+            (context as FilterResultCallBack).addCallBack(this)
         } catch (exception: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
+            throw ClassCastException("${context.toString()} must implement FilterResultCallBack | FilterFragment.OnFilterResultListener")
         }
     }
 
@@ -73,6 +98,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         super.onDetach()
         try {
             (requireActivity() as FilterResultCallBack).removeCallBack(this)
+            fragmentListener = null
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
         }
@@ -80,25 +106,29 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         historyFragment = HistoryFragment.newInstance(R.layout.fragment_history)
         favoriteFragment = FavoriteFragment.newInstance(R.layout.fragment_favorite)
 
         drinkPagerAdapter = DrinkPagerAdapter(
             arrayListOf(historyFragment, favoriteFragment),
-            requireActivity().supportFragmentManager,
             this
         )
-
         batteryReceiver = BatteryReceiver(this)
 
-
+        bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance{
+            titleText = "Log Out"
+            descriptionText = "Are you Really want to exit?"
+            leftButtonText = "Cancel"
+            rightButtonText = "Accept"
+        }
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
-        viewPager = requireView().findViewById(R.id.pager)
+        viewPager = view.findViewById(R.id.pager)
         viewPager.adapter = drinkPagerAdapter
 
-        tabLayout = requireView().findViewById(R.id.tab_layout)
+        tabLayout = view.findViewById(R.id.tab_layout)
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             if (position == 0) {
                 tab.text = getText(R.string.history)
@@ -107,23 +137,116 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
             }
         }.attach()
 
-        batteryPercent = requireView().findViewById(R.id.tv_battery_percent)
-        batteryIcon = requireView().findViewById(R.id.iv_battery_icon)
-        powerConnected = requireView().findViewById(R.id.iv_power_connected)
 
-        val scrollView: NestedScrollView
-
-        val filterRecyclerView: RecyclerView = requireView().findViewById(R.id.rv_filter)
-        filterAdapter = FilterAdapter(requireContext())
-        val layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        val filterRecyclerView: RecyclerView = view.findViewById(R.id.rv_filter)
+        filterAdapter = FilterAdapter(requireContext(), this)
+        val layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         filterRecyclerView.layoutManager = layoutManager
         filterRecyclerView.setHasFixedSize(true)
         filterRecyclerView.adapter = filterAdapter
         filterAdapter.filterList = filters
 
+        filterIndicator =
+            view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).indicatorView
+
+        filterBtn = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).customBtn
+        filterBtn.setImageDrawable(
+            ContextCompat.getDrawable(
+                requireContext(),
+                R.drawable.ic_app_tool_bar_filter
+            )
+        )
+
+        filterBtn.setOnClickListener {
+            val fragmentTransaction = childFragmentManager.beginTransaction()
+            filterFragment = FilterFragment.newInstance(R.layout.fragment_filter, filters)
+            fragmentTransaction.add(R.id.fcv_main_fragment, filterFragment, FilterFragment::class.java.simpleName)
+            fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
+            fragmentTransaction.commit()
+        }
+
+        filterBtn.setOnLongClickListener {
+            fragmentListener!!.onFilterReset()
+            callbacks.forEach {
+                it.onResult(sortDrinkType)
+            }
+            true
+        }
+
+        sortBtn = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).sortBtn
+        sortBtn.setOnClickListener { v ->
+            SortDrinkDialogFragment.newInstance(sortDrinkType) {
+                this.titleText = "Sort history"
+                this.leftButtonText = "Cancel"
+                this.rightButtonText = "Accept"
+            }.show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
+        }
+        sortIndicator =
+            view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).sortIndicatorView
+        sortBtn.setOnLongClickListener { v ->
+            if (sortDrinkType != SortDrinkType.RECENT) {
+                sortDrinkType = SortDrinkType.RECENT
+                callbacks.forEach {
+                    it.onResult(sortDrinkType)
+                }
+                sortIndicator.visibility = View.GONE
+                true
+            } else {
+                false
+            }
+        }
+
         fab.setOnClickListener {
             startActivity(Intent(requireContext(), SearchActivity::class.java))
         }
+
+        batteryPercent = view.findViewById(R.id.tv_battery_percent)
+        batteryIcon = view.findViewById(R.id.iv_battery_icon)
+        powerConnected = view.findViewById(R.id.iv_power_connected)
+    }
+
+    override fun onDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        when (type) {
+            RegularDialogType -> {
+                when (buttonType) {
+                    RightDialogButton -> {
+                        val supportData = data as SortDrinkType
+                        sortDrinkType = supportData
+                        callbacks.forEach {
+                            it.onResult(sortDrinkType)
+                        }
+                        if (sortDrinkType != SortDrinkType.RECENT) {
+                            sortIndicator.visibility = View.VISIBLE
+                        } else {
+                            sortIndicator.visibility = View.GONE
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+    override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
+        filters = drinkFilters
+        filterAdapter.filterList = filters
+        if (filters.isNotEmpty()) {
+            filterIndicator.visibility = View.VISIBLE
+        } else {
+            filterIndicator.visibility = View.GONE
+        }
+    }
+
+    override fun onFilterReset() {
+        filters = arrayListOf()
+        filterAdapter.filterList = filters
+        filterIndicator.visibility = View.GONE
     }
 
     override fun onStart() {
@@ -261,13 +384,8 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         }
     }
 
-    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
-        filters = drinkFilters.toList()
-        filterAdapter.filterList = filters
-    }
-
-    override fun onFilterRest() {
-        filters = arrayListOf()
-        filterAdapter.filterList = filters
+    override fun onClick(drinkFilter: DrinkFilter) {
+        filters.remove(drinkFilter)
+        fragmentListener!!.onFilterApply(filters)
     }
 }

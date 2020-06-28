@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.data.database.DrinkDao
 import com.ikvych.cocktail.data.database.DrinkDataBase
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.data.repository.base.DrinkDbRepository
 
 
@@ -27,11 +28,22 @@ class DrinkDbRepositoryImpl(context: Context):
         SaveDrinkAsyncTask(drinkDao).execute(drink)
     }
 
+    override fun getAllIngredient(): List<Ingredient> {
+        return DbAsyncTask(drinkDao).execute().get()
+    }
+
+    override fun findDrinkById(drinkId: Long): Drink {
+        return FindDrinkAsyncTask(drinkDao).execute(drinkId).get()
+    }
+
+    override fun findDrinkByName(drinkName: String): Drink {
+        return FindDrinkByNameAsyncTask(drinkDao).execute(drinkName).get()
+    }
+
     private companion object class SaveDrinkAsyncTask(private val drinkDao: DrinkDao): AsyncTask<Drink, Unit, Unit>() {
 
         override fun doInBackground(vararg params: Drink) {
             params.forEach { drink ->  drinkDao.insert(drink)}
         }
     }
-
 }

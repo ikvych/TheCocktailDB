@@ -6,6 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.*
 import com.ikvych.cocktail.R
+import kotlinx.android.synthetic.main.app_toolbar.view.*
 
 class ApplicationToolBar(
     context: Context?,
@@ -16,6 +17,8 @@ class ApplicationToolBar(
     private var frameLayout: FrameLayout
     var customBtn: ImageButton
     var indicatorView: TextView
+    var sortBtn: ImageButton
+    var sortIndicatorView: TextView
     var searchView: SearchView
     private var textView: TextView
 
@@ -46,12 +49,41 @@ class ApplicationToolBar(
         field = value
         if (field) {
             customBtn.visibility = View.VISIBLE
+            relativeLayoutCustomBtn.visibility = View.VISIBLE
         } else {
             customBtn.visibility = View.GONE
+            relativeLayoutCustomBtn.visibility = View.GONE
         }
         invalidate()
         requestLayout()
     }
+
+    var isReturnBtnDisabled: Boolean = false
+        set(value) {
+            field = value
+            if (field) {
+                returnBtn.visibility = View.GONE
+            } else {
+                returnBtn.visibility = View.VISIBLE
+            }
+            invalidate()
+            requestLayout()
+        }
+    var isSortBtnEnabled: Boolean = false
+        set(value) {
+            field = value
+            if (field) {
+                sortBtn.visibility = View.VISIBLE
+                rl_sort_btn.visibility = View.VISIBLE
+            } else {
+                sortBtn.visibility = View.GONE
+                rl_sort_btn.visibility = View.GONE
+            }
+            invalidate()
+            requestLayout()
+        }
+    var relativeLayoutCustomBtn: RelativeLayout
+    var relativeLayoutSortBtn: RelativeLayout
 
     init {
         View.inflate(context, R.layout.app_toolbar, this)
@@ -61,6 +93,10 @@ class ApplicationToolBar(
         this.frameLayout = findViewById(R.id.fl_toolbar)
         this.searchView = findViewById(R.id.sv_toolbar)
         this.textView = findViewById(R.id.tv_toolbar)
+        this.sortBtn = findViewById(R.id.sort_tb_btn)
+        this.sortIndicatorView = findViewById(R.id.tv_sort_indicator)
+        this.relativeLayoutCustomBtn = rl_custom_btn
+        this.relativeLayoutSortBtn = rl_sort_btn
 
         context!!.theme.obtainStyledAttributes(
             attrs,
@@ -70,6 +106,8 @@ class ApplicationToolBar(
                 isForSearch = getBoolean(R.styleable.ApplicationToolBar_tl_is_for_search, false)
                 mainTitle = getString(R.styleable.ApplicationToolBar_tl_set_text) ?: context.getString(R.string.app_name)
                 isCustomBtnEnabled = getBoolean(R.styleable.ApplicationToolBar_tl_enable_custom_btn, false)
+                isReturnBtnDisabled = getBoolean(R.styleable.ApplicationToolBar_tl_disable_return_btn, false)
+                isSortBtnEnabled = getBoolean(R.styleable.ApplicationToolBar_tl_enable_sort_btn, false)
             } finally {
                 recycle()
             }

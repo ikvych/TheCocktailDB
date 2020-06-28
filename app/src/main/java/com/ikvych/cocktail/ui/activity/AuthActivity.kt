@@ -8,12 +8,14 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.listener.AuthTextWatcher
-import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.ErrorAuthDialogFragment
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import java.util.regex.Pattern
 
@@ -23,6 +25,9 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
     private var isValidLogin: Boolean = false
     private var isValidPassword: Boolean = false
     private var isKeyboardShown: Boolean = false
+
+    private lateinit var loginErrorMessage: String
+    private lateinit var passwordErrorMessage: String
 
     private var loginTextWatcher: TextWatcher? = null
     private var passwordTextWatcher: TextWatcher? = null
@@ -46,6 +51,8 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_auth)
 
+
+
         val keyboardObserver = findViewById<LinerLayoutWithKeyboardListener>(R.id.login_root)
         keyboardObserver.listener = this
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
@@ -68,6 +75,11 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
 
         textInputEditLogin.addTextChangedListener(loginTextWatcher)
         textInputEditPassword.addTextChangedListener(passwordTextWatcher)
+
+        loginErrorMessage = resources.getString(R.string.invalid_login_text)
+        passwordErrorMessage = resources.getString(R.string.invalid_password_text)
+
+        textInputEditLogin.requestFocus()
     }
 
     private fun onLoginButtonListener(): (v: View) -> Unit {
@@ -76,10 +88,43 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
             if (isValidLogin && isValidPassword) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-                closeKeyboard()
             } else {
-                if (!isKeyboardShown) {
-                    inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+                var finalErrorMessage: String? = null
+                if (!isValidLogin) {
+                    finalErrorMessage = loginErrorMessage
+                }
+                if (!isValidPassword) {
+                    if (finalErrorMessage != null) {
+                        finalErrorMessage += "\n${passwordErrorMessage}"
+                    } else {
+                        finalErrorMessage = passwordErrorMessage
+                    }
+                }
+                ErrorAuthDialogFragment.newInstance(){
+                    titleText = "Invalid data"
+                    leftButtonText = "Ok"
+                    descriptionText = finalErrorMessage!!
+                }.show(supportFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
+            }
+        }
+    }
+
+
+    override fun onDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        super.onDialogFragmentClick(dialog, buttonType, type, data)
+        when (type) {
+            NotificationDialogType -> {
+                when (buttonType) {
+                    ActionSingleDialogButton -> {
+                        if (!isKeyboardShown) {
+                            inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
+                        }
+                    }
                 }
             }
         }
@@ -89,12 +134,13 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
         val login = textInputEditLogin.text.toString()
         val password = textInputEditPassword.text.toString()
 
+        closeKeyboard()
+
         if (passwordPattern.matcher(password).matches()) {
             isValidPassword = true
         } else {
             isValidPassword = false
             textInputEditPassword.requestFocus()
-            passwordInputLayout.error = resources.getString(R.string.invalid_password_text)
         }
 
         if (loginPattern.matcher(login).matches()) {
@@ -102,7 +148,6 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
         } else {
             isValidLogin = false
             textInputEditLogin.requestFocus()
-            loginInputLayout.error = resources.getString(R.string.invalid_login_text)
         }
     }
 

@@ -5,6 +5,7 @@ import android.content.IntentFilter
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
+import android.widget.TextView
 import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
@@ -28,7 +29,7 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
         setContentView(R.layout.activity_search)
 
         initViewModel(SearchActivityViewModel::class.java)
-        initRecyclerView(viewModel.getCurrentData(), R.id.db_recycler_view, SEARCH_MODEL_TYPE)
+        initRecyclerView(viewModel.getCurrentData(), R.id.db_recycler_view)
         initLiveDataObserver()
         initSearchView()
     }
@@ -101,5 +102,17 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
             }.show()
     }
 
+    override fun onClick(v: View?) {
+        val view = v?.findViewById<TextView>(R.id.drinkName)
+        val drinkName = view?.text ?: ""
+        val drink: Drink? =
+            drinkAdapter.drinkList.find { drink -> drink.getStrDrink() == drinkName }
 
+        if (drink != null) {
+            val intent = Intent(this, DrinkDetailActivity::class.java)
+            intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
+            intent.putExtra(DRINK, drink)
+            startActivity(intent)
+        }
+    }
 }

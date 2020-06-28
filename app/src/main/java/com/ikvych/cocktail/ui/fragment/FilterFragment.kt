@@ -3,47 +3,55 @@ package com.ikvych.cocktail.ui.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.RadioButton
-import android.widget.RadioGroup
+import android.widget.*
+import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.ui.activity.MainActivity
-import com.ikvych.cocktail.ui.base.BaseFragment
-import com.ikvych.cocktail.ui.base.FRAGMENT_ID
+import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
+import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.FilterDrinkAlcoholDialogFragment
+import com.ikvych.cocktail.ui.dialog.FilterDrinkCategoryDialogFragment
+import com.ikvych.cocktail.ui.dialog.FilterDrinkIngredientDialogFragment
+import com.ikvych.cocktail.viewmodel.MainViewModel
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 
 class FilterFragment : BaseFragment() {
 
-    lateinit var alcoholRadioGroup: RadioGroup
-    lateinit var categoryRadioGroup: RadioGroup
+    private lateinit var returnBtn: ImageButton
+    private lateinit var acceptBtn: Button
+    private lateinit var resetBtn: Button
 
-    val drinkFilters: HashMap<DrinkFilterType, DrinkFilter> = hashMapOf()
+    private lateinit var alcoholFilter: LinearLayout
+    private lateinit var chosenAlcoholFilter: TextView
+    private lateinit var categoryFilter: LinearLayout
+    private lateinit var chosenCategoryFilter: TextView
+    private lateinit var ingredientFilter: LinearLayout
+    private lateinit var chosenIngredientFilter: TextView
 
-    lateinit var fragmentListener: OnFilterResultListener
+    private val drinkFilters: HashMap<DrinkFilterType, DrinkFilter> = hashMapOf()
 
-    lateinit var acceptBtn: Button
-    lateinit var resetBtn: Button
+    private lateinit var viewModel: BaseViewModel
+    private var fragmentListener: OnFilterResultListener? = null
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            fragmentListener = activity as OnFilterResultListener
-            val activity = requireActivity() as MainActivity
-            activity.filterBtn.visibility = View.GONE
-            activity.indicatorView.visibility = View.GONE
+            fragmentListener = context as OnFilterResultListener
         } catch (exception: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement OnFilterResultListener")
+            throw ClassCastException("${context.toString()} must implement OnFilterResultListener")
         }
     }
 
     override fun onDestroy() {
         super.onDestroy()
         try {
-            val activity = requireActivity() as MainActivity
-            activity.filterBtn.visibility = View.VISIBLE
+            fragmentListener = null
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement OnFilterResultListener")
         }
@@ -52,93 +60,145 @@ class FilterFragment : BaseFragment() {
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
 
-        alcoholRadioGroup = requireView().findViewById(R.id.alcohol_radio_group)
-        categoryRadioGroup = requireView().findViewById(R.id.category_radio_group)
         initCategoryFilters()
         initAlcoholFilters()
+        initIngredientFilters()
 
-        acceptBtn = requireView().findViewById(R.id.btn_accept)
-        acceptBtn.setOnClickListener {
-/*            setFragmentResult(
-                ALCOHOL_FILTER_KEY,
-                bundleOf(ALCOHOL_FILTER_BUNDLE_KEY to alcoholDrinkFilter.name)
-            )*/
-            fragmentListener.onFilterApply(*drinkFilters.values.toTypedArray())
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        alcoholFilter = view.findViewById(R.id.im_alcohol_filter)
+        alcoholFilter.setOnClickListener { v ->
+            FilterDrinkAlcoholDialogFragment.newInstance()
+                .show(childFragmentManager, FilterDrinkAlcoholDialogFragment::class.java.simpleName)
         }
-        resetBtn = requireView().findViewById(R.id.btn_reject)
+        chosenAlcoholFilter = view.findViewById(R.id.tv_chosen_alcohol_filter)
+        chosenAlcoholFilter.text =
+            drinkFilters[DrinkFilterType.ALCOHOL]?.key ?: AlcoholDrinkFilter.NONE.key
+
+        categoryFilter = view.findViewById(R.id.im_category_filter)
+        categoryFilter.setOnClickListener { v ->
+            FilterDrinkCategoryDialogFragment.newInstance().show(
+                childFragmentManager,
+                FilterDrinkCategoryDialogFragment::class.java.simpleName
+            )
+        }
+        chosenCategoryFilter = view.findViewById(R.id.tv_chosen_category_filter)
+        chosenCategoryFilter.text =
+            drinkFilters[DrinkFilterType.CATEGORY]?.key ?: CategoryDrinkFilter.NONE.key
+
+        ingredientFilter = view.findViewById(R.id.im_ingredient_filter)
+        ingredientFilter.setOnClickListener { v ->
+            FilterDrinkIngredientDialogFragment.newInstance(viewModel.getAllIngredient())
+                .show(
+                    childFragmentManager,
+                    FilterDrinkIngredientDialogFragment::class.java.simpleName
+                )
+        }
+        chosenIngredientFilter = view.findViewById(R.id.tv_chosen_ingredient_filter)
+        chosenIngredientFilter.text =
+            drinkFilters[DrinkFilterType.INGREDIENT]?.key ?: CategoryDrinkFilter.NONE.key
+
+        acceptBtn = view.findViewById(R.id.btn_accept)
+        acceptBtn.setOnClickListener {
+
+            fragmentListener!!.onFilterApply(arrayListOf(*drinkFilters.values.toTypedArray()))
+            parentFragmentManager.popBackStack()
+        }
+        resetBtn = view.findViewById(R.id.btn_reject)
         resetBtn.setOnClickListener {
             drinkFilters.clear()
-            fragmentListener.onFilterRest()
+            fragmentListener!!.onFilterReset()
+            parentFragmentManager.popBackStack()
+        }
+
+        returnBtn = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_filter).returnBtn
+        returnBtn.setOnClickListener {
+            parentFragmentManager.popBackStack()
         }
     }
 
     private fun initCategoryFilters() {
-        val categoryType = requireArguments().getString(DrinkFilterType.CATEGORY.key)
+        val categoryKey = requireArguments().getString(DrinkFilterType.CATEGORY.key)
             ?: CategoryDrinkFilter.NONE.key
 
-        CategoryDrinkFilter.values().forEach {
-            categoryRadioGroup.addView(
-                RadioButton(requireContext()).apply {
-                    id = View.generateViewId()
-                    text = it.key
-                    if (it.key == categoryType) {
-                        if (it.key != CategoryDrinkFilter.NONE.key) {
-                            drinkFilters.put(it.type, it)
-                        }
-                        isChecked = true
-                    }
-                }
-            )
-        }
-
-        categoryRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            CategoryDrinkFilter.values().forEach { it ->
-                if (it.key == requireView().findViewById<RadioButton>(checkedId).text) {
-                    if (it.key != "None") {
-                        drinkFilters.put(it.type, it)
-                    } else {
-                        drinkFilters.remove(it.type)
-                    }
+        if (categoryKey != CategoryDrinkFilter.NONE.key) {
+            CategoryDrinkFilter.values().forEach {
+                if (it.key == categoryKey) {
+                    drinkFilters[CategoryDrinkFilter.COCKTAIL.type] = it
                 }
             }
         }
     }
 
     private fun initAlcoholFilters() {
-        val alcoholType = requireArguments().getString(DrinkFilterType.ALCOHOL.key)
+        val alcoholKey = requireArguments().getString(DrinkFilterType.ALCOHOL.key)
             ?: AlcoholDrinkFilter.NONE.key
 
-        AlcoholDrinkFilter.values().forEach {
-            if (it.key == alcoholType) {
-                val alcoholRadioBtn: RadioButton = when (it) {
-                    AlcoholDrinkFilter.ALCOHOLIC -> requireView().findViewById(R.id.rb_alcoholic)
-                    AlcoholDrinkFilter.NON_ALCOHOLIC -> requireView().findViewById(R.id.rb_non_alcoholic)
-                    AlcoholDrinkFilter.OPTIONAL_ALCOHOL -> requireView().findViewById(R.id.rb_optional_alcoholic)
-                    AlcoholDrinkFilter.NONE -> requireView().findViewById(R.id.rb_none)
-                }
-                if (it.key != AlcoholDrinkFilter.NONE.key) {
-                    drinkFilters.put(it.type, it)
-                }
-                alcoholRadioBtn.isChecked = true
-            }
-        }
-
-        alcoholRadioGroup.setOnCheckedChangeListener { _, checkedId ->
-            AlcoholDrinkFilter.values().forEach { it ->
-                if (it.key == requireView().findViewById<RadioButton>(checkedId).text) {
-                    if (it.key != "None") {
-                        drinkFilters.put(it.type, it)
-                    } else {
-                        drinkFilters.remove(it.type)
-                    }
+        if (alcoholKey != AlcoholDrinkFilter.NONE.key) {
+            AlcoholDrinkFilter.values().forEach {
+                if (it.key == alcoholKey) {
+                    drinkFilters[AlcoholDrinkFilter.ALCOHOLIC.type] = it
                 }
             }
         }
     }
 
+    private fun initIngredientFilters() {
+        val ingredientKey = requireArguments().getString(DrinkFilterType.INGREDIENT.key)
+            ?: "None"
+
+        if (ingredientKey == "None") {
+            drinkFilters.remove(DrinkFilterType.INGREDIENT)
+        } else {
+            val ingredient = IngredientDrinkFilter.INGREDIENT
+            ingredient.key = ingredientKey
+            drinkFilters.put(DrinkFilterType.INGREDIENT, ingredient)
+        }
+    }
+
+    override fun onDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        when (type) {
+            AlcoholDrinkType -> {
+                val alcoholType = data as AlcoholDrinkFilter
+                if (alcoholType != AlcoholDrinkFilter.NONE) {
+                    drinkFilters[alcoholType.type] = alcoholType
+                } else {
+                    drinkFilters.remove(alcoholType.type)
+                }
+                chosenAlcoholFilter.text = alcoholType.key
+            }
+            CategoryDrinkType -> {
+                val categoryType = data as CategoryDrinkFilter
+                if (categoryType != CategoryDrinkFilter.NONE) {
+                    drinkFilters[categoryType.type] = categoryType
+                } else {
+                    drinkFilters.remove(categoryType.type)
+                }
+                chosenCategoryFilter.text = categoryType.key
+            }
+            IngredientDrinkType -> {
+                val ingredientType = data as Ingredient
+                val ingredient = IngredientDrinkFilter.INGREDIENT
+                ingredient.key = ingredientType.strIngredient1!!
+                if (ingredientType.strIngredient1 == "None") {
+                    drinkFilters.remove(DrinkFilterType.INGREDIENT)
+                } else {
+                    drinkFilters[ingredient.type] = ingredient
+                }
+                chosenIngredientFilter.text = ingredient.key
+            }
+        }
+
+    }
+
     interface OnFilterResultListener {
-        fun onFilterApply(vararg drinkFilters: DrinkFilter)
-        fun onFilterRest()
+        fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>)
+        fun onFilterReset()
     }
 
     companion object {
@@ -146,7 +206,7 @@ class FilterFragment : BaseFragment() {
         @JvmStatic
         fun newInstance(
             viewId: Int,
-            vararg drinkFilters: DrinkFilter
+            drinkFilters: ArrayList<DrinkFilter> = arrayListOf()
         ) = FilterFragment().apply {
             arguments = Bundle().apply {
                 putInt(FRAGMENT_ID, viewId)

@@ -19,6 +19,8 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.ikvych.cocktail.BR
 import com.ikvych.cocktail.R
+import java.util.*
+import kotlin.collections.HashMap
 
 /*Using getIngredients() method fills the tableLayout in activity_drink_details with ingredients and measure*/
 @BindingAdapter("ingredients")
@@ -61,6 +63,22 @@ class Drink : BaseObservable, Parcelable {
     @ColumnInfo(name = "id_drink")
     private var idDrink: Long? = null
 
+    @Expose
+    @ColumnInfo(name = "created")
+    private var created: Date? = null
+
+    @Bindable
+    fun getCreated(): Date? {
+        if (created == null) {
+            created = Date()
+        }
+        return created
+    }
+
+    fun setCreated(created: Date?) {
+        this.created = created
+        notifyPropertyChanged(BR.created)
+    }
 
     @SerializedName("strDrink")
     @Expose
@@ -357,6 +375,7 @@ class Drink : BaseObservable, Parcelable {
     private var dateModified: String? = null
 
     constructor(`in`: Parcel) {
+
         idDrink =
             `in`.readValue(String::class.java.classLoader) as Long?
         strDrink =
@@ -1070,10 +1089,10 @@ class Drink : BaseObservable, Parcelable {
         @JvmStatic
         fun loadImage(imageView: ImageView, imageUrl: String?) {
             Glide.with(imageView.context)
-                    .load(imageUrl)
-                    .placeholder(R.drawable.default_icon)
-                    .into(imageView)
+                .load(imageUrl)
+                .placeholder(R.drawable.default_icon)
+                .into(imageView)
         }
     }
-    
+
 }

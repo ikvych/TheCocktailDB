@@ -5,25 +5,28 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.listener.FilterResultCallBack
+import com.ikvych.cocktail.listener.SortResultCallBack
 import com.ikvych.cocktail.ui.base.FRAGMENT_ID
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.MainViewModel
 
-class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.OnFilterResultListener {
+class FavoriteFragment : RecyclerViewFragment<MainViewModel>(),
+    FilterFragment.OnFilterResultListener, MainFragment.OnSortResultListener {
 
     lateinit var fragmentView: View
-    var filters: List<DrinkFilter> = arrayListOf()
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
         try {
-            (requireActivity() as FilterResultCallBack).addCallBack(this)
+            (context as FilterResultCallBack).addCallBack(this)
+            (parentFragment as SortResultCallBack).addCallBack(this)
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
         }
@@ -33,6 +36,7 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.O
         super.onDetach()
         try {
             (requireActivity() as FilterResultCallBack).removeCallBack(this)
+            (parentFragment as SortResultCallBack).removeCallBack(this)
         } catch (exception: ClassCastException) {
             throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
         }
@@ -51,20 +55,23 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.O
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initViewModel(MainViewModel::class.java)
-
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
         fragmentView = view
-        initRecyclerView(view, viewModel.getFavoriteCurrentData(), R.id.db_recycler_view, MAIN_MODEL_TYPE)
+        initRecyclerView(
+            view,
+            viewModel.getFavoriteCurrentData(),
+            R.id.db_recycler_view
+        )
         initLiveDataObserver()
     }
 
     override fun initLiveDataObserver() {
         viewModel.getFavoriteLiveData().observe(this, Observer { drinks ->
-            drinkAdapter.drinkList = drinks
-            filterData(*filters.toTypedArray())
+            filterData(drinks, filters)
+            sortData(sortDrinkType)
             determineVisibleLayerOnUpdateData(drinks)
         })
     }
@@ -85,36 +92,20 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(), FilterFragment.O
         }
     }
 
-    override fun onFilterApply(vararg drinkFilters: DrinkFilter) {
-        filters = drinkFilters.toList()
-        filterData(*drinkFilters)
+    override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
+        filters = drinkFilters
+        filterData(viewModel.getFavoriteCurrentData(), filters)
+        sortData(sortDrinkType)
     }
 
-    override fun onFilterRest() {
+    override fun onFilterReset() {
         filters = arrayListOf()
-        filterData()
+        filterData(viewModel.getFavoriteCurrentData(), filters)
+        sortData(sortDrinkType)
     }
 
-    override fun filterData(vararg drinkFilters: DrinkFilter) {
-        var drinks: List<Drink> = viewModel.getFavoriteCurrentData().toMutableList()
-        drinkFilters.forEach {
-            when (it.type) {
-                DrinkFilterType.ALCOHOL -> {
-                    drinks = drinks.filter { drink ->
-                        drink.getStrAlcoholic() == it.key
-                    }
-                }
-                DrinkFilterType.CATEGORY -> {
-                    drinks = drinks.filter { drink ->
-                        drink.getStrCategory() == it.key
-                    }
-                }
-                DrinkFilterType.INGREDIENT -> {
-                }
-                DrinkFilterType.GLASS -> {
-                }
-            }
-        }
-        drinkAdapter.drinkList = drinks
+    override fun onResult(sortDrinkType: SortDrinkType) {
+        super.sortDrinkType = sortDrinkType
+        sortData(sortDrinkType)
     }
 }

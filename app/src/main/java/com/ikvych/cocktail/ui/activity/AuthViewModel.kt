@@ -8,6 +8,7 @@ class AuthViewModel {
     val login: String = "ivan"
     val password: String = "ivan"
 
+
     val loginInputLiveData: MutableLiveData<String?> = MutableLiveData()
     val passwordInputLiveData: MutableLiveData<String?> = MutableLiveData()
     val isLoginDataValidLiveData: LiveData<Boolean> = object : MediatorLiveData<Boolean>() {

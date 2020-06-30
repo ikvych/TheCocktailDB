@@ -23,6 +23,7 @@ class MainActivityViewModel(
     application: Application
 ) : BaseViewModel(application) {
 
+    val timer: MutableLiveData<Long> = MutableLiveData()
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
     private val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinks()
     val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData()

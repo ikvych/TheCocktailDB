@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.ui.activity
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.os.Build
@@ -20,23 +21,21 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.listener.FilterResultCallBack
+import com.ikvych.cocktail.receiver.TimerReceiver
+import com.ikvych.cocktail.service.TimerService
 import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
-import com.ikvych.cocktail.ui.fragment.FilterFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
-import kotlinx.android.synthetic.main.activity_drink_details.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
 
 
-class MainActivity : BaseActivity(), LifecycleObserver {
+class MainActivity : BaseActivity(), LifecycleObserver, TimerReceiver.OnTimerReceiverListener {
 
     private lateinit var viewModel: MainActivityViewModel
+    private lateinit var timerReceiver: TimerReceiver
 
+    private lateinit var serviceTimerIntent: Intent
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mainFragment: MainFragment
     private lateinit var profileFragment: ProfileFragment
@@ -68,15 +67,19 @@ class MainActivity : BaseActivity(), LifecycleObserver {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        timerReceiver = TimerReceiver(this)
+        serviceTimerIntent = Intent(this, TimerService::class.java)
         ProcessLifecycleOwner.get().lifecycle.addObserver(this);
 
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
             override fun onChanged(t: Boolean?) {
                 if (t!!) {
-                    bottomNavigationView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+                    bottomNavigationView.labelVisibilityMode =
+                        LabelVisibilityMode.LABEL_VISIBILITY_LABELED
                 } else {
-                    bottomNavigationView.labelVisibilityMode = LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
+                    bottomNavigationView.labelVisibilityMode =
+                        LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
                 }
             }
         })
@@ -138,15 +141,15 @@ class MainActivity : BaseActivity(), LifecycleObserver {
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
     fun onActivityStart() {
-        RegularBottomSheetDialogFragment.newInstance {
-            titleText = "Title"
-            descriptionText = "Start After Resume"
-        }.show(supportFragmentManager, RegularBottomSheetDialogFragment::class.java.simpleName)
+        val timerReceiverFilter = IntentFilter().apply {
+            addAction(START_BACKGROUND_TIMER)
+        }
+        registerReceiver(timerReceiver, timerReceiverFilter)
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
     fun onActivityStop() {
-
+        startService(serviceTimerIntent)
     }
 
     override fun onClick(v: View?) {
@@ -272,6 +275,21 @@ class MainActivity : BaseActivity(), LifecycleObserver {
             }
         }
         return isExist
+    }
+
+    override fun onReceive() {
+        stopService(serviceTimerIntent)
+        val fragment = supportFragmentManager.findFragmentByTag(RegularBottomSheetDialogFragment::class.java.simpleName)
+        if (fragment !is RegularBottomSheetDialogFragment ) {
+            RegularBottomSheetDialogFragment.newInstance {
+                titleText = "Title"
+                descriptionText = "Start After Resume"
+            }.show(
+                supportFragmentManager,
+                RegularBottomSheetDialogFragment::class.java.simpleName
+            )
+        }
+        unregisterReceiver(timerReceiver)
     }
 }
 

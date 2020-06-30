@@ -92,6 +92,10 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
         return FindDrinkAsyncTask(drinkDao).execute(drinkId).get()
     }
 
+    override fun findDrinkOfTheDay(stringDate: String): Drink? {
+        return FindDrinkOfTheDayAsyncTask(drinkDao).execute(stringDate).get()
+    }
+
     override fun findDrinkByName(drinkName: String): Drink {
         return FindDrinkByNameAsyncTask(drinkDao).execute(drinkName).get()
     }

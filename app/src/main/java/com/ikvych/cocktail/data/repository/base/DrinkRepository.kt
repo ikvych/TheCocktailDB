@@ -25,5 +25,7 @@ interface DrinkRepository {
 
     fun findDrinkById(drinkId: Long): Drink
 
+    fun findDrinkOfTheDay(stringDate: String): Drink?
+
     fun findDrinkByName(drinkName: String): Drink
 }

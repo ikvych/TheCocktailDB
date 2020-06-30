@@ -35,11 +35,21 @@ class FindDrinkAsyncTask(private val drinkDao: DrinkDao) :
 class FindDrinkByNameAsyncTask(private val drinkDao: DrinkDao) :
     AsyncTask<String, Unit, Drink>() {
 
-    override fun doInBackground(vararg params: String?): Drink {
+    override fun doInBackground(vararg params: String?): Drink? {
         return drinkDao.findDrinkByName(params[0]!!)
     }
 
 }
+
+class FindDrinkOfTheDayAsyncTask(private val drinkDao: DrinkDao) :
+    AsyncTask<String, Unit, Drink>() {
+
+    override fun doInBackground(vararg params: String?): Drink? {
+        return drinkDao.findDrinkOfTheDay(params[0]!!)
+    }
+
+}
+
 
 class SaveIngredientsAsyncTask(private val drinkDao: DrinkDao) :
     AsyncTask<Ingredient, Unit, Unit>() {

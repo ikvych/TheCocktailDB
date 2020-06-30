@@ -17,6 +17,8 @@ import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 
 class MainActivityViewModel(
@@ -293,6 +295,23 @@ class MainActivityViewModel(
     }
 
     fun getDrinkOfTheDay(): Drink? {
-        return getDrinksAll().last()
+        val currentDate = Date()
+        val pattern = "MM-dd-yyyy"
+        val simpleDateFormat = SimpleDateFormat(pattern, Locale.getDefault())
+        val stringDate: String = simpleDateFormat.format(currentDate)
+
+        var drinkOfTheDay = drinkRepository.findDrinkOfTheDay(stringDate)
+        if (drinkOfTheDay == null) {
+            val allDrinks = getDrinksAll()
+            if (allDrinks.isNullOrEmpty()) {
+                return null
+            } else {
+                val newDrinkOfTheDay: Drink = allDrinks.random()
+                newDrinkOfTheDay.setDrinkOfDay(stringDate)
+                drinkRepository.saveDrink(newDrinkOfTheDay)
+            }
+            drinkOfTheDay = drinkRepository.findDrinkOfTheDay(stringDate)
+        }
+        return drinkOfTheDay
     }
 }

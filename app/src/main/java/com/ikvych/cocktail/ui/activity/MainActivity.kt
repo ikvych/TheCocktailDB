@@ -143,12 +143,6 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
         fragmentTransaction.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
         fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
         fragmentTransaction.commit()
-
-        try {
-            drinkOfTheDay = viewModel.getDrinkOfTheDay()
-        } catch (ex: NoSuchElementException) {
-
-        }
     }
 
     override fun actionOnStart() {
@@ -289,6 +283,11 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
 
     override fun onReceive() {
         stopService(serviceTimerIntent)
+        try {
+            drinkOfTheDay = viewModel.getDrinkOfTheDay()
+        } catch (ex: NoSuchElementException) {
+
+        }
         val fragment = supportFragmentManager.findFragmentByTag(RegularBottomSheetDialogFragment::class.java.simpleName)
         if (fragment !is RegularBottomSheetDialogFragment ) {
             RegularBottomSheetDialogFragment.newInstance {

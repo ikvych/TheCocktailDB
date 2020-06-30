@@ -7,24 +7,30 @@ import com.ikvych.cocktail.constant.START_BACKGROUND_TIMER
 
 class TimerService : JobIntentService() {
 
-    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Log.d("MyService", "ServiceStart onStartCommand")
-        return super.onStartCommand(intent, flags, startId)
-    }
+    var stopBroadcast: Boolean = false
 
     override fun onHandleWork(intent: Intent) {
+        Log.d("MyService", "ServiceStart")
         try {
             for (i in 0..5) {
-                Thread.sleep(1000)
-                Intent().apply {
-                    action = START_BACKGROUND_TIMER
-                    sendBroadcast(this)
+                if (stopBroadcast) {
+                    break
+                } else {
+                    Thread.sleep(1000)
+                    Intent().apply {
+                        action = START_BACKGROUND_TIMER
+                        sendBroadcast(this)
+                    }
+                    Log.d("MyService", "From cycle ${intent.toString()}")
                 }
             }
         } catch (ex: InterruptedException) {
 
         }
-        Log.d("MyService", "ServiceStart onHandleWork")
     }
 
+    override fun onDestroy() {
+        stopBroadcast = true
+        super.onDestroy()
+    }
 }

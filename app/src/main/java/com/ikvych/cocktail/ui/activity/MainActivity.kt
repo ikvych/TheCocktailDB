@@ -6,6 +6,7 @@ import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
@@ -150,10 +151,12 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
             addAction(START_BACKGROUND_TIMER)
         }
         registerReceiver(timerReceiver, timerReceiverFilter)
+
     }
 
     override fun actionOnStop() {
-        startService(serviceTimerIntent)
+        startService(Intent(this, TimerService::class.java))
+        unregisterReceiver(timerReceiver)
     }
 
     override fun onClick(v: View?) {
@@ -282,7 +285,7 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
     }
 
     override fun onReceive() {
-        stopService(serviceTimerIntent)
+        stopService(Intent(this, TimerService::class.java))
         try {
             drinkOfTheDay = viewModel.getDrinkOfTheDay()
         } catch (ex: NoSuchElementException) {
@@ -304,7 +307,7 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
                 RegularBottomSheetDialogFragment::class.java.simpleName
             )
         }
-        unregisterReceiver(timerReceiver)
+
     }
 
     override fun onBottomSheetDialogFragmentClick(
@@ -329,5 +332,16 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
         }
     }
 
+    override fun onBottomSheetDialogFragmentDismiss(
+        dialog: DialogFragment,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        when (type) {
+            RegularDialogType -> {
+/*                unregisterReceiver(timerReceiver)*/
+            }
+        }
+    }
 }
 

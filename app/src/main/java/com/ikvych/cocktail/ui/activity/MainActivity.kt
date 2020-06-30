@@ -1,10 +1,12 @@
 package com.ikvych.cocktail.ui.activity
 
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.view.View
 import android.widget.*
 import androidx.cardview.widget.CardView
@@ -15,36 +17,33 @@ import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.ViewModelProvider
-import androidx.navigation.ui.setupWithNavController
-import androidx.recyclerview.widget.RecyclerView
+import androidx.lifecycle.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.listener.FilterResultCallBack
-import com.ikvych.cocktail.ui.base.BaseActivity
-import com.ikvych.cocktail.ui.base.DialogButton
-import com.ikvych.cocktail.ui.base.DialogType
-import com.ikvych.cocktail.ui.fragment.FilterFragment
+import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
+import com.ikvych.cocktail.receiver.TimerReceiver
+import com.ikvych.cocktail.service.TimerService
+import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
-import com.ikvych.cocktail.viewmodel.MainViewModel
-import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
-import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashSet
+import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
 
-class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, FilterResultCallBack {
+class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
+    ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
-    override val callbacks: HashSet<FilterFragment.OnFilterResultListener> = hashSetOf()
-    lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainActivityViewModel
+    private lateinit var timerReceiver: TimerReceiver
 
+    private lateinit var serviceTimerIntent: Intent
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mainFragment: MainFragment
     private lateinit var profileFragment: ProfileFragment
+    private var drinkOfTheDay: Drink? = null
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -73,7 +72,24 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        timerReceiver = TimerReceiver(this)
+
+        val lifecycleObserver = ApplicationLifeCycleObserver(this)
+        ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
+        serviceTimerIntent = Intent(this, TimerService::class.java)
+
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
+        viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
+            override fun onChanged(t: Boolean?) {
+                if (t!!) {
+                    bottomNavigationView.labelVisibilityMode =
+                        LabelVisibilityMode.LABEL_VISIBILITY_LABELED
+                } else {
+                    bottomNavigationView.labelVisibilityMode =
+                        LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
+                }
+            }
+        })
 
         bottomNavigationView = findViewById(R.id.bnv_main)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
@@ -130,16 +146,17 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
         fragmentTransaction.commit()
     }
 
-    override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
-        callbacks.forEach {
-            it.onFilterApply(drinkFilters)
+    override fun actionOnStart() {
+        val timerReceiverFilter = IntentFilter().apply {
+            addAction(START_BACKGROUND_TIMER)
         }
+        registerReceiver(timerReceiver, timerReceiverFilter)
+
     }
 
-    override fun onFilterReset() {
-        callbacks.forEach {
-            it.onFilterReset()
-        }
+    override fun actionOnStop() {
+        startService(Intent(this, TimerService::class.java))
+        unregisterReceiver(timerReceiver)
     }
 
     override fun onClick(v: View?) {
@@ -265,6 +282,66 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
             }
         }
         return isExist
+    }
+
+    override fun onReceive() {
+        stopService(Intent(this, TimerService::class.java))
+        try {
+            drinkOfTheDay = viewModel.getDrinkOfTheDay()
+        } catch (ex: NoSuchElementException) {
+
+        }
+        val fragment = supportFragmentManager.findFragmentByTag(RegularBottomSheetDialogFragment::class.java.simpleName)
+        if (fragment !is RegularBottomSheetDialogFragment ) {
+            RegularBottomSheetDialogFragment.newInstance {
+                if (drinkOfTheDay == null) {
+                    titleText = "З поверненням"
+                } else {
+                    titleText = "З поверненням"
+                    descriptionText = "Пропонуємо переглянути напій дня: ${drinkOfTheDay!!.getStrDrink()}"
+                    rightButtonText = "Переглянути"
+                    leftButtonText = "Ні, дякую"
+                }
+            }.show(
+                supportFragmentManager,
+                RegularBottomSheetDialogFragment::class.java.simpleName
+            )
+        }
+
+    }
+
+    override fun onBottomSheetDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        when (type) {
+            RegularDialogType -> {
+                when (buttonType) {
+                    RightDialogButton -> {
+                        val intent = Intent(this, DrinkDetailActivity::class.java)
+                        intent.putExtra(DRINK, drinkOfTheDay)
+                        startActivity(intent)
+                    }
+                    LeftDialogButton -> {
+                        dialog.dismiss()
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onBottomSheetDialogFragmentDismiss(
+        dialog: DialogFragment,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        when (type) {
+            RegularDialogType -> {
+/*                unregisterReceiver(timerReceiver)*/
+            }
+        }
     }
 }
 

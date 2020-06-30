@@ -25,7 +25,7 @@ class FilterAdapter(
 
     var filterList: List<DrinkFilter> = arrayListOf()
         set(value) {
-            field = value
+            field = value.filter { it.key != "None" }
             notifyDataSetChanged()
         }
 

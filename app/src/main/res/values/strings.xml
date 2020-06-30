@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">CocktailApp</string>
+    <string name="app_name">Kvych Ivan</string>
     <string name="empty_list">Enter text to start search</string>
     <string name="empty_history">History is empty</string>
     <string name="empty_search">No cocktails found</string>

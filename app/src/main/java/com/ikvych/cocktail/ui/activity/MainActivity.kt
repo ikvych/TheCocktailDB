@@ -14,8 +14,7 @@ import androidx.core.view.drawToBitmap
 import androidx.core.view.get
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
@@ -24,15 +23,17 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.FilterFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import kotlinx.android.synthetic.main.activity_drink_details.*
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
 
-class MainActivity : BaseActivity() {
+class MainActivity : BaseActivity(), LifecycleObserver {
 
     private lateinit var viewModel: MainActivityViewModel
 
@@ -66,6 +67,8 @@ class MainActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        ProcessLifecycleOwner.get().lifecycle.addObserver(this);
 
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
@@ -131,6 +134,19 @@ class MainActivity : BaseActivity() {
         fragmentTransaction.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
         fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
         fragmentTransaction.commit()
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_START)
+    fun onActivityStart() {
+        RegularBottomSheetDialogFragment.newInstance {
+            titleText = "Title"
+            descriptionText = "Start After Resume"
+        }.show(supportFragmentManager, RegularBottomSheetDialogFragment::class.java.simpleName)
+    }
+
+    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
+    fun onActivityStop() {
+
     }
 
     override fun onClick(v: View?) {

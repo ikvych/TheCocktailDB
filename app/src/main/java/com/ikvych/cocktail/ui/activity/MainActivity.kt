@@ -72,10 +72,10 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        timerReceiver = TimerReceiver(this)
+
         val lifecycleObserver = ApplicationLifeCycleObserver(this)
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
-
-        timerReceiver = TimerReceiver(this)
         serviceTimerIntent = Intent(this, TimerService::class.java)
 
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)

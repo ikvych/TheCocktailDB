@@ -13,6 +13,8 @@ interface DrinkRepository {
     fun getCurrentData(): List<Drink>
     fun initAllIngredient()
 
+    fun getJustDrinks(): List<Drink>
+
     fun getDrinks(): LiveData<List<Drink>>
 
     fun getFavoriteDrinks(): LiveData<List<Drink>>

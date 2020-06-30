@@ -25,7 +25,7 @@ class MainActivityViewModel(
 
     val timer: MutableLiveData<Long> = MutableLiveData()
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
-    private val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinks()
+    val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinks()
     val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
@@ -33,6 +33,10 @@ class MainActivityViewModel(
 
     val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
         MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
+
+    fun getDrinksAll(): List<Drink> {
+        return drinkRepository.getJustDrinks()
+    }
 
     init {
         resetFilters()

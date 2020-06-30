@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
 import androidx.core.view.drawToBitmap
 import androidx.core.view.get
+import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.*
@@ -23,7 +24,7 @@ import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.receiver.TimerReceiver
 import com.ikvych.cocktail.service.TimerService
-import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
@@ -39,6 +40,7 @@ class MainActivity : BaseActivity(), LifecycleObserver, TimerReceiver.OnTimerRec
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mainFragment: MainFragment
     private lateinit var profileFragment: ProfileFragment
+    private var drinkOfTheDay: Drink? = null
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -137,6 +139,12 @@ class MainActivity : BaseActivity(), LifecycleObserver, TimerReceiver.OnTimerRec
         fragmentTransaction.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
         fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
         fragmentTransaction.commit()
+
+        try {
+            drinkOfTheDay = viewModel.getDrinksAll().last()
+        } catch (ex: NoSuchElementException) {
+
+        }
     }
 
     @OnLifecycleEvent(Lifecycle.Event.ON_START)
@@ -282,14 +290,42 @@ class MainActivity : BaseActivity(), LifecycleObserver, TimerReceiver.OnTimerRec
         val fragment = supportFragmentManager.findFragmentByTag(RegularBottomSheetDialogFragment::class.java.simpleName)
         if (fragment !is RegularBottomSheetDialogFragment ) {
             RegularBottomSheetDialogFragment.newInstance {
-                titleText = "Title"
-                descriptionText = "Start After Resume"
+                if (drinkOfTheDay == null) {
+                    titleText = "З поверненням"
+                } else {
+                    titleText = "З поверненням"
+                    descriptionText = "Пропонуємо переглянути напій дня: ${drinkOfTheDay!!.getStrDrink()}"
+                    rightButtonText = "Переглянути"
+                    leftButtonText = "Ні, дякую"
+                }
             }.show(
                 supportFragmentManager,
                 RegularBottomSheetDialogFragment::class.java.simpleName
             )
         }
         unregisterReceiver(timerReceiver)
+    }
+
+    override fun onBottomSheetDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        when (type) {
+            RegularDialogType -> {
+                when (buttonType) {
+                    RightDialogButton -> {
+                        val intent = Intent(this, DrinkDetailActivity::class.java)
+                        intent.putExtra(DRINK, drinkOfTheDay)
+                        startActivity(intent)
+                    }
+                    LeftDialogButton -> {
+                        dialog.dismiss()
+                    }
+                }
+            }
+        }
     }
 }
 

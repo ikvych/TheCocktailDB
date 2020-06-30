@@ -1,6 +1,5 @@
 package com.ikvych.cocktail.ui.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.BatteryManager
@@ -11,6 +10,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -21,24 +22,26 @@ import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.filter.DrinkFilter
+import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
+import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
+import com.ikvych.cocktail.filter.type.DrinkFilterType
+import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.listener.BatteryListener
-import com.ikvych.cocktail.listener.FilterResultCallBack
-import com.ikvych.cocktail.listener.SortResultCallBack
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
-import com.ikvych.cocktail.widget.custom.ApplicationToolBar
+import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragmentList
+import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterResultListener,
-    FilterAdapter.OnClickItemFilterCloseListener, SortResultCallBack {
+class MainFragment : BaseFragment(), BatteryListener,
+    FilterAdapter.OnClickItemFilterCloseListener {
 
-    override val callbacks: HashSet<OnSortResultListener> = hashSetOf()
+    lateinit var mainActivityViewModel: MainActivityViewModel
 
     private lateinit var batteryReceiver: BatteryReceiver
-    private var fragmentListener: FilterFragment.OnFilterResultListener? = null
 
     private lateinit var filterBtn: ImageButton
     private lateinit var filterIndicator: TextView
@@ -70,10 +73,6 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
     private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
 
-    interface OnSortResultListener {
-        fun onResult(sortDrinkType: SortDrinkType)
-    }
-
     companion object {
         @JvmStatic
         fun newInstance(fragmentId: Int) =
@@ -84,28 +83,9 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
             }
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            fragmentListener = context as FilterFragment.OnFilterResultListener
-            (context as FilterResultCallBack).addCallBack(this)
-        } catch (exception: ClassCastException) {
-            throw ClassCastException("${context.toString()} must implement FilterResultCallBack | FilterFragment.OnFilterResultListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        try {
-            (requireActivity() as FilterResultCallBack).removeCallBack(this)
-            fragmentListener = null
-        } catch (exception: ClassCastException) {
-            throw ClassCastException("${activity.toString()} must implement FilterResultCallBack")
-        }
-    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
         historyFragment = HistoryFragment.newInstance(R.layout.fragment_history)
         favoriteFragment = FavoriteFragment.newInstance(R.layout.fragment_favorite)
@@ -114,7 +94,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
             arrayListOf(historyFragment, favoriteFragment),
             this
         )
-        batteryReceiver = BatteryReceiver(this)
+        batteryReceiver = BatteryReceiver(this@MainFragment)
 
         bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance{
             titleText = "Log Out"
@@ -122,13 +102,14 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
             leftButtonText = "Cancel"
             rightButtonText = "Accept"
         }
+
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
-        viewPager = view.findViewById(R.id.pager)
+        viewPager = pager
         viewPager.adapter = drinkPagerAdapter
 
-        tabLayout = view.findViewById(R.id.tab_layout)
+        tabLayout = tab_layout
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             if (position == 0) {
                 tab.text = getText(R.string.history)
@@ -138,19 +119,15 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         }.attach()
 
 
-        val filterRecyclerView: RecyclerView = view.findViewById(R.id.rv_filter)
+        val filterRecyclerView: RecyclerView = rv_filter
         filterAdapter = FilterAdapter(requireContext(), this)
-        val layoutManager =
-            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
-        filterRecyclerView.layoutManager = layoutManager
+        filterRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         filterRecyclerView.setHasFixedSize(true)
         filterRecyclerView.adapter = filterAdapter
-        filterAdapter.filterList = filters
 
-        filterIndicator =
-            view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).indicatorView
+        filterIndicator = atb_fragment_main.indicatorView
 
-        filterBtn = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).customBtn
+        filterBtn = atb_fragment_main.customBtn
         filterBtn.setImageDrawable(
             ContextCompat.getDrawable(
                 requireContext(),
@@ -167,43 +144,49 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         }
 
         filterBtn.setOnLongClickListener {
-            fragmentListener!!.onFilterReset()
-            callbacks.forEach {
-                it.onResult(sortDrinkType)
-            }
+            mainActivityViewModel.resetFilters()
+            filterAdapter.filterList = arrayListOf()
             true
         }
 
-        sortBtn = view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).sortBtn
-        sortBtn.setOnClickListener { v ->
-            SortDrinkDialogFragment.newInstance(sortDrinkType) {
-                this.titleText = "Sort history"
-                this.leftButtonText = "Cancel"
-                this.rightButtonText = "Accept"
-            }.show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
+        sortBtn = atb_fragment_main.sortBtn
+        sortBtn.setOnClickListener {
+            SortDrinkDialogFragmentList.newInstance(sortDrinkType)
+                .show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
         }
-        sortIndicator =
-            view.findViewById<ApplicationToolBar>(R.id.atb_fragment_main).sortIndicatorView
-        sortBtn.setOnLongClickListener { v ->
-            if (sortDrinkType != SortDrinkType.RECENT) {
-                sortDrinkType = SortDrinkType.RECENT
-                callbacks.forEach {
-                    it.onResult(sortDrinkType)
-                }
-                sortIndicator.visibility = View.GONE
-                true
-            } else {
-                false
+        sortIndicator = atb_fragment_main.sortIndicatorView
+        sortBtn.setOnLongClickListener {
+            if (mainActivityViewModel.sortLiveData.value != SortDrinkType.RECENT) {
+                mainActivityViewModel.sortLiveData.value = SortDrinkType.RECENT
+                return@setOnLongClickListener true
             }
+            false
         }
 
         fab.setOnClickListener {
             startActivity(Intent(requireContext(), SearchActivity::class.java))
         }
 
-        batteryPercent = view.findViewById(R.id.tv_battery_percent)
-        batteryIcon = view.findViewById(R.id.iv_battery_icon)
-        powerConnected = view.findViewById(R.id.iv_power_connected)
+        batteryPercent = tv_battery_percent
+        batteryIcon = iv_battery_icon
+        powerConnected = iv_power_connected
+
+        mainActivityViewModel.sortLiveData.observe(this, Observer{
+            if (it == SortDrinkType.RECENT) {
+                sortIndicator.visibility = View.GONE
+            } else {
+                sortIndicator.visibility = View.VISIBLE
+            }
+        })
+
+        mainActivityViewModel.filtersLiveData.observe(this, Observer {
+            filterAdapter.filterList = it.values.toList() as ArrayList
+            if (mainActivityViewModel.isFiltersPresent()) {
+                filterIndicator.visibility = View.VISIBLE
+            } else {
+                filterIndicator.visibility = View.GONE
+            }
+        })
     }
 
     override fun onDialogFragmentClick(
@@ -213,40 +196,14 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         data: Any?
     ) {
         when (type) {
-            RegularDialogType -> {
+            SortDrinkDrinkType -> {
                 when (buttonType) {
-                    RightDialogButton -> {
-                        val supportData = data as SortDrinkType
-                        sortDrinkType = supportData
-                        callbacks.forEach {
-                            it.onResult(sortDrinkType)
-                        }
-                        if (sortDrinkType != SortDrinkType.RECENT) {
-                            sortIndicator.visibility = View.VISIBLE
-                        } else {
-                            sortIndicator.visibility = View.GONE
-                        }
+                    ItemListDialogButton -> {
+                        mainActivityViewModel.sortLiveData.value = data as SortDrinkType
                     }
                 }
             }
         }
-    }
-
-
-    override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
-        filters = drinkFilters
-        filterAdapter.filterList = filters
-        if (filters.isNotEmpty()) {
-            filterIndicator.visibility = View.VISIBLE
-        } else {
-            filterIndicator.visibility = View.GONE
-        }
-    }
-
-    override fun onFilterReset() {
-        filters = arrayListOf()
-        filterAdapter.filterList = filters
-        filterIndicator.visibility = View.GONE
     }
 
     override fun onStart() {
@@ -385,7 +342,22 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     }
 
     override fun onClick(drinkFilter: DrinkFilter) {
-        filters.remove(drinkFilter)
-        fragmentListener!!.onFilterApply(filters)
+        when (drinkFilter.type) {
+            DrinkFilterType.CATEGORY -> {
+                mainActivityViewModel.filtersLiveData.value!![drinkFilter.type] = CategoryDrinkFilter.NONE
+                mainActivityViewModel.filtersLiveData.value = mainActivityViewModel.filtersLiveData.value
+            }
+            DrinkFilterType.ALCOHOL -> {
+                mainActivityViewModel.filtersLiveData.value!![drinkFilter.type] = AlcoholDrinkFilter.NONE
+                mainActivityViewModel.filtersLiveData.value = mainActivityViewModel.filtersLiveData.value
+            }
+            DrinkFilterType.GLASS -> {
+
+            }
+            DrinkFilterType.INGREDIENT -> {
+                mainActivityViewModel.filtersLiveData.value!![drinkFilter.type] = IngredientDrinkFilter.NONE
+                mainActivityViewModel.filtersLiveData.value = mainActivityViewModel.filtersLiveData.value
+            }
+        }
     }
 }

@@ -17,6 +17,9 @@ interface DrinkDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun saveIngredient(ingredient: Ingredient)
 
+    @Query("SELECT * FROM drink WHERE drink_of_day=:stringDate")
+    fun findDrinkOfTheDay(stringDate: String) : Drink?
+
     @Query("SELECT * FROM drink WHERE id_drink=:drinkId")
     fun findDrinkById(drinkId: Long) : Drink
 
@@ -28,6 +31,9 @@ interface DrinkDao {
 
     @Query("SELECT * FROM drink ORDER BY created DESC")
     fun getAllDrinks() : LiveData<List<Drink>>
+
+    @Query("SELECT * FROM drink ORDER BY created DESC")
+    fun getAllJustDrinks() : List<Drink>
 
     @Query("SELECT * FROM drink WHERE if_favorite ORDER BY created DESC")
     fun getAllFavoriteDrinks() : LiveData<List<Drink>>

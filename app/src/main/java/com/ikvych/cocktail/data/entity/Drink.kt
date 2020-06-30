@@ -80,6 +80,20 @@ class Drink : BaseObservable, Parcelable {
         notifyPropertyChanged(BR.created)
     }
 
+    @Expose
+    @ColumnInfo(name = "drink_of_day")
+    private var drinkOfDay: String? = null
+
+    @Bindable
+    fun getDrinkOfDay(): String? {
+        return drinkOfDay
+    }
+
+    fun setDrinkOfDay(drinkOfDay: String?) {
+        this.drinkOfDay = drinkOfDay
+        notifyPropertyChanged(BR.drinkOfDay)
+    }
+
     @SerializedName("strDrink")
     @Expose
     @ColumnInfo(name = "str_drink")

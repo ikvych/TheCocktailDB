@@ -21,7 +21,7 @@ abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity(), View.On
     }
 
     fun initLiveDataObserver() {
-        viewModel.getLiveData().observe(this, Observer { drinks ->
+        viewModel.getLiveData()!!.observe(this, Observer { drinks ->
             drinkAdapter.drinkList = drinks
             determineVisibleLayerOnUpdateData(drinks)
         })

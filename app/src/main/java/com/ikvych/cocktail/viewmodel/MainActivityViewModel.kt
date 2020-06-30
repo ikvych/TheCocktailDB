@@ -291,4 +291,8 @@ class MainActivityViewModel(
         }
         return drinksCopy
     }
+
+    fun getDrinkOfTheDay(): Drink? {
+        return getDrinksAll().last()
+    }
 }

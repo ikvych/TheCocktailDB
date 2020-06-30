@@ -22,6 +22,7 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.receiver.TimerReceiver
 import com.ikvych.cocktail.service.TimerService
 import com.ikvych.cocktail.ui.base.*
@@ -31,7 +32,8 @@ import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
 
-class MainActivity : BaseActivity(), LifecycleObserver, TimerReceiver.OnTimerReceiverListener {
+class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
+    ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
     private lateinit var viewModel: MainActivityViewModel
     private lateinit var timerReceiver: TimerReceiver
@@ -69,9 +71,11 @@ class MainActivity : BaseActivity(), LifecycleObserver, TimerReceiver.OnTimerRec
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        val lifecycleObserver = ApplicationLifeCycleObserver(this)
+        ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
+
         timerReceiver = TimerReceiver(this)
         serviceTimerIntent = Intent(this, TimerService::class.java)
-        ProcessLifecycleOwner.get().lifecycle.addObserver(this);
 
         viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
@@ -141,22 +145,20 @@ class MainActivity : BaseActivity(), LifecycleObserver, TimerReceiver.OnTimerRec
         fragmentTransaction.commit()
 
         try {
-            drinkOfTheDay = viewModel.getDrinksAll().last()
+            drinkOfTheDay = viewModel.getDrinkOfTheDay()
         } catch (ex: NoSuchElementException) {
 
         }
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    fun onActivityStart() {
+    override fun actionOnStart() {
         val timerReceiverFilter = IntentFilter().apply {
             addAction(START_BACKGROUND_TIMER)
         }
         registerReceiver(timerReceiver, timerReceiverFilter)
     }
 
-    @OnLifecycleEvent(Lifecycle.Event.ON_STOP)
-    fun onActivityStop() {
+    override fun actionOnStop() {
         startService(serviceTimerIntent)
     }
 
@@ -327,5 +329,6 @@ class MainActivity : BaseActivity(), LifecycleObserver, TimerReceiver.OnTimerRec
             }
         }
     }
+
 }
 

@@ -15,11 +15,11 @@ import com.ikvych.cocktail.receiver.DrinkOfferReceiver
 import com.ikvych.cocktail.util.setEmptySearchVisible
 import com.ikvych.cocktail.util.setSearchEmptyListVisible
 import com.ikvych.cocktail.util.setSearchRecyclerViewVisible
-import com.ikvych.cocktail.viewmodel.SearchViewModel
+import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
 import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 
 
-class SearchActivity : RecyclerViewActivity<SearchViewModel>(), DrinkOfferListener {
+class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOfferListener {
 
     lateinit var toolbarSearchView: SearchView
     private val drinkOfferReceiver: DrinkOfferReceiver = DrinkOfferReceiver(this)
@@ -28,7 +28,7 @@ class SearchActivity : RecyclerViewActivity<SearchViewModel>(), DrinkOfferListen
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search)
 
-        initViewModel(SearchViewModel::class.java)
+        initViewModel(SearchActivityViewModel::class.java)
         initRecyclerView(viewModel.getCurrentData(), R.id.db_recycler_view)
         initLiveDataObserver()
         initSearchView()

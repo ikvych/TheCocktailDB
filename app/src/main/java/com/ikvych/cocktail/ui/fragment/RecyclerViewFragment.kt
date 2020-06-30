@@ -1,33 +1,26 @@
 package com.ikvych.cocktail.ui.fragment
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.view.View
-import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
-import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.comparator.type.SortOrder
-import com.ikvych.cocktail.constant.DRINK
-import com.ikvych.cocktail.constant.SEARCH_MODEL_TYPE
-import com.ikvych.cocktail.constant.VIEW_MODEL_TYPE
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.ui.base.BaseFragment
+import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
     protected lateinit var drinkAdapter: DrinkAdapter
     lateinit var viewModel: T
+    lateinit var mainActivityViewModel: MainActivityViewModel
     var filters: ArrayList<DrinkFilter> = arrayListOf()
     protected var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
 
@@ -35,12 +28,12 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
 
     fun initViewModel(viewModelClass: Class<T>) {
         viewModel = ViewModelProvider(this).get(viewModelClass)
+        mainActivityViewModel = ViewModelProvider(requireParentFragment()).get(MainActivityViewModel::class.java)
     }
 
     open fun initLiveDataObserver() {
-        viewModel.getLiveData()!!.observe(this, Observer { drinks ->
-            filterData(drinks, filters)
-            sortData(sortDrinkType)
+        mainActivityViewModel.filteredDrinksLiveData.observe(this, Observer { drinks ->
+            drinkAdapter.drinkList = drinks
             determineVisibleLayerOnUpdateData(drinks)
         })
     }
@@ -61,55 +54,6 @@ abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
         determineVisibleLayerOnCreate(drinks)
 
         drinkAdapter.drinkList = drinks
-    }
-
-    fun filterData(drinks: List<Drink>, drinkFilters: ArrayList<DrinkFilter>) {
-        var drinksCopy = drinks
-        drinkFilters.forEach {
-            when (it.type) {
-                DrinkFilterType.ALCOHOL -> {
-                    drinksCopy = drinksCopy.filter { drink ->
-                        drink.getStrAlcoholic() == it.key
-                    }
-                }
-                DrinkFilterType.CATEGORY -> {
-                    drinksCopy = drinksCopy.filter { drink ->
-                        drink.getStrCategory() == it.key
-                    }
-                }
-                DrinkFilterType.INGREDIENT -> {
-                    drinksCopy = drinksCopy.filter { drink ->
-                        var isValid = false
-                        for ((key, _) in drink.getIngredients()) {
-                            if (key.equals(it.key)) {
-                                isValid = true
-                                break
-                            }
-                        }
-                        isValid
-                    }
-                }
-                DrinkFilterType.GLASS -> {
-                }
-            }
-        }
-        drinkAdapter.drinkList = drinksCopy
-        determineVisibleLayerOnUpdateData(drinksCopy)
-    }
-
-    fun sortData(sortDrinkType: SortDrinkType) {
-        var drinksCopy = drinkAdapter.drinkList
-        drinksCopy = when (sortDrinkType) {
-            SortDrinkType.RECENT -> drinksCopy.sortedByDescending { drink -> drink.getCreated() }
-            SortDrinkType.NAME_ASC -> drinksCopy.sortedBy { drink -> drink.getStrDrink() }
-            SortDrinkType.NAME_DESC -> drinksCopy.sortedByDescending { drink -> drink.getStrDrink() }
-            SortDrinkType.ALCOHOL_ASC -> drinksCopy.sortedWith(alcoholComparator)
-            SortDrinkType.ALCOHOL_DESC -> drinksCopy.sortedWith(alcoholComparator).asReversed()
-            SortDrinkType.INGREDIENT_COUNT_ASC -> drinksCopy.sortedBy { drink -> drink.getIngredients().size }
-            SortDrinkType.INGREDIENT_COUNT_DESC -> drinksCopy.sortedByDescending { drink -> drink.getIngredients().size }
-        }
-        drinkAdapter.drinkList = drinksCopy
-        determineVisibleLayerOnUpdateData(drinksCopy)
     }
 
     /**

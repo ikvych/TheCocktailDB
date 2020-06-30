@@ -125,16 +125,18 @@
 
             </com.google.android.material.appbar.AppBarLayout>
 
+            <com.google.android.material.floatingactionbutton.FloatingActionButton
+                android:id="@+id/fab"
+                style="@style/SearchButton"
+                android:layout_width="@dimen/search_button_width"
+                android:layout_height="@dimen/search_button_height"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:srcCompat="@drawable/search" />
+
         </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
-            style="@style/SearchButton"
-            android:layout_width="@dimen/search_button_width"
-            android:layout_height="@dimen/search_button_height"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/search" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

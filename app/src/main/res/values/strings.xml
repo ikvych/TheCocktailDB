@@ -55,5 +55,7 @@
     <string name="tv_filter_fragment_ingredient_filter">Ingredient Filter</string>
     <string name="profile_fragment_show_hide_main_navigation_bar_titles">Show/Hide Main Navigation Bar Titles</string>
 
+    <!--Filter SnackBar Undo button title-->
+    <string name="snack_bar_action_button_undo">Undo</string>
 
 </resources>

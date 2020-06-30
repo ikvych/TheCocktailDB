@@ -11,7 +11,6 @@ import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
 import androidx.core.view.drawToBitmap
-import androidx.core.view.forEach
 import androidx.core.view.get
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
@@ -28,15 +27,14 @@ import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.ui.fragment.FilterFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
-import com.ikvych.cocktail.viewmodel.MainViewModel
+import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import kotlin.collections.ArrayList
 import kotlin.collections.HashSet
 
 
-class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, FilterResultCallBack {
+class MainActivity : BaseActivity() {
 
-    override val callbacks: HashSet<FilterFragment.OnFilterResultListener> = hashSetOf()
-    private lateinit var viewModel: MainViewModel
+    private lateinit var viewModel: MainActivityViewModel
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mainFragment: MainFragment
@@ -69,7 +67,7 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
             override fun onChanged(t: Boolean?) {
                 if (t!!) {
@@ -133,18 +131,6 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
         fragmentTransaction.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
         fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
         fragmentTransaction.commit()
-    }
-
-    override fun onFilterApply(drinkFilters: ArrayList<DrinkFilter>) {
-        callbacks.forEach {
-            it.onFilterApply(drinkFilters)
-        }
-    }
-
-    override fun onFilterReset() {
-        callbacks.forEach {
-            it.onFilterReset()
-        }
     }
 
     override fun onClick(v: View?) {

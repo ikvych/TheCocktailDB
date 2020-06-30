@@ -9,25 +9,24 @@ import com.google.android.material.button.MaterialButton
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.base.BaseAdapter
 import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
-import com.ikvych.cocktail.data.entity.Ingredient
+import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.ui.base.*
 
 
-class FilterDrinkIngredientDialogFragment :
-    ListBaseDialogFragment<IngredientDrinkFilter?, ListDialogButton, IngredientDrinkType>() {
+class SortDrinkDialogFragmentList :
+    ListBaseDialogFragment<SortDrinkType?, ListDialogButton, SortDrinkDrinkType>() {
 
-    override val dialogType: IngredientDrinkType = IngredientDrinkType
-    override var data: IngredientDrinkFilter? = IngredientDrinkFilter.NONE
-    private val selectedAlcoholDrinkFilter: IngredientDrinkFilter? = null
+    override val dialogType: SortDrinkDrinkType = SortDrinkDrinkType
+    override var data: SortDrinkType? = SortDrinkType.RECENT
+
+    private val selectedAlcoholDrinkFilter: AlcoholDrinkFilter? = null
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
     override val listAdapter = SortDrinkListAdapter()
 
-    override val dialogListDataAdapter: DialogListDataAdapter<IngredientDrinkFilter?> =
-        object : DialogListDataAdapter<IngredientDrinkFilter?> {
-            override fun getName(data: IngredientDrinkFilter?): CharSequence {
+    override val dialogListDataAdapter: DialogListDataAdapter<SortDrinkType?> =
+        object : DialogListDataAdapter<SortDrinkType?> {
+            override fun getName(data: SortDrinkType?): CharSequence {
                 return data?.key ?: ""
             }
         }
@@ -37,12 +36,12 @@ class FilterDrinkIngredientDialogFragment :
         dialogBuilder = requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
     }
 
-    override var listData: List<IngredientDrinkFilter?> = mutableListOf<IngredientDrinkFilter?>().apply {
-        addAll(IngredientDrinkFilter.values())
+    override var listData: List<SortDrinkType?> = mutableListOf<SortDrinkType?>().apply {
+        addAll(SortDrinkType.values())
     }.toList()
 
     inner class SortDrinkListAdapter :
-        BaseAdapter<IngredientDrinkFilter?, BaseViewHolder>(R.layout.item_dialog_filter_list),
+        BaseAdapter<SortDrinkType?, BaseViewHolder>(R.layout.item_dialog_filter_list),
         View.OnClickListener {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -56,7 +55,7 @@ class FilterDrinkIngredientDialogFragment :
                 text = dialogListDataAdapter.getName(newData[position])
                 tag = newData[position]
                 isSelected = (data == selectedAlcoholDrinkFilter)
-                setOnClickListener(this@FilterDrinkIngredientDialogFragment)
+                setOnClickListener(this@SortDrinkDialogFragmentList)
             }
         }
 
@@ -77,37 +76,27 @@ class FilterDrinkIngredientDialogFragment :
     }
 
 
-    override fun obtainDataForView(view: View): IngredientDrinkFilter? {
+    override fun obtainDataForView(view: View): SortDrinkType? {
         return when (getButtonType(view)) {
-            is ItemListDialogButton -> view.tag as? IngredientDrinkFilter?
+            is ItemListDialogButton -> view.tag as? SortDrinkType?
             else -> super.obtainDataForView(view)
         }
     }
 
     companion object {
-        fun newInstance(
-            ingredientList: List<Ingredient>? = null,
-            selectedAlcohol: AlcoholDrinkFilter? = null
-        ): FilterDrinkIngredientDialogFragment {
-            return FilterDrinkIngredientDialogFragment().apply {
+        fun newInstance(selectedSortType: SortDrinkType? = null): SortDrinkDialogFragmentList {
+            return SortDrinkDialogFragmentList().apply {
                 arguments = bundleOf(
                     EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
                     },
-                    EXTRA_KEY_SELECTED_INGREDIENT to selectedAlcohol
+                    EXTRA_KEY_SELECTED_ALCOHOL to selectedSortType
                 )
-/*                arguments.also {bundle ->
-                    ingredientList.forEach {
-                        bundle!!.putString(it.id.toString(), it.strIngredient1)
-                    }
-                    bundle!!.putInt(EXTRA_KEY_INGREDIENT_LIST_SIZE, ingredientList.size)
-                }*/
             }
         }
 
         private const val EXTRA_KEY_BUILDER = "EXTRA_KEY_BUILDER"
-        private const val EXTRA_KEY_SELECTED_INGREDIENT = "EXTRA_KEY_SELECTED_INGREDIENT"
-        private const val EXTRA_KEY_INGREDIENT_LIST_SIZE = "EXTRA_KEY_INGREDIENT_LIST_SIZE"
+        private const val EXTRA_KEY_SELECTED_ALCOHOL = "EXTRA_KEY_SELECTED_SEX"
     }
 }

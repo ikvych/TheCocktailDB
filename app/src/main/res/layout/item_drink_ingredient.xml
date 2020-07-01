@@ -5,7 +5,7 @@
     android:layout_marginVertical="@dimen/table_row_margin_vertical">
 
     <TextView
-        android:id="@+id/ingredients"
+        android:id="@+id/tv_ingredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
@@ -13,7 +13,7 @@
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
     <TextView
-        android:id="@+id/measure"
+        android:id="@+id/tv_measure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"

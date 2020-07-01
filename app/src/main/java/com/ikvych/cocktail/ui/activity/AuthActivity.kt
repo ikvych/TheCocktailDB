@@ -53,23 +53,23 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
 
 
 
-        val keyboardObserver = findViewById<LinerLayoutWithKeyboardListener>(R.id.login_root)
+        val keyboardObserver = findViewById<LinerLayoutWithKeyboardListener>(R.id.llwkl_auth_container)
         keyboardObserver.listener = this
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        loginInputLayout = findViewById(R.id.til_login)
-        passwordInputLayout = findViewById(R.id.til_password)
+        loginInputLayout = findViewById(R.id.til_auth_login)
+        passwordInputLayout = findViewById(R.id.til_auth_password)
 
         loginTextWatcher = AuthTextWatcher(loginInputLayout)
         passwordTextWatcher = AuthTextWatcher(passwordInputLayout)
 
-        textInputEditLogin = findViewById(R.id.tiet_login)
+        textInputEditLogin = findViewById(R.id.tiet_auth_login)
         textInputEditLogin.filters = arrayOf(inputFilter)
 
-        textInputEditPassword = findViewById(R.id.tiet_password)
+        textInputEditPassword = findViewById(R.id.tiet_auth_password)
         textInputEditPassword.filters = arrayOf(inputFilter)
 
-        submitButton = findViewById(R.id.button)
+        submitButton = findViewById(R.id.b_auth_login)
 
         submitButton.setOnClickListener(onLoginButtonListener())
 

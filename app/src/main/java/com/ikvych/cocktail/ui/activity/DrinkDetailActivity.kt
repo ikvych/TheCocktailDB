@@ -76,9 +76,9 @@ class DrinkDetailActivity : BaseActivity() {
             DataBindingUtil.setContentView(this, R.layout.activity_drink_details)
         activityDrinkDetailsBinding.drink = drink
 
-        appBarLayout = findViewById(R.id.abl)
-        imageView = findViewById(R.id.iv_drink)
-        imageViewContainer = findViewById(R.id.fl_image)
+        appBarLayout = findViewById(R.id.abl_drink_detail)
+        imageView = findViewById(R.id.iv_drink_image)
+        imageViewContainer = findViewById(R.id.ll_drink_image_container)
 
         initAppBarLayoutListener()
     }
@@ -110,11 +110,11 @@ class DrinkDetailActivity : BaseActivity() {
                 if (scaleFactor == .0F) {
                     val stateList =
                         ColorStateList.valueOf(ContextCompat.getColor(this, R.color.color_primary))
-                    findViewById<ImageView>(R.id.return_button).backgroundTintList = stateList
+                    findViewById<ImageView>(R.id.ib_return).backgroundTintList = stateList
                 } else {
                     val stateList =
                         ColorStateList.valueOf(ContextCompat.getColor(this, R.color.iv_return_button_bg))
-                    findViewById<ImageView>(R.id.return_button).backgroundTintList = stateList
+                    findViewById<ImageView>(R.id.ib_return).backgroundTintList = stateList
                 }
             })
     }

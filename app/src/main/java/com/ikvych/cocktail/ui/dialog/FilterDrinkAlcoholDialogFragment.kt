@@ -42,7 +42,7 @@ class FilterDrinkAlcoholDialogFragment :
     }.toList()
 
     inner class SortDrinkListAdapter :
-        BaseAdapter<AlcoholDrinkFilter?, BaseViewHolder>(R.layout.item_dialog_filter_list),
+        BaseAdapter<AlcoholDrinkFilter?, BaseViewHolder>(R.layout.item_filter_type),
         View.OnClickListener {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
@@ -71,7 +71,7 @@ class FilterDrinkAlcoholDialogFragment :
 
     override fun getButtonType(view: View): ListDialogButton {
         return when (view.id) {
-            R.id.tv_item_sort_list -> ItemListDialogButton
+            R.id.tv_filter_type_element -> ItemListDialogButton
             else -> throw NotImplementedError("handle another dialog button types")
         }
     }

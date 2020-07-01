@@ -1,28 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <LinearLayout
-        android:id="@+id/search_container"
+        android:id="@+id/ll_search_result_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         tools:context=".ui.fragment.FavoriteFragment">
 
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/db_recycler_view"
-            style="@style/RecyclerView"
+            android:id="@+id/rv_search_result"
+            android:layout_marginHorizontal="@dimen/dp_8"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
         <!--Shown when the database is empty-->
         <TextView
-            android:id="@+id/empty_history"
+            android:id="@+id/tv_empty_history"
             style="@style/TextOnEmptyRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="@string/empty_history" />
+            android:text="@string/all_empty_history" />
 
     </LinearLayout>
 

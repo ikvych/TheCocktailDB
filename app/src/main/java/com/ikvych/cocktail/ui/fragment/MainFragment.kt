@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -106,10 +105,11 @@ class MainFragment : BaseFragment(), BatteryListener,
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
-        viewPager = pager
+        viewPager = vp2_main_fragment
         viewPager.adapter = drinkPagerAdapter
 
-        tabLayout = tab_layout
+
+        tabLayout = tl_main_fragment
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             if (position == 0) {
                 tab.text = getText(R.string.history)
@@ -119,7 +119,7 @@ class MainFragment : BaseFragment(), BatteryListener,
         }.attach()
 
 
-        val filterRecyclerView: RecyclerView = rv_filter
+        val filterRecyclerView: RecyclerView = rv_filter_list
         filterAdapter = FilterAdapter(requireContext(), this)
         filterRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         filterRecyclerView.setHasFixedSize(true)
@@ -163,7 +163,7 @@ class MainFragment : BaseFragment(), BatteryListener,
             false
         }
 
-        fab.setOnClickListener {
+        fab_main_fragment.setOnClickListener {
             startActivity(Intent(requireContext(), SearchActivity::class.java))
         }
 

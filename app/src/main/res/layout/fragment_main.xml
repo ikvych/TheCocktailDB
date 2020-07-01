@@ -5,145 +5,137 @@
 
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#FFFFFF"
         tools:context=".ui.fragment.MainFragment">
 
-        <com.ikvych.cocktail.widget.custom.ApplicationToolBar
-            android:id="@+id/atb_fragment_main"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="@dimen/app_toolbar_height"
-            android:background="@drawable/app_bar_bg_shape"
-            android:elevation="@dimen/app_toolbar_elevation"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:tl_disable_return_btn="true"
-            app:tl_enable_custom_btn="true"
-            app:tl_enable_sort_btn="true"/>
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical">
 
-        <androidx.coordinatorlayout.widget.CoordinatorLayout
-            android:id="@+id/coordinator"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/atb_fragment_main">
-
-            <LinearLayout
-                android:id="@+id/search_container"
+            <com.ikvych.cocktail.widget.custom.ApplicationToolBar
+                android:id="@+id/atb_fragment_main"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                android:layout_height="@dimen/app_toolbar_height"
+                android:background="@drawable/app_bar_bg_shape"
+                android:elevation="@dimen/app_toolbar_elevation"
+                android:layout_gravity="top"
+                app:tl_disable_return_btn="true"
+                app:tl_enable_custom_btn="true"
+                app:tl_enable_sort_btn="true" />
 
-                <com.google.android.material.tabs.TabLayout
-                    android:id="@+id/tab_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:backgroundTint="@color/color_primary"
-                    app:tabSelectedTextColor="@color/battery_charging">
-
-                </com.google.android.material.tabs.TabLayout>
-
-                <androidx.viewpager2.widget.ViewPager2
-                    android:id="@+id/pager"
-                    android:layout_width="match_parent"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/ll_battery_state_container"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|center"
-                android:layout_marginBottom="20dp"
-                android:background="@drawable/search_view_shape"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:id="@+id/iv_power_connected"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_margin="8dp"
-                    android:contentDescription="@string/info"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_power_connected"
-                    android:visibility="gone" />
-
-
-                <TextView
-                    android:id="@+id/tv_battery_percent"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="8dp"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
-
-                <ImageView
-                    android:id="@+id/iv_battery_icon"
-                    android:layout_width="32dp"
-                    android:layout_height="32dp"
-                    android:layout_margin="8dp"
-                    android:contentDescription="@string/info"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_battery" />
-
-            </LinearLayout>
-
-            <com.google.android.material.appbar.AppBarLayout
+            <androidx.coordinatorlayout.widget.CoordinatorLayout
+                android:id="@+id/cl_main_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/app_bar_drink_filter_bg">
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-                <com.google.android.material.appbar.CollapsingToolbarLayout
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-                    <LinearLayout
+                    <com.google.android.material.tabs.TabLayout
+                        android:id="@+id/tl_main_fragment"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:orientation="horizontal">
+                        android:backgroundTint="@color/color_primary"
+                        app:tabSelectedTextColor="@color/battery_charging">
 
-                        <androidx.recyclerview.widget.RecyclerView
-                            android:id="@+id/rv_filter"
-                            style="@style/RecyclerView"
-                            android:layout_width="wrap_content"
+                    </com.google.android.material.tabs.TabLayout>
+
+                    <androidx.viewpager2.widget.ViewPager2
+                        android:id="@+id/vp2_main_fragment"
+                        android:layout_width="match_parent"
+                        android:layout_height="0dp"
+                        android:layout_weight="1" />
+
+                </LinearLayout>
+
+                <com.google.android.material.appbar.AppBarLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/app_bar_drink_filter_bg">
+
+                    <com.google.android.material.appbar.CollapsingToolbarLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        app:layout_scrollFlags="scroll|enterAlwaysCollapsed|snap">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal" />
+                            android:orientation="horizontal">
 
-                    </LinearLayout>
+                            <androidx.recyclerview.widget.RecyclerView
+                                android:id="@+id/rv_filter_list"
+                                style="@style/RecyclerView"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                                android:orientation="horizontal" />
 
-                </com.google.android.material.appbar.CollapsingToolbarLayout>
+                        </LinearLayout>
 
-            </com.google.android.material.appbar.AppBarLayout>
+                    </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-            <com.google.android.material.floatingactionbutton.FloatingActionButton
-                android:id="@+id/fab"
-                style="@style/SearchButton"
-                android:layout_width="@dimen/search_button_width"
-                android:layout_height="@dimen/search_button_height"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:srcCompat="@drawable/search" />
+                </com.google.android.material.appbar.AppBarLayout>
 
-        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <com.google.android.material.floatingactionbutton.FloatingActionButton
+                    android:id="@+id/fab_main_fragment"
+                    style="@style/SearchButton"
+                    android:layout_width="@dimen/search_button_width"
+                    android:layout_height="@dimen/search_button_height"
+                    app:srcCompat="@drawable/search" />
+
+                <LinearLayout
+                    android:id="@+id/ll_battery_state_container"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="bottom|center"
+                    android:layout_marginBottom="20dp"
+                    android:background="@drawable/search_view_shape"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:id="@+id/iv_power_connected"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="8dp"
+                        android:contentDescription="@string/info"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_power_connected"
+                        android:visibility="gone" />
 
 
+                    <TextView
+                        android:id="@+id/tv_battery_percent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="8dp"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                    <ImageView
+                        android:id="@+id/iv_battery_icon"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_margin="8dp"
+                        android:contentDescription="@string/info"
+                        android:scaleType="fitXY"
+                        android:src="@drawable/ic_battery" />
+
+                </LinearLayout>
+
+            </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        </LinearLayout>
 
         <androidx.fragment.app.FragmentContainerView
             android:id="@+id/fcv_main_fragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 </layout>

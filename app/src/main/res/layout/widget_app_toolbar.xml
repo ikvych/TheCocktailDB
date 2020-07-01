@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<merge xmlns:android="http://schemas.android.com/apk/res/android"
+<merge
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="horizontal"
-    tools:parentTag="android.widget.LinearLayout">
+    tools:parentTag="android.widget.LinearLayout"
+    android:orientation="horizontal">
 
     <ImageButton
-        android:id="@+id/return_tb_btn"
+        android:id="@+id/ib_return_button"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
@@ -42,13 +43,13 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_sort_btn"
+        android:id="@+id/rl_sort_btn_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
         <ImageButton
-            android:id="@+id/sort_tb_btn"
+            android:id="@+id/ib_sort_btn"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_centerInParent="true"
@@ -63,8 +64,8 @@
             android:height="14dp"
             android:width="14dp"
             android:visibility="gone"
-            android:layout_alignEnd="@+id/sort_tb_btn"
-            android:layout_alignTop="@+id/sort_tb_btn"
+            android:layout_alignEnd="@+id/ib_sort_btn"
+            android:layout_alignTop="@+id/ib_sort_btn"
             android:background="@drawable/indicator_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -72,13 +73,13 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_custom_btn"
+        android:id="@+id/rl_filer_btn_container"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
         <ImageButton
-            android:id="@+id/custom_tb_btn"
+            android:id="@+id/ib_filer_btn"
             android:layout_width="32dp"
             android:layout_height="32dp"
             android:layout_centerInParent="true"
@@ -91,8 +92,8 @@
             android:height="14dp"
             android:width="14dp"
             android:visibility="gone"
-            android:layout_alignEnd="@+id/custom_tb_btn"
-            android:layout_alignTop="@+id/custom_tb_btn"
+            android:layout_alignEnd="@+id/ib_filer_btn"
+            android:layout_alignTop="@+id/ib_filer_btn"
             android:background="@drawable/indicator_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

@@ -33,7 +33,7 @@
                 tools:ignore="RtlSymmetry,UseCompoundDrawables">
 
                 <TextView
-                    android:id="@+id/txt_dialog_bs_title"
+                    android:id="@+id/tv_dialog_title"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_gravity="center"
@@ -49,7 +49,7 @@
                     tools:text="Помилка входу" />
 
                 <ImageView
-                    android:id="@+id/btn_dialog_bs_close"
+                    android:id="@+id/iv_dialog_close"
                     android:layout_width="24dp"
                     android:layout_height="24dp"
                     android:layout_gravity="center"
@@ -59,7 +59,7 @@
 
 
             <TextView
-                android:id="@+id/txt_dialog_bs_description"
+                android:id="@+id/tv_dialog_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="24dp"
@@ -69,13 +69,13 @@
                 tools:text="Ви не зареєстровані, невірно ввели номер телефону або пароль." />
 
             <FrameLayout
-                android:id="@+id/vg_dialog_bs_extra_contents"
+                android:id="@+id/fl_dialog_extra_contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
             </FrameLayout>
 
             <LinearLayout
-                android:id="@+id/vg_dialog_bs_buttons"
+                android:id="@+id/ll_dialog_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
@@ -83,18 +83,18 @@
                 android:paddingEnd="16dp">
 
                 <Button
-                    android:id="@+id/lb_dialog_bs_left"
+                    android:id="@+id/b_dialog_left_button"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1" />
 
                 <Space
-                    android:id="@+id/space_dialog_bs_buttons"
+                    android:id="@+id/space_dialog_buttons"
                     android:layout_width="16dp"
                     android:layout_height="match_parent" />
 
                 <Button
-                    android:id="@+id/lb_dialog_bs_right"
+                    android:id="@+id/b_dialog_right_button"
                     android:layout_width="0dp"
                     android:layout_height="48dp"
                     android:layout_weight="1" />

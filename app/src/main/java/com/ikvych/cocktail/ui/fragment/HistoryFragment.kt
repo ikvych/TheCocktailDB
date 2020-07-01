@@ -21,7 +21,7 @@ class HistoryFragment : RecyclerViewFragment<MainActivityViewModel>() {
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
         fragmentView = view
-        initRecyclerView(view, mainActivityViewModel.getCurrentData(), R.id.db_recycler_view)
+        initRecyclerView(view, mainActivityViewModel.getCurrentData(), R.id.rv_search_result)
         initLiveDataObserver()
     }
 

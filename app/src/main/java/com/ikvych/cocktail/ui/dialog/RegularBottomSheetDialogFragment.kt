@@ -2,14 +2,8 @@ package com.ikvych.cocktail.ui.dialog
 
 import android.os.Bundle
 import android.view.View
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.comparator.type.SortOrder
 import com.ikvych.cocktail.ui.base.*
 
 
@@ -32,8 +26,8 @@ class RegularBottomSheetDialogFragment :
 
     override fun getButtonType(view: View): RegularDialogButton {
         return when (view.id) {
-            R.id.lb_dialog_bs_left -> LeftDialogButton
-            R.id.lb_dialog_bs_right -> RightDialogButton
+            R.id.b_dialog_left_button -> LeftDialogButton
+            R.id.b_dialog_right_button -> RightDialogButton
             else -> throw NotImplementedError("handle another dialog button types")
         }
     }

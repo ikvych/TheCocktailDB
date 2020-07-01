@@ -50,16 +50,16 @@ class ProfileFragment : BaseFragment() {
                 RegularBottomSheetDialogFragment::class.java.simpleName
             )
         }
-        startTestFragmentBtn = view.findViewById(R.id.b_test_fragment)
+        startTestFragmentBtn = view.findViewById(R.id.b_start_test_fragment)
         startTestFragmentBtn.setOnClickListener {
             testFragment = TestFragment.newInstance(R.layout.fragment_test, 5, "Ivan Kvych")
             val fragmentTransaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fcv_main, testFragment)
+            fragmentTransaction.replace(R.id.fcv_container, testFragment)
             fragmentTransaction.addToBackStack(TestFragment::class.java.name)
             fragmentTransaction.commit()
         }
 
-        changeBottomNavBarTitleVisibility = cb_show_hide_main_nav_bar_title
+        changeBottomNavBarTitleVisibility = cb_main_nav_bar_title_visibility
         // видимість титульного напису на BottomNavigationView по замовчуванню true
         mainViewModel.navBarTitleVisibilityLiveData.value = changeBottomNavBarTitleVisibility.isChecked
         changeBottomNavBarTitleVisibility.setOnCheckedChangeListener { _, isChecked ->

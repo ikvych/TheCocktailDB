@@ -33,8 +33,8 @@ class SortDrinkDialogFragment :
 
     override fun getButtonType(view: View): RegularDialogButton {
         return when (view.id) {
-            R.id.lb_dialog_bs_left -> LeftDialogButton
-            R.id.lb_dialog_bs_right -> RightDialogButton
+            R.id.b_dialog_left_button -> LeftDialogButton
+            R.id.b_dialog_right_button -> RightDialogButton
             else -> throw NotImplementedError("handle another dialog button types")
         }
     }
@@ -43,7 +43,7 @@ class SortDrinkDialogFragment :
     override fun configureExtraContent(container: FrameLayout, savedInstanceState: Bundle?) {
         this.data = requireArguments().get(EXTRA_KEY_DATA) as? SortDrinkType ?: SortDrinkType.RECENT
 
-        sortRadioGroup = rg_drink_sort
+        sortRadioGroup = rg_drink_sort_container
         SortDrinkType.values().forEach {
             sortRadioGroup.addView(
                 RadioButton(requireContext()).apply {

@@ -172,8 +172,8 @@ class MainActivityViewModel(
                     application,
                     com.ikvych.cocktail.R.drawable.ic_drink_favorite
                 )
-                historyDrawable!!.setBounds(0, 0, 30, 30)
-                favoriteDrawable!!.setBounds(0, 0, 30, 30)
+                historyDrawable!!.setBounds(0, 0, 60, 60)
+                favoriteDrawable!!.setBounds(0, 0, 60, 60)
 
                 val emptySearch = "Нічого не знайдено"
 

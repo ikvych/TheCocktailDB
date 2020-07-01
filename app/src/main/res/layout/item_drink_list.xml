@@ -22,32 +22,32 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/drink_image_view"
+                android:id="@+id/iv_drink_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
-                android:contentDescription="@string/contentDescription"
+                android:contentDescription="@string/all_content_description"
                 bind:strDrinkThumb="@{drink.strDrinkThumb}" />
 
             <CheckBox
-                android:id="@+id/cb_favorite"
+                android:id="@+id/cb_is_favorite"
                 android:layout_margin="4dp"
                 android:buttonTint="@drawable/favorite_checkbox_tint"
                 android:button="@drawable/favorite_checkbox"
-                android:layout_alignStart="@+id/drink_image_view"
-                android:layout_alignTop="@+id/drink_image_view"
+                android:layout_alignStart="@+id/iv_drink_image"
+                android:layout_alignTop="@+id/iv_drink_image"
                 android:layout_width="wrap_content"
                 android:checked="@{drink.favorite}"
                 android:tag="@{drink.strDrink}"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:id="@+id/drinkName"
+                android:id="@+id/tv_drink_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{drink.strDrink}"
-                android:layout_below="@id/drink_image_view"
+                android:layout_below="@id/iv_drink_image"
                 android:layout_margin="8dp"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 

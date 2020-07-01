@@ -23,8 +23,6 @@
 
     <!--Splash image-->
     <style name="SplashImage">
-        <item name="android:layout_width">wrap_content</item>
-        <item name="android:layout_height">wrap_content</item>
         <item name="android:layout_marginStart">@dimen/splash_image_view_margin_start</item>
         <item name="android:layout_marginEnd">@dimen/splash_image_view_margin_end</item>
     </style>

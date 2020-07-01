@@ -21,7 +21,7 @@ class TestFragment : BaseFragment() {
     var arbitraryNumber: Int? = null
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
-        testTextView = view.findViewById(R.id.tv_test)
+        testTextView = view.findViewById(R.id.tv_test_text)
         arbitraryNumber = requireArguments().getInt(ARBITRARY_NUMBER)
 
         if (requireArguments().containsKey(OPTIONAL_STRING)) {
@@ -40,7 +40,7 @@ class TestFragment : BaseFragment() {
             arbitraryNumber  = arbitraryNumber!!.inc()
             val testFragment1 = newInstance(R.layout.fragment_test, arbitraryNumber!!)
             val ft1: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            ft1.add(R.id.fcv_main, testFragment1)
+            ft1.add(R.id.fcv_container, testFragment1)
             ft1.addToBackStack("transaction1")
             ft1.commit()
 
@@ -49,16 +49,16 @@ class TestFragment : BaseFragment() {
             arbitraryNumber  = arbitraryNumber!!.inc()
             val testFragment3 = newInstance(R.layout.fragment_test, arbitraryNumber!!)
             val ft2: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            ft2.add(R.id.fcv_main, testFragment2)
-            ft2.add(R.id.fcv_main, testFragment3)
+            ft2.add(R.id.fcv_container, testFragment2)
+            ft2.add(R.id.fcv_container, testFragment3)
             ft2.addToBackStack("transaction2")
             ft2.commit()
 
             val testFragment4 = newInstance(R.layout.fragment_test, arbitraryNumber!!.inc())
             val testFragment5 = newInstance(R.layout.fragment_test, arbitraryNumber!!, "Some text")
             val ft3: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            ft3.add(R.id.fcv_main, testFragment4)
-            ft3.add(R.id.fcv_main, testFragment5)
+            ft3.add(R.id.fcv_container, testFragment4)
+            ft3.add(R.id.fcv_container, testFragment5)
 /*            ft3.addToBackStack("transaction3")*/
             ft3.commit()
 

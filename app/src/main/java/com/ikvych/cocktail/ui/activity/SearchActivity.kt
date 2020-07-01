@@ -29,7 +29,7 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
         setContentView(R.layout.activity_search)
 
         initViewModel(SearchActivityViewModel::class.java)
-        initRecyclerView(viewModel.getCurrentData(), R.id.db_recycler_view)
+        initRecyclerView(viewModel.getCurrentData(), R.id.rv_search_result)
         initLiveDataObserver()
         initSearchView()
     }
@@ -64,7 +64,7 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
     }
 
     private fun initSearchView() {
-        toolbarSearchView = findViewById<ApplicationToolBar>(R.id.app_toolbar).searchView
+        toolbarSearchView = findViewById<ApplicationToolBar>(R.id.atb_search_activity).searchView
         toolbarSearchView.isIconifiedByDefault = false
         toolbarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
@@ -91,7 +91,7 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
         val currentDrinkId: Long = intent.getLongExtra(DRINK_ID, -1L)
         val drink: Drink = drinks.shuffled().find { it.getIdDrink() != currentDrinkId } ?: return
 
-        val view: View = findViewById(R.id.db_recycler_view)
+        val view: View = findViewById(R.id.rv_search_result)
 
         Snackbar.make(view, "Як щодо - ${drink.getStrDrink()}", 3500)
             .setAction(R.string.toast_action_view) {
@@ -103,7 +103,7 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
     }
 
     override fun onClick(v: View?) {
-        val view = v?.findViewById<TextView>(R.id.drinkName)
+        val view = v?.findViewById<TextView>(R.id.tv_drink_name)
         val drinkName = view?.text ?: ""
         val drink: Drink? =
             drinkAdapter.drinkList.find { drink -> drink.getStrDrink() == drinkName }

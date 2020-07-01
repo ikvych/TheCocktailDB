@@ -35,7 +35,7 @@ class FavoriteFragment : RecyclerViewFragment<MainActivityViewModel>() {
         initRecyclerView(
             view,
             mainActivityViewModel.getFavoriteCurrentData(),
-            R.id.db_recycler_view
+            R.id.rv_search_result
         )
         initLiveDataObserver()
     }

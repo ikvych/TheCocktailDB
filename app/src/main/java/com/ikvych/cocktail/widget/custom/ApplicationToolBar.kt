@@ -88,7 +88,7 @@ class ApplicationToolBar(
     init {
         View.inflate(context, R.layout.widget_app_toolbar, this)
         this.returnBtn = findViewById(R.id.ib_return_button)
-        this.customBtn = findViewById(R.id.ib_custom_btn)
+        this.customBtn = findViewById(R.id.ib_filer_btn)
         this.indicatorView = findViewById(R.id.tv_filter_indicator)
         this.frameLayout = findViewById(R.id.fl_toolbar)
         this.searchView = findViewById(R.id.sv_toolbar)

@@ -17,8 +17,8 @@
     <Button
         android:id="@+id/b_log_out"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/auth_login_btn_margin_start"
-        android:layout_margin="@dimen/auth_indents"
+        android:layout_height="@dimen/btn_height_max"
+        android:layout_margin="@dimen/offset_8"
         android:text="@string/profile_log_out_button"
         android:layout_gravity="center"
         android:textColor="#FFFFFF"
@@ -27,8 +27,8 @@
     <Button
         android:id="@+id/b_start_test_fragment"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/auth_login_btn_margin_start"
-        android:layout_margin="@dimen/auth_indents"
+        android:layout_height="@dimen/btn_height_max"
+        android:layout_margin="@dimen/offset_8"
         android:text="@string/profile_start_test_fragment_button"
         android:layout_gravity="center"
         android:textColor="#FFFFFF"
@@ -37,8 +37,8 @@
     <CheckBox
         android:id="@+id/cb_main_nav_bar_title_visibility"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_48"
-        android:layout_margin="@dimen/dp_16"
+        android:layout_height="@dimen/view_height"
+        android:layout_margin="@dimen/offset_8"
         android:checked="true"
         android:text="@string/profile_show_hide_main_navigation_bar_titles"/>
 

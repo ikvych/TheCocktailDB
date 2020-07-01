@@ -17,9 +17,9 @@
             <com.ikvych.cocktail.widget.custom.ApplicationToolBar
                 android:id="@+id/atb_fragment_main"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/app_toolbar_height"
+                android:layout_height="@dimen/view_height_max"
                 android:background="@drawable/app_bar_bg_shape"
-                android:elevation="@dimen/app_toolbar_elevation"
+                android:elevation="@dimen/elevation_16"
                 android:layout_gravity="top"
                 app:tl_disable_return_btn="true"
                 app:tl_enable_custom_btn="true"
@@ -86,8 +86,8 @@
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
                     android:id="@+id/fab_main_fragment"
                     style="@style/SearchButton"
-                    android:layout_width="@dimen/search_button_width"
-                    android:layout_height="@dimen/search_button_height"
+                    android:layout_width="@dimen/view_width_max"
+                    android:layout_height="@dimen/view_height_max"
                     app:srcCompat="@drawable/search" />
 
                 <LinearLayout
@@ -95,15 +95,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center"
-                    android:layout_marginBottom="20dp"
+                    android:layout_marginBottom="@dimen/offset_20"
                     android:background="@drawable/search_view_shape"
                     android:orientation="horizontal">
 
                     <ImageView
                         android:id="@+id/iv_power_connected"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_margin="8dp"
+                        android:layout_width="@dimen/view_width_min"
+                        android:layout_height="@dimen/view_height_min"
+                        android:layout_margin="@dimen/offset_8"
                         android:contentDescription="@string/info"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_power_connected"
@@ -114,14 +114,14 @@
                         android:id="@+id/tv_battery_percent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_margin="8dp"
+                        android:layout_margin="@dimen/offset_8"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
                     <ImageView
                         android:id="@+id/iv_battery_icon"
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:layout_margin="8dp"
+                        android:layout_width="@dimen/view_width_min"
+                        android:layout_height="@dimen/view_height_min"
+                        android:layout_margin="@dimen/offset_8"
                         android:contentDescription="@string/info"
                         android:scaleType="fitXY"
                         android:src="@drawable/ic_battery" />

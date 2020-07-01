@@ -4,5 +4,5 @@
     android:id="@+id/tv_filter_type_element"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:textSize="12sp">
+    android:textSize="@dimen/caption_1">
 </Button>

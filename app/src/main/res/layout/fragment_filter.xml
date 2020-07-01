@@ -15,9 +15,9 @@
     <com.ikvych.cocktail.widget.custom.ApplicationToolBar
         android:id="@+id/atb_fragment_filter"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/app_toolbar_height"
+        android:layout_height="@dimen/view_height_max"
         android:background="@drawable/app_bar_bg_shape"
-        android:elevation="@dimen/app_toolbar_elevation"
+        android:elevation="@dimen/elevation_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -43,9 +43,9 @@
             <LinearLayout
                 android:id="@+id/im_alcohol_filter"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginVertical="8dp"
+                android:layout_height="@dimen/view_height"
+                android:layout_marginHorizontal="@dimen/offset_24"
+                android:layout_marginVertical="@dimen/offset_8"
                 android:background="@drawable/iten_drink_filter_shape"
                 android:orientation="horizontal">
 
@@ -78,9 +78,9 @@
             <LinearLayout
                 android:id="@+id/im_category_filter"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginVertical="8dp"
+                android:layout_height="@dimen/view_height"
+                android:layout_marginHorizontal="@dimen/offset_24"
+                android:layout_marginVertical="@dimen/offset_8"
                 android:background="@drawable/iten_drink_filter_shape"
                 android:orientation="horizontal">
 
@@ -114,9 +114,9 @@
             <LinearLayout
                 android:id="@+id/im_ingredient_filter"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:layout_marginHorizontal="24dp"
-                android:layout_marginVertical="8dp"
+                android:layout_height="@dimen/view_height"
+                android:layout_marginHorizontal="@dimen/offset_24"
+                android:layout_marginVertical="@dimen/offset_8"
                 android:background="@drawable/iten_drink_filter_shape"
                 android:orientation="horizontal">
 
@@ -150,7 +150,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_16"
+            android:layout_marginTop="@dimen/offset_16"
             android:orientation="vertical"
             android:layout_gravity="bottom"
             app:layout_behavior="@string/fab_transformation_sheet_behavior">
@@ -166,9 +166,9 @@
                     android:id="@+id/btn_accept"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/auth_login_btn_margin_start"
-                    android:layout_margin="8dp"
-                    android:layout_marginVertical="@dimen/auth_indents"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_margin="@dimen/offset_8"
+                    android:layout_marginVertical="@dimen/offset_16"
                     android:layout_weight="1"
                     android:text="@string/accept"
                     android:textColor="#FFFFFF"
@@ -178,9 +178,9 @@
                     android:id="@+id/btn_reject"
                     style="?android:attr/buttonBarButtonStyle"
                     android:layout_width="0dp"
-                    android:layout_height="@dimen/auth_login_btn_margin_start"
-                    android:layout_margin="8dp"
-                    android:layout_marginVertical="@dimen/auth_indents"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_margin="@dimen/offset_8"
+                    android:layout_marginVertical="@dimen/offset_16"
                     android:layout_weight="1"
                     android:text="@string/reset"
                     android:textColor="#FFFFFF"

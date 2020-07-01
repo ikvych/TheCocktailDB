@@ -2,13 +2,13 @@
 <TableRow xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginVertical="@dimen/table_row_margin_vertical">
+    android:layout_marginVertical="@dimen/offset_4">
 
     <TextView
         android:id="@+id/tv_ingredient"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="@dimen/offset_20"
         android:lineSpacingExtra="5sp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 
@@ -16,7 +16,7 @@
         android:id="@+id/tv_measure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="40dp"
+        android:layout_marginStart="@dimen/offset_40"
         android:lineSpacingExtra="5sp"
         android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
 </TableRow>

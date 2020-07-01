@@ -125,9 +125,9 @@ class DrinkDetailActivity : BaseActivity() {
         imageViewContainer.requestLayout()
         cachedImageWidth = maxImageWidth
 
-        imageMarginStart = (resources.getDimension(R.dimen.iv_detail_margin_start)).toInt()
-        imageMarginTop = (resources.getDimension(R.dimen.iv_detail_margin_top)).toInt()
-        minImageWidth = (resources.getDimension(R.dimen.iv_detail_min_width)).toInt()
+        imageMarginStart = (resources.getDimension(R.dimen.offset_64)).toInt()
+        imageMarginTop = (resources.getDimension(R.dimen.offset_16)).toInt()
+        minImageWidth = (resources.getDimension(R.dimen.offset_32)).toInt()
 
         imageViewParams = imageView.layoutParams as LinearLayout.LayoutParams
     }

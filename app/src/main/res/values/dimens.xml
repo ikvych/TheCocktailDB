@@ -1,64 +1,64 @@
 <resources>
 
-    <!--RecyclerView-->
-    <dimen name="recycler_view_margin">8dp</dimen>
+    <!--#region Typography-->
+    <dimen name="headline_1">30sp</dimen>
+    <dimen name="headline_2">24sp</dimen>
+    <dimen name="headline_3">18sp</dimen>
+    <dimen name="headline_4">16sp</dimen>
+    <dimen name="caption_1">12sp</dimen>
+    <!--#endregion-->
 
-    <!--SearchViewHeight-->
-    <dimen name="search_view_height">48dp</dimen>
+    <!--#region Buttons & Controls-->
+    <dimen name="btn_width_min">32dp</dimen>
+    <dimen name="btn_height_min">32dp</dimen>
+    <dimen name="btn_width">40dp</dimen>
+    <dimen name="btn_height">40dp</dimen>
+    <dimen name="btn_width_max">48dp</dimen>
+    <dimen name="btn_height_max">48dp</dimen>
+    <!--#endregion-->
 
-    <!--navigationView-->
-    <dimen name="navigation_view_height">64dp</dimen>
-    <dimen name="nav_view_title_margin_start">70dp</dimen>
-    <dimen name="nav_view_title_margin_top">18dp</dimen>
+    <!--#region View-->
+    <dimen name="view_height_min">32dp</dimen>
+    <dimen name="view_width_min">32dp</dimen>
+    <dimen name="view_height">48dp</dimen>
+    <dimen name="view_width">48dp</dimen>
+    <dimen name="view_height_max">56dp</dimen>
+    <dimen name="view_width_max">56dp</dimen>
+    <!--#endregion-->
 
-    <!--CardView-->
-    <dimen name="card_view_margin">4dp</dimen>
-    <dimen name="card_view_corner_radius">8dp</dimen>
-    <dimen name="card_view_elevation">4dp</dimen>
+    <!--#region Corner-->
+    <dimen name="corner_6">6dp</dimen>
+    <dimen name="corner_8">8dp</dimen>
+    <!--#endregion-->
 
-    <!--SearchButton-->
-    <dimen name="search_button_width">56dp</dimen>
-    <dimen name="search_button_height">56dp</dimen>
-    <dimen name="search_button_margin">16dp</dimen>
+    <!--#region Elevation-->
+    <dimen name="elevation_2">2dp</dimen>
+    <dimen name="elevation_4">4dp</dimen>
+    <dimen name="elevation_16">16dp</dimen>
+    <!--#endregion-->
 
-    <!--ResumeButton-->
-    <dimen name="resume_button_size">32dp</dimen>
-    <dimen name="resume_button_margin_top">16dp</dimen>
-    <dimen name="resume_button_margin_start">20dp</dimen>
+    <!--#region Padding/Margin/Offset-->
+    <dimen name="offset_4">4dp</dimen>
+    <dimen name="offset_8">8dp</dimen>
+    <dimen name="offset_12">12dp</dimen>
+    <dimen name="offset_16">16dp</dimen>
+    <dimen name="offset_20">20dp</dimen>
+    <dimen name="offset_24">24dp</dimen>
+    <dimen name="offset_32">32dp</dimen>
+    <dimen name="offset_40">40dp</dimen>
+    <dimen name="offset_48">48dp</dimen>
+    <dimen name="offset_64">64dp</dimen>
+    <dimen name="offset_72">72dp</dimen>
+    <!--#endregion-->
 
-    <!--detail image-->
-    <dimen name="iv_detail_min_width">32dp</dimen>
-    <dimen name="iv_detail_margin_top">16dp</dimen>
-    <dimen name="iv_detail_margin_start">64dp</dimen>
-    <dimen name="detail_image_corner_radius">8dp</dimen>
+    <!--#region Button indicator-->
+    <dimen name="indicator_width">14dp</dimen>
+    <dimen name="indicator_height">14dp</dimen>
+    <!--#endregion-->
 
-    <!--Table Row-->
-    <dimen name="table_row_margin_vertical">4dp</dimen>
+    <!--#region Icon-->
+    <dimen name="icon_size">24dp</dimen>
+    <dimen name="icon_size_extra">48dp</dimen>
+    <!--#endregion-->
 
-    <!--Splash Image-->
-    <dimen name="splash_image_view_margin_start">24dp</dimen>
-    <dimen name="splash_image_view_margin_end">24dp</dimen>
-
-    <!--ApplicationToolBar-->
-    <dimen name="app_toolbar_height">56dp</dimen>
-    <dimen name="app_toolbar_elevation">16dp</dimen>
-
-    <!--Auth activity parameters-->
-    <dimen name="auth_indents">16dp</dimen>
-    <dimen name="auth_login_btn_margin_start">48dp</dimen>
-
-    <!-- bottom sheet dialog dimen-->
-    <dimen name="dp_8">8dp</dimen>
-    <dimen name="dp_16">16dp</dimen>
-    <dimen name="dp_24">24dp</dimen>
-    <dimen name="dp_32">32dp</dimen>
-    <dimen name="dp_40">40dp</dimen>
-    <dimen name="dp_48">48dp</dimen>
-    <dimen name="dp_56">56dp</dimen>
-    <dimen name="dp_64">64dp</dimen>
-    <dimen name="dp_72">72dp</dimen>
-    <dimen name="dp_80">80dp</dimen>
-    <dimen name="dp_160">160dp</dimen>
-
-    <dimen name="md_bottom_sheet_separator_top_margin">7dp</dimen>
 </resources>

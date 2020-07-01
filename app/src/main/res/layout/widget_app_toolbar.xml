@@ -12,7 +12,7 @@
         android:layout_weight="1"
         android:src="@drawable/ic_arrow_back"
         android:background="@android:color/transparent"
-        android:padding="12dp"
+        android:padding="@dimen/offset_12"
         android:contentDescription="@string/content_description_return_button"/>
 
     <FrameLayout
@@ -26,17 +26,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/offset_8"
             android:iconifiedByDefault="false"
             android:background="@drawable/search_view_shape"
             android:queryBackground="@android:color/transparent"
-            android:elevation="2dp"/>
+            android:elevation="@dimen/elevation_2"/>
 
         <TextView
             android:id="@+id/tv_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
+            android:layout_margin="@dimen/offset_8"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_gravity="center_vertical"/>
 
@@ -50,19 +50,19 @@
 
         <ImageButton
             android:id="@+id/ib_sort_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/btn_width_min"
+            android:layout_height="@dimen/btn_width_min"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
             android:visibility="gone"
             android:src="@drawable/ic_app_tool_bar_sort"
-            android:padding="12dp"
+            android:padding="@dimen/offset_12"
             android:contentDescription="@string/content_description_sort_history"/>
 
         <TextView
             android:id="@+id/tv_sort_indicator"
-            android:height="14dp"
-            android:width="14dp"
+            android:height="@dimen/indicator_height"
+            android:width="@dimen/indicator_width"
             android:visibility="gone"
             android:layout_alignEnd="@+id/ib_sort_btn"
             android:layout_alignTop="@+id/ib_sort_btn"
@@ -80,17 +80,17 @@
 
         <ImageButton
             android:id="@+id/ib_filer_btn"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
+            android:layout_width="@dimen/btn_width_min"
+            android:layout_height="@dimen/btn_width_min"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
-            android:padding="12dp"
+            android:padding="@dimen/offset_12"
             android:contentDescription="@string/content_description_custom_button"/>
 
         <TextView
             android:id="@+id/tv_filter_indicator"
-            android:height="14dp"
-            android:width="14dp"
+            android:height="@dimen/indicator_height"
+            android:width="@dimen/indicator_width"
             android:visibility="gone"
             android:layout_alignEnd="@+id/ib_filer_btn"
             android:layout_alignTop="@+id/ib_filer_btn"

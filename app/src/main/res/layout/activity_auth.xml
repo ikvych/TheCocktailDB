@@ -8,14 +8,14 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:padding="@dimen/dp_16">
+        android:padding="@dimen/offset_16">
 
         <ImageView
             android:id="@+id/iv_auth_app_logo"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/dp_24"
-            android:layout_marginVertical="@dimen/auth_indents"
+            android:layout_marginHorizontal="@dimen/offset_24"
+            android:layout_marginVertical="@dimen/offset_16"
             android:contentDescription="@string/all_content_description"
             app:srcCompat="@drawable/ic_logo" />
 
@@ -69,8 +69,8 @@
         <Button
             android:id="@+id/b_auth_login"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/auth_login_btn_margin_start"
-            android:layout_marginVertical="@dimen/auth_indents"
+            android:layout_height="@dimen/btn_width_max"
+            android:layout_marginVertical="@dimen/offset_16"
             android:text="@string/auth_login_button"
             android:textColor="#FFFFFF"
             app:backgroundTint="@color/design_default_color_primary_dark" />

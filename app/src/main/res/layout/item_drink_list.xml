@@ -12,9 +12,9 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/card_view_margin"
-        card_view:cardCornerRadius="@dimen/card_view_corner_radius"
-        card_view:cardElevation="@dimen/card_view_elevation"
+        android:layout_margin="@dimen/offset_4"
+        card_view:cardCornerRadius="@dimen/corner_8"
+        card_view:cardElevation="@dimen/elevation_4"
         card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
@@ -32,7 +32,7 @@
 
             <CheckBox
                 android:id="@+id/cb_is_favorite"
-                android:layout_margin="4dp"
+                android:layout_margin="@dimen/offset_4"
                 android:buttonTint="@drawable/favorite_checkbox_tint"
                 android:button="@drawable/favorite_checkbox"
                 android:layout_alignStart="@+id/iv_drink_image"
@@ -48,7 +48,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{drink.strDrink}"
                 android:layout_below="@id/iv_drink_image"
-                android:layout_margin="8dp"
+                android:layout_margin="@dimen/offset_8"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
 
         </RelativeLayout>

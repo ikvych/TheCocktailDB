@@ -8,6 +8,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.Button
+import androidx.activity.viewModels
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
@@ -16,11 +17,17 @@ import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.listener.AuthTextWatcher
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.ErrorAuthDialogFragment
+import com.ikvych.cocktail.viewmodel.AuthViewModel
+import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import java.util.regex.Pattern
 
 
-class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardListener {
+class AuthActivity : BaseActivity<AuthViewModel>(), LinerLayoutWithKeyboardListener.KeyBoardListener {
+
+    override var contentLayoutResId: Int = R.layout.activity_auth
+    override val viewModel: AuthViewModel by viewModels()
 
     private var isValidLogin: Boolean = false
     private var isValidPassword: Boolean = false
@@ -47,12 +54,7 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
 
     private lateinit var inputMethodManager: InputMethodManager
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_auth)
-
-
-
+    override fun configureView(savedInstanceState: Bundle?) {
         val keyboardObserver = findViewById<LinerLayoutWithKeyboardListener>(R.id.llwkl_auth_container)
         keyboardObserver.listener = this
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager

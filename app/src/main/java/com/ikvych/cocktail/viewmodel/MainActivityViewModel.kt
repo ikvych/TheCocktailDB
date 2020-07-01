@@ -216,9 +216,7 @@ class MainActivityViewModel(
         return filteredFavoriteDrinksLiveData.value ?: emptyList()
     }
 
-    fun findDrinkById(drinkId: Long): Drink {
-        return drinkRepository.findDrinkById(drinkId)
-    }
+
 
     fun findDrinkByName(drinkName: String): Drink {
         return drinkRepository.findDrinkByName(drinkName)

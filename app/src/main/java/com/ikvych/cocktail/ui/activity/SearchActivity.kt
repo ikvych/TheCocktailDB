@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
+import androidx.activity.viewModels
 import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
@@ -21,14 +22,13 @@ import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 
 class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOfferListener {
 
+    override var contentLayoutResId: Int = R.layout.activity_search
+    override val viewModel: SearchActivityViewModel by viewModels()
+
     lateinit var toolbarSearchView: SearchView
     private val drinkOfferReceiver: DrinkOfferReceiver = DrinkOfferReceiver(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-
-        initViewModel(SearchActivityViewModel::class.java)
+    override fun configureView(savedInstanceState: Bundle?) {
         initRecyclerView(viewModel.getCurrentData(), R.id.rv_search_result)
         initLiveDataObserver()
         initSearchView()

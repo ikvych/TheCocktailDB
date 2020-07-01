@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
@@ -16,14 +17,16 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
 import com.ikvych.cocktail.service.ApplicationService
 import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
 
-class DrinkDetailActivity : BaseActivity() {
+class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
 
     private var drink: Drink? = null
     private var modelType: String? = null
-    private lateinit var viewModel : MainActivityViewModel
+    override val viewModel: DrinkDetailViewModel by viewModels()
+    override var contentLayoutResId: Int = R.layout.activity_drink_details
 
 
     private lateinit var appBarLayout: AppBarLayout
@@ -38,12 +41,7 @@ class DrinkDetailActivity : BaseActivity() {
 
     private lateinit var imageViewParams: LinearLayout.LayoutParams
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_drink_details)
-
-        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
-
+    override fun configureView(savedInstanceState: Bundle?) {
         val intent = intent
 
         if (intent != null && intent.hasExtra(DRINK)) {

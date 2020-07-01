@@ -12,13 +12,8 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-abstract class RecyclerViewActivity<T : BaseViewModel> : BaseActivity(), View.OnClickListener, View.OnLongClickListener {
+abstract class RecyclerViewActivity<ViewModel : BaseViewModel> : BaseActivity<ViewModel>(), View.OnClickListener, View.OnLongClickListener {
     protected lateinit var drinkAdapter: DrinkAdapter
-    lateinit var viewModel : T
-
-    fun initViewModel(viewModelClass: Class<T>) {
-        viewModel = ViewModelProvider(this).get(viewModelClass)
-    }
 
     fun initLiveDataObserver() {
         viewModel.getLiveData()!!.observe(this, Observer { drinks ->

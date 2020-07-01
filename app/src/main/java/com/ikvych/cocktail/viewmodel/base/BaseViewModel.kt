@@ -29,4 +29,8 @@ open class BaseViewModel(application: Application): AndroidViewModel(application
         return arrayListOf()
     }
 
+    open fun findDrinkById(drinkId: Long): Drink {
+        return drinkRepository.findDrinkById(drinkId)
+    }
+
 }

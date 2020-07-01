@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
@@ -31,10 +32,12 @@ import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
 
-class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
+class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTimerReceiverListener,
     ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
-    private lateinit var viewModel: MainActivityViewModel
+    override var contentLayoutResId: Int = R.layout.activity_main
+    override val viewModel: MainActivityViewModel by viewModels()
+
     private lateinit var timerReceiver: TimerReceiver
 
     private lateinit var serviceTimerIntent: Intent
@@ -66,17 +69,13 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+    override fun configureView(savedInstanceState: Bundle?) {
         timerReceiver = TimerReceiver(this)
 
         val lifecycleObserver = ApplicationLifeCycleObserver(this)
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
         serviceTimerIntent = Intent(this, TimerService::class.java)
 
-        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
             override fun onChanged(t: Boolean?) {
                 if (t!!) {

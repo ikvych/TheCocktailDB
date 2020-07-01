@@ -1,10 +1,12 @@
-package com.ikvych.cocktail.ui.activity
+package com.ikvych.cocktail.viewmodel
 
+import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-class AuthViewModel {
+class AuthViewModel(application: Application) : BaseViewModel(application) {
     val login: String = "ivan"
     val password: String = "ivan"
 

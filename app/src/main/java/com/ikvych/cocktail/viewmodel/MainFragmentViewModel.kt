@@ -22,7 +22,7 @@ import java.util.*
 class MainFragmentViewModel(application: Application) : BaseViewModel(application) {
 
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
-    val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinks()
+    val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinkDbLiveData()
 
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
         MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
@@ -201,15 +201,15 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     fun saveDrinkIntoDb(drink: Drink) {
-        drinkRepository.saveDrink(drink)
+        drinkRepository.saveDrinkIntoDb(drink)
     }
 
     fun getAllIngredientFromDb(): List<Ingredient> {
-        val ingredientList: List<Ingredient> = drinkRepository.getAllIngredient()
+        val ingredientList: List<Ingredient> = drinkRepository.getAllIngredientFromDb()
         if (ingredientList.isEmpty()) {
             drinkRepository.initAllIngredient()
         }
-        return drinkRepository.getAllIngredient()
+        return drinkRepository.getAllIngredientFromDb()
     }
 
 

@@ -171,7 +171,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
         // додає і видаляє з улюблених
         if (v is CheckBox) {
             val drinkName = v.tag as String
-            val drink = viewModel.findDrinkByName(drinkName)
+            val drink = viewModel.findDrinkByName(drinkName) ?: return
             if (v.isChecked) {
                 drink.setIsFavorite(true)
                 viewModel.saveDrinkIntoDb(drink)
@@ -202,7 +202,8 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             val textViewDrinkName = v?.findViewById<TextView>(R.id.tv_drink_name)
                             val drinkName = textViewDrinkName?.text ?: ""
-                            val drink: Drink = viewModel.findDrinkByName(drinkName.toString())
+                            val drink = viewModel.findDrinkByName(drinkName.toString())
+                                ?: return@setOnMenuItemClickListener false
                             val shortcutManager: ShortcutManager? =
                                 ContextCompat.getSystemService(
                                     this@MainActivity,

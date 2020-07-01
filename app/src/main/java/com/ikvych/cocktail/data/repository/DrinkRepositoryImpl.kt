@@ -24,11 +24,11 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
 
 
     // Methods for work with Api
-    override fun getApiLiveData(): MutableLiveData<List<Drink>> {
+    override fun getDrinkApiLiveData(): MutableLiveData<List<Drink>> {
         return drinksApiLiveData
     }
 
-    override fun updateDrinksApiLiveData(query: String) {
+    override fun updateDrinkApiLiveData(query: String) {
         val call: Call<DrinkApiResponse?> = apiService.getDrinksByName(query)
 
         call.enqueue(object : Callback<DrinkApiResponse?> {
@@ -78,34 +78,27 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
 
 
     // Methods for work with Db
-
-    override fun getDrinks(): LiveData<List<Drink>> {
+    override fun getDrinkDbLiveData(): LiveData<List<Drink>> {
         return drinkDao.getAllDrinks()
     }
 
-    override fun getFavoriteDrinks(): LiveData<List<Drink>> {
-        return drinkDao.getAllFavoriteDrinks()
-    }
-
-    override fun saveDrink(drink: Drink) {
+    override fun saveDrinkIntoDb(drink: Drink) {
         SaveDrinkAsyncTask(drinkDao).execute(drink)
     }
 
-    override fun getAllIngredient(): List<Ingredient> {
-        return DbAsyncTask(drinkDao).execute().get()
+    override fun getAllIngredientFromDb(): List<Ingredient> {
+        return FindAllIngredientAsyncTask(drinkDao).execute().get()
     }
 
-    override fun findDrinkById(drinkId: Long): Drink {
-        return FindDrinkAsyncTask(drinkDao).execute(drinkId).get()
-    }
-
-    override fun findDrinkOfTheDay(stringDate: String): Drink? {
-        return FindDrinkOfTheDayAsyncTask(drinkDao).execute(stringDate).get()
+    override fun findDrinkById(drinkId: Long): Drink? {
+        return FindDrinkByIdAsyncTask(drinkDao).execute(drinkId).get()
     }
 
     override fun findDrinkByName(drinkName: String): Drink {
         return FindDrinkByNameAsyncTask(drinkDao).execute(drinkName).get()
     }
 
-
+    override fun findDrinkOfTheDay(stringDate: String): Drink? {
+        return FindDrinkOfTheDayAsyncTask(drinkDao).execute(stringDate).get()
+    }
 }

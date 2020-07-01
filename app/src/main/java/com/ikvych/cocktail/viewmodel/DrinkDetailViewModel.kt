@@ -6,11 +6,11 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class DrinkDetailViewModel(application: Application) : BaseViewModel(application){
 
-    fun findDrinkInDbById(drinkId: Long): Drink {
+    fun findDrinkInDbById(drinkId: Long): Drink? {
         return drinkRepository.findDrinkById(drinkId)
     }
 
     fun saveDrinkIntoDb(drink: Drink) {
-        drinkRepository.saveDrink(drink)
+        drinkRepository.saveDrinkIntoDb(drink)
     }
 }

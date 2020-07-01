@@ -17,7 +17,6 @@ interface DrinkRepository {
 
 
     // Methods for work with Db
-    fun getJustDrinks(): List<Drink>
 
     fun getDrinks(): LiveData<List<Drink>>
 

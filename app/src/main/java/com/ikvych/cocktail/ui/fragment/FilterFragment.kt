@@ -21,7 +21,6 @@ import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.FilterDrinkAlcoholDialogFragment
 import com.ikvych.cocktail.ui.dialog.FilterDrinkCategoryDialogFragment
 import com.ikvych.cocktail.ui.dialog.FilterDrinkIngredientDialogFragment
-import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
@@ -107,7 +106,7 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
         returnBtn.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
-        parentViewModel.generalFilteredLiveData.observe(this, Observer {
+        parentViewModel.allFilteredLiveData.observe(this, Observer {
             if (parentViewModel.isFiltersPresent()) {
                 val snackBar = Snackbar.make(coordinator_filter_fragment, it, Snackbar.LENGTH_SHORT)
                 if (parentViewModel.isUndoEnabled()) {

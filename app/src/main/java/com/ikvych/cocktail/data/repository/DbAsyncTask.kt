@@ -14,15 +14,6 @@ class DbAsyncTask(private val drinkDao: DrinkDao) :
 
 }
 
-class DbAllDrinkAsyncTask(private val drinkDao: DrinkDao) :
-    AsyncTask<Unit, Unit, List<Drink>>() {
-
-    override fun doInBackground(vararg params: Unit?): List<Drink> {
-        return drinkDao.getAllJustDrinks()
-    }
-
-}
-
 class FindDrinkAsyncTask(private val drinkDao: DrinkDao) :
     AsyncTask<Long, Unit, Drink>() {
 

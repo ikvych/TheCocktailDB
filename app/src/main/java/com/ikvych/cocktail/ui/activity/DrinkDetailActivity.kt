@@ -131,12 +131,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
     }
 
     private fun saveDrinkIntoDb(drink: Drink) {
-        val mainActivityViewModel: MainActivityViewModel =
-            ViewModelProvider.AndroidViewModelFactory(
-                application
-            )
-                .create(MainActivityViewModel::class.java)
-        mainActivityViewModel.saveDrinkIntoDb(drink)
+        viewModel.saveDrinkIntoDb(drink)
     }
 
     fun resumePreviousActivity(view: View?) {

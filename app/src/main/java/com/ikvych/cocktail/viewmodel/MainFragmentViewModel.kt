@@ -17,7 +17,6 @@ import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
-import java.text.SimpleDateFormat
 import java.util.*
 
 class MainFragmentViewModel(application: Application) : BaseViewModel(application) {
@@ -30,10 +29,6 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
     val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
         MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
-
-    fun getDrinksAll(): List<Drink> {
-        return drinkRepository.getJustDrinks()
-    }
 
     init {
         resetFilters()
@@ -152,8 +147,7 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
             }
         }
 
-
-    val generalFilteredLiveData: LiveData<SpannableString> =
+    val allFilteredLiveData: LiveData<SpannableString> =
         object : MediatorLiveData<SpannableString>() {
             init {
                 val src = "Знайдено: h @, f %"
@@ -202,20 +196,15 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
         }
 
 
-    override fun getAllDrinksFromDb(): List<Drink> {
-        val drinkApiService = drinksLiveData.value
-        return drinkApiService ?: emptyList()
+    fun getAllDrinksFromDb(): List<Drink> {
+        return drinksLiveData.value ?: emptyList()
     }
 
-    fun getFavoriteCurrentData(): List<Drink> {
-        return filteredFavoriteDrinksLiveData.value ?: emptyList()
-    }
-
-    override fun saveDrinkIntoDb(drink: Drink) {
+    fun saveDrinkIntoDb(drink: Drink) {
         drinkRepository.saveDrink(drink)
     }
 
-    override fun getAllIngredientFromDb(): List<Ingredient> {
+    fun getAllIngredientFromDb(): List<Ingredient> {
         val ingredientList: List<Ingredient> = drinkRepository.getAllIngredient()
         if (ingredientList.isEmpty()) {
             drinkRepository.initAllIngredient()

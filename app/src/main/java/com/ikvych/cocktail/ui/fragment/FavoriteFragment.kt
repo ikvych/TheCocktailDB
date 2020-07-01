@@ -34,7 +34,7 @@ class FavoriteFragment : RecyclerViewFragment<BaseViewModel>() {
         fragmentView = view
         initRecyclerView(
             view,
-            parentViewModel.getFavoriteCurrentData(),
+            parentViewModel.filteredFavoriteDrinksLiveData.value ?: emptyList(),
             R.id.rv_search_result
         )
         initLiveDataObserver()

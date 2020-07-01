@@ -13,20 +13,6 @@ open class BaseViewModel(application: Application): AndroidViewModel(application
 
     protected val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
 
-    open fun getAllDrinksFromDb(): List<Drink> {
-        return arrayListOf()
-    }
 
-    open fun saveDrinkIntoDb(drink: Drink) {
-        //stub
-    }
-
-    open fun getAllIngredientFromDb(): List<Ingredient> {
-        return arrayListOf()
-    }
-
-    open fun findDrinkInDbById(drinkId: Long): Drink {
-        return drinkRepository.findDrinkById(drinkId)
-    }
 
 }

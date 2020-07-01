@@ -78,9 +78,6 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
 
 
     // Methods for work with Db
-    override fun getJustDrinks(): List<Drink> {
-        return DbAllDrinkAsyncTask(drinkDao).execute().get()
-    }
 
     override fun getDrinks(): LiveData<List<Drink>> {
         return drinkDao.getAllDrinks()

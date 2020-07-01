@@ -202,7 +202,7 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
         }
 
 
-    override fun getCurrentData(): List<Drink> {
+    override fun getAllDrinksFromDb(): List<Drink> {
         val drinkApiService = drinksLiveData.value
         return drinkApiService ?: emptyList()
     }
@@ -211,15 +211,11 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
         return filteredFavoriteDrinksLiveData.value ?: emptyList()
     }
 
-    override fun saveDrink(drink: Drink) {
+    override fun saveDrinkIntoDb(drink: Drink) {
         drinkRepository.saveDrink(drink)
     }
 
-    override fun getLiveData(): LiveData<List<Drink>> {
-        return drinksLiveData
-    }
-
-    override fun getAllIngredient(): List<Ingredient> {
+    override fun getAllIngredientFromDb(): List<Ingredient> {
         val ingredientList: List<Ingredient> = drinkRepository.getAllIngredient()
         if (ingredientList.isEmpty()) {
             drinkRepository.initAllIngredient()

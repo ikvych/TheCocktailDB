@@ -174,10 +174,10 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
             val drink = viewModel.findDrinkByName(drinkName)
             if (v.isChecked) {
                 drink.setIsFavorite(true)
-                viewModel.saveDrink(drink)
+                viewModel.saveDrinkIntoDb(drink)
             } else {
                 drink.setIsFavorite(false)
-                viewModel.saveDrink(drink)
+                viewModel.saveDrinkIntoDb(drink)
             }
         }
     }

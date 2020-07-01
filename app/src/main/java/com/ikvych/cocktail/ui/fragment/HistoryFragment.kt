@@ -5,10 +5,8 @@ import android.view.View
 import androidx.fragment.app.viewModels
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.ui.base.FRAGMENT_ID
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
-import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class HistoryFragment : RecyclerViewFragment<BaseViewModel>() {
@@ -26,7 +24,7 @@ class HistoryFragment : RecyclerViewFragment<BaseViewModel>() {
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
         fragmentView = view
-        initRecyclerView(view, parentViewModel.getCurrentData(), R.id.rv_search_result)
+        initRecyclerView(view, parentViewModel.getAllDrinksFromDb(), R.id.rv_search_result)
         initLiveDataObserver()
     }
 

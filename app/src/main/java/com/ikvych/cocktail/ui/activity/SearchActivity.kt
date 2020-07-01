@@ -39,19 +39,19 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
     private lateinit var recyclerView: RecyclerView
 
     override fun configureView(savedInstanceState: Bundle?) {
-        initRecyclerView(viewModel.getCurrentData())
+        initRecyclerView()
         initLiveDataObserver()
         initSearchView()
     }
 
     private fun initLiveDataObserver() {
-        viewModel.getLiveData().observe(this, Observer { drinks ->
+        viewModel.drinkLiveData.observe(this, Observer { drinks ->
             drinkAdapter.drinkList = drinks
             determineVisibleLayerOnUpdateData(drinks)
         })
     }
 
-    private fun initRecyclerView(drinks: List<Drink>) {
+    private fun initRecyclerView() {
         recyclerView = rv_search_result
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = GridLayoutManager(this, 2)
@@ -62,9 +62,9 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
         recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = drinkAdapter
 
-        determineVisibleLayerOnCreate(drinks)
+        determineVisibleLayerOnCreate(arrayListOf())
 
-        drinkAdapter.drinkList = drinks
+        drinkAdapter.drinkList = arrayListOf()
     }
 
     override fun onStart() {
@@ -102,22 +102,22 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
         toolbarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                val searchQuery: String = query?.trim() ?: ""
-                viewModel.updateDrinksLiveData(searchQuery)
                 toolbarSearchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                val searchQuery: String = newText?.trim() ?: ""
+                viewModel.updateDrinksLiveData(searchQuery)
+                return true
             }
 
         })
     }
 
     override fun update(intent: Intent) {
-        val drinks = viewModel.getCurrentData()
-        if (drinks.isEmpty()) {
+        val drinks = viewModel.drinkLiveData.value
+        if (drinks.isNullOrEmpty()) {
             return
         }
 

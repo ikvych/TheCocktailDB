@@ -20,9 +20,15 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
 
     private val drinkDao: DrinkDao = DrinkDataBase.getInstance(application)!!.drinkDao()
     private val apiService: DrinkApiService = RetrofitInstance.service
-    val drinksLiveData: MutableLiveData<List<Drink>> = MutableLiveData()
+    val drinksApiLiveData: MutableLiveData<List<Drink>> = MutableLiveData()
 
-    override fun updateDrinksLiveData(query: String) {
+
+    // Methods for work with Api
+    override fun getApiLiveData(): MutableLiveData<List<Drink>> {
+        return drinksApiLiveData
+    }
+
+    override fun updateDrinksApiLiveData(query: String) {
         val call: Call<DrinkApiResponse?> = apiService.getDrinksByName(query)
 
         call.enqueue(object : Callback<DrinkApiResponse?> {
@@ -37,15 +43,17 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
             ) {
                 val drinkApiResponse = response.body()
                 if (drinkApiResponse?.drinks != null) {
-                    drinksLiveData.setValue(drinkApiResponse.drinks)
+                    drinksApiLiveData.setValue(drinkApiResponse.drinks)
                 } else {
-                    drinksLiveData.setValue(emptyList())
+                    drinksApiLiveData.setValue(emptyList())
                 }
             }
 
         })
     }
 
+
+    // Methods for work with Api and Db at same time
     override fun initAllIngredient() {
         val call: Call<IngredientApiResponse?> = apiService.getAllIngredients()
 
@@ -68,6 +76,8 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
         })
     }
 
+
+    // Methods for work with Db
     override fun getJustDrinks(): List<Drink> {
         return DbAllDrinkAsyncTask(drinkDao).execute().get()
     }
@@ -100,11 +110,5 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
         return FindDrinkByNameAsyncTask(drinkDao).execute(drinkName).get()
     }
 
-    override fun getLiveData(): MutableLiveData<List<Drink>> {
-        return drinksLiveData
-    }
 
-    override fun getCurrentData(): List<Drink> {
-        return drinksLiveData.value ?: emptyList()
-    }
 }

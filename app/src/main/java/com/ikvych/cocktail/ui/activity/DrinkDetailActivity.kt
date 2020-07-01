@@ -64,7 +64,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
         if (intent != null && intent.hasExtra(DRINK_ID)) {
             val drinkId: Long = intent.getLongExtra(DRINK_ID, -1L)
             if (drinkId != -1L) {
-                drink = viewModel.findDrinkById(drinkId)
+                drink = viewModel.findDrinkInDbById(drinkId)
             } else {
                 finish()
             }
@@ -136,7 +136,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
                 application
             )
                 .create(MainActivityViewModel::class.java)
-        mainActivityViewModel.saveDrink(drink)
+        mainActivityViewModel.saveDrinkIntoDb(drink)
     }
 
     fun resumePreviousActivity(view: View?) {

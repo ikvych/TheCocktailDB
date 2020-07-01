@@ -43,8 +43,6 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
     override var contentLayoutResId: Int = R.layout.fragment_main
     override val viewModel: MainFragmentViewModel by viewModels()
 
-/*    val mainActivityViewModel: MainActivityViewModel by viewModels()*/
-
     private lateinit var batteryReceiver: BatteryReceiver
 
     private lateinit var filterBtn: ImageButton

@@ -33,7 +33,7 @@ class MainActivityViewModel(
         return drinkRepository.getJustDrinks()
     }
 
-    override fun getCurrentData(): List<Drink> {
+    override fun getAllDrinksFromDb(): List<Drink> {
         val drinkApiService = drinksLiveData.value
         return drinkApiService ?: emptyList()
     }
@@ -43,15 +43,11 @@ class MainActivityViewModel(
         return drinkRepository.findDrinkByName(drinkName)
     }
 
-    override fun saveDrink(drink: Drink) {
+    override fun saveDrinkIntoDb(drink: Drink) {
         drinkRepository.saveDrink(drink)
     }
 
-    override fun getLiveData(): LiveData<List<Drink>> {
-        return drinksLiveData
-    }
-
-    override fun getAllIngredient(): List<Ingredient> {
+    override fun getAllIngredientFromDb(): List<Ingredient> {
         val ingredientList: List<Ingredient> = drinkRepository.getAllIngredient()
         if (ingredientList.isEmpty()) {
             drinkRepository.initAllIngredient()

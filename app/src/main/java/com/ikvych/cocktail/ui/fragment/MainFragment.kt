@@ -33,16 +33,17 @@ import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragmentList
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : BaseFragment<BaseViewModel>(), BatteryListener,
+class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
     FilterAdapter.OnClickItemFilterCloseListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_main
-    override val viewModel: BaseViewModel by viewModels()
+    override val viewModel: MainFragmentViewModel by viewModels()
 
-    val mainActivityViewModel: MainActivityViewModel by viewModels()
+/*    val mainActivityViewModel: MainActivityViewModel by viewModels()*/
 
     private lateinit var batteryReceiver: BatteryReceiver
 
@@ -101,7 +102,7 @@ class MainFragment : BaseFragment<BaseViewModel>(), BatteryListener,
             rightButtonText = "Accept"
         }
 
-        mainActivityViewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { _ ->
+        viewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { _ ->
             //stub
         })
     }
@@ -146,7 +147,7 @@ class MainFragment : BaseFragment<BaseViewModel>(), BatteryListener,
         }
 
         filterBtn.setOnLongClickListener {
-            mainActivityViewModel.resetFilters()
+            viewModel.resetFilters()
             filterAdapter.filterList = arrayListOf()
             true
         }
@@ -158,8 +159,8 @@ class MainFragment : BaseFragment<BaseViewModel>(), BatteryListener,
         }
         sortIndicator = atb_fragment_main.sortIndicatorView
         sortBtn.setOnLongClickListener {
-            if (mainActivityViewModel.sortLiveData.value != SortDrinkType.RECENT) {
-                mainActivityViewModel.sortLiveData.value = SortDrinkType.RECENT
+            if (viewModel.sortLiveData.value != SortDrinkType.RECENT) {
+                viewModel.sortLiveData.value = SortDrinkType.RECENT
                 return@setOnLongClickListener true
             }
             false
@@ -173,7 +174,7 @@ class MainFragment : BaseFragment<BaseViewModel>(), BatteryListener,
         batteryIcon = iv_battery_icon
         powerConnected = iv_power_connected
 
-        mainActivityViewModel.sortLiveData.observe(this, Observer{
+        viewModel.sortLiveData.observe(this, Observer{
             if (it == SortDrinkType.RECENT) {
                 sortIndicator.visibility = View.GONE
             } else {
@@ -181,9 +182,9 @@ class MainFragment : BaseFragment<BaseViewModel>(), BatteryListener,
             }
         })
 
-        mainActivityViewModel.filtersLiveData.observe(this, Observer {
+        viewModel.filtersLiveData.observe(this, Observer {
             filterAdapter.filterList = it.values.toList() as ArrayList
-            if (mainActivityViewModel.isFiltersPresent()) {
+            if (viewModel.isFiltersPresent()) {
                 filterIndicator.visibility = View.VISIBLE
             } else {
                 filterIndicator.visibility = View.GONE
@@ -201,7 +202,7 @@ class MainFragment : BaseFragment<BaseViewModel>(), BatteryListener,
             SortDrinkDrinkType -> {
                 when (buttonType) {
                     ItemListDialogButton -> {
-                        mainActivityViewModel.sortLiveData.value = data as SortDrinkType
+                        viewModel.sortLiveData.value = data as SortDrinkType
                     }
                 }
             }
@@ -346,19 +347,19 @@ class MainFragment : BaseFragment<BaseViewModel>(), BatteryListener,
     override fun onClick(drinkFilter: DrinkFilter) {
         when (drinkFilter.type) {
             DrinkFilterType.CATEGORY -> {
-                mainActivityViewModel.filtersLiveData.value!![drinkFilter.type] = CategoryDrinkFilter.NONE
-                mainActivityViewModel.filtersLiveData.value = mainActivityViewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value!![drinkFilter.type] = CategoryDrinkFilter.NONE
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
             }
             DrinkFilterType.ALCOHOL -> {
-                mainActivityViewModel.filtersLiveData.value!![drinkFilter.type] = AlcoholDrinkFilter.NONE
-                mainActivityViewModel.filtersLiveData.value = mainActivityViewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value!![drinkFilter.type] = AlcoholDrinkFilter.NONE
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
             }
             DrinkFilterType.GLASS -> {
 
             }
             DrinkFilterType.INGREDIENT -> {
-                mainActivityViewModel.filtersLiveData.value!![drinkFilter.type] = IngredientDrinkFilter.NONE
-                mainActivityViewModel.filtersLiveData.value = mainActivityViewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value!![drinkFilter.type] = IngredientDrinkFilter.NONE
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
             }
         }
     }

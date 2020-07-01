@@ -34,14 +34,14 @@ class FavoriteFragment : RecyclerViewFragment<BaseViewModel>() {
         fragmentView = view
         initRecyclerView(
             view,
-            mainActivityViewModel.getFavoriteCurrentData(),
+            parentViewModel.getFavoriteCurrentData(),
             R.id.rv_search_result
         )
         initLiveDataObserver()
     }
 
     override fun initLiveDataObserver() {
-        mainActivityViewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { drinks ->
+        parentViewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { drinks ->
             drinkAdapter.drinkList = drinks
             determineVisibleLayerOnUpdateData(drinks)
         })

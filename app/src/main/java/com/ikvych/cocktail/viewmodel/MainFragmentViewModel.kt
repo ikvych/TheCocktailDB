@@ -21,10 +21,9 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class MainFragmentViewModel(application: Application) : BaseViewModel(application) {
-    val timer: MutableLiveData<Long> = MutableLiveData()
+
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
     val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinks()
-    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
         MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
@@ -212,12 +211,6 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
         return filteredFavoriteDrinksLiveData.value ?: emptyList()
     }
 
-
-
-    fun findDrinkByName(drinkName: String): Drink {
-        return drinkRepository.findDrinkByName(drinkName)
-    }
-
     override fun saveDrink(drink: Drink) {
         drinkRepository.saveDrink(drink)
     }
@@ -286,26 +279,5 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
             SortDrinkType.INGREDIENT_COUNT_DESC -> drinksCopy.sortedByDescending { drink -> drink.getIngredients().size }
         }
         return drinksCopy
-    }
-
-    fun getDrinkOfTheDay(): Drink? {
-        val currentDate = Date()
-        val pattern = "MM-dd-yyyy"
-        val simpleDateFormat = SimpleDateFormat(pattern, Locale.getDefault())
-        val stringDate: String = simpleDateFormat.format(currentDate)
-
-        var drinkOfTheDay = drinkRepository.findDrinkOfTheDay(stringDate)
-        if (drinkOfTheDay == null) {
-            val allDrinks = getDrinksAll()
-            if (allDrinks.isNullOrEmpty()) {
-                return null
-            } else {
-                val newDrinkOfTheDay: Drink = allDrinks.random()
-                newDrinkOfTheDay.setDrinkOfDay(stringDate)
-                drinkRepository.saveDrink(newDrinkOfTheDay)
-            }
-            drinkOfTheDay = drinkRepository.findDrinkOfTheDay(stringDate)
-        }
-        return drinkOfTheDay
     }
 }

@@ -2,36 +2,69 @@ package com.ikvych.cocktail.ui.activity
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DefaultItemAnimator
+import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.adapter.list.DrinkAdapter
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.listener.DrinkOfferListener
 import com.ikvych.cocktail.receiver.DrinkOfferReceiver
+import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.util.setEmptySearchVisible
 import com.ikvych.cocktail.util.setSearchEmptyListVisible
 import com.ikvych.cocktail.util.setSearchRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
 import com.ikvych.cocktail.widget.custom.ApplicationToolBar
+import kotlinx.android.synthetic.main.activity_search.*
 
 
-class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOfferListener {
+class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListener {
 
     override var contentLayoutResId: Int = R.layout.activity_search
     override val viewModel: SearchActivityViewModel by viewModels()
 
-    lateinit var toolbarSearchView: SearchView
+    private lateinit var toolbarSearchView: SearchView
     private val drinkOfferReceiver: DrinkOfferReceiver = DrinkOfferReceiver(this)
+    private val drinkAdapter: DrinkAdapter = DrinkAdapter(this)
+    private lateinit var recyclerView: RecyclerView
 
     override fun configureView(savedInstanceState: Bundle?) {
-        initRecyclerView(viewModel.getCurrentData(), R.id.rv_search_result)
+        initRecyclerView(viewModel.getCurrentData())
         initLiveDataObserver()
         initSearchView()
+    }
+
+    private fun initLiveDataObserver() {
+        viewModel.getLiveData().observe(this, Observer { drinks ->
+            drinkAdapter.drinkList = drinks
+            determineVisibleLayerOnUpdateData(drinks)
+        })
+    }
+
+    private fun initRecyclerView(drinks: List<Drink>) {
+        recyclerView = rv_search_result
+        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+            recyclerView.layoutManager = GridLayoutManager(this, 2)
+        } else {
+            recyclerView.layoutManager = GridLayoutManager(this, 4)
+        }
+
+        recyclerView.itemAnimator = DefaultItemAnimator()
+        recyclerView.adapter = drinkAdapter
+
+        determineVisibleLayerOnCreate(drinks)
+
+        drinkAdapter.drinkList = drinks
     }
 
     override fun onStart() {
@@ -47,7 +80,7 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
         unregisterReceiver(drinkOfferReceiver)
     }
 
-    override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
+    private fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
         if (drinks!!.isEmpty()) {
             setSearchEmptyListVisible(this@SearchActivity)
         } else {
@@ -55,7 +88,7 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
         }
     }
 
-    override fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
+    private fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
         if (drinks!!.isEmpty()) {
             setEmptySearchVisible(this@SearchActivity)
         } else {

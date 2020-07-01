@@ -129,8 +129,8 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
             }
         }
 
-        profileFragment = ProfileFragment.newInstance(R.layout.fragment_profile)
-        mainFragment = MainFragment.newInstance(R.layout.fragment_main)
+        profileFragment = ProfileFragment.newInstance()
+        mainFragment = MainFragment.newInstance()
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(
             R.id.fcv_container,

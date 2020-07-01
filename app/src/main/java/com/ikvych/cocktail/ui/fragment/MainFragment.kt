@@ -33,12 +33,16 @@ import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragmentList
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : BaseFragment(), BatteryListener,
+class MainFragment : BaseFragment<BaseViewModel>(), BatteryListener,
     FilterAdapter.OnClickItemFilterCloseListener {
 
-    lateinit var mainActivityViewModel: MainActivityViewModel
+    override var contentLayoutResId: Int = R.layout.fragment_main
+    override val viewModel: BaseViewModel by viewModels()
+
+    val mainActivityViewModel: MainActivityViewModel by viewModels()
 
     private lateinit var batteryReceiver: BatteryReceiver
 
@@ -74,20 +78,15 @@ class MainFragment : BaseFragment(), BatteryListener,
 
     companion object {
         @JvmStatic
-        fun newInstance(fragmentId: Int) =
-            MainFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(FRAGMENT_ID, fragmentId)
-                }
-            }
+        fun newInstance() = MainFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
-        historyFragment = HistoryFragment.newInstance(R.layout.fragment_history)
-        favoriteFragment = FavoriteFragment.newInstance(R.layout.fragment_favorite)
+        historyFragment = HistoryFragment.newInstance()
+        favoriteFragment = FavoriteFragment.newInstance()
 
         drinkPagerAdapter = DrinkPagerAdapter(
             arrayListOf(historyFragment, favoriteFragment),
@@ -102,6 +101,9 @@ class MainFragment : BaseFragment(), BatteryListener,
             rightButtonText = "Accept"
         }
 
+        mainActivityViewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { _ ->
+            //stub
+        })
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -137,7 +139,7 @@ class MainFragment : BaseFragment(), BatteryListener,
 
         filterBtn.setOnClickListener {
             val fragmentTransaction = childFragmentManager.beginTransaction()
-            filterFragment = FilterFragment.newInstance(R.layout.fragment_filter, filters)
+            filterFragment = FilterFragment.newInstance(filters)
             fragmentTransaction.add(R.id.fcv_main_fragment, filterFragment, FilterFragment::class.java.simpleName)
             fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
             fragmentTransaction.commit()

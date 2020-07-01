@@ -17,17 +17,16 @@ import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
+abstract class RecyclerViewFragment<ViewModel : BaseViewModel> : BaseFragment<ViewModel>() {
     protected lateinit var drinkAdapter: DrinkAdapter
-    lateinit var viewModel: T
+
     lateinit var mainActivityViewModel: MainActivityViewModel
     var filters: ArrayList<DrinkFilter> = arrayListOf()
     protected var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
 
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
 
-    fun initViewModel(viewModelClass: Class<T>) {
-        viewModel = ViewModelProvider(this).get(viewModelClass)
+    fun initViewModel() {
         mainActivityViewModel = ViewModelProvider(requireParentFragment()).get(MainActivityViewModel::class.java)
     }
 

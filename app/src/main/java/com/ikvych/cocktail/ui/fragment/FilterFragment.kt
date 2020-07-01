@@ -7,6 +7,7 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
@@ -21,9 +22,13 @@ import com.ikvych.cocktail.ui.dialog.FilterDrinkAlcoholDialogFragment
 import com.ikvych.cocktail.ui.dialog.FilterDrinkCategoryDialogFragment
 import com.ikvych.cocktail.ui.dialog.FilterDrinkIngredientDialogFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
 
-class FilterFragment : BaseFragment() {
+class FilterFragment : BaseFragment<BaseViewModel>() {
+
+    override var contentLayoutResId: Int = R.layout.fragment_filter
+    override val viewModel: BaseViewModel by viewModels()
 
     private lateinit var returnBtn: ImageButton
     private lateinit var acceptBtn: Button
@@ -153,15 +158,14 @@ class FilterFragment : BaseFragment() {
 
         @JvmStatic
         fun newInstance(
-            viewId: Int,
             drinkFilters: ArrayList<DrinkFilter> = arrayListOf()
         ) = FilterFragment().apply {
             arguments = Bundle().apply {
-                putInt(FRAGMENT_ID, viewId)
                 drinkFilters.forEach {
                     putString(it.type.key, it.key)
                 }
             }
         }
     }
+
 }

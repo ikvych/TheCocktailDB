@@ -7,16 +7,11 @@
     <string name="all_content_description">Image</string>
     <!--#endregion-->
 
-
-
-
-
     <string name="info">info</string>
     <string name="toast_action_view">ПЕРЕГЛЯНУТИ</string>
     <string name="text_on_boot_completed">Смакуйте маргаритку із відчуттям міри. І надіємося, що Ви не пілот під  час польоту</string>
 
     <!--#region SearchActivity-->
-
     <string name="drink_empty_search_result">No cocktails found</string>
     <!--#endregion-->
 
@@ -33,14 +28,11 @@
     <string name="auth_login_button">Login</string>
     <string name="auth_password_tint">Password</string>
     <string name="auth_login_tint">Login</string>
+    <string name="auth_invalid_password">Пароль повинний містити більше 6 символів, одну літеру і одну цифру</string>
+    <string name="auth_invalid_login">Логін повинний містити більше 6 символів</string>
     <!--#endregion-->
 
-    <string name="invalid_password_text">Пароль повинний містити більше 6 символів, одну літеру і одну цифру</string>
-    <string name="invalid_login_text">Логін повинний містити більше 6 символів</string>
-
     <string name="dialog_sort_title">Sort By</string>
-
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--#region ProfileFragment-->

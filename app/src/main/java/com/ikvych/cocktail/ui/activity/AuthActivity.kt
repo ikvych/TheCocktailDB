@@ -3,6 +3,7 @@ package com.ikvych.cocktail.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
 import android.view.View
@@ -10,6 +11,7 @@ import android.view.inputmethod.InputMethodManager
 import android.widget.Button
 import androidx.activity.viewModels
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.ikvych.cocktail.R
@@ -18,30 +20,21 @@ import com.ikvych.cocktail.listener.AuthTextWatcher
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.ErrorAuthDialogFragment
 import com.ikvych.cocktail.viewmodel.AuthViewModel
-import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
-import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import java.util.regex.Pattern
 
 
-class AuthActivity : BaseActivity<AuthViewModel>(), LinerLayoutWithKeyboardListener.KeyBoardListener {
+class AuthActivity : BaseActivity<AuthViewModel>(),
+    LinerLayoutWithKeyboardListener.KeyBoardListener {
 
     override var contentLayoutResId: Int = R.layout.activity_auth
     override val viewModel: AuthViewModel by viewModels()
 
-    private var isValidLogin: Boolean = false
-    private var isValidPassword: Boolean = false
-    private var isKeyboardShown: Boolean = false
-
-    private lateinit var loginErrorMessage: String
-    private lateinit var passwordErrorMessage: String
+/*    private lateinit var loginErrorMessage: String
+    private lateinit var passwordErrorMessage: String*/
 
     private var loginTextWatcher: TextWatcher? = null
     private var passwordTextWatcher: TextWatcher? = null
-
-    private val passwordPattern: Pattern =
-        Pattern.compile("(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z~!@#\$%^&*]{6,}") //не менше 6 символів і містить хоча б одну цифру і хоча б одну літеру
-    private val loginPattern: Pattern = Pattern.compile(".{7,}") //більше 6 символів
 
     private lateinit var loginInputLayout: TextInputLayout
     private lateinit var passwordInputLayout: TextInputLayout
@@ -55,15 +48,16 @@ class AuthActivity : BaseActivity<AuthViewModel>(), LinerLayoutWithKeyboardListe
     private lateinit var inputMethodManager: InputMethodManager
 
     override fun configureView(savedInstanceState: Bundle?) {
-        val keyboardObserver = findViewById<LinerLayoutWithKeyboardListener>(R.id.llwkl_auth_container)
+        val keyboardObserver =
+            findViewById<LinerLayoutWithKeyboardListener>(R.id.llwkl_auth_container)
         keyboardObserver.listener = this
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
         loginInputLayout = findViewById(R.id.til_auth_login)
         passwordInputLayout = findViewById(R.id.til_auth_password)
 
-        loginTextWatcher = AuthTextWatcher(loginInputLayout)
-        passwordTextWatcher = AuthTextWatcher(passwordInputLayout)
+        loginTextWatcher = LoginTextWatcher()
+        passwordTextWatcher = PasswordTextWatcher()
 
         textInputEditLogin = findViewById(R.id.tiet_auth_login)
         textInputEditLogin.filters = arrayOf(inputFilter)
@@ -73,44 +67,51 @@ class AuthActivity : BaseActivity<AuthViewModel>(), LinerLayoutWithKeyboardListe
 
         submitButton = findViewById(R.id.b_auth_login)
 
-        submitButton.setOnClickListener(onLoginButtonListener())
+        submitButton.setOnClickListener {
+            closeKeyboard()
+            if (viewModel.isLoginDataValidLiveData.value!!.first &&
+                viewModel.isLoginDataValidLiveData.value!!.second
+            ) {
+                val intent = Intent(this, MainActivity::class.java)
+                startActivity(intent)
+            } else {
+                if (!viewModel.isLoginDataValidLiveData.value!!.second) {
+                    textInputEditPassword.requestFocus()
+                }
+                if (!viewModel.isLoginDataValidLiveData.value!!.first) {
+                    textInputEditLogin.requestFocus()
+                }
+                ErrorAuthDialogFragment.newInstance() {
+                    titleText = "Invalid data"
+                    leftButtonText = "Ok"
+                    descriptionText = viewModel.errorMessageViewModel.value!!
+                }.show(supportFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
+            }
+        }
 
         textInputEditLogin.addTextChangedListener(loginTextWatcher)
         textInputEditPassword.addTextChangedListener(passwordTextWatcher)
 
-        loginErrorMessage = resources.getString(R.string.invalid_login_text)
-        passwordErrorMessage = resources.getString(R.string.invalid_password_text)
+/*        loginErrorMessage = resources.getString(R.string.auth_invalid_login)
+        passwordErrorMessage = resources.getString(R.string.auth_invalid_password)*/
+
+        viewModel.isLoginDataValidLiveData.observe(this, Observer { })
+        viewModel.errorMessageViewModel.observe(this, Observer { })
 
         textInputEditLogin.requestFocus()
     }
 
-    private fun onLoginButtonListener(): (v: View) -> Unit {
-        return {
-            invalidateAuthData()
-            if (isValidLogin && isValidPassword) {
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
-            } else {
-                var finalErrorMessage: String? = null
-                if (!isValidLogin) {
-                    finalErrorMessage = loginErrorMessage
-                }
-                if (!isValidPassword) {
-                    if (finalErrorMessage != null) {
-                        finalErrorMessage += "\n${passwordErrorMessage}"
-                    } else {
-                        finalErrorMessage = passwordErrorMessage
-                    }
-                }
-                ErrorAuthDialogFragment.newInstance(){
-                    titleText = "Invalid data"
-                    leftButtonText = "Ok"
-                    descriptionText = finalErrorMessage!!
-                }.show(supportFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
-            }
+    inner class LoginTextWatcher : AuthTextWatcher() {
+        override fun afterTextChanged(s: Editable?) {
+            viewModel.loginInputLiveData.value = s.toString()
         }
     }
 
+    inner class PasswordTextWatcher : AuthTextWatcher() {
+        override fun afterTextChanged(s: Editable?) {
+            viewModel.passwordInputLiveData.value = s.toString()
+        }
+    }
 
     override fun onDialogFragmentClick(
         dialog: DialogFragment,
@@ -123,33 +124,12 @@ class AuthActivity : BaseActivity<AuthViewModel>(), LinerLayoutWithKeyboardListe
             NotificationDialogType -> {
                 when (buttonType) {
                     ActionSingleDialogButton -> {
-                        if (!isKeyboardShown) {
+                        if (!viewModel.isKeyboardShown.value!!) {
                             inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
                         }
                     }
                 }
             }
-        }
-    }
-
-    private fun invalidateAuthData() {
-        val login = textInputEditLogin.text.toString()
-        val password = textInputEditPassword.text.toString()
-
-        closeKeyboard()
-
-        if (passwordPattern.matcher(password).matches()) {
-            isValidPassword = true
-        } else {
-            isValidPassword = false
-            textInputEditPassword.requestFocus()
-        }
-
-        if (loginPattern.matcher(login).matches()) {
-            isValidLogin = true
-        } else {
-            isValidLogin = false
-            textInputEditLogin.requestFocus()
         }
     }
 
@@ -160,6 +140,6 @@ class AuthActivity : BaseActivity<AuthViewModel>(), LinerLayoutWithKeyboardListe
     }
 
     override fun onSoftKeyboardShown(isShowing: Boolean) {
-        isKeyboardShown = isShowing
+        viewModel.isKeyboardShown.value = isShowing
     }
 }

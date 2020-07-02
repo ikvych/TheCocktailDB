@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
@@ -33,27 +32,24 @@ import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragmentList
-import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : BaseFragment(), BatteryListener,
+class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
     FilterAdapter.OnClickItemFilterCloseListener {
 
-    lateinit var mainActivityViewModel: MainActivityViewModel
+    override var contentLayoutResId: Int = R.layout.fragment_main
+    override val viewModel: MainFragmentViewModel by viewModels()
 
     private lateinit var batteryReceiver: BatteryReceiver
 
     private lateinit var filterBtn: ImageButton
     private lateinit var filterIndicator: TextView
 
-    private var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
-
     private lateinit var sortBtn: ImageButton
     private lateinit var sortIndicator: TextView
 
     private lateinit var filterFragment: FilterFragment
-
-    private var filters: ArrayList<DrinkFilter> = arrayListOf()
     private lateinit var filterAdapter: FilterAdapter
 
     private lateinit var viewPager: ViewPager2
@@ -63,10 +59,6 @@ class MainFragment : BaseFragment(), BatteryListener,
     private lateinit var historyFragment: HistoryFragment
     private lateinit var favoriteFragment: FavoriteFragment
 
-    private var isPowerConnected: Boolean = false
-    private var isBatteryLow: Boolean = false
-    private var percent: Int = 0
-
     private lateinit var batteryPercent: TextView
     private lateinit var batteryIcon: ImageView
     private lateinit var powerConnected: ImageView
@@ -75,20 +67,15 @@ class MainFragment : BaseFragment(), BatteryListener,
 
     companion object {
         @JvmStatic
-        fun newInstance(fragmentId: Int) =
-            MainFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(FRAGMENT_ID, fragmentId)
-                }
-            }
+        fun newInstance() = MainFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
-        historyFragment = HistoryFragment.newInstance(R.layout.fragment_history)
-        favoriteFragment = FavoriteFragment.newInstance(R.layout.fragment_favorite)
+        historyFragment = HistoryFragment.newInstance()
+        favoriteFragment = FavoriteFragment.newInstance()
 
         drinkPagerAdapter = DrinkPagerAdapter(
             arrayListOf(historyFragment, favoriteFragment),
@@ -103,13 +90,16 @@ class MainFragment : BaseFragment(), BatteryListener,
             rightButtonText = "Accept"
         }
 
+        viewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { _ ->
+            //stub
+        })
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
-        viewPager = pager
+        viewPager = vp2_main_fragment
         viewPager.adapter = drinkPagerAdapter
 
-        tabLayout = tab_layout
+        tabLayout = tl_main_fragment
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             if (position == 0) {
                 tab.text = getText(R.string.history)
@@ -118,8 +108,7 @@ class MainFragment : BaseFragment(), BatteryListener,
             }
         }.attach()
 
-
-        val filterRecyclerView: RecyclerView = rv_filter
+        val filterRecyclerView: RecyclerView = rv_filter_list
         filterAdapter = FilterAdapter(requireContext(), this)
         filterRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         filterRecyclerView.setHasFixedSize(true)
@@ -135,35 +124,35 @@ class MainFragment : BaseFragment(), BatteryListener,
             )
         )
 
+        filterFragment = FilterFragment.newInstance()
         filterBtn.setOnClickListener {
             val fragmentTransaction = childFragmentManager.beginTransaction()
-            filterFragment = FilterFragment.newInstance(R.layout.fragment_filter, filters)
             fragmentTransaction.add(R.id.fcv_main_fragment, filterFragment, FilterFragment::class.java.simpleName)
             fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
             fragmentTransaction.commit()
         }
 
         filterBtn.setOnLongClickListener {
-            mainActivityViewModel.resetFilters()
+            viewModel.resetFilters()
             filterAdapter.filterList = arrayListOf()
             true
         }
 
         sortBtn = atb_fragment_main.sortBtn
         sortBtn.setOnClickListener {
-            SortDrinkDialogFragmentList.newInstance(sortDrinkType)
+            SortDrinkDialogFragmentList.newInstance(SortDrinkType.RECENT)
                 .show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
         }
         sortIndicator = atb_fragment_main.sortIndicatorView
         sortBtn.setOnLongClickListener {
-            if (mainActivityViewModel.sortLiveData.value != SortDrinkType.RECENT) {
-                mainActivityViewModel.sortLiveData.value = SortDrinkType.RECENT
+            if (viewModel.sortLiveData.value != SortDrinkType.RECENT) {
+                viewModel.sortLiveData.value = SortDrinkType.RECENT
                 return@setOnLongClickListener true
             }
             false
         }
 
-        fab.setOnClickListener {
+        fab_main_fragment.setOnClickListener {
             startActivity(Intent(requireContext(), SearchActivity::class.java))
         }
 
@@ -171,7 +160,7 @@ class MainFragment : BaseFragment(), BatteryListener,
         batteryIcon = iv_battery_icon
         powerConnected = iv_power_connected
 
-        mainActivityViewModel.sortLiveData.observe(this, Observer{
+        viewModel.sortLiveData.observe(this, Observer{
             if (it == SortDrinkType.RECENT) {
                 sortIndicator.visibility = View.GONE
             } else {
@@ -179,14 +168,15 @@ class MainFragment : BaseFragment(), BatteryListener,
             }
         })
 
-        mainActivityViewModel.filtersLiveData.observe(this, Observer {
+        viewModel.filtersLiveData.observe(this, Observer {
             filterAdapter.filterList = it.values.toList() as ArrayList
-            if (mainActivityViewModel.isFiltersPresent()) {
+            if (viewModel.isFiltersPresent()) {
                 filterIndicator.visibility = View.VISIBLE
             } else {
                 filterIndicator.visibility = View.GONE
             }
         })
+        initLiveDataObserver()
     }
 
     override fun onDialogFragmentClick(
@@ -199,7 +189,7 @@ class MainFragment : BaseFragment(), BatteryListener,
             SortDrinkDrinkType -> {
                 when (buttonType) {
                     ItemListDialogButton -> {
-                        mainActivityViewModel.sortLiveData.value = data as SortDrinkType
+                        viewModel.sortLiveData.value = data as SortDrinkType
                     }
                 }
             }
@@ -225,139 +215,128 @@ class MainFragment : BaseFragment(), BatteryListener,
 
     override fun onBatteryChange(intent: Intent) {
         when (intent.action) {
-            Intent.ACTION_POWER_CONNECTED -> {
-                isPowerConnected = true
-                isPowerConnected(isPowerConnected)
-            }
-            Intent.ACTION_POWER_DISCONNECTED -> {
-                isPowerConnected = false
-                isPowerConnected(isPowerConnected)
-            }
-            Intent.ACTION_BATTERY_LOW -> {
-                isBatteryLow = true
-                isBatteryLow(isBatteryLow)
-            }
-            Intent.ACTION_BATTERY_OKAY -> {
-                isBatteryLow = false
-            }
+            Intent.ACTION_BATTERY_LOW -> viewModel.isBatteryLowLiveData.value = true
+            Intent.ACTION_BATTERY_OKAY -> viewModel.isBatteryLowLiveData.value = false
             Intent.ACTION_BATTERY_CHANGED -> {
-                percent = intent.let {
+                val status: Int = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+                viewModel.isBatteryChargingLiveData.value = status == BatteryManager.BATTERY_STATUS_CHARGING
+                        || status == BatteryManager.BATTERY_STATUS_FULL
+                viewModel.batteryPercentLiveData.value = intent.let {
                     val level: Int = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
                     val scale: Int = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
                     level * 100 / scale.toFloat()
                 }.toInt()
-
-                displayBatteryState()
             }
-        }
-    }
-
-    private fun displayBatteryState() {
-        val textPercent = "${percent}%"
-        batteryPercent.text = textPercent
-
-        if (!isBatteryLow && !isPowerConnected) {
-            batteryPercent.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.color_on_surface
-                )
-            )
-            powerConnected.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.color_on_surface
-                )
-            )
-            batteryIcon.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_battery
-                )
-            )
-            batteryIcon.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.color_on_surface
-                )
-            )
-        }
-    }
-
-    private fun isPowerConnected(isPowerConnected: Boolean) {
-        if (isPowerConnected) {
-            powerConnected.visibility = View.VISIBLE
-            batteryPercent.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.battery_charging
-                )
-            )
-            powerConnected.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.battery_charging
-                )
-            )
-            batteryIcon.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_battery_charge
-                )
-            )
-            batteryIcon.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.battery_charging
-                )
-            )
-        } else {
-            powerConnected.visibility = View.GONE
-            isBatteryLow(isBatteryLow)
-            displayBatteryState()
-        }
-    }
-
-    private fun isBatteryLow(isBatteryLow: Boolean) {
-        if (isBatteryLow) {
-            batteryPercent.setTextColor(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.battery_low
-                )
-            )
-            batteryIcon.setImageDrawable(
-                ContextCompat.getDrawable(
-                    requireContext(),
-                    R.drawable.ic_battery_low
-                )
-            )
-            batteryIcon.setColorFilter(
-                ContextCompat.getColor(
-                    requireContext(),
-                    R.color.battery_low
-                )
-            )
         }
     }
 
     override fun onClick(drinkFilter: DrinkFilter) {
         when (drinkFilter.type) {
             DrinkFilterType.CATEGORY -> {
-                mainActivityViewModel.filtersLiveData.value!![drinkFilter.type] = CategoryDrinkFilter.NONE
-                mainActivityViewModel.filtersLiveData.value = mainActivityViewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value!![drinkFilter.type] = CategoryDrinkFilter.NONE
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
             }
             DrinkFilterType.ALCOHOL -> {
-                mainActivityViewModel.filtersLiveData.value!![drinkFilter.type] = AlcoholDrinkFilter.NONE
-                mainActivityViewModel.filtersLiveData.value = mainActivityViewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value!![drinkFilter.type] = AlcoholDrinkFilter.NONE
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
             }
             DrinkFilterType.GLASS -> {
 
             }
             DrinkFilterType.INGREDIENT -> {
-                mainActivityViewModel.filtersLiveData.value!![drinkFilter.type] = IngredientDrinkFilter.NONE
-                mainActivityViewModel.filtersLiveData.value = mainActivityViewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value!![drinkFilter.type] = IngredientDrinkFilter.NONE
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
             }
         }
+    }
+
+    private fun initLiveDataObserver() {
+        viewModel.batteryPercentLiveData.observe(this, Observer {
+            val textPercent = "${it!!}%"
+            batteryPercent.text = textPercent
+
+            val isBatteryLow = viewModel.isBatteryLowLiveData.value!!
+            val isPowerConnected = viewModel.isBatteryChargingLiveData.value!!
+            if (!isBatteryLow && !isPowerConnected) {
+                batteryPercent.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.color_on_surface
+                    )
+                )
+                powerConnected.setColorFilter(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.color_on_surface
+                    )
+                )
+                batteryIcon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_battery
+                    )
+                )
+                batteryIcon.setColorFilter(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.color_on_surface
+                    )
+                )
+            }
+        })
+        viewModel.isBatteryChargingLiveData.observe(this, Observer {
+            if (it) {
+                powerConnected.visibility = View.VISIBLE
+                batteryPercent.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.battery_charging
+                    )
+                )
+                powerConnected.setColorFilter(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.battery_charging
+                    )
+                )
+                batteryIcon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_battery_charge
+                    )
+                )
+                batteryIcon.setColorFilter(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.battery_charging
+                    )
+                )
+            } else {
+                powerConnected.visibility = View.GONE
+                viewModel.isBatteryLowLiveData.value = viewModel.isBatteryLowLiveData.value
+            }
+        })
+        viewModel.isBatteryLowLiveData.observe(this, Observer {
+            if (it) {
+                batteryPercent.setTextColor(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.battery_low
+                    )
+                )
+                batteryIcon.setImageDrawable(
+                    ContextCompat.getDrawable(
+                        requireContext(),
+                        R.drawable.ic_battery_low
+                    )
+                )
+                batteryIcon.setColorFilter(
+                    ContextCompat.getColor(
+                        requireContext(),
+                        R.color.battery_low
+                    )
+                )
+            }
+        })
     }
 }

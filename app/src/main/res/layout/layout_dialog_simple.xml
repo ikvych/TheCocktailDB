@@ -15,7 +15,7 @@
         android:layout_gravity="center"
         android:background="#FFFFFF"
         android:orientation="vertical"
-        android:padding="@dimen/dp_8">
+        android:padding="@dimen/offset_8">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -28,75 +28,68 @@
                 android:baselineAligned="false"
                 android:gravity="center_vertical"
                 android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="4dp"
+                android:paddingStart="@dimen/offset_16"
+                android:paddingEnd="@dimen/offset_4"
                 tools:ignore="RtlSymmetry,UseCompoundDrawables">
 
                 <TextView
-                    android:id="@+id/txt_dialog_bs_title"
+                    android:id="@+id/tv_dialog_title"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/view_height"
                     android:layout_gravity="center"
                     android:layout_weight="1"
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
-                    android:maxLines="3"
-                    android:padding="0dp"
-                    android:paddingTop="0dp"
-                    android:paddingBottom="0dp"
-                    tools:text="Помилка входу" />
+                    android:maxLines="3"/>
 
                 <ImageView
-                    android:id="@+id/btn_dialog_bs_close"
-                    android:layout_width="24dp"
-                    android:layout_height="24dp"
+                    android:id="@+id/iv_dialog_close"
+                    android:layout_width="@dimen/view_height_min"
+                    android:layout_height="@dimen/view_width_min"
                     android:layout_gravity="center"
-                    android:layout_marginStart="16dp"
+                    android:layout_marginStart="@dimen/offset_16"
                     android:src="@drawable/ic_item_drink_filter_close"/>
             </LinearLayout>
 
 
             <TextView
-                android:id="@+id/txt_dialog_bs_description"
+                android:id="@+id/tv_dialog_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="24dp"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp"
-                android:visibility="gone"
-                tools:text="Ви не зареєстровані, невірно ввели номер телефону або пароль." />
+                android:layout_marginBottom="@dimen/offset_24"
+                android:paddingHorizontal="@dimen/offset_16"
+                android:visibility="gone"/>
 
             <FrameLayout
-                android:id="@+id/vg_dialog_bs_extra_contents"
+                android:id="@+id/fl_dialog_extra_contents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" >
             </FrameLayout>
 
             <LinearLayout
-                android:id="@+id/vg_dialog_bs_buttons"
+                android:id="@+id/ll_dialog_buttons"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingStart="16dp"
-                android:paddingEnd="16dp">
+                android:paddingHorizontal="@dimen/offset_16">
 
                 <Button
-                    android:id="@+id/lb_dialog_bs_left"
+                    android:id="@+id/b_dialog_left_button"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/btn_height"
                     android:layout_weight="1" />
 
                 <Space
-                    android:id="@+id/space_dialog_bs_buttons"
+                    android:id="@+id/space_dialog_buttons"
                     android:layout_width="16dp"
                     android:layout_height="match_parent" />
 
                 <Button
-                    android:id="@+id/lb_dialog_bs_right"
+                    android:id="@+id/b_dialog_right_button"
                     android:layout_width="0dp"
-                    android:layout_height="48dp"
+                    android:layout_height="@dimen/btn_height"
                     android:layout_weight="1" />
 
             </LinearLayout>

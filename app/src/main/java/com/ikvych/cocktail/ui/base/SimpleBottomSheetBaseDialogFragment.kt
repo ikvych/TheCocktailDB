@@ -37,16 +37,16 @@ protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>(
                     "Property dialogBuilder must not be implemented and must not be null after " +
                     "super.onViewCreated(view, savedInstanceState) called and afterwards"
         }
-        txt_dialog_bs_title.text = dialogBuilder.titleText.takeIf { it.isNotEmpty() }
+        tv_dialog_title.text = dialogBuilder.titleText.takeIf { it.isNotEmpty() }
             ?: runCatching { requireContext().getString(dialogBuilder.titleTextResId) }
                 .getOrElse { throw NotImplementedError("Must supply dialog title for ${this::class.java.simpleName}") }
 
-        txt_dialog_bs_description.setText(
+        tv_dialog_description.setText(
             dialogBuilder.descriptionText.takeIf { it.isNotEmpty() }
                 ?: runCatching { requireContext().getString(dialogBuilder.descriptionTextResId) }.getOrNull()
         )
-        if (!txt_dialog_bs_description.text.isBlank()) {
-            txt_dialog_bs_description.visibility = View.VISIBLE
+        if (!tv_dialog_description.text.isBlank()) {
+            tv_dialog_description.visibility = View.VISIBLE
         }
 
         val leftButtonText = dialogBuilder.leftButtonText.takeIf { it.isNotEmpty() }
@@ -55,37 +55,37 @@ protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>(
         val rightButtonText = dialogBuilder.rightButtonText.takeIf { it.isNotEmpty() }
             ?: runCatching { requireContext().getString(dialogBuilder.rightButtonTextResId) }.getOrNull()
 
-        lb_dialog_bs_left.isVisible = !leftButtonText.isNullOrEmpty()
-        lb_dialog_bs_right.isVisible = !rightButtonText.isNullOrEmpty()
+        b_dialog_left_button.isVisible = !leftButtonText.isNullOrEmpty()
+        b_dialog_right_button.isVisible = !rightButtonText.isNullOrEmpty()
 
-        space_dialog_bs_buttons.isVisible =
-            lb_dialog_bs_left.isVisible && lb_dialog_bs_right.isVisible
-        vg_dialog_bs_buttons.isVisible = lb_dialog_bs_left.isVisible || lb_dialog_bs_right.isVisible
+        space_dialog_buttons.isVisible =
+            b_dialog_left_button.isVisible && b_dialog_right_button.isVisible
+        ll_dialog_buttons.isVisible = b_dialog_left_button.isVisible || b_dialog_right_button.isVisible
 
-        lb_dialog_bs_left.text = leftButtonText ?: ""
-        lb_dialog_bs_right.text = rightButtonText ?: ""
+        b_dialog_left_button.text = leftButtonText ?: ""
+        b_dialog_right_button.text = rightButtonText ?: ""
 
         if (dialogBuilder.isCloseButtonVisible) {
-            btn_dialog_bs_close.setOnClickListener {
+            iv_dialog_close.setOnClickListener {
                 dismiss()
             }
-            btn_dialog_bs_close.isVisible = true
+            iv_dialog_close.isVisible = true
         } else {
-            btn_dialog_bs_close.setOnClickListener(null)
-            btn_dialog_bs_close.isGone = true
+            iv_dialog_close.setOnClickListener(null)
+            iv_dialog_close.isGone = true
         }
 
         isCancelable = dialogBuilder.isCancelable
 
 
-        lb_dialog_bs_left.setOnClickListener(this)
-        lb_dialog_bs_right.setOnClickListener(this)
-        btn_dialog_bs_close.setOnClickListener(this)
+        b_dialog_left_button.setOnClickListener(this)
+        b_dialog_right_button.setOnClickListener(this)
+        iv_dialog_close.setOnClickListener(this)
 
         if (extraContentLayoutResId != 0) {
-            vg_dialog_bs_extra_contents?.let {
-                layoutInflater.inflate(extraContentLayoutResId, vg_dialog_bs_extra_contents)
-                configureExtraContent(vg_dialog_bs_extra_contents, savedInstanceState)
+            fl_dialog_extra_contents?.let {
+                layoutInflater.inflate(extraContentLayoutResId, fl_dialog_extra_contents)
+                configureExtraContent(fl_dialog_extra_contents, savedInstanceState)
             }
         }
         isCancelable = dialogBuilder.isCancelable
@@ -96,8 +96,8 @@ protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>(
     }
 
     override fun obtainClickableViews(): List<View> = listOf(
-        lb_dialog_bs_left,
-        lb_dialog_bs_right
+        b_dialog_left_button,
+        b_dialog_right_button
     )
 
 

@@ -13,20 +13,4 @@ open class BaseViewModel(application: Application): AndroidViewModel(application
 
     protected val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
 
-    open fun getCurrentData(): List<Drink> {
-        return arrayListOf()
-    }
-
-    open fun getLiveData(): LiveData<List<Drink>>? {
-        return null
-    }
-
-    open fun saveDrink(drink: Drink) {
-        //stub
-    }
-
-    open fun getAllIngredient(): List<Ingredient> {
-        return arrayListOf()
-    }
-
 }

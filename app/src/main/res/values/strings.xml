@@ -1,36 +1,54 @@
 <resources>
+
+    <!--#region All-->
     <string name="app_name">Kvych Ivan</string>
-    <string name="empty_list">Enter text to start search</string>
-    <string name="empty_history">History is empty</string>
-    <string name="empty_search">No cocktails found</string>
-    <string name="details_name">Name:</string>
-    <string name="details_alcoholic">Alcoholic:</string>
-    <string name="details_glass">Glass:</string>
-    <string name="details_ingredients">Ingredients</string>
-    <string name="details_instruction">Instructions</string>
-    <string name="contentDescription">image with data</string>
+    <string name="all_empty_history">History is empty</string>
+    <string name="all_begin_search">Enter text to start search</string>
+    <string name="all_content_description">Image</string>
+    <!--#endregion-->
+
     <string name="info">info</string>
     <string name="toast_action_view">ПЕРЕГЛЯНУТИ</string>
     <string name="text_on_boot_completed">Смакуйте маргаритку із відчуттям міри. І надіємося, що Ви не пілот під  час польоту</string>
-    <string name="basic_information">Basic information</string>
-    <string name="login">Login</string>
-    <string name="password">Password</string>
-    <string name="invalid_password_text">Пароль повинний містити більше 6 символів, одну літеру і одну цифру</string>
-    <string name="invalid_login_text">Логін повинний містити більше 6 символів</string>
+
+    <!--#region SearchActivity-->
+    <string name="drink_empty_search_result">No cocktails found</string>
+    <!--#endregion-->
+
+    <!--#region DrinkDetailActivity-->
+    <string name="drink_detail_basic_drink_info">Basic information</string>
+    <string name="drink_detail_drink_name">Name:</string>
+    <string name="drink_detail_drink_alcoholic">Alcoholic:</string>
+    <string name="drink_detail_drink_glass">Glass:</string>
+    <string name="drink_detail_drink_ingredients">Ingredients</string>
+    <string name="drink_detail_drink_instruction">Instructions</string>
+    <!--#endregion-->
+
+    <!--#region AuthActivity-->
+    <string name="auth_login_button">Login</string>
+    <string name="auth_password_tint">Password</string>
+    <string name="auth_login_tint">Login</string>
+    <string name="auth_invalid_password">Пароль повинний містити більше 6 символів, одну літеру і одну цифру</string>
+    <string name="auth_invalid_login">Логін повинний містити більше 6 символів</string>
+    <!--#endregion-->
 
     <string name="dialog_sort_title">Sort By</string>
-
-
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
-    <string name="log_out">Log out</string>
+    <!--#region ProfileFragment-->
+    <string name="profile_log_out_button">Log out</string>
+    <string name="profile_start_test_fragment_button">Start test fragment</string>
+    <string name="profile_show_hide_main_navigation_bar_titles">Show/Hide Main Navigation Bar Titles</string>
+    <!--#endregion-->
+
+
     <string name="alcoholic">Alcoholic</string>
     <string name="non_alcoholic">Non alcoholic</string>
     <string name="optional_alcoholic">Optional alcohol</string>
     <string name="none">None</string>
     <string name="accept">Accept</string>
     <string name="reset">Reset</string>
-    <string name="start_test_fragment">start test fragment</string>
+
     <string name="history">History</string>
     <string name="favorite">Favorite</string>
     <string name="remove">Remove</string>
@@ -53,7 +71,7 @@
     <string name="tv_filter_fragment_alcohol_filter">Alcohol Filter</string>
     <string name="tv_filter_fragment_category_filter">Category Filter</string>
     <string name="tv_filter_fragment_ingredient_filter">Ingredient Filter</string>
-    <string name="profile_fragment_show_hide_main_navigation_bar_titles">Show/Hide Main Navigation Bar Titles</string>
+
 
     <!--Filter SnackBar Undo button title-->
     <string name="snack_bar_action_button_undo">Undo</string>

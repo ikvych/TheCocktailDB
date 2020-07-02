@@ -35,14 +35,14 @@ fun getIngredients(
         }
         val tr = LayoutInflater.from(tableLayout.context)
             .inflate(
-                R.layout.item_ingredient_list,
+                R.layout.item_drink_ingredient,
                 tableLayout,
                 false
             ) as TableRow
-        val ingredient = tr.findViewById<TextView>(R.id.ingredients)
+        val ingredient = tr.findViewById<TextView>(R.id.tv_ingredient)
         val numberedIngredient = "$count. $key"
         ingredient.text = numberedIngredient
-        val measure = tr.findViewById<TextView>(R.id.measure)
+        val measure = tr.findViewById<TextView>(R.id.tv_measure)
         measure.text = value
         tableLayout.addView(
             tr,

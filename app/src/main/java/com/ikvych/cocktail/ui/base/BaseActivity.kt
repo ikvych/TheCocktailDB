@@ -2,14 +2,16 @@ package com.ikvych.cocktail.ui.base
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.DialogFragment
 import com.ikvych.cocktail.receiver.FlyModeReceiver
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 
-abstract class BaseActivity : AppCompatActivity(),
+abstract class BaseActivity<ViewModel : BaseViewModel> : AppCompatActivity(),
     BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseDialogFragment.OnDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
@@ -17,6 +19,19 @@ abstract class BaseActivity : AppCompatActivity(),
     View.OnClickListener, View.OnLongClickListener{
 
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()
+    protected abstract var contentLayoutResId: Int
+    protected abstract val viewModel: ViewModel
+
+    @CallSuper
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(contentLayoutResId)
+        configureView(savedInstanceState)
+    }
+
+    protected open fun configureView(savedInstanceState: Bundle?) {
+        //stub
+    }
 
     @CallSuper
     override fun onDialogFragmentDismiss(
@@ -24,7 +39,7 @@ abstract class BaseActivity : AppCompatActivity(),
         type: DialogType<DialogButton>,
         data: Any?
     ) {
-        (dialog.parentFragment as? BaseFragment)?.onDialogFragmentDismiss(
+        (dialog.parentFragment as? BaseFragment<*>)?.onDialogFragmentDismiss(
             dialog,
             type,
             data
@@ -38,7 +53,7 @@ abstract class BaseActivity : AppCompatActivity(),
         type: DialogType<DialogButton>,
         data: Any?
     ) {
-        (dialog.parentFragment as? BaseFragment)?.onDialogFragmentClick(
+        (dialog.parentFragment as? BaseFragment<*>)?.onDialogFragmentClick(
             dialog,
             buttonType,
             type,
@@ -51,7 +66,7 @@ abstract class BaseActivity : AppCompatActivity(),
         type: DialogType<DialogButton>,
         data: Any?
     ) {
-        (dialog.parentFragment as? BaseFragment)?.onBottomSheetDialogFragmentDismiss(
+        (dialog.parentFragment as? BaseFragment<*>)?.onBottomSheetDialogFragmentDismiss(
             dialog,
             type,
             data
@@ -64,7 +79,7 @@ abstract class BaseActivity : AppCompatActivity(),
         type: DialogType<DialogButton>,
         data: Any?
     ) {
-        (dialog.parentFragment as? BaseFragment)?.onBottomSheetDialogFragmentClick(
+        (dialog.parentFragment as? BaseFragment<*>)?.onBottomSheetDialogFragmentClick(
             dialog,
             buttonType,
             type,

@@ -7,25 +7,24 @@ import com.ikvych.cocktail.data.entity.Ingredient
 
 interface DrinkRepository {
 
-    fun getLiveData(): MutableLiveData<List<Drink>>
-    fun updateDrinksLiveData(query: String)
+    // Methods for work with Api
+    fun getDrinkApiLiveData(): MutableLiveData<List<Drink>>
 
-    fun getCurrentData(): List<Drink>
+    fun updateDrinkApiLiveData(query: String)
+
+    // Methods for work with Api and Db at same time
     fun initAllIngredient()
 
-    fun getJustDrinks(): List<Drink>
+    // Methods for work with Db
+    fun getDrinkDbLiveData(): LiveData<List<Drink>>
 
-    fun getDrinks(): LiveData<List<Drink>>
+    fun saveDrinkIntoDb(drink: Drink)
 
-    fun getFavoriteDrinks(): LiveData<List<Drink>>
+    fun getAllIngredientFromDb(): List<Ingredient>
 
-    fun saveDrink(drink: Drink)
+    fun findDrinkById(drinkId: Long): Drink?
 
-    fun getAllIngredient(): List<Ingredient>
-
-    fun findDrinkById(drinkId: Long): Drink
+    fun findDrinkByName(drinkName: String): Drink?
 
     fun findDrinkOfTheDay(stringDate: String): Drink?
-
-    fun findDrinkByName(drinkName: String): Drink
 }

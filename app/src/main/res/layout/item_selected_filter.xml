@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-    android:id="@+id/ll_item_drink_filter"
     xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_selected_filter_container"
     android:layout_width="wrap_content"
-    android:layout_height="36dp"
-    android:layout_margin="8dp"
-    android:padding="4dp"
+    android:layout_height="@dimen/view_height_min"
+    android:layout_margin="@dimen/offset_8"
+    android:padding="@dimen/offset_4"
     android:orientation="horizontal"
     android:background="@drawable/iten_drink_filter_shape">
 
     <ImageButton
         android:id="@+id/ib_filter_icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/btn_width_min"
+        android:layout_height="@dimen/btn_height_min"
         android:backgroundTint="@color/color_transparent"
-        android:layout_gravity="center_vertical"
-
-        />
+        android:layout_gravity="center_vertical"/>
 
     <TextView
         android:id="@+id/tv_filter_name"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
+        android:textSize="@dimen/headline_4"
         android:layout_gravity="center_vertical"
         android:textColor="@color/color_on_primary"
         android:layout_weight="5"/>
 
     <ImageButton
         android:id="@+id/ib_remove_filter"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
+        android:layout_width="@dimen/btn_width_min"
+        android:layout_height="@dimen/btn_height_min"
         android:backgroundTint="@color/color_transparent"
         android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_item_drink_filter_close" />
+        android:src="@drawable/ic_item_drink_filter_close"/>
 
 </LinearLayout>

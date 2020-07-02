@@ -8,15 +8,38 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 const val FRAGMENT_ID = "com.ikvych.cocktail.ViewId"
 
-abstract class BaseFragment() : Fragment(),
+abstract class BaseFragment<ViewModel : BaseViewModel> : Fragment(),
     BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseDialogFragment.OnDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>{
+
+    protected abstract var contentLayoutResId: Int
+    protected abstract val viewModel: ViewModel
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        Log.d("MyLog", "onCreateView - ${this.toString()}")
+        return inflater.inflate(contentLayoutResId, container, false)
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        configureView(view, savedInstanceState)
+        Log.d("MyLog", "onViewCreated - ${this.toString()}")
+    }
+
+    protected open fun configureView(view: View, savedInstanceState: Bundle?) {
+        // stub
+    }
 
     override fun onDialogFragmentDismiss(
         dialog: DialogFragment,
@@ -60,24 +83,6 @@ abstract class BaseFragment() : Fragment(),
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.d("MyLog", "onCreate - ${this.toString()}")
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        Log.d("MyLog", "onCreateView - ${this.toString()}")
-        return inflater.inflate(requireArguments().getInt(FRAGMENT_ID), container, false)
-    }
-
-    protected open fun configureView(view: View, savedInstanceState: Bundle?) {
-        // stub
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        configureView(view, savedInstanceState)
-        Log.d("MyLog", "onViewCreated - ${this.toString()}")
     }
 
     override fun onStart() {

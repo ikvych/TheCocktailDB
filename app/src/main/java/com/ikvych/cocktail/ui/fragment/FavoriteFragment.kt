@@ -2,6 +2,7 @@ package com.ikvych.cocktail.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.entity.Drink
@@ -9,24 +10,23 @@ import com.ikvych.cocktail.ui.base.FRAGMENT_ID
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-class FavoriteFragment : RecyclerViewFragment<MainActivityViewModel>() {
+class FavoriteFragment : RecyclerViewFragment<BaseViewModel>() {
+
+    override var contentLayoutResId: Int = R.layout.fragment_favorite
+    override val viewModel: BaseViewModel by viewModels()
 
     lateinit var fragmentView: View
 
     companion object {
         @JvmStatic
-        fun newInstance(fragmentId: Int) =
-            FavoriteFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(FRAGMENT_ID, fragmentId)
-                }
-            }
+        fun newInstance() = FavoriteFragment()
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        initViewModel(MainActivityViewModel::class.java)
+        initViewModel()
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -34,14 +34,14 @@ class FavoriteFragment : RecyclerViewFragment<MainActivityViewModel>() {
         fragmentView = view
         initRecyclerView(
             view,
-            mainActivityViewModel.getFavoriteCurrentData(),
-            R.id.db_recycler_view
+            parentViewModel.filteredFavoriteDrinksLiveData.value ?: emptyList(),
+            R.id.rv_search_result
         )
         initLiveDataObserver()
     }
 
     override fun initLiveDataObserver() {
-        mainActivityViewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { drinks ->
+        parentViewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { drinks ->
             drinkAdapter.drinkList = drinks
             determineVisibleLayerOnUpdateData(drinks)
         })

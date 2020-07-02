@@ -15,24 +15,24 @@ import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.ui.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {
+abstract class RecyclerViewFragment<ViewModel : BaseViewModel> : BaseFragment<ViewModel>() {
     protected lateinit var drinkAdapter: DrinkAdapter
-    lateinit var viewModel: T
-    lateinit var mainActivityViewModel: MainActivityViewModel
+
+    lateinit var parentViewModel: MainFragmentViewModel
     var filters: ArrayList<DrinkFilter> = arrayListOf()
     protected var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
 
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
 
-    fun initViewModel(viewModelClass: Class<T>) {
-        viewModel = ViewModelProvider(this).get(viewModelClass)
-        mainActivityViewModel = ViewModelProvider(requireParentFragment()).get(MainActivityViewModel::class.java)
+    fun initViewModel() {
+        parentViewModel = ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
     }
 
     open fun initLiveDataObserver() {
-        mainActivityViewModel.filteredDrinksLiveData.observe(this, Observer { drinks ->
+        parentViewModel.filteredDrinksLiveData.observe(this, Observer { drinks ->
             drinkAdapter.drinkList = drinks
             determineVisibleLayerOnUpdateData(drinks)
         })

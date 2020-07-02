@@ -31,7 +31,7 @@ class FilterAdapter(
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterViewHolder {
         val itemView: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_filter_list, parent, false)
+            .inflate(R.layout.item_selected_filter, parent, false)
         return FilterViewHolder(itemView)
     }
 
@@ -102,7 +102,7 @@ class FilterAdapter(
 
         init {
             textView = view.findViewById(R.id.tv_filter_name)
-            linearLayout = view.findViewById(R.id.ll_item_drink_filter)
+            linearLayout = view.findViewById(R.id.ll_selected_filter_container)
             filterIcon = view.findViewById(R.id.ib_filter_icon)
             closeButton = view.findViewById(R.id.ib_remove_filter)
             val position = adapterPosition

@@ -28,13 +28,13 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
     override fun configureExtraContent(container: FrameLayout, savedInstanceState: Bundle?) {
         super.configureExtraContent(container, savedInstanceState)
         listAdapter.newData = listData
-        rv_dialog_sort_list.apply {
+        rv_dialog_sort_container.apply {
             setHasFixedSize(true)
             adapter = this@ListBaseDialogFragment.listAdapter
         }
     }
 
-    protected inner class DialogListAdapter : BaseAdapter<Data, BaseViewHolder>(R.layout.item_dialog_filter_list),
+    protected inner class DialogListAdapter : BaseAdapter<Data, BaseViewHolder>(R.layout.item_filter_type),
         View.OnClickListener {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {

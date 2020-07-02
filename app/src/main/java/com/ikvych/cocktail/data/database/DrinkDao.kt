@@ -32,9 +32,4 @@ interface DrinkDao {
     @Query("SELECT * FROM drink ORDER BY created DESC")
     fun getAllDrinks() : LiveData<List<Drink>>
 
-    @Query("SELECT * FROM drink ORDER BY created DESC")
-    fun getAllJustDrinks() : List<Drink>
-
-    @Query("SELECT * FROM drink WHERE if_favorite ORDER BY created DESC")
-    fun getAllFavoriteDrinks() : LiveData<List<Drink>>
 }

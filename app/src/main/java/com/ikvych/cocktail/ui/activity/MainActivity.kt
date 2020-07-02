@@ -1,14 +1,13 @@
 package com.ikvych.cocktail.ui.activity
 
 import android.content.Intent
-import android.content.IntentFilter
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
@@ -33,10 +32,12 @@ import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
 
-class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
+class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTimerReceiverListener,
     ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
-    private lateinit var viewModel: MainActivityViewModel
+    override var contentLayoutResId: Int = R.layout.activity_main
+    override val viewModel: MainActivityViewModel by viewModels()
+
     private lateinit var timerReceiver: TimerReceiver
 
     private lateinit var serviceTimerIntent: Intent
@@ -68,17 +69,13 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+    override fun configureView(savedInstanceState: Bundle?) {
         timerReceiver = TimerReceiver(this)
 
         val lifecycleObserver = ApplicationLifeCycleObserver(this)
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
         serviceTimerIntent = Intent(this, TimerService::class.java)
 
-        viewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
             override fun onChanged(t: Boolean?) {
                 if (t!!) {
@@ -132,37 +129,37 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
             }
         }
 
-        profileFragment = ProfileFragment.newInstance(R.layout.fragment_profile)
-        mainFragment = MainFragment.newInstance(R.layout.fragment_main)
+        profileFragment = ProfileFragment.newInstance()
+        mainFragment = MainFragment.newInstance()
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
         fragmentTransaction.replace(
-            R.id.fcv_main,
+            R.id.fcv_container,
             profileFragment,
             ProfileFragment::class.java.simpleName
         )
         fragmentTransaction.hide(profileFragment)
-        fragmentTransaction.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
+        fragmentTransaction.add(R.id.fcv_container, mainFragment, MainFragment::class.java.simpleName)
         fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
         fragmentTransaction.commit()
     }
 
     override fun actionOnStart() {
-        val timerReceiverFilter = IntentFilter().apply {
+/*        val timerReceiverFilter = IntentFilter().apply {
             addAction(START_BACKGROUND_TIMER)
         }
-        registerReceiver(timerReceiver, timerReceiverFilter)
+        registerReceiver(timerReceiver, timerReceiverFilter)*/
 
     }
 
     override fun actionOnStop() {
-        startService(Intent(this, TimerService::class.java))
-        unregisterReceiver(timerReceiver)
+/*        startService(Intent(this, TimerService::class.java))
+        unregisterReceiver(timerReceiver)*/
     }
 
     override fun onClick(v: View?) {
         // відкриває деталізацію коктейлю
         if (v is CardView) {
-            val view = v.findViewById<TextView>(R.id.drinkName)
+            val view = v.findViewById<TextView>(R.id.tv_drink_name)
             val drinkName = view?.text
             if (drinkName != null) {
                 val drink = viewModel.findDrinkByName(drinkName.toString())
@@ -174,13 +171,13 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
         // додає і видаляє з улюблених
         if (v is CheckBox) {
             val drinkName = v.tag as String
-            val drink = viewModel.findDrinkByName(drinkName)
+            val drink = viewModel.findDrinkByName(drinkName) ?: return
             if (v.isChecked) {
                 drink.setIsFavorite(true)
-                viewModel.saveDrink(drink)
+                viewModel.saveDrinkIntoDb(drink)
             } else {
                 drink.setIsFavorite(false)
-                viewModel.saveDrink(drink)
+                viewModel.saveDrinkIntoDb(drink)
             }
         }
     }
@@ -191,7 +188,7 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
                 when (it.itemId) {
                     // відкриває деталізацію напою
                     R.id.menu_drink_open -> {
-                        val view = v?.findViewById<TextView>(R.id.drinkName)
+                        val view = v?.findViewById<TextView>(R.id.tv_drink_name)
                         val drinkName = view?.text ?: ""
                         val drink = viewModel.findDrinkByName(drinkName.toString())
 
@@ -203,15 +200,16 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
                     // створює pinned shortcut
                     R.id.menu_drink_pin_shortcut -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val textViewDrinkName = v?.findViewById<TextView>(R.id.drinkName)
+                            val textViewDrinkName = v?.findViewById<TextView>(R.id.tv_drink_name)
                             val drinkName = textViewDrinkName?.text ?: ""
-                            val drink: Drink = viewModel.findDrinkByName(drinkName.toString())
+                            val drink = viewModel.findDrinkByName(drinkName.toString())
+                                ?: return@setOnMenuItemClickListener false
                             val shortcutManager: ShortcutManager? =
                                 ContextCompat.getSystemService(
                                     this@MainActivity,
                                     ShortcutManager::class.java
                                 )
-                            val drinkImageView = v!!.findViewById<ImageView>(R.id.drink_image_view)
+                            val drinkImageView = v!!.findViewById<ImageView>(R.id.iv_drink_image)
                             val drinkAdaptiveIcon = drinkImageView.drawToBitmap().toAdaptiveIcon()
                             val shortcut =
                                 ShortcutInfo.Builder(this@MainActivity, drink.getStrDrink())
@@ -316,7 +314,8 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
         type: DialogType<DialogButton>,
         data: Any?
     ) {
-        when (type) {
+        super.onBottomSheetDialogFragmentClick(dialog, buttonType, type, data)
+/*        when (type) {
             RegularDialogType -> {
                 when (buttonType) {
                     RightDialogButton -> {
@@ -329,7 +328,7 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
                     }
                 }
             }
-        }
+        }*/
     }
 
     override fun onBottomSheetDialogFragmentDismiss(
@@ -337,6 +336,7 @@ class MainActivity : BaseActivity(), TimerReceiver.OnTimerReceiverListener,
         type: DialogType<DialogButton>,
         data: Any?
     ) {
+        super.onBottomSheetDialogFragmentDismiss(dialog, type, data)
         when (type) {
             RegularDialogType -> {
 /*                unregisterReceiver(timerReceiver)*/

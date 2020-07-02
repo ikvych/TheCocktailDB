@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import android.view.View
 import android.widget.*
 import com.ikvych.cocktail.R
-import kotlinx.android.synthetic.main.app_toolbar.view.*
+import kotlinx.android.synthetic.main.widget_app_toolbar.view.*
 
 class ApplicationToolBar(
     context: Context?,
@@ -74,10 +74,10 @@ class ApplicationToolBar(
             field = value
             if (field) {
                 sortBtn.visibility = View.VISIBLE
-                rl_sort_btn.visibility = View.VISIBLE
+                rl_sort_btn_container.visibility = View.VISIBLE
             } else {
                 sortBtn.visibility = View.GONE
-                rl_sort_btn.visibility = View.GONE
+                rl_sort_btn_container.visibility = View.GONE
             }
             invalidate()
             requestLayout()
@@ -86,17 +86,17 @@ class ApplicationToolBar(
     var relativeLayoutSortBtn: RelativeLayout
 
     init {
-        View.inflate(context, R.layout.app_toolbar, this)
-        this.returnBtn = findViewById(R.id.return_tb_btn)
-        this.customBtn = findViewById(R.id.custom_tb_btn)
+        View.inflate(context, R.layout.widget_app_toolbar, this)
+        this.returnBtn = findViewById(R.id.ib_return_button)
+        this.customBtn = findViewById(R.id.ib_filer_btn)
         this.indicatorView = findViewById(R.id.tv_filter_indicator)
         this.frameLayout = findViewById(R.id.fl_toolbar)
         this.searchView = findViewById(R.id.sv_toolbar)
         this.textView = findViewById(R.id.tv_toolbar)
-        this.sortBtn = findViewById(R.id.sort_tb_btn)
+        this.sortBtn = findViewById(R.id.ib_sort_btn)
         this.sortIndicatorView = findViewById(R.id.tv_sort_indicator)
-        this.relativeLayoutCustomBtn = rl_custom_btn
-        this.relativeLayoutSortBtn = rl_sort_btn
+        this.relativeLayoutCustomBtn = rl_filer_btn_container
+        this.relativeLayoutSortBtn = rl_sort_btn_container
 
         context!!.theme.obtainStyledAttributes(
             attrs,

@@ -62,8 +62,6 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
             chosenAlcoholFilter.text = it.key
         })
 
-
-
         categoryFilter = im_category_filter
         categoryFilter.setOnClickListener {
             FilterDrinkCategoryDialogFragment.newInstance().show(
@@ -155,17 +153,7 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
     }
 
     companion object {
-
         @JvmStatic
-        fun newInstance(
-            drinkFilters: ArrayList<DrinkFilter> = arrayListOf()
-        ) = FilterFragment().apply {
-            arguments = Bundle().apply {
-                drinkFilters.forEach {
-                    putString(it.type.key, it.key)
-                }
-            }
-        }
+        fun newInstance() = FilterFragment()
     }
-
 }

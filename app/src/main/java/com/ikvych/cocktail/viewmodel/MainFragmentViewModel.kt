@@ -21,6 +21,16 @@ import java.util.*
 
 class MainFragmentViewModel(application: Application) : BaseViewModel(application) {
 
+    val isBatteryChargingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
+
+    init {
+        batteryPercentLiveData.value = 0
+        isBatteryLowLiveData.value = false
+        isBatteryChargingLiveData.value = false
+    }
+
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
     val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinkDbLiveData()
 

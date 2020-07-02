@@ -15,7 +15,7 @@ class SplashActivity : BaseActivity<BaseViewModel>() {
 
     override fun configureView(savedInstanceState: Bundle?) {
         Handler().postDelayed({
-            val intent = Intent(this@SplashActivity, AuthActivity::class.java)
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         }, 1000)

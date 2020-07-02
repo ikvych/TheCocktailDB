@@ -21,6 +21,9 @@ interface DrinkDao {
     fun findDrinkOfTheDay(stringDate: String) : Drink?
 
     @Query("SELECT * FROM drink WHERE id_drink=:drinkId")
+    fun findDrinkLiveDataById(drinkId: Long) : LiveData<Drink?>
+
+    @Query("SELECT * FROM drink WHERE id_drink=:drinkId")
     fun findDrinkById(drinkId: Long) : Drink
 
     @Query("SELECT * FROM drink WHERE str_drink=:drinkName")

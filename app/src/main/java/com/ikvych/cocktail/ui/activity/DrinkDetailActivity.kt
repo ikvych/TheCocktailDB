@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
@@ -60,6 +59,8 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
                     }
                 }
             }
+        } else {
+            finish()
         }
         if (intent != null && intent.hasExtra(DRINK_ID)) {
             val drinkId: Long = intent.getLongExtra(DRINK_ID, -1L)
@@ -70,7 +71,8 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
             }
         }
 
-        dataBinding.drink = drink
+        viewModel.drinkIdLiveData.value = drink!!.getIdDrink()
+        dataBinding.viewModel = viewModel
 
         appBarLayout = findViewById(R.id.abl_drink_detail)
         imageView = findViewById(R.id.iv_drink_image)

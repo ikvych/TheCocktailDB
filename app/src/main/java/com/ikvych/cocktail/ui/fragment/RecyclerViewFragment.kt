@@ -2,6 +2,7 @@ package com.ikvych.cocktail.ui.fragment
 
 import android.content.res.Configuration
 import android.view.View
+import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -18,7 +19,7 @@ import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-abstract class RecyclerViewFragment<ViewModel : BaseViewModel> : BaseFragment<ViewModel>() {
+abstract class RecyclerViewFragment<ViewModel : BaseViewModel, DataBinding : ViewDataBinding> : BaseFragment<ViewModel, DataBinding>() {
     protected lateinit var drinkAdapter: DrinkAdapter
 
     lateinit var parentViewModel: MainFragmentViewModel

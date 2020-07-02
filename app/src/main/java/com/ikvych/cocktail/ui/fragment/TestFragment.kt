@@ -8,15 +8,15 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.databinding.FragmentTestBinding
 import com.ikvych.cocktail.ui.base.BaseFragment
-import com.ikvych.cocktail.ui.base.FRAGMENT_ID
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
 
 const val ARBITRARY_NUMBER = "com.ikvych.cocktail.ArbitraryNumber"
 const val OPTIONAL_STRING = "com.ikvych.cocktail.OptionalString"
 
-class TestFragment() : BaseFragment<BaseViewModel>() {
+class TestFragment() : BaseFragment<BaseViewModel, FragmentTestBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_test
     override val viewModel: BaseViewModel by viewModels()

@@ -20,6 +20,7 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.comparator.type.SortDrinkType
+import com.ikvych.cocktail.databinding.FragmentMainBinding
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
@@ -35,7 +36,7 @@ import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragmentList
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
+class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(), BatteryListener,
     FilterAdapter.OnClickItemFilterCloseListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_main

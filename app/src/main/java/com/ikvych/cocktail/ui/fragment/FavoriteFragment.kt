@@ -6,13 +6,13 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.ui.base.FRAGMENT_ID
+import com.ikvych.cocktail.databinding.FragmentFavoriteBinding
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-class FavoriteFragment : RecyclerViewFragment<BaseViewModel>() {
+class FavoriteFragment : RecyclerViewFragment<BaseViewModel, FragmentFavoriteBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_favorite
     override val viewModel: BaseViewModel by viewModels()

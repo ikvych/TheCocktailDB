@@ -6,12 +6,14 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import com.ikvych.cocktail.receiver.FlyModeReceiver
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 
-abstract class BaseActivity<ViewModel : BaseViewModel> : AppCompatActivity(),
+abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBinding> : AppCompatActivity(),
     BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseDialogFragment.OnDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
@@ -21,12 +23,20 @@ abstract class BaseActivity<ViewModel : BaseViewModel> : AppCompatActivity(),
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()
     protected abstract var contentLayoutResId: Int
     protected abstract val viewModel: ViewModel
+    protected lateinit var dataBinding: DataBinding
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(contentLayoutResId)
+        dataBinding = DataBindingUtil.setContentView(this, contentLayoutResId)
+        dataBinding.lifecycleOwner = this@BaseActivity
+        configureDataBinding(dataBinding)
         configureView(savedInstanceState)
+    }
+
+    protected open fun configureDataBinding(binding: DataBinding) {
+        //stub
     }
 
     protected open fun configureView(savedInstanceState: Bundle?) {

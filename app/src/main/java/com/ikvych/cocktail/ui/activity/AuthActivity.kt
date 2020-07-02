@@ -15,16 +15,16 @@ import androidx.lifecycle.Observer
 import com.google.android.material.textfield.TextInputEditText
 import com.google.android.material.textfield.TextInputLayout
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.databinding.ActivityAuthBinding
 import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.listener.AuthTextWatcher
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.ErrorAuthDialogFragment
 import com.ikvych.cocktail.viewmodel.AuthViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
-import java.util.regex.Pattern
 
 
-class AuthActivity : BaseActivity<AuthViewModel>(),
+class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
     LinerLayoutWithKeyboardListener.KeyBoardListener {
 
     override var contentLayoutResId: Int = R.layout.activity_auth

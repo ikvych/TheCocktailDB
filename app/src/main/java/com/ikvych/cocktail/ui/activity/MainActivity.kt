@@ -22,6 +22,7 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.receiver.TimerReceiver
 import com.ikvych.cocktail.service.TimerService
@@ -32,7 +33,7 @@ import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
 
-class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTimerReceiverListener,
+class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(), TimerReceiver.OnTimerReceiverListener,
     ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
     override var contentLayoutResId: Int = R.layout.activity_main

@@ -21,7 +21,7 @@ import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
 
-class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
+class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDetailsBinding>() {
 
     private var drink: Drink? = null
     private var modelType: String? = null
@@ -70,9 +70,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
             }
         }
 
-        val activityDrinkDetailsBinding: ActivityDrinkDetailsBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_drink_details)
-        activityDrinkDetailsBinding.drink = drink
+        dataBinding.drink = drink
 
         appBarLayout = findViewById(R.id.abl_drink_detail)
         imageView = findViewById(R.id.iv_drink_image)

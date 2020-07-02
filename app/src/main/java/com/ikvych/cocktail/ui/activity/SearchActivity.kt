@@ -17,6 +17,7 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.databinding.ActivitySearchBinding
 import com.ikvych.cocktail.listener.DrinkOfferListener
 import com.ikvych.cocktail.receiver.DrinkOfferReceiver
 import com.ikvych.cocktail.ui.base.BaseActivity
@@ -28,7 +29,7 @@ import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.activity_search.*
 
 
-class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListener {
+class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBinding>(), DrinkOfferListener {
 
     override var contentLayoutResId: Int = R.layout.activity_search
     override val viewModel: SearchActivityViewModel by viewModels()

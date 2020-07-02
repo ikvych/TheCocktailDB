@@ -26,9 +26,7 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
     val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
 
     init {
-        batteryPercentLiveData.value = 0
         isBatteryLowLiveData.value = false
-        isBatteryChargingLiveData.value = false
     }
 
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()

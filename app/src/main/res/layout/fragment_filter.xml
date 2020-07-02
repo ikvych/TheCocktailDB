@@ -33,13 +33,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/atb_fragment_filter">
 
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
         <LinearLayout
             android:id="@+id/ll_filter_fragment_container_a"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical"
-            android:layout_gravity="top"
-            app:layout_behavior="@string/fab_transformation_sheet_behavior">
+            android:layout_marginBottom="138dp"
+            android:layout_gravity="top">
 
             <LinearLayout
                 android:id="@+id/im_alcohol_filter"
@@ -148,12 +152,15 @@
             </LinearLayout>
         </LinearLayout>
 
+        </androidx.core.widget.NestedScrollView>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/offset_16"
             android:orientation="vertical"
             android:layout_gravity="bottom"
+            android:background="#FFFFFF"
             app:layout_behavior="@string/fab_transformation_sheet_behavior">
 
             <LinearLayout

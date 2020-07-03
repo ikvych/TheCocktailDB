@@ -54,7 +54,7 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
 
         alcoholFilterItem = im_alcohol_filter_item
         alcoholFilterItem.setOnClickListener {
-            FilterDrinkAlcoholDialogFragment.newInstance()
+            FilterDrinkAlcoholDialogFragment.newInstance(parentViewModel.alcoholFilterLiveData.value)
                 .show(childFragmentManager, FilterDrinkAlcoholDialogFragment::class.java.simpleName)
         }
         alcoholFilterValue = tv_alcohol_filter_value
@@ -64,7 +64,7 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
 
         categoryFilterItem = im_category_filter_item
         categoryFilterItem.setOnClickListener {
-            FilterDrinkCategoryDialogFragment.newInstance().show(
+            FilterDrinkCategoryDialogFragment.newInstance(parentViewModel.categoryFilterLiveData.value).show(
                 childFragmentManager,
                 FilterDrinkCategoryDialogFragment::class.java.simpleName
             )
@@ -78,7 +78,7 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
 
         ingredientFilterItem = im_ingredient_filter_item
         ingredientFilterItem.setOnClickListener {
-            FilterDrinkIngredientDialogFragment.newInstance()
+            FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.ingredientFilterLiveData.value)
                 .show(
                     childFragmentManager,
                     FilterDrinkIngredientDialogFragment::class.java.simpleName

@@ -31,7 +31,6 @@ import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
-import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragmentList
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -135,7 +134,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
 
         sortBtn = atb_fragment_main.sortBtn
         sortBtn.setOnClickListener {
-            SortDrinkDialogFragmentList.newInstance(SortDrinkType.RECENT)
+            SortDrinkDialogFragment.newInstance(viewModel.sortLiveData.value)
                 .show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
         }
         sortIndicator = atb_fragment_main.sortIndicatorView

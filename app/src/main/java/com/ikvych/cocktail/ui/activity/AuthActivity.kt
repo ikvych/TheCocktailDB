@@ -95,11 +95,12 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
                 if (!viewModel.isLoginDataMatchPatternLiveData.value!!.first) {
                     textInputEditLogin.requestFocus()
                 }
-                ErrorAuthDialogFragment.newInstance() {
+                ErrorAuthDialogFragment.newInstance {
                     titleText = getString(R.string.auth_invalid_data)
                     leftButtonText = getString(R.string.all_ok_button)
                     descriptionText = viewModel.errorMessageViewModel.value!!
                 }.show(supportFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
+                submitButton.background
             }
         }
 

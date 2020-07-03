@@ -54,10 +54,10 @@ class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
             )
         }
         startTestFragmentBtn = view.findViewById(R.id.b_start_test_fragment)
+        testFragment = TestFragment.newInstance(5, "Ivan Kvych")
         startTestFragmentBtn.setOnClickListener {
-            testFragment = TestFragment.newInstance(5, "Ivan Kvych")
-            val fragmentTransaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fcv_container, testFragment)
+            val fragmentTransaction: FragmentTransaction = childFragmentManager.beginTransaction()
+            fragmentTransaction.add(R.id.fcv_profile_fragment, testFragment, TestFragment::class.java.simpleName)
             fragmentTransaction.addToBackStack(TestFragment::class.java.name)
             fragmentTransaction.commit()
         }
@@ -82,6 +82,7 @@ class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
                     RightDialogButton -> {
                         val intent = Intent(requireContext(), AuthActivity::class.java)
                         requireContext().startActivity(intent)
+                        requireActivity().finish()
                     }
                     LeftDialogButton -> {
                         dialog.dismiss()

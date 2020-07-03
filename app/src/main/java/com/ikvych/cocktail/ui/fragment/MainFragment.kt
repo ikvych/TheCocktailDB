@@ -77,19 +77,21 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         historyFragment = HistoryFragment.newInstance()
         favoriteFragment = FavoriteFragment.newInstance()
 
-        drinkPagerAdapter = DrinkPagerAdapter(
-            arrayListOf(historyFragment, favoriteFragment),
-            this
-        )
         batteryReceiver = BatteryReceiver(this@MainFragment)
-
         viewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { _ ->
             //trigger to init filteredFavoriteLiveData
         })
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
+
         viewPager = vp2_main_fragment
+
+        drinkPagerAdapter = DrinkPagerAdapter(
+            arrayListOf(historyFragment, favoriteFragment),
+            this
+        )
+
         viewPager.adapter = drinkPagerAdapter
 
         tabLayout = tl_main_fragment

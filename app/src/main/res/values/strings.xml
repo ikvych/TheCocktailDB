@@ -5,6 +5,11 @@
     <string name="all_empty_history">History is empty</string>
     <string name="all_begin_search">Enter text to start search</string>
     <string name="all_content_description">Image</string>
+    <string name="all_undo_button">Undo</string>
+    <string name="all_none_button">None</string>
+    <string name="all_accept_button">Accept</string>
+    <string name="all_reset_button">Reset</string>
+    <string name="all_cancel_button">Cancel</string>
     <!--#endregion-->
 
     <string name="info">info</string>
@@ -37,20 +42,24 @@
 
     <!--#region ProfileFragment-->
     <string name="profile_log_out_button">Log out</string>
+    <string name="profile_log_out_dialog_title">Log out</string>
+    <string name="profile_log_out_dialog_message">Are you Really want to exit?</string>
     <string name="profile_start_test_fragment_button">Start test fragment</string>
     <string name="profile_show_hide_main_navigation_bar_titles">Show/Hide Main Navigation Bar Titles</string>
+    <!--#endregion-->
+
+    <!--#region FilterFragment-->
+    <string name="filter_fragment_result_button">To result</string>
     <!--#endregion-->
 
 
     <string name="alcoholic">Alcoholic</string>
     <string name="non_alcoholic">Non alcoholic</string>
     <string name="optional_alcoholic">Optional alcohol</string>
-    <string name="none">None</string>
-    <string name="accept">Accept</string>
-    <string name="reset">Reset</string>
 
-    <string name="history">History</string>
-    <string name="favorite">Favorite</string>
+
+    <string name="main_tab_layout_history_tab">History</string>
+    <string name="main_tab_layout_favorite_tab">Favorite</string>
     <string name="remove">Remove</string>
     <string name="quick_preview">Quick Preview</string>
     <string name="add_favorite">Add Favorite</string>
@@ -61,19 +70,11 @@
     <string name="menu_profile_fragment_title">Profile</string>
 
    <!-- bottom sheet dialog strings-->
-    <string name="bottom_sheet_option_camera">Use Camera</string>
-    <string name="bottom_sheet_option_gallery">Upload from Gallery</string>
-    <string name="bottom_sheet_option_heading">Add Photo</string>
-    <string name="bottom_sheet_option_remove_photo">Remove Photo</string>
     <string name="content_description_return_button">Return button</string>
     <string name="content_description_sort_history">Sort history</string>
     <string name="content_description_custom_button">Custom button</string>
     <string name="tv_filter_fragment_alcohol_filter">Alcohol Filter</string>
     <string name="tv_filter_fragment_category_filter">Category Filter</string>
     <string name="tv_filter_fragment_ingredient_filter">Ingredient Filter</string>
-
-
-    <!--Filter SnackBar Undo button title-->
-    <string name="snack_bar_action_button_undo">Undo</string>
 
 </resources>

@@ -83,15 +83,8 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         )
         batteryReceiver = BatteryReceiver(this@MainFragment)
 
-        bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance{
-            titleText = "Log Out"
-            descriptionText = "Are you Really want to exit?"
-            leftButtonText = "Cancel"
-            rightButtonText = "Accept"
-        }
-
         viewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { _ ->
-            //stub
+            //trigger to init filteredFavoriteLiveData
         })
     }
 
@@ -102,9 +95,9 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         tabLayout = tl_main_fragment
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             if (position == 0) {
-                tab.text = getText(R.string.history)
+                tab.text = getText(R.string.main_tab_layout_history_tab)
             } else {
-                tab.text = getText(R.string.favorite)
+                tab.text = getText(R.string.main_tab_layout_favorite_tab)
             }
         }.attach()
 
@@ -233,19 +226,16 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
     override fun onClick(drinkFilter: DrinkFilter) {
         when (drinkFilter.type) {
             DrinkFilterType.CATEGORY -> {
-                viewModel.filtersLiveData.value!![drinkFilter.type] = CategoryDrinkFilter.NONE
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = CategoryDrinkFilter.NONE }
             }
             DrinkFilterType.ALCOHOL -> {
-                viewModel.filtersLiveData.value!![drinkFilter.type] = AlcoholDrinkFilter.NONE
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = AlcoholDrinkFilter.NONE }
             }
             DrinkFilterType.GLASS -> {
 
             }
             DrinkFilterType.INGREDIENT -> {
-                viewModel.filtersLiveData.value!![drinkFilter.type] = IngredientDrinkFilter.NONE
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = IngredientDrinkFilter.NONE }
             }
         }
     }

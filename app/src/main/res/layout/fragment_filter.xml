@@ -45,7 +45,7 @@
             android:layout_gravity="top">
 
             <LinearLayout
-                android:id="@+id/im_alcohol_filter"
+                android:id="@+id/im_alcohol_filter_item"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_height"
                 android:layout_marginHorizontal="@dimen/offset_24"
@@ -66,10 +66,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.75"
-                    android:src="@drawable/ic_drink_alcohol_filter_arrow" />
+                    android:src="@drawable/ic_drink_alcohol_filter_arrow"
+                    android:contentDescription="@string/all_content_description"/>
 
                 <TextView
-                    android:id="@+id/tv_chosen_alcohol_filter"
+                    android:id="@+id/tv_alcohol_filter_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -80,7 +81,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/im_category_filter"
+                android:id="@+id/im_category_filter_item"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_height"
                 android:layout_marginHorizontal="@dimen/offset_24"
@@ -102,10 +103,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.75"
-                    android:src="@drawable/ic_drink_alcohol_filter_arrow" />
+                    android:src="@drawable/ic_drink_alcohol_filter_arrow"
+                    android:contentDescription="@string/all_content_description"/>
 
                 <TextView
-                    android:id="@+id/tv_chosen_category_filter"
+                    android:id="@+id/tv_category_filter_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -116,7 +118,7 @@
             </LinearLayout>
 
             <LinearLayout
-                android:id="@+id/im_ingredient_filter"
+                android:id="@+id/im_ingredient_filter_item"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_height"
                 android:layout_marginHorizontal="@dimen/offset_24"
@@ -137,10 +139,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="0.75"
-                    android:src="@drawable/ic_drink_alcohol_filter_arrow" />
+                    android:src="@drawable/ic_drink_alcohol_filter_arrow"
+                    android:contentDescription="@string/all_content_description"/>
 
                 <TextView
-                    android:id="@+id/tv_chosen_ingredient_filter"
+                    android:id="@+id/tv_ingredient_filter_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -171,7 +174,7 @@
                     android:layout_margin="@dimen/offset_8"
                     android:layout_marginVertical="@dimen/offset_16"
                     android:layout_weight="1"
-                    android:text="@string/accept"
+                    android:text="@string/filter_fragment_result_button"
                     android:textColor="#FFFFFF"
                     app:backgroundTint="@color/design_default_color_primary_dark" />
 
@@ -183,7 +186,7 @@
                     android:layout_margin="@dimen/offset_8"
                     android:layout_marginVertical="@dimen/offset_16"
                     android:layout_weight="1"
-                    android:text="@string/reset"
+                    android:text="@string/all_reset_button"
                     android:textColor="#FFFFFF"
                     app:backgroundTint="@color/design_default_color_primary_dark" />
 

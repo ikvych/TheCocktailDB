@@ -18,10 +18,10 @@ import com.ikvych.cocktail.viewmodel.ProfileFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : BaseFragment<BaseViewModel>() {
+class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_profile
-    override val viewModel: BaseViewModel by viewModels()
+    override val viewModel: ProfileFragmentViewModel by viewModels()
 
     private lateinit var logOut: Button
     private lateinit var startTestFragmentBtn: Button
@@ -30,20 +30,18 @@ class ProfileFragment : BaseFragment<BaseViewModel>() {
     private lateinit var changeBottomNavBarTitleVisibility: CheckBox
 
     private lateinit var mainViewModel: MainActivityViewModel
-    private lateinit var profileViewModel: ProfileFragmentViewModel
 
     private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance {
-            titleText = "Log Out"
-            descriptionText = "Are you Really want to exit?"
-            leftButtonText = "Cancel"
-            rightButtonText = "Accept"
+        bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance{
+            titleText = getString(R.string.profile_log_out_dialog_title)
+            descriptionText = getString(R.string.profile_log_out_dialog_message)
+            leftButtonText = getString(R.string.all_cancel_button)
+            rightButtonText = getString(R.string.all_accept_button)
         }
         mainViewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
-        profileViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {

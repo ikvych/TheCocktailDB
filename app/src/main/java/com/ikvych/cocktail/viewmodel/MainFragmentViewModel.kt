@@ -32,7 +32,7 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
     }
 
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
-    val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinkDbLiveData()
+    val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getAllDrinksFromDbLiveData()
 
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
         MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()

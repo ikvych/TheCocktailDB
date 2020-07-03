@@ -125,19 +125,19 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
         data: Any?
     ) {
         when (type) {
-            AlcoholDrinkType -> {
+            AlcoholDrinkDialogType -> {
                 val alcoholType = data as AlcoholDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
                     parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
                 parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[alcoholType.type] = alcoholType }
             }
-            CategoryDrinkType -> {
+            CategoryDrinkDialogType -> {
                 val categoryType = data as CategoryDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
                     parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
                 parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[categoryType.type] = categoryType }
             }
-            IngredientDrinkType -> {
+            IngredientDrinkDialogType -> {
                 val ingredientType = data as IngredientDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
                     parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>

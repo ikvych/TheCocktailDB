@@ -1,6 +1,8 @@
 package com.ikvych.cocktail.ui.activity
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.os.Build
@@ -23,24 +25,24 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
-import com.ikvych.cocktail.receiver.TimerReceiver
-import com.ikvych.cocktail.service.TimerService
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
+const val MAIN_ACTIVITY_SHARED_PREFERENCE = "MAIN_ACTIVITY_SHARED_PREFERENCE"
+const val CURRENT_TIME_MILLIS = "CURRENT_TIME_MILLIS"
 
-class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTimerReceiverListener,
+class MainActivity : BaseActivity<MainActivityViewModel>(),
     ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
     override var contentLayoutResId: Int = R.layout.activity_main
     override val viewModel: MainActivityViewModel by viewModels()
 
-    private lateinit var timerReceiver: TimerReceiver
+    private lateinit var sharedPreferences: SharedPreferences
 
-    private lateinit var serviceTimerIntent: Intent
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mainFragment: MainFragment
     private lateinit var profileFragment: ProfileFragment
@@ -70,11 +72,13 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
     }
 
     override fun configureView(savedInstanceState: Bundle?) {
-        timerReceiver = TimerReceiver(this)
+        sharedPreferences = getSharedPreferences(
+            MAIN_ACTIVITY_SHARED_PREFERENCE,
+            Context.MODE_PRIVATE
+        )
 
         val lifecycleObserver = ApplicationLifeCycleObserver(this)
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
-        serviceTimerIntent = Intent(this, TimerService::class.java)
 
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
             override fun onChanged(t: Boolean?) {
@@ -138,25 +142,52 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
             ProfileFragment::class.java.simpleName
         )
         fragmentTransaction.hide(profileFragment)
-        fragmentTransaction.add(R.id.fcv_container, mainFragment, MainFragment::class.java.simpleName)
+        fragmentTransaction.add(
+            R.id.fcv_container,
+            mainFragment,
+            MainFragment::class.java.simpleName
+        )
         fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
         fragmentTransaction.commit()
     }
 
     override fun actionOnStart() {
-/*        val timerReceiverFilter = IntentFilter().apply {
-            addAction(START_BACKGROUND_TIMER)
-        }
-        registerReceiver(timerReceiver, timerReceiverFilter)*/
+        if (sharedPreferences.contains(CURRENT_TIME_MILLIS)) {
+            val savedTime = sharedPreferences.getLong(CURRENT_TIME_MILLIS, -1)
+            val currentTime = System.currentTimeMillis()
+            if ((currentTime - savedTime) <= 10000L) {
+                try {
+                    drinkOfTheDay = viewModel.getDrinkOfTheDay()
+                } catch (ex: NoSuchElementException) {
 
+                }
+                val fragment =
+                    supportFragmentManager.findFragmentByTag(ResumeAppBottomSheetDialogFragment::class.java.simpleName)
+                if (fragment !is ResumeAppBottomSheetDialogFragment) {
+                    ResumeAppBottomSheetDialogFragment.newInstance {
+                        if (drinkOfTheDay != null) {
+                            titleText = getString(R.string.resume_app_dialog_title)
+                            descriptionText = getString(R.string.resume_app_dialog_description) + "${drinkOfTheDay!!.getStrDrink()}"
+                            rightButtonText = getString(R.string.resume_app_dialog_right_button)
+                            leftButtonText = getString(R.string.resume_app_dialog_left_button)
+                        }
+                    }.show(
+                        supportFragmentManager,
+                        ResumeAppBottomSheetDialogFragment::class.java.simpleName
+                    )
+                }
+            }
+        }
     }
 
     override fun actionOnStop() {
-/*        startService(Intent(this, TimerService::class.java))
-        unregisterReceiver(timerReceiver)*/
+        val editor = sharedPreferences.edit()
+        editor.putLong(CURRENT_TIME_MILLIS, System.currentTimeMillis())
+        editor.apply()
     }
 
     override fun onClick(v: View?) {
+
         // відкриває деталізацію коктейлю
         if (v is CardView) {
             val view = v.findViewById<TextView>(R.id.tv_drink_name)
@@ -200,7 +231,8 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
                     // створює pinned shortcut
                     R.id.menu_drink_pin_shortcut -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val textViewDrinkName = v?.findViewById<TextView>(R.id.tv_drink_name)
+                            val textViewDrinkName =
+                                v?.findViewById<TextView>(R.id.tv_drink_name)
                             val drinkName = textViewDrinkName?.text ?: ""
                             val drink = viewModel.findDrinkByName(drinkName.toString())
                                 ?: return@setOnMenuItemClickListener false
@@ -209,8 +241,10 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
                                     this@MainActivity,
                                     ShortcutManager::class.java
                                 )
-                            val drinkImageView = v!!.findViewById<ImageView>(R.id.iv_drink_image)
-                            val drinkAdaptiveIcon = drinkImageView.drawToBitmap().toAdaptiveIcon()
+                            val drinkImageView =
+                                v!!.findViewById<ImageView>(R.id.iv_drink_image)
+                            val drinkAdaptiveIcon =
+                                drinkImageView.drawToBitmap().toAdaptiveIcon()
                             val shortcut =
                                 ShortcutInfo.Builder(this@MainActivity, drink.getStrDrink())
                                     .setShortLabel(drink.getStrDrink()!!)
@@ -282,32 +316,6 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
         return isExist
     }
 
-    override fun onReceive() {
-        stopService(Intent(this, TimerService::class.java))
-        try {
-            drinkOfTheDay = viewModel.getDrinkOfTheDay()
-        } catch (ex: NoSuchElementException) {
-
-        }
-        val fragment = supportFragmentManager.findFragmentByTag(RegularBottomSheetDialogFragment::class.java.simpleName)
-        if (fragment !is RegularBottomSheetDialogFragment ) {
-            RegularBottomSheetDialogFragment.newInstance {
-                if (drinkOfTheDay == null) {
-                    titleText = "З поверненням"
-                } else {
-                    titleText = "З поверненням"
-                    descriptionText = "Пропонуємо переглянути напій дня: ${drinkOfTheDay!!.getStrDrink()}"
-                    rightButtonText = "Переглянути"
-                    leftButtonText = "Ні, дякую"
-                }
-            }.show(
-                supportFragmentManager,
-                RegularBottomSheetDialogFragment::class.java.simpleName
-            )
-        }
-
-    }
-
     override fun onBottomSheetDialogFragmentClick(
         dialog: DialogFragment,
         buttonType: DialogButton,
@@ -315,8 +323,8 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
         data: Any?
     ) {
         super.onBottomSheetDialogFragmentClick(dialog, buttonType, type, data)
-/*        when (type) {
-            RegularDialogType -> {
+        when (type) {
+            ResumeApplicationDialogType -> {
                 when (buttonType) {
                     RightDialogButton -> {
                         val intent = Intent(this, DrinkDetailActivity::class.java)
@@ -327,19 +335,6 @@ class MainActivity : BaseActivity<MainActivityViewModel>(), TimerReceiver.OnTime
                         dialog.dismiss()
                     }
                 }
-            }
-        }*/
-    }
-
-    override fun onBottomSheetDialogFragmentDismiss(
-        dialog: DialogFragment,
-        type: DialogType<DialogButton>,
-        data: Any?
-    ) {
-        super.onBottomSheetDialogFragmentDismiss(dialog, type, data)
-        when (type) {
-            RegularDialogType -> {
-/*                unregisterReceiver(timerReceiver)*/
             }
         }
     }

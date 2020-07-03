@@ -12,14 +12,14 @@ import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.ui.base.ItemListDialogButton
 import com.ikvych.cocktail.ui.base.ListDialogButton
-import com.ikvych.cocktail.ui.base.CategoryDrinkType
+import com.ikvych.cocktail.ui.base.CategoryDrinkDialogType
 import com.ikvych.cocktail.ui.base.ListBaseDialogFragment
 
 
 class FilterDrinkCategoryDialogFragment :
-    ListBaseDialogFragment<CategoryDrinkFilter?, ListDialogButton, CategoryDrinkType>() {
+    ListBaseDialogFragment<CategoryDrinkFilter?, ListDialogButton, CategoryDrinkDialogType>() {
 
-    override val dialogType: CategoryDrinkType = CategoryDrinkType
+    override val dialogType: CategoryDrinkDialogType = CategoryDrinkDialogType
     override var data: CategoryDrinkFilter? = CategoryDrinkFilter.NONE
     private val selectedAlcoholDrinkFilter: CategoryDrinkFilter? = null
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()

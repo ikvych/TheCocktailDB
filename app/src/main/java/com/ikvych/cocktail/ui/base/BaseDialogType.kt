@@ -2,8 +2,9 @@ package com.ikvych.cocktail.ui.base
 
 sealed class DialogType<out ButtonTypeParent: DialogButton>
 object RegularDialogType: DialogType<RegularDialogButton>()
+object ResumeApplicationDialogType: DialogType<RegularDialogButton>()
 object NotificationDialogType: DialogType<SingleDialogButton>()
-object AlcoholDrinkType: DialogType<ListDialogButton>()
-object CategoryDrinkType: DialogType<ListDialogButton>()
-object IngredientDrinkType: DialogType<ListDialogButton>()
-object SortDrinkDrinkType: DialogType<ListDialogButton>()
+object AlcoholDrinkDialogType: DialogType<ListDialogButton>()
+object CategoryDrinkDialogType: DialogType<ListDialogButton>()
+object IngredientDrinkDialogType: DialogType<ListDialogButton>()
+object SortDrinkDrinkDialogType: DialogType<ListDialogButton>()

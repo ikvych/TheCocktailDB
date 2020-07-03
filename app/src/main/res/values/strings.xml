@@ -48,33 +48,43 @@
     <string name="profile_show_hide_main_navigation_bar_titles">Show/Hide Main Navigation Bar Titles</string>
     <!--#endregion-->
 
-    <!--#region FilterFragment-->
-    <string name="filter_fragment_result_button">To result</string>
-    <!--#endregion-->
-
-
-    <string name="alcoholic">Alcoholic</string>
-    <string name="non_alcoholic">Non alcoholic</string>
-    <string name="optional_alcoholic">Optional alcohol</string>
-
-
+    <!--#region MainFragment TabLayout-->
     <string name="main_tab_layout_history_tab">History</string>
     <string name="main_tab_layout_favorite_tab">Favorite</string>
+    <!--#endregion-->
+
+    <!--#region Pop-up menu-->
     <string name="remove">Remove</string>
     <string name="quick_preview">Quick Preview</string>
     <string name="add_favorite">Add Favorite</string>
     <string name="open">Open</string>
     <string name="remove_favorite">Remove favorite</string>
     <string name="pin_shortcut">Pin shortcut</string>
-    <string name="menu_main_fragment_title">Main</string>
-    <string name="menu_profile_fragment_title">Profile</string>
+    <!--#endregion-->
 
-   <!-- bottom sheet dialog strings-->
-    <string name="content_description_return_button">Return button</string>
-    <string name="content_description_sort_history">Sort history</string>
-    <string name="content_description_custom_button">Custom button</string>
-    <string name="tv_filter_fragment_alcohol_filter">Alcohol Filter</string>
-    <string name="tv_filter_fragment_category_filter">Category Filter</string>
-    <string name="tv_filter_fragment_ingredient_filter">Ingredient Filter</string>
+    <!--#region MainActivity BottomNavigationView-->
+    <string name="menu_main_activity_title">Main</string>
+    <string name="menu_profile_activity_title">Profile</string>
+    <!--#endregion-->
+
+   <!--#region FilterFragment-->
+    <string name="filter_fragment_alcohol_filter_button">Alcohol Filter</string>
+    <string name="filter_fragment_category_filter_button">Category Filter</string>
+    <string name="filter_fragment_ingredient_filter_button">Ingredient Filter</string>
+    <string name="filter_fragment_result_button">To result</string>
+    <!--#endregion-->
+
+    <!--#region FilterFragment AlcoholFiltersType-->
+    <string name="filter_fragment_alcoholic_type">Alcoholic</string>
+    <string name="filter_fragment_non_alcoholic_type">Non alcoholic</string>
+    <string name="filter_fragment_optional_alcoholic_type">Optional alcohol</string>
+    <!--#endregion-->
+
+    <!--#region MainActivity DrinkOfTheDay Dialog-->
+    <string name="resume_app_dialog_title">З поверненням</string>
+    <string name="resume_app_dialog_description">Пропонуємо переглянути напій дня: </string>
+    <string name="resume_app_dialog_right_button">Переглянути</string>
+    <string name="resume_app_dialog_left_button">Ні, дякую</string>
+    <!--#endregion-->
 
 </resources>

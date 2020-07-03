@@ -58,7 +58,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="4"
-                    android:text="@string/tv_filter_fragment_alcohol_filter"
+                    android:text="@string/filter_fragment_alcohol_filter_button"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
@@ -95,7 +95,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="4"
-                    android:text="@string/tv_filter_fragment_category_filter"
+                    android:text="@string/filter_fragment_category_filter_button"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
@@ -131,7 +131,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="4"
-                    android:text="@string/tv_filter_fragment_ingredient_filter"
+                    android:text="@string/filter_fragment_ingredient_filter_button"
                     android:textAlignment="center"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 

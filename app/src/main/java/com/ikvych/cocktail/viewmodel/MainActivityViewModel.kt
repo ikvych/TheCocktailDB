@@ -13,13 +13,7 @@ class MainActivityViewModel(
     application: Application
 ) : BaseViewModel(application) {
 
-    val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getDrinkDbLiveData()
     val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData()
-
-    fun getAllDrinksFromDb(): List<Drink> {
-        val drinkApiService = drinksLiveData.value
-        return drinkApiService ?: emptyList()
-    }
 
     fun findDrinkByName(drinkName: String): Drink? {
         return drinkRepository.findDrinkByName(drinkName)
@@ -37,7 +31,7 @@ class MainActivityViewModel(
 
         var drinkOfTheDay = drinkRepository.findDrinkOfTheDay(stringDate)
         if (drinkOfTheDay == null) {
-            val allDrinks = drinksLiveData.value
+            val allDrinks = drinkRepository.getAllDrinksFromDb()
             if (allDrinks.isNullOrEmpty()) {
                 return null
             } else {

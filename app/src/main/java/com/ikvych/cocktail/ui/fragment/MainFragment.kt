@@ -179,7 +179,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         data: Any?
     ) {
         when (type) {
-            SortDrinkDrinkType -> {
+            SortDrinkDrinkDialogType -> {
                 when (buttonType) {
                     ItemListDialogButton -> {
                         viewModel.sortLiveData.value = data as SortDrinkType

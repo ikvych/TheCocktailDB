@@ -16,9 +16,9 @@ import com.ikvych.cocktail.ui.base.*
 
 
 class FilterDrinkIngredientDialogFragment :
-    ListBaseDialogFragment<IngredientDrinkFilter?, ListDialogButton, IngredientDrinkType>() {
+    ListBaseDialogFragment<IngredientDrinkFilter?, ListDialogButton, IngredientDrinkDialogType>() {
 
-    override val dialogType: IngredientDrinkType = IngredientDrinkType
+    override val dialogType: IngredientDrinkDialogType = IngredientDrinkDialogType
     override var data: IngredientDrinkFilter? = IngredientDrinkFilter.NONE
     private val selectedAlcoholDrinkFilter: IngredientDrinkFilter? = null
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()

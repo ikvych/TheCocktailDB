@@ -15,9 +15,9 @@ import com.ikvych.cocktail.ui.base.*
 
 
 class SortDrinkDialogFragmentList :
-    ListBaseDialogFragment<SortDrinkType?, ListDialogButton, SortDrinkDrinkType>() {
+    ListBaseDialogFragment<SortDrinkType?, ListDialogButton, SortDrinkDrinkDialogType>() {
 
-    override val dialogType: SortDrinkDrinkType = SortDrinkDrinkType
+    override val dialogType: SortDrinkDrinkDialogType = SortDrinkDrinkDialogType
     override var data: SortDrinkType? = SortDrinkType.RECENT
 
     private val selectedAlcoholDrinkFilter: AlcoholDrinkFilter? = null

@@ -3,6 +3,7 @@ package com.ikvych.cocktail.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.os.PersistableBundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -23,6 +24,9 @@ import com.ikvych.cocktail.viewmodel.AuthViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import java.util.regex.Pattern
 
+
+const val EXTRA_KEY_LOGIN = "EXTRA_KEY_LOGIN"
+const val EXTRA_KEY_PASSWORD = "EXTRA_KEY_PASSWORD"
 
 class AuthActivity : BaseActivity<AuthViewModel>(),
     LinerLayoutWithKeyboardListener.KeyBoardListener {
@@ -47,6 +51,12 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
 
     private lateinit var inputMethodManager: InputMethodManager
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(EXTRA_KEY_LOGIN, textInputEditLogin.text.toString())
+        outState.putString(EXTRA_KEY_PASSWORD, textInputEditPassword.text.toString())
+    }
+
     override fun configureView(savedInstanceState: Bundle?) {
         val keyboardObserver =
             findViewById<LinerLayoutWithKeyboardListener>(R.id.llwkl_auth_container)
@@ -59,11 +69,17 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
         loginTextWatcher = LoginTextWatcher()
         passwordTextWatcher = PasswordTextWatcher()
 
+
         textInputEditLogin = findViewById(R.id.tiet_auth_login)
         textInputEditLogin.filters = arrayOf(inputFilter)
 
         textInputEditPassword = findViewById(R.id.tiet_auth_password)
         textInputEditPassword.filters = arrayOf(inputFilter)
+
+        if (savedInstanceState != null) {
+            textInputEditLogin.setText(savedInstanceState.getString(EXTRA_KEY_LOGIN))
+            textInputEditPassword.setText(savedInstanceState.getString(EXTRA_KEY_PASSWORD))
+        }
 
         submitButton = findViewById(R.id.b_auth_login)
 
@@ -74,6 +90,7 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
             ) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+/*                finish()*/
             } else {
                 if (!viewModel.isLoginDataValidLiveData.value!!.second) {
                     textInputEditPassword.requestFocus()

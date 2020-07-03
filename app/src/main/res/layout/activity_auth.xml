@@ -36,7 +36,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/color_primary"
-                android:hint="@string/auth_login_tint"
+                android:hint="@string/auth_login_hint"
+                android:saveEnabled="false"
                 android:inputType="textPersonName"
                 android:textCursorDrawable="@drawable/cursor_shape" />
 

@@ -1,8 +1,10 @@
 package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
+import android.content.res.Resources
 import android.text.SpannableString
 import android.text.style.ImageSpan
+import android.util.TypedValue
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
@@ -159,8 +161,7 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
         object : MediatorLiveData<SpannableString>() {
             init {
                 val src = "Знайдено: h @, f %"
-                val historyIndexDrw = src.indexOf("@")
-                val favoriteIndexDrw = src.indexOf("%")
+
                 val historyDrawable = ContextCompat.getDrawable(
                     application,
                     com.ikvych.cocktail.R.drawable.ic_drink_history
@@ -169,8 +170,11 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
                     application,
                     com.ikvych.cocktail.R.drawable.ic_drink_favorite
                 )
-                historyDrawable!!.setBounds(0, 0, 60, 60)
-                favoriteDrawable!!.setBounds(0, 0, 60, 60)
+
+                //convert sp into px
+                val drawableSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16F, Resources.getSystem().displayMetrics).toInt()
+                historyDrawable!!.setBounds(0, 0, drawableSize, drawableSize)
+                favoriteDrawable!!.setBounds(0, 0, drawableSize, drawableSize)
 
                 val emptySearch = "Нічого не знайдено"
 
@@ -179,23 +183,21 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
                         value = SpannableString(emptySearch)
                     } else {
                         var currentResult = src.replace("h", it.size.toString())
-                        currentResult =
-                            currentResult.replace(
-                                "f",
-                                filteredFavoriteDrinksLiveData.value!!.size.toString()
-                            )
+                        currentResult = currentResult.replace("f", filteredFavoriteDrinksLiveData.value!!.size.toString())
+                        val historyIndexDrw = currentResult.indexOf("@")
+                        val favoriteIndexDrw = currentResult.indexOf("%")
                         val currentSpannable = SpannableString(currentResult)
                         currentSpannable.setSpan(
                             ImageSpan(historyDrawable),
                             historyIndexDrw,
                             historyIndexDrw + 1,
-                            ImageSpan.ALIGN_BASELINE
+                            ImageSpan.ALIGN_BOTTOM
                         )
                         currentSpannable.setSpan(
                             ImageSpan(favoriteDrawable),
                             favoriteIndexDrw,
                             favoriteIndexDrw + 1,
-                            ImageSpan.ALIGN_BASELINE
+                            ImageSpan.ALIGN_BOTTOM
                         )
                         value = currentSpannable
                     }

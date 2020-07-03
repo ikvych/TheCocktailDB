@@ -106,7 +106,7 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
         }
         parentViewModel.allFilteredLiveData.observe(this, Observer {
             if (parentViewModel.isFiltersPresent()) {
-                val snackBar = Snackbar.make(coordinator_filter_fragment, it, Snackbar.LENGTH_SHORT)
+                val snackBar = Snackbar.make(coordinator_fragment_filter, it, Snackbar.LENGTH_SHORT)
                 if (parentViewModel.isUndoEnabled()) {
                     snackBar.setAction("Undo") {
                         parentViewModel.filtersLiveData.value =

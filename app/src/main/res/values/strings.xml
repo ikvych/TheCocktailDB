@@ -10,10 +10,11 @@
     <string name="all_accept_button">Accept</string>
     <string name="all_reset_button">Reset</string>
     <string name="all_cancel_button">Cancel</string>
+    <string name="all_ok_button">OK</string>
     <!--#endregion-->
 
     <string name="info">info</string>
-    <string name="toast_action_view">ПЕРЕГЛЯНУТИ</string>
+    <string name="toast_action_view">Переглянути</string>
     <string name="text_on_boot_completed">Смакуйте маргаритку із відчуттям міри. І надіємося, що Ви не пілот під  час польоту</string>
 
     <!--#region SearchActivity-->
@@ -33,8 +34,9 @@
     <string name="auth_login_button">Login</string>
     <string name="auth_password_tint">Password</string>
     <string name="auth_login_hint">Login</string>
-    <string name="auth_invalid_password">Пароль повинний містити більше 6 символів, одну літеру і одну цифру</string>
-    <string name="auth_invalid_login">Логін повинний містити більше 6 символів</string>
+    <string name="auth_invalid_data">Невірні логін або пароль!</string>
+    <string name="auth_invalid_password">Пароль повинний містити більше 6 символів, одну літеру і одну цифру!</string>
+    <string name="auth_invalid_login">Логін повинний містити більше 6 символів!</string>
     <!--#endregion-->
 
     <string name="dialog_sort_title">Sort By</string>

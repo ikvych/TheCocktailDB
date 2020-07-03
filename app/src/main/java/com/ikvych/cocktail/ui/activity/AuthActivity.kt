@@ -3,7 +3,6 @@ package com.ikvych.cocktail.ui.activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.text.Editable
 import android.text.InputFilter
 import android.text.TextWatcher
@@ -22,7 +21,6 @@ import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.ErrorAuthDialogFragment
 import com.ikvych.cocktail.viewmodel.AuthViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
-import java.util.regex.Pattern
 
 
 const val EXTRA_KEY_LOGIN = "EXTRA_KEY_LOGIN"
@@ -33,9 +31,6 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
 
     override var contentLayoutResId: Int = R.layout.activity_auth
     override val viewModel: AuthViewModel by viewModels()
-
-/*    private lateinit var loginErrorMessage: String
-    private lateinit var passwordErrorMessage: String*/
 
     private var loginTextWatcher: TextWatcher? = null
     private var passwordTextWatcher: TextWatcher? = null
@@ -85,22 +80,24 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
 
         submitButton.setOnClickListener {
             closeKeyboard()
-            if (viewModel.isLoginDataValidLiveData.value!!.first &&
-                viewModel.isLoginDataValidLiveData.value!!.second
+
+            if (viewModel.isLoginDataMatchPatternLiveData.value!!.first &&
+                viewModel.isLoginDataMatchPatternLiveData.value!!.second &&
+                viewModel.isLoginDataValidLiveData.value!!
             ) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-/*                finish()*/
+                finish()
             } else {
-                if (!viewModel.isLoginDataValidLiveData.value!!.second) {
+                if (!viewModel.isLoginDataMatchPatternLiveData.value!!.second) {
                     textInputEditPassword.requestFocus()
                 }
-                if (!viewModel.isLoginDataValidLiveData.value!!.first) {
+                if (!viewModel.isLoginDataMatchPatternLiveData.value!!.first) {
                     textInputEditLogin.requestFocus()
                 }
                 ErrorAuthDialogFragment.newInstance() {
-                    titleText = "Invalid data"
-                    leftButtonText = "Ok"
+                    titleText = getString(R.string.auth_invalid_data)
+                    leftButtonText = getString(R.string.all_ok_button)
                     descriptionText = viewModel.errorMessageViewModel.value!!
                 }.show(supportFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
             }
@@ -109,11 +106,9 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
         textInputEditLogin.addTextChangedListener(loginTextWatcher)
         textInputEditPassword.addTextChangedListener(passwordTextWatcher)
 
-/*        loginErrorMessage = resources.getString(R.string.auth_invalid_login)
-        passwordErrorMessage = resources.getString(R.string.auth_invalid_password)*/
-
-        viewModel.isLoginDataValidLiveData.observe(this, Observer { })
+        viewModel.isLoginDataMatchPatternLiveData.observe(this, Observer { })
         viewModel.errorMessageViewModel.observe(this, Observer { })
+        viewModel.isLoginDataValidLiveData.observe(this, Observer { })
 
         textInputEditLogin.requestFocus()
     }
@@ -153,7 +148,6 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
     private fun closeKeyboard() {
         val view: View = this.currentFocus ?: return
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-        view.clearFocus()
     }
 
     override fun onSoftKeyboardShown(isShowing: Boolean) {

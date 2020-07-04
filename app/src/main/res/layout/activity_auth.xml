@@ -37,6 +37,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/color_primary"
                 android:hint="@string/auth_login_hint"
+                android:text="123qweasd"
                 android:saveEnabled="false"
                 android:inputType="textPersonName"
                 android:textCursorDrawable="@drawable/cursor_shape" />
@@ -57,6 +58,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/color_primary"
                 android:hint="@string/auth_password_tint"
+                android:text="123qweasd"
                 android:inputType="textPassword"
                 android:textCursorDrawable="@drawable/cursor_shape" />
 

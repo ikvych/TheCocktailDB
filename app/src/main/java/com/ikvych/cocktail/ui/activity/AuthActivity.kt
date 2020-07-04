@@ -71,6 +71,9 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
         textInputEditPassword = findViewById(R.id.tiet_auth_password)
         textInputEditPassword.filters = arrayOf(inputFilter)
 
+        viewModel.loginInputLiveData.value = textInputEditLogin.text.toString()
+        viewModel.passwordInputLiveData.value = textInputEditPassword.text.toString()
+
         if (savedInstanceState != null) {
             textInputEditLogin.setText(savedInstanceState.getString(EXTRA_KEY_LOGIN))
             textInputEditPassword.setText(savedInstanceState.getString(EXTRA_KEY_PASSWORD))
@@ -96,7 +99,7 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
                     textInputEditLogin.requestFocus()
                 }
                 ErrorAuthDialogFragment.newInstance {
-                    titleText = getString(R.string.auth_invalid_data)
+                    titleText = getString(R.string.auth_invalid_title)
                     leftButtonText = getString(R.string.all_ok_button)
                     descriptionText = viewModel.errorMessageViewModel.value!!
                 }.show(supportFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
@@ -112,6 +115,7 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
         viewModel.isLoginDataValidLiveData.observe(this, Observer { })
 
         textInputEditLogin.requestFocus()
+
     }
 
     inner class LoginTextWatcher : AuthTextWatcher() {

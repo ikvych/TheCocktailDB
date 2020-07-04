@@ -1,8 +1,6 @@
 package com.ikvych.cocktail.ui.activity
 
-import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.os.Build
@@ -23,36 +21,26 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
-import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.ui.base.*
-import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
-const val MAIN_ACTIVITY_SHARED_PREFERENCE = "MAIN_ACTIVITY_SHARED_PREFERENCE"
-const val CURRENT_TIME_MILLIS = "CURRENT_TIME_MILLIS"
-
-class MainActivity : BaseActivity<MainActivityViewModel>(),
-    ApplicationLifeCycleObserver.OnLifecycleObserverListener {
+class MainActivity : BaseActivity<MainActivityViewModel>() {
 
     override var contentLayoutResId: Int = R.layout.activity_main
     override val viewModel: MainActivityViewModel by viewModels()
 
-    private lateinit var sharedPreferences: SharedPreferences
-
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mainFragment: MainFragment
     private lateinit var profileFragment: ProfileFragment
-    private var drinkOfTheDay: Drink? = null
 
     override fun onBackPressed() {
         super.onBackPressed()
         // Відстежує активний елементи BottomNavigationView і переключає на відповідний таб
 
-        //Отримує останній номер транзакції в бекстеку
+        // Отримує останній номер транзакції в бекстеку
         val lastIndex = supportFragmentManager.backStackEntryCount
         val lastEntry: FragmentManager.BackStackEntry?
         //Якщо lastIndex != 0 отже у стеку ще є елементи
@@ -79,16 +67,27 @@ class MainActivity : BaseActivity<MainActivityViewModel>(),
         }
     }
 
-    lateinit var lifecycleObserver: ApplicationLifeCycleObserver
-
     override fun configureView(savedInstanceState: Bundle?) {
-        sharedPreferences = getSharedPreferences(
-            MAIN_ACTIVITY_SHARED_PREFERENCE,
-            Context.MODE_PRIVATE
-        )
-
-        lifecycleObserver = ApplicationLifeCycleObserver(this, this, sharedPreferences)
-        ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
+        //Відслідковуємо напій дня, якщо він не дорівнює null значить потрібно показати діалог
+        viewModel.drinkOfTheDayLiveData.observe(this, Observer {
+            if (it != null) {
+                //Якщо діалог фрагмент не дорівнює null значить попердній фрагмент ще не закрили і показувати новий не потрібно
+                val dialogFragment =
+                    supportFragmentManager.findFragmentByTag(ResumeAppBottomSheetDialogFragment::class.java.simpleName)
+                if (dialogFragment !is ResumeAppBottomSheetDialogFragment) {
+                    ResumeAppBottomSheetDialogFragment.newInstance {
+                        titleText = getString(R.string.resume_app_dialog_title)
+                        descriptionText =
+                            getString(R.string.resume_app_dialog_description) + "${it.getStrDrink()}"
+                        rightButtonText = getString(R.string.resume_app_dialog_right_button)
+                        leftButtonText = getString(R.string.resume_app_dialog_left_button)
+                    }.show(
+                        supportFragmentManager,
+                        ResumeAppBottomSheetDialogFragment::class.java.simpleName
+                    )
+                }
+            }
+        })
 
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
             override fun onChanged(t: Boolean?) {
@@ -159,32 +158,6 @@ class MainActivity : BaseActivity<MainActivityViewModel>(),
         )
         fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
         fragmentTransaction.commit()
-    }
-
-    override fun onDestroy() {
-        ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
-        super.onDestroy()
-    }
-
-
-    override fun shouldShowDialog() {
-        val fragment =
-            supportFragmentManager.findFragmentByTag(ResumeAppBottomSheetDialogFragment::class.java.simpleName)
-        if (fragment !is ResumeAppBottomSheetDialogFragment) {
-            drinkOfTheDay = viewModel.getDrinkOfTheDay()
-            ResumeAppBottomSheetDialogFragment.newInstance {
-                if (drinkOfTheDay != null) {
-                    titleText = getString(R.string.resume_app_dialog_title)
-                    descriptionText =
-                        getString(R.string.resume_app_dialog_description) + "${drinkOfTheDay!!.getStrDrink()}"
-                    rightButtonText = getString(R.string.resume_app_dialog_right_button)
-                    leftButtonText = getString(R.string.resume_app_dialog_left_button)
-                }
-            }.show(
-                supportFragmentManager,
-                ResumeAppBottomSheetDialogFragment::class.java.simpleName
-            )
-        }
     }
 
     override fun onClick(v: View?) {
@@ -329,7 +302,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>(),
                 when (buttonType) {
                     RightDialogButton -> {
                         val intent = Intent(this, DrinkDetailActivity::class.java)
-                        intent.putExtra(DRINK, drinkOfTheDay)
+                        intent.putExtra(DRINK, viewModel.drinkOfTheDayLiveData.value)
                         startActivity(intent)
                     }
                     LeftDialogButton -> {

@@ -22,6 +22,10 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
     val isKeyboardShown: MutableLiveData<Boolean> = MutableLiveData()
     val loginInputLiveData: MutableLiveData<String?> = MutableLiveData()
     val passwordInputLiveData: MutableLiveData<String?> = MutableLiveData()
+    init {
+        loginInputLiveData.value = correctLogin
+        passwordInputLiveData.value = correctPassword
+    }
     //відслідковує чи введені логін і пароль відповідають паттернам логіну і пароля
     //liveData містить в собі пару Boolean значень, перше відповідає чи валідний логін,
     // друге відповідає чи валідний пароль

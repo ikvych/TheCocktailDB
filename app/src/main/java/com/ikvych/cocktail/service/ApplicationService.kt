@@ -14,6 +14,8 @@ import com.ikvych.cocktail.ui.activity.SplashActivity
 
 class ApplicationService : JobIntentService() {
 
+    private var shouldStop: Boolean = false
+
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         val isBootCompleted = intent?.hasExtra(BOOT_COMPLETED) ?: false
         Log.d("MyLog", "On Start Command")
@@ -36,6 +38,9 @@ class ApplicationService : JobIntentService() {
         try {
             Log.d("MyLog", "Thread fall asleep")
             for (i in 0..2) {
+                if (shouldStop) {
+                    return@onHandleWork
+                }
                 Thread.sleep(1000)
                 Log.d("MyLog", "Thread sleep $i second")
             }
@@ -61,6 +66,11 @@ class ApplicationService : JobIntentService() {
                 }
             }
         }
+    }
+
+    override fun onDestroy() {
+        shouldStop = true
+        super.onDestroy()
     }
 
 }

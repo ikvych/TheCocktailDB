@@ -11,16 +11,17 @@ import com.ikvych.cocktail.adapter.list.base.BaseAdapter
 import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
 import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
+import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.ui.base.*
 
 
 class FilterDrinkIngredientDialogFragment :
-    ListBaseDialogFragment<IngredientDrinkFilter?, ListDialogButton, IngredientDrinkType>() {
+    ListBaseDialogFragment<IngredientDrinkFilter?, ListDialogButton, IngredientDrinkDialogType>() {
 
-    override val dialogType: IngredientDrinkType = IngredientDrinkType
+    override val dialogType: IngredientDrinkDialogType = IngredientDrinkDialogType
     override var data: IngredientDrinkFilter? = IngredientDrinkFilter.NONE
-    private val selectedAlcoholDrinkFilter: IngredientDrinkFilter? = null
+    private var selectedIngredientDrinkFilter: IngredientDrinkFilter? = IngredientDrinkFilter.NONE
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
     override val listAdapter = SortDrinkListAdapter()
 
@@ -34,6 +35,8 @@ class FilterDrinkIngredientDialogFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dialogBuilder = requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
+        val ingredientOrdinal = requireArguments().getInt(EXTRA_KEY_SELECTED_INGREDIENT)
+        selectedIngredientDrinkFilter = IngredientDrinkFilter.values()[ingredientOrdinal]
     }
 
     override var listData: List<IngredientDrinkFilter?> = mutableListOf<IngredientDrinkFilter?>().apply {
@@ -54,7 +57,7 @@ class FilterDrinkIngredientDialogFragment :
             with(holder.itemView as MaterialButton) {
                 text = dialogListDataAdapter.getName(newData[position])
                 tag = newData[position]
-                isSelected = (data == selectedAlcoholDrinkFilter)
+                isEnabled = (tag != selectedIngredientDrinkFilter)
                 setOnClickListener(this@FilterDrinkIngredientDialogFragment)
             }
         }
@@ -85,8 +88,7 @@ class FilterDrinkIngredientDialogFragment :
 
     companion object {
         fun newInstance(
-            ingredientList: List<Ingredient>? = null,
-            selectedAlcohol: AlcoholDrinkFilter? = null
+            selectedIngredient: IngredientDrinkFilter? = null
         ): FilterDrinkIngredientDialogFragment {
             return FilterDrinkIngredientDialogFragment().apply {
                 arguments = bundleOf(
@@ -94,19 +96,12 @@ class FilterDrinkIngredientDialogFragment :
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
                     },
-                    EXTRA_KEY_SELECTED_INGREDIENT to selectedAlcohol
+                    EXTRA_KEY_SELECTED_INGREDIENT to selectedIngredient?.ordinal
                 )
-/*                arguments.also {bundle ->
-                    ingredientList.forEach {
-                        bundle!!.putString(it.id.toString(), it.strIngredient1)
-                    }
-                    bundle!!.putInt(EXTRA_KEY_INGREDIENT_LIST_SIZE, ingredientList.size)
-                }*/
             }
         }
 
         private const val EXTRA_KEY_BUILDER = "EXTRA_KEY_BUILDER"
         private const val EXTRA_KEY_SELECTED_INGREDIENT = "EXTRA_KEY_SELECTED_INGREDIENT"
-        private const val EXTRA_KEY_INGREDIENT_LIST_SIZE = "EXTRA_KEY_INGREDIENT_LIST_SIZE"
     }
 }

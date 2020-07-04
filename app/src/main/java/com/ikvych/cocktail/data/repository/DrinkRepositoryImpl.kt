@@ -78,8 +78,8 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
 
 
     // Methods for work with Db
-    override fun getDrinkDbLiveData(): LiveData<List<Drink>> {
-        return drinkDao.getAllDrinks()
+    override fun getAllDrinksFromDbLiveData(): LiveData<List<Drink>> {
+        return drinkDao.getAllDrinksLiveData()
     }
 
     override fun saveDrinkIntoDb(drink: Drink) {
@@ -88,6 +88,10 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
 
     override fun getAllIngredientFromDb(): List<Ingredient> {
         return FindAllIngredientAsyncTask(drinkDao).execute().get()
+    }
+
+    override fun getAllDrinksFromDb(): List<Drink> {
+        return FindAllDrinksAsyncTask(drinkDao).execute().get()
     }
 
     override fun findDrinkById(drinkId: Long): Drink? {

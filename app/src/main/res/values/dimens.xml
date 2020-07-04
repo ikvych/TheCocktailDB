@@ -49,6 +49,7 @@
     <dimen name="offset_48">48dp</dimen>
     <dimen name="offset_64">64dp</dimen>
     <dimen name="offset_72">72dp</dimen>
+    <dimen name="offset_128">128dp</dimen>
     <!--#endregion-->
 
     <!--#region Button indicator-->

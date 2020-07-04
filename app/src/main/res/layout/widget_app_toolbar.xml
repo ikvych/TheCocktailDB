@@ -13,7 +13,7 @@
         android:src="@drawable/ic_arrow_back"
         android:background="@android:color/transparent"
         android:padding="@dimen/offset_12"
-        android:contentDescription="@string/content_description_return_button"/>
+        android:contentDescription="@string/all_content_description"/>
 
     <FrameLayout
         android:id="@+id/fl_toolbar"
@@ -57,7 +57,7 @@
             android:visibility="gone"
             android:src="@drawable/ic_app_tool_bar_sort"
             android:padding="@dimen/offset_12"
-            android:contentDescription="@string/content_description_sort_history"/>
+            android:contentDescription="@string/all_content_description"/>
 
         <TextView
             android:id="@+id/tv_sort_indicator"
@@ -85,7 +85,7 @@
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
             android:padding="@dimen/offset_12"
-            android:contentDescription="@string/content_description_custom_button"/>
+            android:contentDescription="@string/all_content_description"/>
 
         <TextView
             android:id="@+id/tv_filter_indicator"

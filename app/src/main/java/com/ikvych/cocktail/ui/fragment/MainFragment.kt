@@ -31,7 +31,6 @@ import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
-import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragmentList
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -77,34 +76,29 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         historyFragment = HistoryFragment.newInstance()
         favoriteFragment = FavoriteFragment.newInstance()
 
-        drinkPagerAdapter = DrinkPagerAdapter(
-            arrayListOf(historyFragment, favoriteFragment),
-            this
-        )
         batteryReceiver = BatteryReceiver(this@MainFragment)
-
-        bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance{
-            titleText = "Log Out"
-            descriptionText = "Are you Really want to exit?"
-            leftButtonText = "Cancel"
-            rightButtonText = "Accept"
-        }
-
         viewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { _ ->
-            //stub
+            //trigger to init filteredFavoriteLiveData
         })
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
+
         viewPager = vp2_main_fragment
+
+        drinkPagerAdapter = DrinkPagerAdapter(
+            arrayListOf(historyFragment, favoriteFragment),
+            this
+        )
+
         viewPager.adapter = drinkPagerAdapter
 
         tabLayout = tl_main_fragment
         TabLayoutMediator(tabLayout, viewPager) { tab, position ->
             if (position == 0) {
-                tab.text = getText(R.string.history)
+                tab.text = getText(R.string.main_tab_layout_history_tab)
             } else {
-                tab.text = getText(R.string.favorite)
+                tab.text = getText(R.string.main_tab_layout_favorite_tab)
             }
         }.attach()
 
@@ -140,7 +134,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
 
         sortBtn = atb_fragment_main.sortBtn
         sortBtn.setOnClickListener {
-            SortDrinkDialogFragmentList.newInstance(SortDrinkType.RECENT)
+            SortDrinkDialogFragment.newInstance(viewModel.sortLiveData.value)
                 .show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
         }
         sortIndicator = atb_fragment_main.sortIndicatorView
@@ -186,7 +180,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         data: Any?
     ) {
         when (type) {
-            SortDrinkDrinkType -> {
+            SortDrinkDrinkDialogType -> {
                 when (buttonType) {
                     ItemListDialogButton -> {
                         viewModel.sortLiveData.value = data as SortDrinkType
@@ -233,19 +227,16 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
     override fun onClick(drinkFilter: DrinkFilter) {
         when (drinkFilter.type) {
             DrinkFilterType.CATEGORY -> {
-                viewModel.filtersLiveData.value!![drinkFilter.type] = CategoryDrinkFilter.NONE
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = CategoryDrinkFilter.NONE }
             }
             DrinkFilterType.ALCOHOL -> {
-                viewModel.filtersLiveData.value!![drinkFilter.type] = AlcoholDrinkFilter.NONE
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = AlcoholDrinkFilter.NONE }
             }
             DrinkFilterType.GLASS -> {
 
             }
             DrinkFilterType.INGREDIENT -> {
-                viewModel.filtersLiveData.value!![drinkFilter.type] = IngredientDrinkFilter.NONE
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = IngredientDrinkFilter.NONE }
             }
         }
     }

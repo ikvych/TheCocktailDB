@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.core.os.bundleOf
 import com.google.android.material.button.MaterialButton
 import com.ikvych.cocktail.R
@@ -12,16 +13,16 @@ import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.ui.base.ItemListDialogButton
 import com.ikvych.cocktail.ui.base.ListDialogButton
-import com.ikvych.cocktail.ui.base.CategoryDrinkType
+import com.ikvych.cocktail.ui.base.CategoryDrinkDialogType
 import com.ikvych.cocktail.ui.base.ListBaseDialogFragment
 
 
 class FilterDrinkCategoryDialogFragment :
-    ListBaseDialogFragment<CategoryDrinkFilter?, ListDialogButton, CategoryDrinkType>() {
+    ListBaseDialogFragment<CategoryDrinkFilter?, ListDialogButton, CategoryDrinkDialogType>() {
 
-    override val dialogType: CategoryDrinkType = CategoryDrinkType
+    override val dialogType: CategoryDrinkDialogType = CategoryDrinkDialogType
     override var data: CategoryDrinkFilter? = CategoryDrinkFilter.NONE
-    private val selectedAlcoholDrinkFilter: CategoryDrinkFilter? = null
+    private var selectedCategoryDrinkFilter: CategoryDrinkFilter? = CategoryDrinkFilter.NONE
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
     override val listAdapter = SortDrinkListAdapter()
 
@@ -35,6 +36,8 @@ class FilterDrinkCategoryDialogFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dialogBuilder = requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
+        val categoryOrdinal = requireArguments().getInt(EXTRA_KEY_SELECTED_CATEGORY)
+        selectedCategoryDrinkFilter = CategoryDrinkFilter.values()[categoryOrdinal]
     }
 
     override var listData: List<CategoryDrinkFilter?> = mutableListOf<CategoryDrinkFilter?>().apply {
@@ -42,8 +45,7 @@ class FilterDrinkCategoryDialogFragment :
     }.toList()
 
     inner class SortDrinkListAdapter :
-        BaseAdapter<CategoryDrinkFilter?, BaseViewHolder>(R.layout.item_filter_type),
-        View.OnClickListener {
+        BaseAdapter<CategoryDrinkFilter?, BaseViewHolder>(R.layout.item_filter_type) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
             val itemView: View = LayoutInflater.from(parent.context)
@@ -55,17 +57,9 @@ class FilterDrinkCategoryDialogFragment :
             with(holder.itemView as MaterialButton) {
                 text = dialogListDataAdapter.getName(newData[position])
                 tag = newData[position]
-                isSelected = (data == selectedAlcoholDrinkFilter)
+                isEnabled = (tag != selectedCategoryDrinkFilter)
                 setOnClickListener(this@FilterDrinkCategoryDialogFragment)
             }
-        }
-
-        @Suppress("UNCHECKED_CAST")
-        override fun onClick(v: View?) {
-            /**
-             * be sure to override method [obtainDataForView] and handle your model [Data]
-             */
-            callOnClick(v ?: return, getButtonType(v))
         }
     }
 
@@ -92,7 +86,7 @@ class FilterDrinkCategoryDialogFragment :
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
                     },
-                    EXTRA_KEY_SELECTED_CATEGORY to selectedAlcohol
+                    EXTRA_KEY_SELECTED_CATEGORY to selectedAlcohol?.ordinal
                 )
             }
         }

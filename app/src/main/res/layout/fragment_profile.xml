@@ -1,52 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="#FFFFFF"
-    tools:context=".ui.fragment.ProfileFragment">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <Space
+    <FrameLayout
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+        tools:context=".ui.fragment.ProfileFragment">
 
-    <Button
-        android:id="@+id/b_log_out"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/btn_height_max"
-        android:layout_margin="@dimen/offset_8"
-        android:text="@string/profile_log_out_button"
-        android:layout_gravity="center"
-        android:textColor="#FFFFFF"
-        app:backgroundTint="@color/design_default_color_primary_dark" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"
+            android:orientation="vertical">
 
-    <Button
-        android:id="@+id/b_start_test_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/btn_height_max"
-        android:layout_margin="@dimen/offset_8"
-        android:text="@string/profile_start_test_fragment_button"
-        android:layout_gravity="center"
-        android:textColor="#FFFFFF"
-        app:backgroundTint="@color/design_default_color_primary_dark" />
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-    <CheckBox
-        android:id="@+id/cb_main_nav_bar_title_visibility"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/view_height"
-        android:layout_margin="@dimen/offset_8"
-        android:checked="true"
-        android:text="@string/profile_show_hide_main_navigation_bar_titles"/>
+            <Button
+                android:id="@+id/b_log_out"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height_max"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/offset_8"
+                android:text="@string/profile_log_out_button"
+                android:textColor="#FFFFFF"
+                app:backgroundTint="@color/design_default_color_primary_dark" />
+
+            <Button
+                android:id="@+id/b_start_test_fragment"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_height_max"
+                android:layout_gravity="center"
+                android:layout_margin="@dimen/offset_8"
+                android:text="@string/profile_start_test_fragment_button"
+                android:textColor="#FFFFFF"
+                app:backgroundTint="@color/design_default_color_primary_dark" />
+
+            <CheckBox
+                android:id="@+id/cb_main_nav_bar_title_visibility"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height"
+                android:layout_margin="@dimen/offset_8"
+                android:checked="true"
+                android:text="@string/profile_show_hide_main_navigation_bar_titles" />
 
 
-    <Space
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"/>
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
 
-</LinearLayout>
+        </LinearLayout>
+        <androidx.fragment.app.FragmentContainerView
+            android:id="@+id/fcv_profile_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </FrameLayout>
 </layout>

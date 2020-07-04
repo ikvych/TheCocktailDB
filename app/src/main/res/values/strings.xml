@@ -5,10 +5,16 @@
     <string name="all_empty_history">History is empty</string>
     <string name="all_begin_search">Enter text to start search</string>
     <string name="all_content_description">Image</string>
+    <string name="all_undo_button">Undo</string>
+    <string name="all_none_button">None</string>
+    <string name="all_accept_button">Accept</string>
+    <string name="all_reset_button">Reset</string>
+    <string name="all_cancel_button">Cancel</string>
+    <string name="all_ok_button">OK</string>
     <!--#endregion-->
 
     <string name="info">info</string>
-    <string name="toast_action_view">ПЕРЕГЛЯНУТИ</string>
+    <string name="toast_action_view">Переглянути</string>
     <string name="text_on_boot_completed">Смакуйте маргаритку із відчуттям міри. І надіємося, що Ви не пілот під  час польоту</string>
 
     <!--#region SearchActivity-->
@@ -27,9 +33,11 @@
     <!--#region AuthActivity-->
     <string name="auth_login_button">Login</string>
     <string name="auth_password_tint">Password</string>
-    <string name="auth_login_tint">Login</string>
-    <string name="auth_invalid_password">Пароль повинний містити більше 6 символів, одну літеру і одну цифру</string>
-    <string name="auth_invalid_login">Логін повинний містити більше 6 символів</string>
+    <string name="auth_login_hint">Login</string>
+    <string name="auth_invalid_title">Введені невірні дані!</string>
+    <string name="auth_invalid_data">Невірні логін або пароль!</string>
+    <string name="auth_invalid_password">Пароль повинний містити більше 6 символів, одну літеру і одну цифру!</string>
+    <string name="auth_invalid_login">Логін повинний містити більше 6 символів!</string>
     <!--#endregion-->
 
     <string name="dialog_sort_title">Sort By</string>
@@ -37,43 +45,49 @@
 
     <!--#region ProfileFragment-->
     <string name="profile_log_out_button">Log out</string>
+    <string name="profile_log_out_dialog_title">Log out</string>
+    <string name="profile_log_out_dialog_message">Are you Really want to exit?</string>
     <string name="profile_start_test_fragment_button">Start test fragment</string>
     <string name="profile_show_hide_main_navigation_bar_titles">Show/Hide Main Navigation Bar Titles</string>
     <!--#endregion-->
 
+    <!--#region MainFragment TabLayout-->
+    <string name="main_tab_layout_history_tab">History</string>
+    <string name="main_tab_layout_favorite_tab">Favorite</string>
+    <!--#endregion-->
 
-    <string name="alcoholic">Alcoholic</string>
-    <string name="non_alcoholic">Non alcoholic</string>
-    <string name="optional_alcoholic">Optional alcohol</string>
-    <string name="none">None</string>
-    <string name="accept">Accept</string>
-    <string name="reset">Reset</string>
-
-    <string name="history">History</string>
-    <string name="favorite">Favorite</string>
+    <!--#region Pop-up menu-->
     <string name="remove">Remove</string>
     <string name="quick_preview">Quick Preview</string>
     <string name="add_favorite">Add Favorite</string>
     <string name="open">Open</string>
     <string name="remove_favorite">Remove favorite</string>
     <string name="pin_shortcut">Pin shortcut</string>
-    <string name="menu_main_fragment_title">Main</string>
-    <string name="menu_profile_fragment_title">Profile</string>
+    <!--#endregion-->
 
-   <!-- bottom sheet dialog strings-->
-    <string name="bottom_sheet_option_camera">Use Camera</string>
-    <string name="bottom_sheet_option_gallery">Upload from Gallery</string>
-    <string name="bottom_sheet_option_heading">Add Photo</string>
-    <string name="bottom_sheet_option_remove_photo">Remove Photo</string>
-    <string name="content_description_return_button">Return button</string>
-    <string name="content_description_sort_history">Sort history</string>
-    <string name="content_description_custom_button">Custom button</string>
-    <string name="tv_filter_fragment_alcohol_filter">Alcohol Filter</string>
-    <string name="tv_filter_fragment_category_filter">Category Filter</string>
-    <string name="tv_filter_fragment_ingredient_filter">Ingredient Filter</string>
+    <!--#region MainActivity BottomNavigationView-->
+    <string name="menu_main_activity_title">Main</string>
+    <string name="menu_profile_activity_title">Profile</string>
+    <!--#endregion-->
 
+   <!--#region FilterFragment-->
+    <string name="filter_fragment_alcohol_filter_button">Alcohol Filter</string>
+    <string name="filter_fragment_category_filter_button">Category Filter</string>
+    <string name="filter_fragment_ingredient_filter_button">Ingredient Filter</string>
+    <string name="filter_fragment_result_button">To result</string>
+    <!--#endregion-->
 
-    <!--Filter SnackBar Undo button title-->
-    <string name="snack_bar_action_button_undo">Undo</string>
+    <!--#region FilterFragment AlcoholFiltersType-->
+    <string name="filter_fragment_alcoholic_type">Alcoholic</string>
+    <string name="filter_fragment_non_alcoholic_type">Non alcoholic</string>
+    <string name="filter_fragment_optional_alcoholic_type">Optional alcohol</string>
+    <!--#endregion-->
+
+    <!--#region MainActivity DrinkOfTheDay Dialog-->
+    <string name="resume_app_dialog_title">З поверненням</string>
+    <string name="resume_app_dialog_description">Пропонуємо переглянути напій дня: </string>
+    <string name="resume_app_dialog_right_button">Переглянути</string>
+    <string name="resume_app_dialog_left_button">Ні, дякую</string>
+    <!--#endregion-->
 
 </resources>

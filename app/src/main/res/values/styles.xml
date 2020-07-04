@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="Theme.App.Main" parent="Theme.MaterialComponents.Light.NoActionBar">
@@ -19,6 +19,36 @@
         <item name="textAppearanceSubtitle1">@style/AppTextAppearanceSubtitle1</item>
         <item name="textAppearanceHeadline6">@style/AppTextAppearanceHeadline6</item>
         <item name="textAppearanceHeadline4">@style/AppTextAppearanceHeadline4</item>
+
+        <item name="android:popupMenuStyle">@style/Widget.PopupMenu</item>
+        <item name="popupMenuStyle">@style/Widget.PopupMenu</item>
+        <item name="bottomNavigationStyle">@style/Widget.BottomNavigationView</item>
+    </style>
+
+
+
+    <style name="Widget.PopupMenu" parent="">
+        <item name="android:popupBackground" tools:ignore="PrivateResource">@drawable/mtrl_popupmenu_background</item>
+        <item name="android:popupElevation">8dp</item>
+        <item name="overlapAnchor">false</item>
+        <item name="android:dropDownVerticalOffset">1px</item>
+        <item name="fontFamily">?fontProviderAuthority</item>
+        <item name="android:fontFamily">?fontProviderAuthority</item>
+        <item name="android:dropDownHorizontalOffset">-16dp</item>
+        <item name="android:popupAnimationStyle">@style/PopupAnimationStyle</item>
+    </style>
+
+    <style name="PopupAnimationStyle">
+<!--        <item name="android:windowEnterAnimation">@anim/menu_in</item>
+        <item name="android:windowExitAnimation">@anim/menu_out</item>-->
+    </style>
+
+    <style name="Widget.BottomNavigationView" parent="Widget.MaterialComponents.BottomNavigationView">
+        <item name="fontFamily">?fontProviderAuthority</item>
+        <item name="android:fontFamily">?fontProviderAuthority</item>
+        <item name="itemIconTint">@color/design_default_color_error</item>
+        <item name="android:outlineSpotShadowColor" tools:ignore="NewApi">?colorPrimary</item>
+        <item name="android:outlineAmbientShadowColor" tools:ignore="NewApi">?colorPrimary</item>
     </style>
 
     <!--Splash image-->

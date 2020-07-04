@@ -29,10 +29,13 @@ interface DrinkDao {
     @Query("SELECT * FROM drink WHERE str_drink=:drinkName")
     fun findDrinkByName(drinkName: String) : Drink
 
+    @Query("SELECT * FROM drink")
+    fun getAllDrinks() : List<Drink>
+
     @Query("SELECT * FROM ingredient ORDER BY str_ingredient ASC")
     fun getAllIngredients() : List<Ingredient>
 
     @Query("SELECT * FROM drink ORDER BY created DESC")
-    fun getAllDrinks() : LiveData<List<Drink>>
+    fun getAllDrinksLiveData() : LiveData<List<Drink>>
 
 }

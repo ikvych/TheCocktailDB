@@ -7,10 +7,10 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.ui.base.*
 
 
-open class RegularBottomSheetDialogFragment :
-    SimpleBottomSheetBaseDialogFragment<Any, RegularDialogButton, RegularDialogType, SimpleBottomSheetBaseDialogFragment.SimpleBottomSheetDialogBuilder>() {
+class ResumeAppBottomSheetDialogFragment :
+    SimpleBottomSheetBaseDialogFragment<Any, RegularDialogButton, ResumeApplicationDialogType, SimpleBottomSheetBaseDialogFragment.SimpleBottomSheetDialogBuilder>() {
 
-    override val dialogType: RegularDialogType = RegularDialogType
+    override val dialogType: ResumeApplicationDialogType = ResumeApplicationDialogType
 
     override var dialogBuilder: SimpleBottomSheetDialogBuilder = SimpleBottomSheetDialogBuilder()
     override var data: Any? = null
@@ -33,7 +33,7 @@ open class RegularBottomSheetDialogFragment :
     }
 
     companion object {
-        fun newInstance(builder: SimpleBottomSheetDialogBuilder.() -> Unit): RegularBottomSheetDialogFragment {
+        fun newInstance(builder: SimpleBottomSheetDialogBuilder.() -> Unit): ResumeAppBottomSheetDialogFragment {
             return getInstance(builder)
         }
 
@@ -43,8 +43,8 @@ open class RegularBottomSheetDialogFragment :
          */
         fun getInstance(
             builder: SimpleBottomSheetDialogBuilder.() -> Unit
-        ): RegularBottomSheetDialogFragment {
-            val fragment = RegularBottomSheetDialogFragment()
+        ): ResumeAppBottomSheetDialogFragment {
+            val fragment = ResumeAppBottomSheetDialogFragment()
             fragment.arguments = bundleOf(
                 EXTRA_KEY_BUILDER to (SimpleBottomSheetDialogBuilder().apply(builder))
             )

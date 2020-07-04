@@ -24,14 +24,14 @@ import com.ikvych.cocktail.viewmodel.AuthViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 
 
+const val EXTRA_KEY_LOGIN = "EXTRA_KEY_LOGIN"
+const val EXTRA_KEY_PASSWORD = "EXTRA_KEY_PASSWORD"
+
 class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
     LinerLayoutWithKeyboardListener.KeyBoardListener {
 
     override var contentLayoutResId: Int = R.layout.activity_auth
     override val viewModel: AuthViewModel by viewModels()
-
-/*    private lateinit var loginErrorMessage: String
-    private lateinit var passwordErrorMessage: String*/
 
     private var loginTextWatcher: TextWatcher? = null
     private var passwordTextWatcher: TextWatcher? = null
@@ -46,6 +46,12 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
     private val inputFilter: InputFilter = TextInputFilter()
 
     private lateinit var inputMethodManager: InputMethodManager
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putString(EXTRA_KEY_LOGIN, textInputEditLogin.text.toString())
+        outState.putString(EXTRA_KEY_PASSWORD, textInputEditPassword.text.toString())
+    }
 
     override fun configureView(savedInstanceState: Bundle?) {
         val keyboardObserver =
@@ -65,40 +71,51 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
         textInputEditPassword = findViewById(R.id.tiet_auth_password)
         textInputEditPassword.filters = arrayOf(inputFilter)
 
+        viewModel.loginInputLiveData.value = textInputEditLogin.text.toString()
+        viewModel.passwordInputLiveData.value = textInputEditPassword.text.toString()
+
+        if (savedInstanceState != null) {
+            textInputEditLogin.setText(savedInstanceState.getString(EXTRA_KEY_LOGIN))
+            textInputEditPassword.setText(savedInstanceState.getString(EXTRA_KEY_PASSWORD))
+        }
+
         submitButton = findViewById(R.id.b_auth_login)
 
         submitButton.setOnClickListener {
             closeKeyboard()
-            if (viewModel.isLoginDataValidLiveData.value!!.first &&
-                viewModel.isLoginDataValidLiveData.value!!.second
+
+            if (viewModel.isLoginDataMatchPatternLiveData.value!!.first &&
+                viewModel.isLoginDataMatchPatternLiveData.value!!.second &&
+                viewModel.isLoginDataValidLiveData.value!!
             ) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+                finish()
             } else {
-                if (!viewModel.isLoginDataValidLiveData.value!!.second) {
+                if (!viewModel.isLoginDataMatchPatternLiveData.value!!.second) {
                     textInputEditPassword.requestFocus()
                 }
-                if (!viewModel.isLoginDataValidLiveData.value!!.first) {
+                if (!viewModel.isLoginDataMatchPatternLiveData.value!!.first) {
                     textInputEditLogin.requestFocus()
                 }
-                ErrorAuthDialogFragment.newInstance() {
-                    titleText = "Invalid data"
-                    leftButtonText = "Ok"
+                ErrorAuthDialogFragment.newInstance {
+                    titleText = getString(R.string.auth_invalid_title)
+                    leftButtonText = getString(R.string.all_ok_button)
                     descriptionText = viewModel.errorMessageViewModel.value!!
                 }.show(supportFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
+                submitButton.background
             }
         }
 
         textInputEditLogin.addTextChangedListener(loginTextWatcher)
         textInputEditPassword.addTextChangedListener(passwordTextWatcher)
 
-/*        loginErrorMessage = resources.getString(R.string.auth_invalid_login)
-        passwordErrorMessage = resources.getString(R.string.auth_invalid_password)*/
-
-        viewModel.isLoginDataValidLiveData.observe(this, Observer { })
+        viewModel.isLoginDataMatchPatternLiveData.observe(this, Observer { })
         viewModel.errorMessageViewModel.observe(this, Observer { })
+        viewModel.isLoginDataValidLiveData.observe(this, Observer { })
 
         textInputEditLogin.requestFocus()
+
     }
 
     inner class LoginTextWatcher : AuthTextWatcher() {
@@ -136,7 +153,6 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
     private fun closeKeyboard() {
         val view: View = this.currentFocus ?: return
         inputMethodManager.hideSoftInputFromWindow(view.windowToken, 0)
-        view.clearFocus()
     }
 
     override fun onSoftKeyboardShown(isShowing: Boolean) {

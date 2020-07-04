@@ -5,6 +5,14 @@ import com.ikvych.cocktail.data.database.DrinkDao
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.data.entity.Ingredient
 
+class FindAllDrinksAsyncTask(private val drinkDao: DrinkDao) :
+    AsyncTask<Unit, Unit, List<Drink>>() {
+
+    override fun doInBackground(vararg params: Unit?): List<Drink> {
+        return drinkDao.getAllDrinks()
+    }
+}
+
 class FindAllIngredientAsyncTask(private val drinkDao: DrinkDao) :
     AsyncTask<Unit, Unit, List<Ingredient>>() {
 

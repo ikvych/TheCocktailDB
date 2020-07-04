@@ -2,7 +2,9 @@ package com.ikvych.cocktail.ui.base
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
@@ -11,6 +13,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import com.ikvych.cocktail.receiver.FlyModeReceiver
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import java.util.*
 
 
 abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBinding> : AppCompatActivity(),
@@ -27,6 +30,19 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBind
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
+        val locale = Locale("uk")
+        Locale.setDefault(locale)
+        val resources = resources
+        val configuration = resources.configuration
+        configuration.setLocale(locale)
+        configuration.setLayoutDirection(locale)
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N /*24*/) {
+            with(LocaleList(locale)) {
+                LocaleList.setDefault(this)
+                configuration.setLocales(this)
+            }
+        }
+        resources.updateConfiguration(configuration, resources.displayMetrics)
         super.onCreate(savedInstanceState)
         setContentView(contentLayoutResId)
         dataBinding = DataBindingUtil.setContentView(this, contentLayoutResId)

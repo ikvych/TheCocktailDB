@@ -17,7 +17,7 @@ class FavoriteFragment : RecyclerViewFragment<BaseViewModel, FragmentFavoriteBin
     override var contentLayoutResId: Int = R.layout.fragment_favorite
     override val viewModel: BaseViewModel by viewModels()
 
-    lateinit var fragmentView: View
+    private lateinit var fragmentView: View
 
     companion object {
         @JvmStatic

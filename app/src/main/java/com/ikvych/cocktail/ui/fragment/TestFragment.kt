@@ -22,8 +22,8 @@ class TestFragment() : BaseFragment<BaseViewModel, FragmentTestBinding>() {
     override val viewModel: BaseViewModel by viewModels()
 
     lateinit var testTextView: TextView
-    var optionalString: String? = null
-    var arbitraryNumber: Int? = null
+    private var optionalString: String? = null
+    private var arbitraryNumber: Int? = null
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         testTextView = view.findViewById(R.id.tv_test_text)

@@ -27,7 +27,7 @@ import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.receiver.TimerReceiver
 import com.ikvych.cocktail.service.TimerService
 import com.ikvych.cocktail.ui.base.*
-import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
@@ -39,21 +39,23 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(),
     override var contentLayoutResId: Int = R.layout.activity_main
     override val viewModel: MainActivityViewModel by viewModels()
 
-    private lateinit var timerReceiver: TimerReceiver
-
-    private lateinit var serviceTimerIntent: Intent
     private lateinit var bottomNavigationView: BottomNavigationView
     private lateinit var mainFragment: MainFragment
     private lateinit var profileFragment: ProfileFragment
-    private var drinkOfTheDay: Drink? = null
 
     override fun onBackPressed() {
         super.onBackPressed()
         // Відстежує активний елементи BottomNavigationView і переключає на відповідний таб
+
+        // Отримує останній номер транзакції в бекстеку
         val lastIndex = supportFragmentManager.backStackEntryCount
         val lastEntry: FragmentManager.BackStackEntry?
+        //Якщо lastIndex != 0 отже у стеку ще є елементи
         if (lastIndex != 0) {
+            //Отримуємо останню транзакцію у стеку
             lastEntry = supportFragmentManager.getBackStackEntryAt(lastIndex - 1)
+            //Взалежності від імені яке ми давали транзакції при переключенні на іншу вкладку
+            //визначаємо яка таба повинна стати активною
             when (lastEntry.name) {
                 MainFragment::class.java.simpleName -> {
                     val mainMenu = bottomNavigationView.menu[0]
@@ -64,6 +66,8 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(),
                     profileMenu.isChecked = true
                 }
             }
+            //Якщо lastIndex == 0 отже у стеку більше немає елементів а отже ми повернулися на той
+            // з якого починали, в даному випадку MainFragment
         } else {
             val mainMenu = bottomNavigationView.menu[0]
             mainMenu.isChecked = true
@@ -71,11 +75,26 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(),
     }
 
     override fun configureView(savedInstanceState: Bundle?) {
-        timerReceiver = TimerReceiver(this)
-
-        val lifecycleObserver = ApplicationLifeCycleObserver(this)
-        ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
-        serviceTimerIntent = Intent(this, TimerService::class.java)
+        //Відслідковуємо напій дня, якщо він не дорівнює null значить потрібно показати діалог
+        viewModel.drinkOfTheDayLiveData.observe(this, Observer {
+            if (it != null) {
+                //Якщо діалог фрагмент не дорівнює null значить попердній фрагмент ще не закрили і показувати новий не потрібно
+                val dialogFragment =
+                    supportFragmentManager.findFragmentByTag(ResumeAppBottomSheetDialogFragment::class.java.simpleName)
+                if (dialogFragment !is ResumeAppBottomSheetDialogFragment) {
+                    ResumeAppBottomSheetDialogFragment.newInstance {
+                        titleText = getString(R.string.resume_app_dialog_title)
+                        descriptionText =
+                            getString(R.string.resume_app_dialog_description) + "${it.getStrDrink()}"
+                        rightButtonText = getString(R.string.resume_app_dialog_right_button)
+                        leftButtonText = getString(R.string.resume_app_dialog_left_button)
+                    }.show(
+                        supportFragmentManager,
+                        ResumeAppBottomSheetDialogFragment::class.java.simpleName
+                    )
+                }
+            }
+        })
 
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
             override fun onChanged(t: Boolean?) {
@@ -139,25 +158,17 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(),
             ProfileFragment::class.java.simpleName
         )
         fragmentTransaction.hide(profileFragment)
-        fragmentTransaction.add(R.id.fcv_container, mainFragment, MainFragment::class.java.simpleName)
+        fragmentTransaction.add(
+            R.id.fcv_container,
+            mainFragment,
+            MainFragment::class.java.simpleName
+        )
         fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
         fragmentTransaction.commit()
     }
 
-    override fun actionOnStart() {
-/*        val timerReceiverFilter = IntentFilter().apply {
-            addAction(START_BACKGROUND_TIMER)
-        }
-        registerReceiver(timerReceiver, timerReceiverFilter)*/
-
-    }
-
-    override fun actionOnStop() {
-/*        startService(Intent(this, TimerService::class.java))
-        unregisterReceiver(timerReceiver)*/
-    }
-
     override fun onClick(v: View?) {
+
         // відкриває деталізацію коктейлю
         if (v is CardView) {
             val view = v.findViewById<TextView>(R.id.tv_drink_name)
@@ -201,7 +212,8 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(),
                     // створює pinned shortcut
                     R.id.menu_drink_pin_shortcut -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val textViewDrinkName = v?.findViewById<TextView>(R.id.tv_drink_name)
+                            val textViewDrinkName =
+                                v?.findViewById<TextView>(R.id.tv_drink_name)
                             val drinkName = textViewDrinkName?.text ?: ""
                             val drink = viewModel.findDrinkByName(drinkName.toString())
                                 ?: return@setOnMenuItemClickListener false
@@ -210,8 +222,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(),
                                     this@MainActivity,
                                     ShortcutManager::class.java
                                 )
-                            val drinkImageView = v!!.findViewById<ImageView>(R.id.iv_drink_image)
-                            val drinkAdaptiveIcon = drinkImageView.drawToBitmap().toAdaptiveIcon()
+                            val drinkImageView =
+                                v!!.findViewById<ImageView>(R.id.iv_drink_image)
+                            val drinkAdaptiveIcon =
+                                drinkImageView.drawToBitmap().toAdaptiveIcon()
                             val shortcut =
                                 ShortcutInfo.Builder(this@MainActivity, drink.getStrDrink())
                                     .setShortLabel(drink.getStrDrink()!!)
@@ -283,32 +297,6 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(),
         return isExist
     }
 
-    override fun onReceive() {
-        stopService(Intent(this, TimerService::class.java))
-        try {
-            drinkOfTheDay = viewModel.getDrinkOfTheDay()
-        } catch (ex: NoSuchElementException) {
-
-        }
-        val fragment = supportFragmentManager.findFragmentByTag(RegularBottomSheetDialogFragment::class.java.simpleName)
-        if (fragment !is RegularBottomSheetDialogFragment ) {
-            RegularBottomSheetDialogFragment.newInstance {
-                if (drinkOfTheDay == null) {
-                    titleText = "З поверненням"
-                } else {
-                    titleText = "З поверненням"
-                    descriptionText = "Пропонуємо переглянути напій дня: ${drinkOfTheDay!!.getStrDrink()}"
-                    rightButtonText = "Переглянути"
-                    leftButtonText = "Ні, дякую"
-                }
-            }.show(
-                supportFragmentManager,
-                RegularBottomSheetDialogFragment::class.java.simpleName
-            )
-        }
-
-    }
-
     override fun onBottomSheetDialogFragmentClick(
         dialog: DialogFragment,
         buttonType: DialogButton,
@@ -316,12 +304,12 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(),
         data: Any?
     ) {
         super.onBottomSheetDialogFragmentClick(dialog, buttonType, type, data)
-/*        when (type) {
-            RegularDialogType -> {
+        when (type) {
+            ResumeApplicationDialogType -> {
                 when (buttonType) {
                     RightDialogButton -> {
                         val intent = Intent(this, DrinkDetailActivity::class.java)
-                        intent.putExtra(DRINK, drinkOfTheDay)
+                        intent.putExtra(DRINK, viewModel.drinkOfTheDayLiveData.value)
                         startActivity(intent)
                     }
                     LeftDialogButton -> {
@@ -329,20 +317,8 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(),
                     }
                 }
             }
-        }*/
-    }
-
-    override fun onBottomSheetDialogFragmentDismiss(
-        dialog: DialogFragment,
-        type: DialogType<DialogButton>,
-        data: Any?
-    ) {
-        super.onBottomSheetDialogFragmentDismiss(dialog, type, data)
-        when (type) {
-            RegularDialogType -> {
-/*                unregisterReceiver(timerReceiver)*/
-            }
         }
     }
+
 }
 

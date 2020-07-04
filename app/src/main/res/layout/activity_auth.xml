@@ -39,7 +39,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/color_primary"
-                android:hint="@string/auth_login_tint"
+                android:hint="@string/auth_login_hint"
+                android:text="123qweasd"
+                android:saveEnabled="false"
                 android:inputType="textPersonName"
                 android:textCursorDrawable="@drawable/cursor_shape" />
 
@@ -59,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/color_primary"
                 android:hint="@string/auth_password_tint"
+                android:text="123qweasd"
                 android:inputType="textPassword"
                 android:textCursorDrawable="@drawable/cursor_shape" />
 
@@ -76,7 +79,8 @@
             android:layout_marginVertical="@dimen/offset_16"
             android:text="@string/auth_login_button"
             android:textColor="#FFFFFF"
-            app:backgroundTint="@color/design_default_color_primary_dark" />
+            app:backgroundTint="@color/design_default_color_primary_dark"
+            android:background="@drawable/login_button_shape"/>
 
     </com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener>
 </layout>

@@ -59,8 +59,6 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
                     }
                 }
             }
-        } else {
-            finish()
         }
         if (intent != null && intent.hasExtra(DRINK_ID)) {
             val drinkId: Long = intent.getLongExtra(DRINK_ID, -1L)

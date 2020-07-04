@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -72,7 +73,6 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
         historyFragment = HistoryFragment.newInstance()
         favoriteFragment = FavoriteFragment.newInstance()

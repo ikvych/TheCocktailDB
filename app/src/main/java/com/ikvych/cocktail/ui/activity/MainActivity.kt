@@ -16,16 +16,13 @@ import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.constant.*
-import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.constant.DRINK
+import com.ikvych.cocktail.constant.DRINK_ID
 import com.ikvych.cocktail.databinding.ActivityMainBinding
-import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
-import com.ikvych.cocktail.receiver.TimerReceiver
-import com.ikvych.cocktail.service.TimerService
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
@@ -33,8 +30,7 @@ import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
 
-class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(), TimerReceiver.OnTimerReceiverListener,
-    ApplicationLifeCycleObserver.OnLifecycleObserverListener {
+class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
 
     override var contentLayoutResId: Int = R.layout.activity_main
     override val viewModel: MainActivityViewModel by viewModels()

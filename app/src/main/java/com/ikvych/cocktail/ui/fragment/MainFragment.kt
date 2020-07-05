@@ -8,7 +8,9 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -22,6 +24,7 @@ import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.databinding.FragmentMainBinding
+import com.ikvych.cocktail.databinding.adapter.DataBindingAdapter
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
@@ -33,11 +36,12 @@ import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
+import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(), BatteryListener,
-    FilterAdapter.OnClickItemFilterCloseListener {
+    FilterAdapter.OnClickItemFilterCloseListener, DataBindingAdapter.OnViewPagerChangeListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_main
     override val viewModel: MainFragmentViewModel by viewModels()
@@ -85,23 +89,36 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
 
-        viewPager = vp2_main_fragment
-
         drinkPagerAdapter = DrinkPagerAdapter(
             arrayListOf(historyFragment, favoriteFragment),
             this
         )
 
+        viewPager = dataBinding.vp2MainFragment
         viewPager.adapter = drinkPagerAdapter
 
-        tabLayout = tl_main_fragment
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            if (position == 0) {
-                tab.text = getText(R.string.main_tab_layout_history_tab)
-            } else {
-                tab.text = getText(R.string.main_tab_layout_favorite_tab)
+        tabLayout = dataBinding.tlMainFragment
+        Page.values().forEach {
+            tabLayout.addTab(tabLayout.newTab().setText(it.name))
+        }
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
+
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
             }
-        }.attach()
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewModel.viewPager2LiveData.value = Page.values()[tab!!.position]
+            }
+        })
+        viewModel.viewPager2LiveData.value = Page.values()[viewPager.currentItem]
+        viewModel.viewPager2LiveData.observe(this, Observer {
+            tabLayout.selectTab(tabLayout.getTabAt(it.ordinal))
+        })
 
         val filterRecyclerView: RecyclerView = rv_filter_list
         filterAdapter = FilterAdapter(requireContext(), this)
@@ -172,6 +189,11 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             }
         })
         initLiveDataObserver()
+    }
+
+    override fun configureDataBinding(binding: FragmentMainBinding) {
+        dataBinding.viewModel = viewModel
+        dataBinding.listener = this
     }
 
     override fun onDialogFragmentClick(
@@ -330,5 +352,9 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
                 )
             }
         })
+    }
+
+    override fun onTabChanged(position: Int) {
+/*        viewModel.viewPager2LiveData.value = Page.values()[position]*/
     }
 }

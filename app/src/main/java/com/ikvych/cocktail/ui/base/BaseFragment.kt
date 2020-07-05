@@ -31,9 +31,9 @@ abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBind
     ): View? {
         Log.d("MyLog", "onCreateView - ${this.toString()}")
         dataBinding = DataBindingUtil.inflate(inflater, contentLayoutResId, container, false)
-        dataBinding.lifecycleOwner = this
+        dataBinding.lifecycleOwner = this@BaseFragment
         configureDataBinding(dataBinding)
-        return inflater.inflate(contentLayoutResId, container, false)
+        return dataBinding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

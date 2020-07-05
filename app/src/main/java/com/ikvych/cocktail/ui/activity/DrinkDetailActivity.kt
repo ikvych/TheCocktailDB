@@ -18,6 +18,7 @@ import com.ikvych.cocktail.service.ApplicationService
 import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import kotlinx.android.synthetic.main.activity_drink_details.*
 
 
 class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDetailsBinding>() {
@@ -26,7 +27,6 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
     private var modelType: String? = null
     override val viewModel: DrinkDetailViewModel by viewModels()
     override var contentLayoutResId: Int = R.layout.activity_drink_details
-
 
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var imageView: ImageView
@@ -42,6 +42,8 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
 
     override fun configureView(savedInstanceState: Bundle?) {
         val intent = intent
+
+
 
         if (intent != null && intent.hasExtra(DRINK)) {
             drink = intent.getParcelableExtra(DRINK)
@@ -71,6 +73,9 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
 
         viewModel.drinkIdLiveData.value = drink!!.getIdDrink()
         dataBinding.viewModel = viewModel
+
+        val d = tv_basic_info_title
+        val fd = dataBinding.tvBasicInfoTitle
 
         appBarLayout = findViewById(R.id.abl_drink_detail)
         imageView = findViewById(R.id.iv_drink_image)

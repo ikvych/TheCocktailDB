@@ -18,11 +18,13 @@ import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
+import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
 
 class MainFragmentViewModel(application: Application) : BaseViewModel(application) {
 
+    val viewPager2LiveData: MutableLiveData<Page> = MutableLiveData()
     val isBatteryChargingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()

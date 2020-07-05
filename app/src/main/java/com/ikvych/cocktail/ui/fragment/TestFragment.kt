@@ -16,7 +16,7 @@ import java.util.*
 const val ARBITRARY_NUMBER = "com.ikvych.cocktail.ArbitraryNumber"
 const val OPTIONAL_STRING = "com.ikvych.cocktail.OptionalString"
 
-class TestFragment() : BaseFragment<BaseViewModel, FragmentTestBinding>() {
+class TestFragment : BaseFragment<BaseViewModel, FragmentTestBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_test
     override val viewModel: BaseViewModel by viewModels()

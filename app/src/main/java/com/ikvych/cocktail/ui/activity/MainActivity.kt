@@ -163,6 +163,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
         fragmentTransaction.commit()
     }
 
+    interface OnViewPagerChangeListener {
+        fun onTabChanged()
+    }
+
     override fun onClick(v: View?) {
 
         // відкриває деталізацію коктейлю

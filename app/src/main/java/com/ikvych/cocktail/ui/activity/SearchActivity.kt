@@ -51,6 +51,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
             drinkAdapter.listData = drinks
             determineVisibleLayerOnUpdateData(drinks)
         })
+
         viewModel.startDrinkDetailsLiveData.observe(this, Observer {
             if (it != null) {
                 val intent = Intent(this, DrinkDetailActivity::class.java)
@@ -88,6 +89,11 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
     override fun onStop() {
         super.onStop()
         unregisterReceiver(drinkOfferReceiver)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        drinkAdapter.setLifecycleDestroyed()
     }
 
     private fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {

@@ -9,10 +9,6 @@
         <import type="com.ikvych.cocktail.util.Page"/>
 
         <variable
-            name="listener"
-            type="com.ikvych.cocktail.databinding.adapter.DataBindingAdapter.OnViewPagerChangeListener" />
-
-        <variable
             name="viewModel"
             type="com.ikvych.cocktail.viewmodel.MainFragmentViewModel" />
     </data>

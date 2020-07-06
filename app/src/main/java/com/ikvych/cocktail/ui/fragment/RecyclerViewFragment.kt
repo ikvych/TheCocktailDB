@@ -69,6 +69,10 @@ abstract class RecyclerViewFragment<ViewModel : BaseViewModel, DataBinding : Vie
         drinkAdapter.listData = drinks
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        drinkAdapter.setLifecycleDestroyed()
+    }
     /**
      * If drinks is empty, hide recyclerView and show appropriate textView,
      * else make recyclerView visible.

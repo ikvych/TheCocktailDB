@@ -92,6 +92,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
             }
         })
 
+        //ховає і показує title у NavigationBottomView
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
             override fun onChanged(t: Boolean?) {
                 if (t!!) {
@@ -163,37 +164,8 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
         fragmentTransaction.commit()
     }
 
-    interface OnViewPagerChangeListener {
-        fun onTabChanged()
-    }
-
-    override fun onClick(v: View?) {
-
-        // відкриває деталізацію коктейлю
-        if (v is CardView) {
-            val view = v.findViewById<TextView>(R.id.tv_drink_name)
-            val drinkName = view?.text
-            if (drinkName != null) {
-                val drink = viewModel.findDrinkByName(drinkName.toString())
-                val intent = Intent(this, DrinkDetailActivity::class.java)
-                intent.putExtra(DRINK, drink)
-                startActivity(intent)
-            }
-        }
-        // додає і видаляє з улюблених
-        if (v is CheckBox) {
-            val drinkName = v.tag as String
-            val drink = viewModel.findDrinkByName(drinkName) ?: return
-            if (v.isChecked) {
-                drink.setIsFavorite(true)
-                viewModel.saveDrinkIntoDb(drink)
-            } else {
-                drink.setIsFavorite(false)
-                viewModel.saveDrinkIntoDb(drink)
-            }
-        }
-    }
-
+    // Залишив реалізацію цього метода, бо поки не знаю як за допомогою viewModel зробити
+    // виклик у view onLongClick
     override fun onLongClick(v: View?): Boolean {
         PopupMenu(this, v).apply {
             setOnMenuItemClickListener {

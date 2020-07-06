@@ -140,6 +140,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
     override fun onDestroy() {
         if (modelType == SEARCH_MODEL_TYPE) {
             val intent = Intent(this, ApplicationService::class.java)
+            //зупиняю сервіс якщо він був запущений для того щоб не спамити повідомленнями
             stopService(intent)
             intent.putExtra(DRINK_ID, drink?.getIdDrink())
             intent.action = ACTION_SHOW_DRINK_OFFER

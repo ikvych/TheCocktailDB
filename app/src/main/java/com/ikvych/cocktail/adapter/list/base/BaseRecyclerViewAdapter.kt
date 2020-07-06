@@ -41,11 +41,6 @@ abstract class BaseRecyclerViewAdapter<Data>(val layoutResId: Int? = null) : Rec
         return listData.size
     }
 
-    override fun getItemViewType(position: Int): Int {
-        return getLayoutIdForPosition(position)
-    }
-
-
     override fun onViewAttachedToWindow(holder: BaseViewHolder) {
         super.onViewAttachedToWindow(holder)
         holder.markAttach()
@@ -62,6 +57,4 @@ abstract class BaseRecyclerViewAdapter<Data>(val layoutResId: Int? = null) : Rec
             it.markDestroyed()
         }
     }
-
-    protected abstract fun getLayoutIdForPosition(position: Int): Int
 }

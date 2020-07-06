@@ -34,8 +34,7 @@ import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(), BatteryListener,
-    DataBindingAdapter.OnViewPagerChangeListener {
+class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(), BatteryListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_main
     override val viewModel: MainFragmentViewModel by viewModels()
@@ -93,6 +92,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
         Page.values().forEach {
             tabLayout.addTab(tabLayout.newTab().setText(it.name))
         }
+        //відслідковує кліки по табам і передає значення у відповідну liveData
         tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
 
             override fun onTabReselected(tab: TabLayout.Tab?) {
@@ -108,6 +108,8 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             }
         })
         viewModel.viewPager2LiveData.value = Page.values()[viewPager.currentItem]
+        //відслідковує скрол по viewPager2 і переда відповідне значення в liveData щоб
+        //забезпечити переключення таб
         viewModel.viewPager2LiveData.observe(this, Observer {
             tabLayout.selectTab(tabLayout.getTabAt(it.ordinal))
         })
@@ -185,7 +187,6 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
 
     override fun configureDataBinding(binding: FragmentMainBinding) {
         dataBinding.viewModel = viewModel
-        dataBinding.listener = this
     }
 
     override fun onDialogFragmentClick(
@@ -335,7 +336,4 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
         })
     }
 
-    override fun onTabChanged(position: Int) {
-/*        viewModel.viewPager2LiveData.value = Page.values()[position]*/
-    }
 }

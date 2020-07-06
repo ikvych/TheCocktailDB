@@ -5,7 +5,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.ikvych.cocktail.convertor.db.DateConverter
+import com.ikvych.cocktail.data.database.convertor.DateConverter
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.data.entity.Ingredient
 

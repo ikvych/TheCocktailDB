@@ -29,7 +29,6 @@ class HistoryFragment : RecyclerViewFragment<BaseViewModel, FragmentHistoryBindi
         initLiveDataObserver()
     }
 
-
     override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
         if (drinks!!.isEmpty()) {
             setDbEmptyHistoryVisible(fragmentView)

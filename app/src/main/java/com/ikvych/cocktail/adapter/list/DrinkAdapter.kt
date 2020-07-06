@@ -27,10 +27,6 @@ class DrinkAdapter(
 
     private val layoutId = R.layout.item_drink_list
 
-    override fun getLayoutIdForPosition(position: Int): Int {
-        return layoutId
-    }
-
     override fun createBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
         return DataBindingUtil.inflate(
             LayoutInflater.from(parent.context),

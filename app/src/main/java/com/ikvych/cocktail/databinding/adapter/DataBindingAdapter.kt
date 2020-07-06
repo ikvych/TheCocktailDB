@@ -21,18 +21,14 @@ fun setImageViewResource(imageButton: ImageButton, resource: Int) {
 }
 
 @BindingAdapter("bind:bg_color")
-fun setBackgroundTintViewResource(ll: LinearLayout, resource: String) {
-    val color = Color.parseColor(resource)
-    val res = resource
+fun setBackgroundTint(view: View, resource: String) {
     val stateList =
-        ColorStateList.valueOf(color)
-    ll.backgroundTintList = stateList
+        ColorStateList.valueOf(Color.parseColor(resource))
+    view.backgroundTintList = stateList
 }
 
 
 class DataBindingAdapter {
-
-
 
     object ViewVisibilityBindingAdapter {
         @BindingAdapter("bind:v_isVisible")
@@ -72,10 +68,6 @@ class DataBindingAdapter {
                 })
             }
         }
-    }
-
-    interface OnViewPagerChangeListener {
-        fun onTabChanged(position: Int)
     }
 
     object DataBindingConverter {

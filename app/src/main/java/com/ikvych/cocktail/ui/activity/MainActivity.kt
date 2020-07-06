@@ -148,7 +148,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
         profileFragment = ProfileFragment.newInstance()
         mainFragment = MainFragment.newInstance()
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(
+        fragmentTransaction.add(
             R.id.fcv_container,
             profileFragment,
             ProfileFragment::class.java.simpleName
@@ -224,8 +224,9 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                                 )
                             val drinkImageView =
                                 v!!.findViewById<ImageView>(R.id.iv_drink_image)
-                            val drinkAdaptiveIcon =
-                                drinkImageView.drawToBitmap().toAdaptiveIcon()
+                            val drinkBitmapIcon =
+                                drinkImageView.drawToBitmap()
+                            val drinkAdaptiveIcon = drinkBitmapIcon.toAdaptiveIcon()
                             val shortcut =
                                 ShortcutInfo.Builder(this@MainActivity, drink.getStrDrink())
                                     .setShortLabel(drink.getStrDrink()!!)

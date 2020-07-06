@@ -1,36 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/ll_selected_filter_container"
-    android:layout_width="wrap_content"
-    android:layout_height="@dimen/view_height_min"
-    android:layout_margin="@dimen/offset_8"
-    android:padding="@dimen/offset_4"
-    android:orientation="horizontal"
-    android:background="@drawable/iten_drink_filter_shape">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageButton
-        android:id="@+id/ib_filter_icon"
-        android:layout_width="@dimen/btn_width_min"
-        android:layout_height="@dimen/btn_height_min"
-        android:backgroundTint="@color/color_transparent"
-        android:layout_gravity="center_vertical"/>
+    <data>
+        <import type="com.ikvych.cocktail.databinding.adapter.DataBindingAdapter.DataBindingConverter"/>
+        <variable
+            name="obj"
+            type="com.ikvych.cocktail.filter.DrinkFilter" />
 
-    <TextView
-        android:id="@+id/tv_filter_name"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:textSize="@dimen/headline_4"
-        android:layout_gravity="center_vertical"
-        android:textColor="@color/color_on_primary"
-        android:layout_weight="5"/>
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.MainFragmentViewModel" />
+    </data>
 
-    <ImageButton
-        android:id="@+id/ib_remove_filter"
-        android:layout_width="@dimen/btn_width_min"
-        android:layout_height="@dimen/btn_height_min"
-        android:backgroundTint="@color/color_transparent"
-        android:layout_gravity="center_vertical"
-        android:src="@drawable/ic_item_drink_filter_close"/>
+    <LinearLayout
+        android:id="@+id/ll_selected_filter_container"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/view_height_min"
+        android:layout_margin="@dimen/offset_8"
+        android:background="@drawable/iten_drink_filter_shape"
+        bind:bg_color="@{obj.type.colorAsString}"
+        android:orientation="horizontal"
+        android:padding="@dimen/offset_4">
 
-</LinearLayout>
+        <ImageButton
+            android:id="@+id/ib_filter_icon"
+            android:layout_width="@dimen/btn_width_min"
+            android:layout_height="@dimen/btn_height_min"
+            bind:src="@{obj.type.drawableId}"
+            android:layout_gravity="center_vertical"
+            android:backgroundTint="@color/color_transparent" />
+
+        <TextView
+            android:id="@+id/tv_filter_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_weight="5"
+            android:text="@{obj.key}"
+            android:textColor="@color/color_on_primary"
+            android:textSize="@dimen/headline_4" />
+
+        <ImageButton
+            android:id="@+id/ib_remove_filter"
+            android:layout_width="@dimen/btn_width_min"
+            android:layout_height="@dimen/btn_height_min"
+            android:onClick="@{() -> viewModel.resetFilter(obj)}"
+            android:layout_gravity="center_vertical"
+            android:backgroundTint="@color/color_transparent"
+            android:src="@drawable/ic_item_drink_filter_close" />
+
+    </LinearLayout>
+</layout>

@@ -8,9 +8,7 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -18,20 +16,16 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.comparator.type.SortDrinkType
+import com.ikvych.cocktail.constant.DRINK
 import com.ikvych.cocktail.databinding.FragmentMainBinding
 import com.ikvych.cocktail.databinding.adapter.DataBindingAdapter
-import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.receiver.BatteryReceiver
+import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
@@ -41,7 +35,7 @@ import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
 class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(), BatteryListener,
-    FilterAdapter.OnClickItemFilterCloseListener, DataBindingAdapter.OnViewPagerChangeListener {
+    DataBindingAdapter.OnViewPagerChangeListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_main
     override val viewModel: MainFragmentViewModel by viewModels()
@@ -67,8 +61,6 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
     private lateinit var batteryPercent: TextView
     private lateinit var batteryIcon: ImageView
     private lateinit var powerConnected: ImageView
-
-    private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
 
     companion object {
         @JvmStatic
@@ -120,8 +112,8 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             tabLayout.selectTab(tabLayout.getTabAt(it.ordinal))
         })
 
-        val filterRecyclerView: RecyclerView = rv_filter_list
-        filterAdapter = FilterAdapter(requireContext(), this)
+        val filterRecyclerView: RecyclerView = dataBinding.rvFilterList
+        filterAdapter = FilterAdapter(viewModel)
         filterRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         filterRecyclerView.setHasFixedSize(true)
         filterRecyclerView.adapter = filterAdapter
@@ -146,7 +138,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
 
         filterBtn.setOnLongClickListener {
             viewModel.resetFilters()
-            filterAdapter.filterList = arrayListOf()
+            filterAdapter.setData(arrayListOf())
             true
         }
 
@@ -181,7 +173,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
         })
 
         viewModel.filtersLiveData.observe(this, Observer {
-            filterAdapter.filterList = it.values.toList() as ArrayList
+            filterAdapter.setData(it.values.toList() as ArrayList)
             if (viewModel.isFiltersPresent()) {
                 filterIndicator.visibility = View.VISIBLE
             } else {
@@ -230,6 +222,11 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
         requireContext().unregisterReceiver(batteryReceiver)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        filterAdapter.setLifecycleDestroyed()
+    }
+
     override fun onBatteryChange(intent: Intent) {
         when (intent.action) {
             Intent.ACTION_BATTERY_LOW -> viewModel.isBatteryLowLiveData.value = true
@@ -247,24 +244,8 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
         }
     }
 
-    override fun onClick(drinkFilter: DrinkFilter) {
-        when (drinkFilter.type) {
-            DrinkFilterType.CATEGORY -> {
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = CategoryDrinkFilter.NONE }
-            }
-            DrinkFilterType.ALCOHOL -> {
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = AlcoholDrinkFilter.NONE }
-            }
-            DrinkFilterType.GLASS -> {
-
-            }
-            DrinkFilterType.INGREDIENT -> {
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = IngredientDrinkFilter.NONE }
-            }
-        }
-    }
-
     private fun initLiveDataObserver() {
+
         viewModel.batteryPercentLiveData.observe(this, Observer {
             val textPercent = "${it!!}%"
             batteryPercent.text = textPercent

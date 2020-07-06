@@ -1,16 +1,38 @@
 package com.ikvych.cocktail.databinding.adapter
 
+import android.content.res.ColorStateList
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.view.View
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.LinearLayout
+import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.*
-import androidx.databinding.adapters.ListenerUtil
-import androidx.viewpager.widget.ViewPager.OnPageChangeListener
 import androidx.viewpager2.widget.ViewPager2
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.util.Page
 
 
+@BindingAdapter("bind:src")
+fun setImageViewResource(imageButton: ImageButton, resource: Int) {
+    imageButton.setImageResource(resource)
+}
+
+@BindingAdapter("bind:bg_color")
+fun setBackgroundTintViewResource(ll: LinearLayout, resource: String) {
+    val color = Color.parseColor(resource)
+    val res = resource
+    val stateList =
+        ColorStateList.valueOf(color)
+    ll.backgroundTintList = stateList
+}
+
+
 class DataBindingAdapter {
+
+
 
     object ViewVisibilityBindingAdapter {
         @BindingAdapter("bind:v_isVisible")

@@ -36,10 +36,11 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
 
     private lateinit var toolbarSearchView: SearchView
     private val drinkOfferReceiver: DrinkOfferReceiver = DrinkOfferReceiver(this)
-    private val drinkAdapter: DrinkAdapter = DrinkAdapter(this)
+    private lateinit var drinkAdapter: DrinkAdapter
     private lateinit var recyclerView: RecyclerView
 
     override fun configureView(savedInstanceState: Bundle?) {
+        drinkAdapter = DrinkAdapter(viewModel,this)
         initRecyclerView()
         initLiveDataObserver()
         initSearchView()
@@ -47,8 +48,16 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
 
     private fun initLiveDataObserver() {
         viewModel.drinkLiveData.observe(this, Observer { drinks ->
-            drinkAdapter.drinkList = drinks
+            drinkAdapter.listData = drinks
             determineVisibleLayerOnUpdateData(drinks)
+        })
+        viewModel.startDrinkDetailsLiveData.observe(this, Observer {
+            if (it != null) {
+                val intent = Intent(this, DrinkDetailActivity::class.java)
+                intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
+                intent.putExtra(DRINK, it)
+                startActivity(intent)
+            }
         })
     }
 
@@ -65,7 +74,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
 
         determineVisibleLayerOnCreate(arrayListOf())
 
-        drinkAdapter.drinkList = arrayListOf()
+        drinkAdapter.listData = arrayListOf()
     }
 
     override fun onStart() {
@@ -140,7 +149,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
         val view = v?.findViewById<TextView>(R.id.tv_drink_name)
         val drinkName = view?.text ?: ""
         val drink: Drink? =
-            drinkAdapter.drinkList.find { drink -> drink.getStrDrink() == drinkName }
+            drinkAdapter.listData.find { drink -> drink.getStrDrink() == drinkName }
 
         if (drink != null) {
             val intent = Intent(this, DrinkDetailActivity::class.java)

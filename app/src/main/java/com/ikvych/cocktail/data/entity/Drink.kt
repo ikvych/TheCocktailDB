@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.BindingAdapter
+import androidx.databinding.DataBindingUtil
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
@@ -19,6 +20,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.ikvych.cocktail.BR
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.databinding.ItemDrinkIngredientBinding
 import java.util.*
 import kotlin.collections.HashMap
 
@@ -33,19 +35,17 @@ fun getIngredients(
         if (key == null) {
             continue
         }
-        val tr = LayoutInflater.from(tableLayout.context)
-            .inflate(
-                R.layout.item_drink_ingredient,
-                tableLayout,
-                false
-            ) as TableRow
-        val ingredient = tr.findViewById<TextView>(R.id.tv_ingredient)
+        val binding: ItemDrinkIngredientBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(tableLayout.context),
+            R.layout.item_drink_ingredient,
+            tableLayout,
+            false
+        )
         val numberedIngredient = "$count. $key"
-        ingredient.text = numberedIngredient
-        val measure = tr.findViewById<TextView>(R.id.tv_measure)
-        measure.text = value
+        binding.tvIngredient.text = numberedIngredient
+        binding.tvMeasure.text = value
         tableLayout.addView(
-            tr,
+            binding.root,
             TableLayout.LayoutParams(
                 TableLayout.LayoutParams.MATCH_PARENT,
                 TableLayout.LayoutParams.WRAP_CONTENT

@@ -43,8 +43,6 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
     override fun configureView(savedInstanceState: Bundle?) {
         val intent = intent
 
-
-
         if (intent != null && intent.hasExtra(DRINK)) {
             drink = intent.getParcelableExtra(DRINK)
             if (intent.hasExtra(VIEW_MODEL_TYPE)) {
@@ -74,8 +72,6 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
         viewModel.drinkIdLiveData.value = drink!!.getIdDrink()
         dataBinding.viewModel = viewModel
 
-        val d = tv_basic_info_title
-        val fd = dataBinding.tvBasicInfoTitle
 
         appBarLayout = findViewById(R.id.abl_drink_detail)
         imageView = findViewById(R.id.iv_drink_image)

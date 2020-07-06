@@ -39,6 +39,23 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
         MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
 
+    fun resetFilter(filter: DrinkFilter) {
+        when (filter.type) {
+            DrinkFilterType.CATEGORY -> {
+                filtersLiveData.value = filtersLiveData.value!!.apply { this[filter.type] = CategoryDrinkFilter.NONE }
+            }
+            DrinkFilterType.ALCOHOL -> {
+                filtersLiveData.value = filtersLiveData.value!!.apply { this[filter.type] = AlcoholDrinkFilter.NONE }
+            }
+            DrinkFilterType.GLASS -> {
+
+            }
+            DrinkFilterType.INGREDIENT -> {
+                filtersLiveData.value = filtersLiveData.value!!.apply { this[filter.type] = IngredientDrinkFilter.NONE }
+            }
+        }
+    }
+
     val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
         MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
 

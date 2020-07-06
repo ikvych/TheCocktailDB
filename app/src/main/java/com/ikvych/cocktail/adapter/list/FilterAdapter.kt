@@ -8,107 +8,51 @@ import android.widget.ImageButton
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
+import androidx.databinding.ViewDataBinding
+import androidx.lifecycle.*
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.adapter.list.base.BaseRecyclerViewAdapter
+import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
+import com.ikvych.cocktail.databinding.ItemDrinkListBinding
+import com.ikvych.cocktail.databinding.ItemSelectedFilterBinding
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
+import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
+import java.util.HashMap
 
 
 class FilterAdapter(
-    private val context: Context,
-    private val listener: OnClickItemFilterCloseListener
-) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
+    private val viewModel: MainFragmentViewModel
+) : BaseRecyclerViewAdapter<DrinkFilter>() {
 
-    interface OnClickItemFilterCloseListener {
-        fun onClick(drinkFilter: DrinkFilter)
+    private val layoutId = R.layout.item_selected_filter
+
+    fun setData(list: List<DrinkFilter>) {
+        listData = list.filter { it.key != "None" }
     }
 
-    var filterList: List<DrinkFilter> = arrayListOf()
-        set(value) {
-            field = value.filter { it.key != "None" }
-            notifyDataSetChanged()
-        }
-
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterViewHolder {
-        val itemView: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_selected_filter, parent, false)
-        return FilterViewHolder(itemView)
+    override fun getLayoutIdForPosition(position: Int): Int {
+        return layoutId
     }
 
-    override fun onBindViewHolder(holder: FilterViewHolder, position: Int) {
-        val filter: DrinkFilter = filterList[position]
-        when (filter.type) {
-            DrinkFilterType.CATEGORY -> {
-                holder.filterIcon.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.ic_item_drink_filter_favorite
-                    )
-                )
-                holder.linearLayout.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.item_drink_filter_ingredient_bg
-                    )
-                )
-                holder.closeButton.setOnClickListener { listener.onClick(filter) }
-            }
-            DrinkFilterType.ALCOHOL -> {
-                holder.filterIcon.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.ic_item_drink_filter_alcohol
-                    )
-                )
-                holder.linearLayout.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.item_drink_filter_ingredient_bg
-                    )
-                )
-                holder.closeButton.setOnClickListener { listener.onClick(filter) }
-            }
-            DrinkFilterType.INGREDIENT -> {
-                holder.filterIcon.setImageDrawable(
-                    ContextCompat.getDrawable(
-                        context,
-                        R.drawable.ic_item_drink_filter_ingredient
-                    )
-                )
-                holder.linearLayout.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.item_drink_filter_ingredient_bg
-                    )
-                )
-                holder.closeButton.setOnClickListener { listener.onClick(filter) }
-            }
-            DrinkFilterType.GLASS -> {
-            }
-        }
-        holder.textView.text = filter.key
+    override fun createBinding(parent: ViewGroup, viewType: Int): ViewDataBinding {
+        return DataBindingUtil.inflate(
+            LayoutInflater.from(parent.context),
+            layoutId,
+            parent,
+            false
+        )
     }
 
-    override fun getItemCount(): Int {
-        return filterList.size
-    }
-
-
-    inner class FilterViewHolder(val view: View) : RecyclerView.ViewHolder(view) {
-        val textView: TextView
-        val linearLayout: LinearLayout
-        val filterIcon: ImageButton
-        val closeButton: ImageButton
-
-        init {
-            textView = view.findViewById(R.id.tv_filter_name)
-            linearLayout = view.findViewById(R.id.ll_selected_filter_container)
-            filterIcon = view.findViewById(R.id.ib_filter_icon)
-            closeButton = view.findViewById(R.id.ib_remove_filter)
-            val position = adapterPosition
-            if (position != RecyclerView.NO_POSITION) {
-                textView.text = filterList.get(position).key
+    override fun bind(binding: ViewDataBinding, item: DrinkFilter) {
+        when (binding) {
+            is ItemSelectedFilterBinding -> {
+                binding.obj = item
+                binding.viewModel = viewModel
             }
         }
     }
+
 }

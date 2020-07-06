@@ -5,16 +5,23 @@
 
     <data>
         <variable
-            name="drink"
+            name="obj"
             type="com.ikvych.cocktail.data.entity.Drink" />
+
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.base.BaseViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cv_item_list_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/offset_4"
         card_view:cardCornerRadius="@dimen/corner_8"
         card_view:cardElevation="@dimen/elevation_4"
+        android:longClickable="true"
+        android:onClick="@{() -> viewModel.startNewDrinkDetails(obj)}"
         card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
@@ -28,7 +35,7 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 android:contentDescription="@string/all_content_description"
-                bind:strDrinkThumb="@{drink.strDrinkThumb}" />
+                bind:strDrinkThumb="@{obj.strDrinkThumb}" />
 
             <CheckBox
                 android:id="@+id/cb_is_favorite"
@@ -38,15 +45,16 @@
                 android:layout_alignStart="@+id/iv_drink_image"
                 android:layout_alignTop="@+id/iv_drink_image"
                 android:layout_width="wrap_content"
-                android:checked="@{drink.favorite}"
-                android:tag="@{drink.strDrink}"
+                android:checked="@{obj.favorite}"
+                android:tag="@{obj.strDrink}"
+                android:onClick="@{() -> viewModel.saveFavoriteDrink(obj)}"
                 android:layout_height="wrap_content" />
 
             <TextView
                 android:id="@+id/tv_drink_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{drink.strDrink}"
+                android:text="@{obj.strDrink}"
                 android:layout_below="@id/iv_drink_image"
                 android:layout_margin="@dimen/offset_8"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />

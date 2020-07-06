@@ -10,32 +10,31 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
+import com.ikvych.cocktail.constant.DRINK
+import com.ikvych.cocktail.databinding.FragmentMainBinding
+import com.ikvych.cocktail.databinding.adapter.DataBindingAdapter
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.receiver.BatteryReceiver
+import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
+import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
-class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
-    FilterAdapter.OnClickItemFilterCloseListener {
+class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(), BatteryListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_main
     override val viewModel: MainFragmentViewModel by viewModels()
@@ -62,8 +61,6 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
     private lateinit var batteryIcon: ImageView
     private lateinit var powerConnected: ImageView
 
-    private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
-
     companion object {
         @JvmStatic
         fun newInstance() = MainFragment()
@@ -71,7 +68,6 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mainActivityViewModel = ViewModelProvider(this).get(MainActivityViewModel::class.java)
 
         historyFragment = HistoryFragment.newInstance()
         favoriteFragment = FavoriteFragment.newInstance()
@@ -84,26 +80,42 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
 
-        viewPager = vp2_main_fragment
-
         drinkPagerAdapter = DrinkPagerAdapter(
             arrayListOf(historyFragment, favoriteFragment),
             this
         )
 
+        viewPager = dataBinding.vp2MainFragment
         viewPager.adapter = drinkPagerAdapter
 
-        tabLayout = tl_main_fragment
-        TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-            if (position == 0) {
-                tab.text = getText(R.string.main_tab_layout_history_tab)
-            } else {
-                tab.text = getText(R.string.main_tab_layout_favorite_tab)
-            }
-        }.attach()
+        tabLayout = dataBinding.tlMainFragment
+        Page.values().forEach {
+            tabLayout.addTab(tabLayout.newTab().setText(it.name))
+        }
+        //відслідковує кліки по табам і передає значення у відповідну liveData
+        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
 
-        val filterRecyclerView: RecyclerView = rv_filter_list
-        filterAdapter = FilterAdapter(requireContext(), this)
+            override fun onTabReselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabUnselected(tab: TabLayout.Tab?) {
+
+            }
+
+            override fun onTabSelected(tab: TabLayout.Tab?) {
+                viewModel.viewPager2LiveData.value = Page.values()[tab!!.position]
+            }
+        })
+        viewModel.viewPager2LiveData.value = Page.values()[viewPager.currentItem]
+        //відслідковує скрол по viewPager2 і переда відповідне значення в liveData щоб
+        //забезпечити переключення таб
+        viewModel.viewPager2LiveData.observe(this, Observer {
+            tabLayout.selectTab(tabLayout.getTabAt(it.ordinal))
+        })
+
+        val filterRecyclerView: RecyclerView = dataBinding.rvFilterList
+        filterAdapter = FilterAdapter(viewModel)
         filterRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         filterRecyclerView.setHasFixedSize(true)
         filterRecyclerView.adapter = filterAdapter
@@ -128,7 +140,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
 
         filterBtn.setOnLongClickListener {
             viewModel.resetFilters()
-            filterAdapter.filterList = arrayListOf()
+            filterAdapter.setData(arrayListOf())
             true
         }
 
@@ -163,7 +175,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         })
 
         viewModel.filtersLiveData.observe(this, Observer {
-            filterAdapter.filterList = it.values.toList() as ArrayList
+            filterAdapter.setData(it.values.toList() as ArrayList)
             if (viewModel.isFiltersPresent()) {
                 filterIndicator.visibility = View.VISIBLE
             } else {
@@ -171,6 +183,10 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
             }
         })
         initLiveDataObserver()
+    }
+
+    override fun configureDataBinding(binding: FragmentMainBinding) {
+        dataBinding.viewModel = viewModel
     }
 
     override fun onDialogFragmentClick(
@@ -207,6 +223,11 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         requireContext().unregisterReceiver(batteryReceiver)
     }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        filterAdapter.setLifecycleDestroyed()
+    }
+
     override fun onBatteryChange(intent: Intent) {
         when (intent.action) {
             Intent.ACTION_BATTERY_LOW -> viewModel.isBatteryLowLiveData.value = true
@@ -224,24 +245,8 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         }
     }
 
-    override fun onClick(drinkFilter: DrinkFilter) {
-        when (drinkFilter.type) {
-            DrinkFilterType.CATEGORY -> {
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = CategoryDrinkFilter.NONE }
-            }
-            DrinkFilterType.ALCOHOL -> {
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = AlcoholDrinkFilter.NONE }
-            }
-            DrinkFilterType.GLASS -> {
-
-            }
-            DrinkFilterType.INGREDIENT -> {
-                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = IngredientDrinkFilter.NONE }
-            }
-        }
-    }
-
     private fun initLiveDataObserver() {
+
         viewModel.batteryPercentLiveData.observe(this, Observer {
             val textPercent = "${it!!}%"
             batteryPercent.text = textPercent
@@ -330,4 +335,5 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
             }
         })
     }
+
 }

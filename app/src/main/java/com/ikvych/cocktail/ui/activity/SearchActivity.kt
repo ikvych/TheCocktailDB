@@ -17,6 +17,7 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
 import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.databinding.ActivitySearchBinding
 import com.ikvych.cocktail.listener.DrinkOfferListener
 import com.ikvych.cocktail.receiver.DrinkOfferReceiver
 import com.ikvych.cocktail.ui.base.BaseActivity
@@ -28,17 +29,18 @@ import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.activity_search.*
 
 
-class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListener {
+class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBinding>(), DrinkOfferListener {
 
     override var contentLayoutResId: Int = R.layout.activity_search
     override val viewModel: SearchActivityViewModel by viewModels()
 
     private lateinit var toolbarSearchView: SearchView
     private val drinkOfferReceiver: DrinkOfferReceiver = DrinkOfferReceiver(this)
-    private val drinkAdapter: DrinkAdapter = DrinkAdapter(this)
+    private lateinit var drinkAdapter: DrinkAdapter
     private lateinit var recyclerView: RecyclerView
 
     override fun configureView(savedInstanceState: Bundle?) {
+        drinkAdapter = DrinkAdapter(viewModel,this)
         initRecyclerView()
         initLiveDataObserver()
         initSearchView()
@@ -46,8 +48,17 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
 
     private fun initLiveDataObserver() {
         viewModel.drinkLiveData.observe(this, Observer { drinks ->
-            drinkAdapter.drinkList = drinks
+            drinkAdapter.listData = drinks
             determineVisibleLayerOnUpdateData(drinks)
+        })
+
+        viewModel.startDrinkDetailsLiveData.observe(this, Observer {
+            if (it != null) {
+                val intent = Intent(this, DrinkDetailActivity::class.java)
+                intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
+                intent.putExtra(DRINK, it)
+                startActivity(intent)
+            }
         })
     }
 
@@ -64,7 +75,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
 
         determineVisibleLayerOnCreate(arrayListOf())
 
-        drinkAdapter.drinkList = arrayListOf()
+        drinkAdapter.listData = arrayListOf()
     }
 
     override fun onStart() {
@@ -78,6 +89,11 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
     override fun onStop() {
         super.onStop()
         unregisterReceiver(drinkOfferReceiver)
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        drinkAdapter.setLifecycleDestroyed()
     }
 
     private fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
@@ -139,7 +155,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
         val view = v?.findViewById<TextView>(R.id.tv_drink_name)
         val drinkName = view?.text ?: ""
         val drink: Drink? =
-            drinkAdapter.drinkList.find { drink -> drink.getStrDrink() == drinkName }
+            drinkAdapter.listData.find { drink -> drink.getStrDrink() == drinkName }
 
         if (drink != null) {
             val intent = Intent(this, DrinkDetailActivity::class.java)

@@ -82,6 +82,10 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
         return drinkDao.getAllDrinksLiveData()
     }
 
+    override fun findDrinkLiveDataById(drinkId: Long): LiveData<Drink?> {
+        return drinkDao.findDrinkLiveDataById(drinkId)
+    }
+
     override fun saveDrinkIntoDb(drink: Drink) {
         SaveDrinkAsyncTask(drinkDao).execute(drink)
     }

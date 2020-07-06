@@ -10,6 +10,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.databinding.FragmentProfileBinding
 import com.ikvych.cocktail.ui.activity.AuthActivity
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
@@ -18,7 +19,7 @@ import com.ikvych.cocktail.viewmodel.ProfileFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
+class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_profile
     override val viewModel: ProfileFragmentViewModel by viewModels()

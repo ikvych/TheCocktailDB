@@ -8,7 +8,6 @@ import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
@@ -19,15 +18,15 @@ import com.ikvych.cocktail.service.ApplicationService
 import com.ikvych.cocktail.ui.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import kotlinx.android.synthetic.main.activity_drink_details.*
 
 
-class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
+class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDetailsBinding>() {
 
     private var drink: Drink? = null
     private var modelType: String? = null
     override val viewModel: DrinkDetailViewModel by viewModels()
     override var contentLayoutResId: Int = R.layout.activity_drink_details
-
 
     private lateinit var appBarLayout: AppBarLayout
     private lateinit var imageView: ImageView
@@ -70,9 +69,9 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
             }
         }
 
-        val activityDrinkDetailsBinding: ActivityDrinkDetailsBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_drink_details)
-        activityDrinkDetailsBinding.drink = drink
+        viewModel.drinkIdLiveData.value = drink!!.getIdDrink()
+        dataBinding.viewModel = viewModel
+
 
         appBarLayout = findViewById(R.id.abl_drink_detail)
         imageView = findViewById(R.id.iv_drink_image)
@@ -141,6 +140,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
     override fun onDestroy() {
         if (modelType == SEARCH_MODEL_TYPE) {
             val intent = Intent(this, ApplicationService::class.java)
+            //зупиняю сервіс якщо він був запущений для того щоб не спамити повідомленнями
             stopService(intent)
             intent.putExtra(DRINK_ID, drink?.getIdDrink())
             intent.action = ACTION_SHOW_DRINK_OFFER

@@ -18,11 +18,13 @@ import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
+import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
 
 class MainFragmentViewModel(application: Application) : BaseViewModel(application) {
 
+    val viewPager2LiveData: MutableLiveData<Page> = MutableLiveData()
     val isBatteryChargingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
@@ -36,6 +38,23 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
         MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
+
+    fun resetFilter(filter: DrinkFilter) {
+        when (filter.type) {
+            DrinkFilterType.CATEGORY -> {
+                filtersLiveData.value = filtersLiveData.value!!.apply { this[filter.type] = CategoryDrinkFilter.NONE }
+            }
+            DrinkFilterType.ALCOHOL -> {
+                filtersLiveData.value = filtersLiveData.value!!.apply { this[filter.type] = AlcoholDrinkFilter.NONE }
+            }
+            DrinkFilterType.GLASS -> {
+
+            }
+            DrinkFilterType.INGREDIENT -> {
+                filtersLiveData.value = filtersLiveData.value!!.apply { this[filter.type] = IngredientDrinkFilter.NONE }
+            }
+        }
+    }
 
     val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
         MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()

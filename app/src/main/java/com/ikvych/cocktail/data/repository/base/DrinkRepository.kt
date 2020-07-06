@@ -18,6 +18,8 @@ interface DrinkRepository {
     // Methods for work with Db
     fun getAllDrinksFromDbLiveData(): LiveData<List<Drink>>
 
+    fun findDrinkLiveDataById(drinkId: Long): LiveData<Drink?>
+
     fun saveDrinkIntoDb(drink: Drink)
 
     fun getAllIngredientFromDb(): List<Ingredient>

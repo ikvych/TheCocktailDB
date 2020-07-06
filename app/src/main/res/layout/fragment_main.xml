@@ -1,7 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="com.ikvych.cocktail.databinding.adapter.DataBindingAdapter.DataBindingConverter"/>
+        <import type="com.ikvych.cocktail.util.Page"/>
+
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.MainFragmentViewModel" />
+    </data>
 
     <FrameLayout
         android:layout_width="match_parent"
@@ -50,7 +60,8 @@
                         android:id="@+id/vp2_main_fragment"
                         android:layout_width="match_parent"
                         android:layout_height="0dp"
-                        android:layout_weight="1" />
+                        android:layout_weight="1"
+                        bind:vp_page="@={DataBindingConverter.convertPageToInt(viewModel.viewPager2LiveData)}"/>
 
                 </LinearLayout>
 

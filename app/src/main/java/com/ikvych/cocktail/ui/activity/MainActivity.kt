@@ -16,18 +16,21 @@ import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
-import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.constant.*
+import com.ikvych.cocktail.constant.DRINK
+import com.ikvych.cocktail.constant.DRINK_ID
+import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 
-class MainActivity : BaseActivity<MainActivityViewModel>() {
+
+class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
 
     override var contentLayoutResId: Int = R.layout.activity_main
     override val viewModel: MainActivityViewModel by viewModels()
@@ -89,6 +92,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
             }
         })
 
+        //ховає і показує title у NavigationBottomView
         viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
             override fun onChanged(t: Boolean?) {
                 if (t!!) {
@@ -145,7 +149,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
         profileFragment = ProfileFragment.newInstance()
         mainFragment = MainFragment.newInstance()
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(
+        fragmentTransaction.add(
             R.id.fcv_container,
             profileFragment,
             ProfileFragment::class.java.simpleName
@@ -160,33 +164,8 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
         fragmentTransaction.commit()
     }
 
-    override fun onClick(v: View?) {
-
-        // відкриває деталізацію коктейлю
-        if (v is CardView) {
-            val view = v.findViewById<TextView>(R.id.tv_drink_name)
-            val drinkName = view?.text
-            if (drinkName != null) {
-                val drink = viewModel.findDrinkByName(drinkName.toString())
-                val intent = Intent(this, DrinkDetailActivity::class.java)
-                intent.putExtra(DRINK, drink)
-                startActivity(intent)
-            }
-        }
-        // додає і видаляє з улюблених
-        if (v is CheckBox) {
-            val drinkName = v.tag as String
-            val drink = viewModel.findDrinkByName(drinkName) ?: return
-            if (v.isChecked) {
-                drink.setIsFavorite(true)
-                viewModel.saveDrinkIntoDb(drink)
-            } else {
-                drink.setIsFavorite(false)
-                viewModel.saveDrinkIntoDb(drink)
-            }
-        }
-    }
-
+    // Залишив реалізацію цього метода, бо поки не знаю як за допомогою viewModel зробити
+    // виклик у view onLongClick
     override fun onLongClick(v: View?): Boolean {
         PopupMenu(this, v).apply {
             setOnMenuItemClickListener {
@@ -217,8 +196,9 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
                                 )
                             val drinkImageView =
                                 v!!.findViewById<ImageView>(R.id.iv_drink_image)
-                            val drinkAdaptiveIcon =
-                                drinkImageView.drawToBitmap().toAdaptiveIcon()
+                            val drinkBitmapIcon =
+                                drinkImageView.drawToBitmap()
+                            val drinkAdaptiveIcon = drinkBitmapIcon.toAdaptiveIcon()
                             val shortcut =
                                 ShortcutInfo.Builder(this@MainActivity, drink.getStrDrink())
                                     .setShortLabel(drink.getStrDrink()!!)

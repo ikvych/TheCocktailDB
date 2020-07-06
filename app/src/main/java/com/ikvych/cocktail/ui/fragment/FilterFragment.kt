@@ -12,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.databinding.FragmentFilterBinding
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
@@ -25,7 +26,7 @@ import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
 
-class FilterFragment : BaseFragment<BaseViewModel>() {
+class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_filter
     override val viewModel: BaseViewModel by viewModels()
@@ -106,7 +107,7 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
         }
         parentViewModel.allFilteredLiveData.observe(this, Observer {
             if (parentViewModel.isFiltersPresent()) {
-                val snackBar = Snackbar.make(coordinator_fragment_filter, it, Snackbar.LENGTH_SHORT)
+                val snackBar = Snackbar.make(coordinator_fragment_filter, it, Snackbar.LENGTH_LONG)
                 if (parentViewModel.isUndoEnabled()) {
                     snackBar.setAction(R.string.all_undo_button) {
                         parentViewModel.filtersLiveData.value =

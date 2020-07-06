@@ -7,8 +7,8 @@
 
     <data>
         <variable
-            name="drink"
-            type="com.ikvych.cocktail.data.entity.Drink" />
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.DrinkDetailViewModel" />
     </data>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -22,7 +22,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.core.widget.NestedScrollView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -70,7 +70,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/offset_40"
-                                android:text="@{drink.strDrink}"
+                                android:text="@{viewModel.drinkLiveData.strDrink}"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
                         </TableRow>
 
@@ -92,7 +92,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/offset_40"
-                                android:text="@{drink.strAlcoholic}"
+                                android:text="@{viewModel.drinkLiveData.strAlcoholic}"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
                         </TableRow>
 
@@ -114,7 +114,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/offset_40"
-                                android:text="@{drink.strGlass}"
+                                android:text="@{viewModel.drinkLiveData.strGlass}"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
                         </TableRow>
 
@@ -143,7 +143,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/offset_16"
-                        bind:ingredients="@{drink.ingredients}"/>
+                        bind:ingredients="@{viewModel.drinkLiveData.ingredients}"/>
 
                     <LinearLayout
                         android:id="@+id/ll_drink_instruction_title_container"
@@ -176,7 +176,7 @@
                             android:lineSpacingExtra="5sp"
                             android:layout_marginHorizontal="@dimen/offset_20"
                             android:layout_marginBottom="@dimen/offset_20"
-                            android:text="@{drink.strInstructions}"
+                            android:text="@{viewModel.drinkLiveData.strInstructions}"
                             android:textStyle="bold"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
                     </LinearLayout>
@@ -202,7 +202,7 @@
                 app:expandedTitleMarginBottom="@dimen/offset_32"
                 app:expandedTitleMarginStart="@dimen/offset_24"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-                app:title="@{drink.strDrink}">
+                app:title="@{viewModel.drinkLiveData.strDrink}">
 
                 <LinearLayout
                     android:id="@+id/ll_drink_image_container"
@@ -219,7 +219,7 @@
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/all_content_description"
                         android:scaleType="centerCrop"
-                        bind:strDrinkThumb="@{drink.strDrinkThumb}" />
+                        bind:strDrinkThumb="@{viewModel.drinkLiveData.strDrinkThumb}" />
 
                 </LinearLayout>
 

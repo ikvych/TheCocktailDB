@@ -14,8 +14,8 @@
     <!--#endregion-->
 
     <string name="info">info</string>
-    <string name="toast_action_view">Переглянути</string>
-    <string name="text_on_boot_completed">Смакуйте маргаритку із відчуттям міри. І надіємося, що Ви не пілот під  час польоту</string>
+    <string name="toast_action_view">Review</string>
+    <string name="text_on_boot_completed">Taste the daisy with a sense of proportion. And we hope that you are not a pilot during the flight</string>
 
     <!--#region SearchActivity-->
     <string name="drink_empty_search_result">No cocktails found</string>
@@ -34,10 +34,10 @@
     <string name="auth_login_button">Login</string>
     <string name="auth_password_tint">Password</string>
     <string name="auth_login_hint">Login</string>
-    <string name="auth_invalid_title">Введені невірні дані!</string>
-    <string name="auth_invalid_data">Невірні логін або пароль!</string>
-    <string name="auth_invalid_password">Пароль повинний містити більше 6 символів, одну літеру і одну цифру!</string>
-    <string name="auth_invalid_login">Логін повинний містити більше 6 символів!</string>
+    <string name="auth_invalid_title">Invalid data entered!</string>
+    <string name="auth_invalid_data">Invalid login or password!</string>
+    <string name="auth_invalid_password">The password must contain more than 6 characters, one letter and one number!</string>
+    <string name="auth_invalid_login">Login must contain more than 6 characters!</string>
     <!--#endregion-->
 
     <string name="dialog_sort_title">Sort By</string>
@@ -70,7 +70,7 @@
     <string name="menu_profile_activity_title">Profile</string>
     <!--#endregion-->
 
-   <!--#region FilterFragment-->
+    <!--#region FilterFragment-->
     <string name="filter_fragment_alcohol_filter_button">Alcohol Filter</string>
     <string name="filter_fragment_category_filter_button">Category Filter</string>
     <string name="filter_fragment_ingredient_filter_button">Ingredient Filter</string>
@@ -84,10 +84,10 @@
     <!--#endregion-->
 
     <!--#region MainActivity DrinkOfTheDay Dialog-->
-    <string name="resume_app_dialog_title">З поверненням</string>
-    <string name="resume_app_dialog_description">Пропонуємо переглянути напій дня: </string>
-    <string name="resume_app_dialog_right_button">Переглянути</string>
-    <string name="resume_app_dialog_left_button">Ні, дякую</string>
+    <string name="resume_app_dialog_title">Welcome back</string>
+    <string name="resume_app_dialog_description">We suggest you watch the drink of the day:</string>
+    <string name="resume_app_dialog_right_button">Review</string>
+    <string name="resume_app_dialog_left_button">No, thanks</string>
     <!--#endregion-->
 
 </resources>

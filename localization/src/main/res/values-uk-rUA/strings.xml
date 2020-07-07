@@ -1,0 +1,93 @@
+<resources>
+
+    <!--#region All-->
+    <string name="app_name">Kvych Ivan</string>
+    <string name="all_empty_history">Історія Порожня</string>
+    <string name="all_begin_search">Введіть теск, щоб почати пошук</string>
+    <string name="all_content_description">Зображення</string>
+    <string name="all_undo_button">Відмінити</string>
+    <string name="all_none_button">Немає</string>
+    <string name="all_accept_button">Прийняти</string>
+    <string name="all_reset_button">Скинути</string>
+    <string name="all_cancel_button">Відмінити</string>
+    <string name="all_ok_button">Добре</string>
+    <!--#endregion-->
+
+    <string name="info">Інформація</string>
+    <string name="toast_action_view">Переглянути</string>
+    <string name="text_on_boot_completed">Смакуйте маргаритку із відчуттям міри. І надіємося, що Ви не пілот під  час польоту</string>
+
+    <!--#region SearchActivity-->
+    <string name="drink_empty_search_result">Коктейлів не знайдено</string>
+    <!--#endregion-->
+
+    <!--#region DrinkDetailActivity-->
+    <string name="drink_detail_basic_drink_info">Головна інформація</string>
+    <string name="drink_detail_drink_name">Імя:</string>
+    <string name="drink_detail_drink_alcoholic">Алкоголь:</string>
+    <string name="drink_detail_drink_glass">Стакан:</string>
+    <string name="drink_detail_drink_ingredients">Інгредієнти</string>
+    <string name="drink_detail_drink_instruction">Інструкція</string>
+    <!--#endregion-->
+
+    <!--#region AuthActivity-->
+    <string name="auth_login_button">Увійти</string>
+    <string name="auth_password_tint">Пароль</string>
+    <string name="auth_login_hint">Логін</string>
+    <string name="auth_invalid_title">Введені невірні дані!</string>
+    <string name="auth_invalid_data">Невірні логін або пароль!</string>
+    <string name="auth_invalid_password">Пароль повинний містити більше 6 символів, одну літеру і одну цифру!</string>
+    <string name="auth_invalid_login">Логін повинний містити більше 6 символів!</string>
+    <!--#endregion-->
+
+    <string name="dialog_sort_title">Сортування</string>
+    <string name="hello_blank_fragment">Привіт пустий фрагмент</string>
+
+    <!--#region ProfileFragment-->
+    <string name="profile_log_out_button">Вийти</string>
+    <string name="profile_log_out_dialog_title">Вихід</string>
+    <string name="profile_log_out_dialog_message">Ви справді бажаєте вийти?</string>
+    <string name="profile_start_test_fragment_button">Запустити тестовий фрагмент</string>
+    <string name="profile_show_hide_main_navigation_bar_titles">Показати/Приховати заголовки вкладок</string>
+    <!--#endregion-->
+
+    <!--#region MainFragment TabLayout-->
+    <string name="main_tab_layout_history_tab">Історія</string>
+    <string name="main_tab_layout_favorite_tab">Улюблене</string>
+    <!--#endregion-->
+
+    <!--#region Pop-up menu-->
+    <string name="remove">Видалити</string>
+    <string name="quick_preview">Швидкий перегляд</string>
+    <string name="add_favorite">Додати до улюблених</string>
+    <string name="open">Відкрити</string>
+    <string name="remove_favorite">Видалити з улюблених</string>
+    <string name="pin_shortcut">Закріпити</string>
+    <!--#endregion-->
+
+    <!--#region MainActivity BottomNavigationView-->
+    <string name="menu_main_activity_title">Main</string>
+    <string name="menu_profile_activity_title">Profile</string>
+    <!--#endregion-->
+
+    <!--#region FilterFragment-->
+    <string name="filter_fragment_alcohol_filter_button">Вміст алкоголю</string>
+    <string name="filter_fragment_category_filter_button">Категорія напою</string>
+    <string name="filter_fragment_ingredient_filter_button">Містить інгредієнт</string>
+    <string name="filter_fragment_result_button">До результатів</string>
+    <!--#endregion-->
+
+    <!--#region FilterFragment AlcoholFiltersType-->
+    <string name="filter_fragment_alcoholic_type">Алкогольний</string>
+    <string name="filter_fragment_non_alcoholic_type">Не містить алкоголю</string>
+    <string name="filter_fragment_optional_alcoholic_type">Алкоголь за бажанням</string>
+    <!--#endregion-->
+
+    <!--#region MainActivity DrinkOfTheDay Dialog-->
+    <string name="resume_app_dialog_title">З поверненням</string>
+    <string name="resume_app_dialog_description">Пропонуємо переглянути напій дня: </string>
+    <string name="resume_app_dialog_right_button">Переглянути</string>
+    <string name="resume_app_dialog_left_button">Ні, дякую</string>
+    <!--#endregion-->
+
+</resources>

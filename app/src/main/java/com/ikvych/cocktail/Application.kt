@@ -6,6 +6,5 @@ import java.util.*
 class Application : Application() {
     override fun onCreate() {
         super.onCreate()
-        Locale.setDefault(Locale.UK)
     }
 }

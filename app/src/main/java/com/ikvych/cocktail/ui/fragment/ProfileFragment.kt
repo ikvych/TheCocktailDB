@@ -65,7 +65,8 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
 
         changeBottomNavBarTitleVisibility = cb_main_nav_bar_title_visibility
         // видимість титульного напису на BottomNavigationView по замовчуванню true
-        mainViewModel.navBarTitleVisibilityLiveData.value = changeBottomNavBarTitleVisibility.isChecked
+        val i = mainViewModel.navBarTitleVisibilityLiveData.value!!
+        changeBottomNavBarTitleVisibility.isChecked = mainViewModel.navBarTitleVisibilityLiveData.value!!
         changeBottomNavBarTitleVisibility.setOnCheckedChangeListener { _, isChecked ->
             mainViewModel.navBarTitleVisibilityLiveData.value = isChecked }
     }

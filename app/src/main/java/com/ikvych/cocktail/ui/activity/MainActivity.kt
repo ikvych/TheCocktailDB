@@ -93,8 +93,8 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
         })
 
         //ховає і показує title у NavigationBottomView
-        viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
-            override fun onChanged(t: Boolean?) {
+        viewModel.navBarTitleVisibilityLiveData.observe(this,
+            Observer<Boolean> { t ->
                 if (t!!) {
                     bottomNavigationView.labelVisibilityMode =
                         LabelVisibilityMode.LABEL_VISIBILITY_LABELED
@@ -102,8 +102,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                     bottomNavigationView.labelVisibilityMode =
                         LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
                 }
-            }
-        })
+            })
 
         bottomNavigationView = findViewById(R.id.bnv_main)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->

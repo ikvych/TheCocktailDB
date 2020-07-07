@@ -1,2 +1,3 @@
-rootProject.name='TheCocktailDB'
+rootProject.name='TheCocktailD'
+include ':localization'
 include ':app'

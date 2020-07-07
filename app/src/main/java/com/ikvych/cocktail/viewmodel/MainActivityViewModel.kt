@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.dataTest.repository.AppSettingRepository
+import com.ikvych.cocktail.dataTest.repository.impl.AppSettingRepositoryImpl
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.text.SimpleDateFormat
@@ -17,13 +19,15 @@ class MainActivityViewModel(
     application: Application
 ) : BaseViewModel(application), ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
+    private val appSettingRepository: AppSettingRepository = AppSettingRepositoryImpl.instance(application)
+
     val drinkOfTheDayLiveData: MutableLiveData<Drink?> = MutableLiveData()
     private var lifecycleObserver: ApplicationLifeCycleObserver
     private var sharedPreferences: SharedPreferences = application.getSharedPreferences(
         MAIN_ACTIVITY_SHARED_PREFERENCE,
         Context.MODE_PRIVATE
     )
-    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = appSettingRepository.mutableLiveData
 
     init {
         lifecycleObserver = ApplicationLifeCycleObserver(this, sharedPreferences)

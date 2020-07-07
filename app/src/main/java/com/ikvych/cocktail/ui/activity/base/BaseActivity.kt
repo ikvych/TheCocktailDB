@@ -1,10 +1,8 @@
-package com.ikvych.cocktail.ui.base
+package com.ikvych.cocktail.ui.activity.base
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.os.Build
 import android.os.Bundle
-import android.os.LocaleList
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
@@ -12,8 +10,12 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import com.ikvych.cocktail.receiver.FlyModeReceiver
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
+import com.ikvych.cocktail.ui.dialog.base.BaseBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.BaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.DialogType
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
-import java.util.*
 
 
 abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBinding> : AppCompatActivity(),

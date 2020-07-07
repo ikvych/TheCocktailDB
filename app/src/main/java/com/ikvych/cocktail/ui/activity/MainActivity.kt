@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
-import androidx.cardview.widget.CardView
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
 import androidx.core.view.drawToBitmap
@@ -23,8 +22,9 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.DRINK
 import com.ikvych.cocktail.constant.DRINK_ID
 import com.ikvych.cocktail.databinding.ActivityMainBinding
-import com.ikvych.cocktail.ui.base.*
-import com.ikvych.cocktail.ui.dialog.ResumeAppBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.activity.base.BaseActivity
+import com.ikvych.cocktail.ui.dialog.base.*
+import com.ikvych.cocktail.ui.dialog.bottom.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
@@ -69,6 +69,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
             mainMenu.isChecked = true
         }
     }
+
 
     override fun configureView(savedInstanceState: Bundle?) {
         //Відслідковуємо напій дня, якщо він не дорівнює null значить потрібно показати діалог

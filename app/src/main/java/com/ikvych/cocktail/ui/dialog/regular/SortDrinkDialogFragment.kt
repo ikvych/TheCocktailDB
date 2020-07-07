@@ -1,17 +1,21 @@
-package com.ikvych.cocktail.ui.dialog
+package com.ikvych.cocktail.ui.dialog.regular
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.base.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.ListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.SortDrinkDrinkDialogType
 
 
 class SortDrinkDialogFragment :
     ListBaseDialogFragment<SortDrinkType?, ListDialogButton, SortDrinkDrinkDialogType>() {
 
-    override val dialogType: SortDrinkDrinkDialogType = SortDrinkDrinkDialogType
+    override val dialogType: SortDrinkDrinkDialogType =
+        SortDrinkDrinkDialogType
     override var data: SortDrinkType? = SortDrinkType.RECENT
     private var selectedSortType: SortDrinkType? = SortDrinkType.RECENT
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
@@ -54,7 +58,8 @@ class SortDrinkDialogFragment :
         fun newInstance(
             sortType: SortDrinkType? = null
         ): SortDrinkDialogFragment {
-            return SortDrinkDialogFragment().apply {
+            return SortDrinkDialogFragment()
+                .apply {
                 arguments = bundleOf(
                     EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                         titleTextResId = R.string.dialog_sort_title

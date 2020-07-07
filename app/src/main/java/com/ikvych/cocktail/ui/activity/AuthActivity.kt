@@ -14,8 +14,12 @@ import com.google.android.material.textfield.TextInputEditText
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ActivityAuthBinding
 import com.ikvych.cocktail.filter.TextInputFilter
-import com.ikvych.cocktail.ui.base.*
-import com.ikvych.cocktail.ui.dialog.ErrorAuthDialogFragment
+import com.ikvych.cocktail.ui.activity.base.BaseActivity
+import com.ikvych.cocktail.ui.dialog.base.ActionSingleDialogButton
+import com.ikvych.cocktail.ui.dialog.base.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.DialogType
+import com.ikvych.cocktail.ui.dialog.base.NotificationDialogType
+import com.ikvych.cocktail.ui.dialog.regular.ErrorAuthDialogFragment
 import com.ikvych.cocktail.viewmodel.AuthViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import kotlinx.android.synthetic.main.activity_auth.*

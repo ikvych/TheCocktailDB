@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ui.base
+package com.ikvych.cocktail.ui.fragment.base
 
 import android.content.Context
 import android.os.Bundle
@@ -10,8 +10,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.ui.dialog.base.BaseBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.BaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.DialogType
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBinding> : Fragment(),

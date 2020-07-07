@@ -1,16 +1,17 @@
-package com.ikvych.cocktail.ui.dialog
+package com.ikvych.cocktail.ui.dialog.bottom
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.base.*
 
 
 class ResumeAppBottomSheetDialogFragment :
     SimpleBottomSheetBaseDialogFragment<Any, RegularDialogButton, ResumeApplicationDialogType, SimpleBottomSheetBaseDialogFragment.SimpleBottomSheetDialogBuilder>() {
 
-    override val dialogType: ResumeApplicationDialogType = ResumeApplicationDialogType
+    override val dialogType: ResumeApplicationDialogType =
+        ResumeApplicationDialogType
 
     override var dialogBuilder: SimpleBottomSheetDialogBuilder = SimpleBottomSheetDialogBuilder()
     override var data: Any? = null
@@ -34,7 +35,9 @@ class ResumeAppBottomSheetDialogFragment :
 
     companion object {
         fun newInstance(builder: SimpleBottomSheetDialogBuilder.() -> Unit): ResumeAppBottomSheetDialogFragment {
-            return getInstance(builder)
+            return getInstance(
+                builder
+            )
         }
 
         /**
@@ -44,7 +47,8 @@ class ResumeAppBottomSheetDialogFragment :
         fun getInstance(
             builder: SimpleBottomSheetDialogBuilder.() -> Unit
         ): ResumeAppBottomSheetDialogFragment {
-            val fragment = ResumeAppBottomSheetDialogFragment()
+            val fragment =
+                ResumeAppBottomSheetDialogFragment()
             fragment.arguments = bundleOf(
                 EXTRA_KEY_BUILDER to (SimpleBottomSheetDialogBuilder().apply(builder))
             )

@@ -9,7 +9,7 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.FragmentTestBinding
-import com.ikvych.cocktail.ui.base.BaseFragment
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
 

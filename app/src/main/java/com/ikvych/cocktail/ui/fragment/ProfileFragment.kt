@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.View
 import android.widget.Button
 import android.widget.CheckBox
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
@@ -28,9 +30,7 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
     private lateinit var startTestFragmentBtn: Button
     private lateinit var testFragment: TestFragment
 
-    private lateinit var changeBottomNavBarTitleVisibility: CheckBox
-
-    private lateinit var mainViewModel: MainActivityViewModel
+    private val mainViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
 
@@ -42,7 +42,6 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
             leftButtonText = getString(R.string.all_cancel_button)
             rightButtonText = getString(R.string.all_accept_button)
         }
-        mainViewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -63,12 +62,19 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
             fragmentTransaction.commit()
         }
 
-        changeBottomNavBarTitleVisibility = cb_main_nav_bar_title_visibility
         // видимість титульного напису на BottomNavigationView по замовчуванню true
-        val i = mainViewModel.navBarTitleVisibilityLiveData.value!!
-        changeBottomNavBarTitleVisibility.isChecked = mainViewModel.navBarTitleVisibilityLiveData.value!!
-        changeBottomNavBarTitleVisibility.setOnCheckedChangeListener { _, isChecked ->
+        s_main_nav_bar_title_visibility.isChecked = mainViewModel.navBarTitleVisibilityLiveData.value!!
+        s_main_nav_bar_title_visibility.setOnCheckedChangeListener { _, isChecked ->
             mainViewModel.navBarTitleVisibilityLiveData.value = isChecked }
+
+        s_battery_state_visibility.isChecked = mainViewModel.showBatteryStateLiveData.value!!
+        s_battery_state_visibility.setOnCheckedChangeListener { _, isChecked ->
+            if (isChecked) {
+                Toast.makeText(requireContext(), R.string.profile_fragment_battery_state_shown, Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(requireContext(), R.string.profile_fragment_battery_state_hidden, Toast.LENGTH_SHORT).show()
+            }
+            mainViewModel.showBatteryStateLiveData.value = isChecked }
     }
 
     override fun onBottomSheetDialogFragmentClick(

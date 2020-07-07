@@ -39,13 +39,19 @@
                 android:textColor="#FFFFFF"
                 app:backgroundTint="@color/design_default_color_primary_dark" />
 
-            <CheckBox
-                android:id="@+id/cb_main_nav_bar_title_visibility"
+            <Switch
+                android:id="@+id/s_main_nav_bar_title_visibility"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_height"
                 android:layout_margin="@dimen/offset_8"
-                android:checked="true"
                 android:text="@string/profile_show_hide_main_navigation_bar_titles" />
+
+            <Switch
+                android:id="@+id/s_battery_state_visibility"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height"
+                android:layout_margin="@dimen/offset_8"
+                android:text="@string/profile_battery_state_visibility" />
 
 
             <Space

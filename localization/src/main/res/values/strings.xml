@@ -49,11 +49,15 @@
     <string name="profile_log_out_dialog_message">Are you Really want to exit?</string>
     <string name="profile_start_test_fragment_button">Start test fragment</string>
     <string name="profile_show_hide_main_navigation_bar_titles">Show/Hide Main Navigation Bar Titles</string>
+    <string name="profile_battery_state_visibility">Show/Hide Battery State</string>
+    <string name="profile_fragment_battery_state_shown">Battery state shown</string>
+    <string name="profile_fragment_battery_state_hidden">Battery state hidden</string>
     <!--#endregion-->
 
     <!--#region MainFragment TabLayout-->
     <string name="main_tab_layout_history_tab">History</string>
     <string name="main_tab_layout_favorite_tab">Favorite</string>
+
     <!--#endregion-->
 
     <!--#region Pop-up menu-->

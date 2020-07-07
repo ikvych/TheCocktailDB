@@ -8,8 +8,10 @@ import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -31,6 +33,7 @@ import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
 import com.ikvych.cocktail.util.Page
+import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -38,6 +41,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
 
     override var contentLayoutResId: Int = R.layout.fragment_main
     override val viewModel: MainFragmentViewModel by viewModels()
+    private val mainViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var batteryReceiver: BatteryReceiver
 
@@ -113,6 +117,16 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
         viewModel.viewPager2LiveData.observe(this, Observer {
             tabLayout.selectTab(tabLayout.getTabAt(it.ordinal))
         })
+
+        mainViewModel.showBatteryStateLiveData.observe(this, Observer {
+            ll_battery_state_container.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        })
+
+
 
         val filterRecyclerView: RecyclerView = dataBinding.rvFilterList
         filterAdapter = FilterAdapter(viewModel)

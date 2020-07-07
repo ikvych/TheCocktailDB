@@ -2,7 +2,9 @@ package com.ikvych.cocktail.ui.activity.base
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Build
 import android.os.Bundle
+import android.os.LocaleList
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
@@ -15,15 +17,18 @@ import com.ikvych.cocktail.ui.dialog.base.BaseBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.BaseDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.DialogButton
 import com.ikvych.cocktail.ui.dialog.base.DialogType
+import com.ikvych.cocktail.util.Language
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import java.util.*
 
 
-abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBinding> : AppCompatActivity(),
+abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBinding> :
+    AppCompatActivity(),
     BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseDialogFragment.OnDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
-    View.OnClickListener, View.OnLongClickListener{
+    View.OnClickListener, View.OnLongClickListener {
 
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()
     protected abstract var contentLayoutResId: Int
@@ -32,19 +37,20 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBind
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
-/*        val locale = Locale("uk")
+        val chooseLanguage = Language.values()[viewModel.selectedLanguageLiveData.value!!]
+        val locale = Locale(chooseLanguage.locale)
         Locale.setDefault(locale)
         val resources = resources
         val configuration = resources.configuration
         configuration.setLocale(locale)
         configuration.setLayoutDirection(locale)
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N *//*24*//*) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N) {
             with(LocaleList(locale)) {
                 LocaleList.setDefault(this)
                 configuration.setLocales(this)
             }
         }
-        resources.updateConfiguration(configuration, resources.displayMetrics)*/
+        resources.updateConfiguration(configuration, resources.displayMetrics)
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, contentLayoutResId)
         dataBinding.lifecycleOwner = this@BaseActivity

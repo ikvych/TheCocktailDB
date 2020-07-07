@@ -8,6 +8,7 @@ import com.ikvych.cocktail.util.SingletonHolder
 
 const val EXTRA_KEY_SHOW_NAV_BAR_TITLE = "EXTRA_KEY_SHOW_NAV_BAR_TITLE"
 const val EXTRA_KEY_SHOW_BATTERY_STATE = "EXTRA_KEY_SHOW_BATTERY_STATE"
+const val EXTRA_KEY_SELECTED_SYSTEM_LANGUAGE = "EXTRA_KEY_SELECTED_SYSTEM_LANGUAGE"
 
 class AppSettingLocalSourceImpl(
     private val sharedPrefsHelper: SharedPrefsHelper
@@ -38,6 +39,20 @@ class AppSettingLocalSourceImpl(
         override fun setValue(value: Boolean?) {
             super.setValue(value)
             sharedPrefsHelper.putBoolean(EXTRA_KEY_SHOW_BATTERY_STATE, value ?: true)
+        }
+    }
+
+    override val selectedLanguageLiveData: MutableLiveData<Int> = object : MutableLiveData<Int>() {
+
+        init { value = value }
+
+        override fun getValue(): Int? {
+            return sharedPrefsHelper.getInt(EXTRA_KEY_SELECTED_SYSTEM_LANGUAGE, 0)
+        }
+
+        override fun setValue(value: Int?) {
+            super.setValue(value)
+            sharedPrefsHelper.putInt(EXTRA_KEY_SELECTED_SYSTEM_LANGUAGE, value ?: 0)
         }
     }
 

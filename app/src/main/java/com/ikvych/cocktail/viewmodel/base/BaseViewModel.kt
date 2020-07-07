@@ -20,6 +20,7 @@ open class BaseViewModel(application: Application): AndroidViewModel(application
     protected lateinit var state: SavedStateHandle
 
     val startDrinkDetailsLiveData: MutableLiveData<Drink?> = MutableLiveData<Drink?>()
+    val selectedLanguageLiveData: MutableLiveData<Int> = appSettingRepository.selectedLanguageLiveData
 
     fun startNewDrinkDetails(drink: Drink) {
         startDrinkDetailsLiveData.value = drink

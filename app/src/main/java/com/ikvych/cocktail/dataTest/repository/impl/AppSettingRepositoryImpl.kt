@@ -13,6 +13,7 @@ class AppSettingRepositoryImpl private constructor(
 
     override val showNavigationBarTitleLiveData: MutableLiveData<Boolean> = localSource.showNavigationTitleLiveData
     override val showBatteryStateLiveData: MutableLiveData<Boolean> = localSource.showBatteryStateLiveData
+    override val selectedLanguageLiveData: MutableLiveData<Int> = localSource.selectedLanguageLiveData
 
     companion object: SingletonHolder<AppSettingRepository, Context>(
         {

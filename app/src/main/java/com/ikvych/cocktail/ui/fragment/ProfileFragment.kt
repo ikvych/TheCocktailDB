@@ -4,10 +4,12 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.FragmentProfileBinding
 import com.ikvych.cocktail.ui.activity.AuthActivity
@@ -17,6 +19,7 @@ import com.ikvych.cocktail.ui.dialog.bottom.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.bottom.SelectLanguageBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.regular.FilterDrinkAlcoholDialogFragment
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment
+import com.ikvych.cocktail.util.Language
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.ProfileFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
@@ -74,24 +77,19 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
             mainViewModel.navBarTitleVisibilityLiveData.value = isChecked
         }
 
-/*        s_battery_state_visibility.isChecked = mainViewModel.showBatteryStateLiveData.value!!
+        s_battery_state_visibility.isChecked = mainViewModel.showBatteryStateLiveData.value!!
         s_battery_state_visibility.setOnCheckedChangeListener { _, isChecked ->
             if (isChecked) {
                 Toast.makeText(requireContext(), R.string.profile_fragment_battery_state_shown, Toast.LENGTH_SHORT).show()
             } else {
                 Toast.makeText(requireContext(), R.string.profile_fragment_battery_state_hidden, Toast.LENGTH_SHORT).show()
             }
-            mainViewModel.showBatteryStateLiveData.value = isChecked }*/
-        s_battery_state_visibility.setOnCheckedChangeListener { _, isChecked ->
-            SelectLanguageBottomSheetDialogFragment.newInstance()
-                .show(childFragmentManager, SelectLanguageBottomSheetDialogFragment::class.java.simpleName)
-/*            val intent = Intent(requireContext(), SplashActivity::class.java)
-            intent.addFlags(
-                Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(
-                Intent.FLAG_ACTIVITY_NEW_TASK)
-            requireActivity().startActivity(intent)*/
-        }
+            mainViewModel.showBatteryStateLiveData.value = isChecked }
 
+        b_change_language.setOnClickListener {
+            SelectLanguageBottomSheetDialogFragment.newInstance(Language.values()[viewModel.selectedLanguageLiveData.value!!])
+                .show(childFragmentManager, SelectLanguageBottomSheetDialogFragment::class.java.simpleName)
+        }
     }
 
     override fun onBottomSheetDialogFragmentClick(
@@ -111,6 +109,19 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
                     }
                     LeftDialogButton -> {
                         dialog.dismiss()
+                    }
+                }
+            }
+            SelectLanguageDialogType -> {
+                when (buttonType) {
+                    ItemListDialogButton -> {
+                        val selectedLanguage = data as Language
+                        viewModel.selectedLanguageLiveData.value = selectedLanguage.ordinal
+                        val intent = Intent(requireContext(), SplashActivity::class.java)
+                        intent.addFlags(
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(
+                            Intent.FLAG_ACTIVITY_NEW_TASK)
+                        requireActivity().startActivity(intent)
                     }
                 }
             }

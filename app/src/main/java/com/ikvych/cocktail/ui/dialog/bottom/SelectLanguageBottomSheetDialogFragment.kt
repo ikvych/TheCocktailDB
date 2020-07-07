@@ -14,14 +14,14 @@ class SelectLanguageBottomSheetDialogFragment :
 
     override val dialogType: SelectLanguageDialogType =
         SelectLanguageDialogType
-    override var data: Language? = Language.ENGLISH
-    private var selectedLanguage: Language? = Language.ENGLISH
+    override var data: Language? = Language.DEFAULT
+    private var selectedLanguage: Language? = Language.DEFAULT
     override var dialogBuilder: SimpleBottomSheetDialogBuilder = SimpleBottomSheetDialogBuilder()
 
     override val dialogListDataAdapter: DialogListDataAdapter<Language?> =
         object : DialogListDataAdapter<Language?> {
             override fun getName(data: Language?): CharSequence {
-                return data?.name?.capitalize() ?: ""
+                return data?.value ?: ""
             }
         }
 
@@ -58,7 +58,8 @@ class SelectLanguageBottomSheetDialogFragment :
                 .apply {
                 arguments = bundleOf(
                     EXTRA_KEY_BUILDER to SimpleBottomSheetDialogBuilder().apply {
-                        titleTextResId = R.string.dialog_sort_title
+                        titleTextResId = R.string.profile_change_language_dialog_title
+                        descriptionTextResId = R.string.profile_change_language_dialog_description
                         isCancelable = true
                     },
                     EXTRA_KEY_SELECTED_LANGUAGE to selectedLanguage?.ordinal

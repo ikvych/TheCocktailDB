@@ -4,10 +4,21 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import com.ikvych.cocktail.util.delegate.stateHandleLiveData
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.regex.Pattern
 
-class AuthViewModel(application: Application) : BaseViewModel(application) {
+class AuthViewModel(
+    application: Application,
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel(application, savedStateHandle) {
+
+    companion object {
+        const val EXTRA_KEY_LOGIN = "EXTRA_KEY_LOGIN"
+        const val EXTRA_KEY_PASSWORD = "EXTRA_KEY_PASSWORD"
+    }
+
     private val passwordPattern: Pattern =
         Pattern.compile("(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z~!@#\$%^&*]{6,}") //не менше 6 символів і містить хоча б одну цифру і хоча б одну літеру
     private val loginPattern: Pattern = Pattern.compile(".{7,}") //більше 6 символів
@@ -20,10 +31,13 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
         "Пароль повинний містити більше 6 символів, одну літеру і одну цифру"
 
     val isKeyboardShown: MutableLiveData<Boolean> = MutableLiveData()
-    val loginInputLiveData: MutableLiveData<String?> = MutableLiveData()
-    val passwordInputLiveData: MutableLiveData<String?> = MutableLiveData()
+    val loginInputLiveData: MutableLiveData<String?> by stateHandleLiveData(EXTRA_KEY_LOGIN)
+    val passwordInputLiveData: MutableLiveData<String?> by stateHandleLiveData(EXTRA_KEY_PASSWORD)
+
     init {
+        if (loginInputLiveData.value.isNullOrEmpty())
         loginInputLiveData.value = correctLogin
+        if (passwordInputLiveData.value.isNullOrEmpty())
         passwordInputLiveData.value = correctPassword
     }
     //відслідковує чи введені логін і пароль відповідають паттернам логіну і пароля

@@ -3,10 +3,14 @@ package com.ikvych.cocktail.viewmodel
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
+import androidx.lifecycle.SavedStateHandle
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
+import com.ikvych.cocktail.util.delegate.stateHandleLiveData
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -14,8 +18,9 @@ import java.util.*
 const val MAIN_ACTIVITY_SHARED_PREFERENCE = "MAIN_ACTIVITY_SHARED_PREFERENCE"
 
 class MainActivityViewModel(
-    application: Application
-) : BaseViewModel(application), ApplicationLifeCycleObserver.OnLifecycleObserverListener {
+    application: Application,
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel(application, savedStateHandle), ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
     val drinkOfTheDayLiveData: MutableLiveData<Drink?> = MutableLiveData()
     private var lifecycleObserver: ApplicationLifeCycleObserver
@@ -47,6 +52,7 @@ class MainActivityViewModel(
     fun saveDrinkIntoDb(drink: Drink) {
         drinkRepository.saveDrinkIntoDb(drink)
     }
+
 
     private fun setDrinkOfTheDay() {
         //Оскільки lifecycle, до якого привязана робота цього метода, належить MainActivity, яка по своїй природні працює тільки з базою даних, то

@@ -130,20 +130,20 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
             AlcoholDrinkDialogType -> {
                 val alcoholType = data as AlcoholDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[alcoholType.type] = alcoholType }
+                    parentViewModel.filtersLiveData!!.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
+                parentViewModel.filtersLiveData!!.value = parentViewModel!!.filtersLiveData!!.value!!.apply { this[alcoholType.type] = alcoholType }
             }
             CategoryDrinkDialogType -> {
                 val categoryType = data as CategoryDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[categoryType.type] = categoryType }
+                    parentViewModel.filtersLiveData!!.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
+                parentViewModel.filtersLiveData!!.value = parentViewModel!!.filtersLiveData!!.value!!.apply { this[categoryType.type] = categoryType }
             }
             IngredientDrinkDialogType -> {
                 val ingredientType = data as IngredientDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[ingredientType.type] = ingredientType }
+                    parentViewModel.filtersLiveData!!.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
+                parentViewModel.filtersLiveData!!.value = parentViewModel!!.filtersLiveData!!.value!!.apply { this[ingredientType.type] = ingredientType }
             }
         }
     }

@@ -187,8 +187,8 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             }
         })
 
-        viewModel.filtersLiveData.observe(this, Observer {
-            filterAdapter.setData(it.values.toList() as ArrayList)
+        viewModel.filtersLiveData!!.observe(this, Observer {
+            filterAdapter.setData(it!!.values.toList() as ArrayList)
             if (viewModel.isFiltersPresent()) {
                 filterIndicator.visibility = View.VISIBLE
             } else {

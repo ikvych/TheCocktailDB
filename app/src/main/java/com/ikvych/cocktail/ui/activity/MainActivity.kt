@@ -5,6 +5,7 @@ import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
@@ -36,8 +37,8 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
     override val viewModel: MainActivityViewModel by viewModels()
 
     private lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var mainFragment: MainFragment
-    private lateinit var profileFragment: ProfileFragment
+    private var mainFragment: MainFragment? = null
+    private var profileFragment: ProfileFragment? = null
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -70,6 +71,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
         }
     }
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        Log.d("MyViewModel", "ACTIVITY ONCREATE  ${this}")
+    }
 
     override fun configureView(savedInstanceState: Bundle?) {
         //Відслідковуємо напій дня, якщо він не дорівнює null значить потрібно показати діалог
@@ -118,8 +123,8 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                 R.id.menu_main_fragment -> {
                     if (lastEntry != null && lastEntry.name != MainFragment::class.java.simpleName) {
                         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                        ft.hide(profileFragment)
-                        ft.show(mainFragment)
+                        ft.hide(profileFragment!!)
+                        ft.show(mainFragment!!)
                         ft.setPrimaryNavigationFragment(mainFragment)
                         ft.addToBackStack(MainFragment::class.java.simpleName)
                         ft.commit()
@@ -132,8 +137,8 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                 R.id.menu_profile_fragment -> {
                     if (lastEntry == null || lastEntry.name != ProfileFragment::class.java.simpleName) {
                         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                        ft.hide(mainFragment)
-                        ft.show(profileFragment)
+                        ft.hide(mainFragment!!)
+                        ft.show(profileFragment!!)
                         ft.setPrimaryNavigationFragment(profileFragment)
                         ft.addToBackStack(ProfileFragment::class.java.simpleName)
                         ft.commit()
@@ -146,22 +151,30 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
             }
         }
 
-        profileFragment = ProfileFragment.newInstance()
-        mainFragment = MainFragment.newInstance()
+        profileFragment = supportFragmentManager.findFragmentByTag(ProfileFragment::class.java.simpleName)
+                as? ProfileFragment
+        mainFragment = supportFragmentManager.findFragmentByTag(MainFragment::class.java.simpleName)
+                as? MainFragment
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.add(
-            R.id.fcv_container,
-            profileFragment,
-            ProfileFragment::class.java.simpleName
-        )
-        fragmentTransaction.hide(profileFragment)
-        fragmentTransaction.add(
-            R.id.fcv_container,
-            mainFragment,
-            MainFragment::class.java.simpleName
-        )
-        fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
-        fragmentTransaction.commit()
+        if (profileFragment == null) {
+            profileFragment = ProfileFragment.newInstance()
+            fragmentTransaction.add(
+                R.id.fcv_container,
+                profileFragment!!,
+                ProfileFragment::class.java.simpleName
+            )
+            fragmentTransaction.hide(profileFragment!!)
+        }
+        if (mainFragment == null) {
+            mainFragment = MainFragment.newInstance()
+            fragmentTransaction.add(
+                R.id.fcv_container,
+                mainFragment!!,
+                MainFragment::class.java.simpleName
+            )
+            fragmentTransaction.setPrimaryNavigationFragment(mainFragment!!)
+            fragmentTransaction.commit()
+        }
     }
 
     // Залишив реалізацію цього метода, бо поки не знаю як за допомогою viewModel зробити

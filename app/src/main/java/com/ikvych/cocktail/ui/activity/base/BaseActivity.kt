@@ -37,7 +37,7 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
-        val chooseLanguage = Language.values()[viewModel.selectedLanguageLiveData.value!!]
+/*        val chooseLanguage = Language.values()[viewModel.selectedLanguageLiveData.value!!]
         val locale = Locale(chooseLanguage.locale)
         Locale.setDefault(locale)
         val resources = resources
@@ -50,7 +50,7 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
                 configuration.setLocales(this)
             }
         }
-        resources.updateConfiguration(configuration, resources.displayMetrics)
+        resources.updateConfiguration(configuration, resources.displayMetrics)*/
         super.onCreate(savedInstanceState)
         dataBinding = DataBindingUtil.setContentView(this, contentLayoutResId)
         dataBinding.lifecycleOwner = this@BaseActivity

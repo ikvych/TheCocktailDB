@@ -15,20 +15,22 @@ import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty
 
 inline fun <reified T> BaseViewModel.stateHandle(
-    saveKey: String
+    saveKey: String? = null
 ): ReadWriteProperty<Any, T?> =
     object : ReadWriteProperty<Any, T?> {
 
         override fun getValue(thisRef: Any, property: KProperty<*>): T? {
-            return savedStateHandle.get(saveKey)
+            val stateKey = saveKey ?: property.name
+            return savedStateHandle.get(stateKey)
         }
 
         override fun setValue(thisRef: Any, property: KProperty<*>, value: T?) {
-            savedStateHandle.set(saveKey, value)
+            val stateKey = saveKey ?: property.name
+            savedStateHandle.set(stateKey, value)
         }
     }
 
-inline fun <reified T> BaseViewModel.stateHandleLiveData(
+inline fun <reified T> BaseViewModel.stateHandleLiveData (
     saveKey: String? = null,
     initialValue: T? = null
 ): ReadOnlyProperty<Any, MutableLiveData<T?>> =

@@ -31,8 +31,8 @@ class AuthViewModel(
     private val passwordErrorMessage: String = application.resources.getString(R.string.auth_invalid_password)
 
     val isKeyboardShown: MutableLiveData<Boolean> = MutableLiveData()
-    val loginInputLiveData: MutableLiveData<String?> by stateHandleLiveData(EXTRA_KEY_LOGIN)
-    val passwordInputLiveData: MutableLiveData<String?> by stateHandleLiveData(EXTRA_KEY_PASSWORD)
+    val loginInputLiveData: MutableLiveData<String?> by stateHandleLiveData()
+    val passwordInputLiveData: MutableLiveData<String?> by stateHandleLiveData()
 
     init {
         if (loginInputLiveData.value.isNullOrEmpty())

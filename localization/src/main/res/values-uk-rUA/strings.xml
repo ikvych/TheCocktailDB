@@ -11,6 +11,7 @@
     <string name="all_reset_button">Скинути</string>
     <string name="all_cancel_button">Відмінити</string>
     <string name="all_ok_button">Добре</string>
+    <string name="all_empty_search">Нічого не знайдено</string>
     <!--#endregion-->
 
     <string name="info">Інформація</string>
@@ -31,6 +32,8 @@
     <!--#endregion-->
 
     <!--#region AuthActivity-->
+    <string name="auth_correct_login">123qweasd</string>
+    <string name="auth_correct_password">123qweasd</string>
     <string name="auth_login_button">Увійти</string>
     <string name="auth_password_tint">Пароль</string>
     <string name="auth_login_hint">Логін</string>
@@ -82,6 +85,7 @@
     <string name="filter_fragment_category_filter_button">Категорія напою</string>
     <string name="filter_fragment_ingredient_filter_button">Містить інгредієнт</string>
     <string name="filter_fragment_result_button">До результатів</string>
+    <string name="filter_fragment_search_result_text_pattern">Знайдено: h @, f %</string>
     <!--#endregion-->
 
     <!--#region FilterFragment AlcoholFiltersType-->

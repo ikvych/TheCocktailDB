@@ -4,13 +4,13 @@ import android.app.Application
 import android.content.res.Resources
 import android.text.SpannableString
 import android.text.style.ImageSpan
-import android.util.Log
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.data.entity.Drink
@@ -28,24 +28,56 @@ class MainFragmentViewModel(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle) {
 
+    companion object {
+        const val EXTRA_KEY_FILTER_TYPE = "EXTRA_KEY_FILTER_TYPE"
+        const val EXTRA_KEY_FILTER = "EXTRA_KEY_FILTER"
+        const val EXTRA_KEY_PAGE_NUMBER = "EXTRA_KEY_PAGE_NUMBER"
+        const val EXTRA_KEY_SORT_ORDER = "EXTRA_KEY_SORT_ORDER"
+    }
+
     val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getAllDrinksFromDbLiveData()
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
-    val viewPager2LiveData: MutableLiveData<Page> = MutableLiveData()
+    val viewPager2LiveData: MutableLiveData<Page> = object : MutableLiveData<Page>() {
+        init {
+            value = value
+        }
+        override fun setValue(value: Page?) {
+            savedStateHandle.set(EXTRA_KEY_PAGE_NUMBER, value?.ordinal)
+            super.setValue(value)
+        }
+
+        override fun getValue(): Page? {
+            val pageNumber = savedStateHandle.get<Int>(EXTRA_KEY_PAGE_NUMBER) ?: 0
+            return Page.values()[pageNumber]
+        }
+
+    }
     val isBatteryChargingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
 
-    val sortLiveData: MutableLiveData<SortDrinkType> =
-        MutableLiveData<SortDrinkType>()
+    val sortLiveData: MutableLiveData<SortDrinkType> = object : MutableLiveData<SortDrinkType>() {
 
-    init {
-        sortLiveData.value = SortDrinkType.RECENT
+        init {
+            value = value
+        }
+
+        override fun setValue(value: SortDrinkType?) {
+            savedStateHandle.set(EXTRA_KEY_SORT_ORDER, value?.ordinal)
+            super.setValue(value)
+        }
+
+        override fun getValue(): SortDrinkType? {
+            val sortOrderOrdinal = savedStateHandle.get<Int>(EXTRA_KEY_SORT_ORDER) ?: 0
+            return SortDrinkType.values()[sortOrderOrdinal]
+        }
     }
 
     init {
         isBatteryLowLiveData.value = false
     }
 
+    @Suppress("IMPLICIT_CAST_TO_ANY")
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
         object : MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>() {
 
@@ -54,42 +86,38 @@ class MainFragmentViewModel(
             }
 
             override fun setValue(value: HashMap<DrinkFilterType, DrinkFilter>?) {
-                Log.d("MyTags", "SAVE")
                 val keys = value?.keys
-                val values1 = value?.values
+                val values = value?.values
 
-                val keyArray1: IntArray? = keys?.map { it.ordinal }?.toIntArray()
-                val valuesArray1: ArrayList<String>? = values1?.map { it.key } as? ArrayList<String>
-                if (keyArray1 != null && valuesArray1 != null) {
-                    savedStateHandle.set("EXTRA_KEY_KEYS", keyArray1)
-                    savedStateHandle.set("EXTRA_KEY_VALUES", valuesArray1)
+                val keysArray: IntArray? = keys?.map { it.ordinal }?.toIntArray()
+                val valuesArray: ArrayList<String>? = values?.map { it.key } as? ArrayList<String>
+                if (keysArray != null && valuesArray != null) {
+                    savedStateHandle.set(EXTRA_KEY_FILTER_TYPE, keysArray)
+                    savedStateHandle.set(EXTRA_KEY_FILTER, valuesArray)
                 }
                 super.setValue(value)
             }
 
             override fun getValue(): HashMap<DrinkFilterType, DrinkFilter>? {
-                Log.d("MyTags", "GET")
-                val keyArray: IntArray? = savedStateHandle.get("EXTRA_KEY_KEYS")
-                val valuesArray: ArrayList<String>? = savedStateHandle.get("EXTRA_KEY_VALUES")
-                Log.d("MyTags", "${keyArray}")
-                Log.d("MyTags", "${valuesArray}")
+                val keysArray: IntArray? = savedStateHandle.get(EXTRA_KEY_FILTER_TYPE)
+                val valuesArray: ArrayList<String>? = savedStateHandle.get(EXTRA_KEY_FILTER)
                 var map = HashMap<DrinkFilterType, DrinkFilter>()
 
                 valuesArray?.forEachIndexed { index, value ->
-                    val drinkFilterType = DrinkFilterType.values()[keyArray!![index]]
+                    val drinkFilterType = DrinkFilterType.values()[keysArray!![index]]
                     val drinkFilter = when (drinkFilterType) {
                         DrinkFilterType.ALCOHOL -> {
-                            AlcoholDrinkFilter.values().filter { it.key == value }.first()
+                            AlcoholDrinkFilter.values().first { it.key == value }
                         }
                         DrinkFilterType.CATEGORY -> {
-                            CategoryDrinkFilter.values().filter { it.key == value }.first()
+                            CategoryDrinkFilter.values().first { it.key == value }
                         }
                         DrinkFilterType.INGREDIENT -> {
-                            IngredientDrinkFilter.values().filter { it.key == value }.first()
+                            IngredientDrinkFilter.values().first { it.key == value }
                         }
                         DrinkFilterType.GLASS -> {}
                     } as DrinkFilter
-                    map.put(drinkFilterType, drinkFilter)
+                    map[drinkFilterType] = drinkFilter
                 }
                 if (map.isNullOrEmpty()) {
                     map = hashMapOf(
@@ -185,15 +213,17 @@ class MainFragmentViewModel(
     val allFilteredLiveData: LiveData<SpannableString> =
         object : MediatorLiveData<SpannableString>() {
             init {
-                val src = "Знайдено: h @, f %"
+                //Петтерн містить "Found: h @, f %" - де 'h' і ʼfʼ символи які заміюються на кількість знайдених коктейлів
+                //у історії і улюблених, відповідно, а ʼ@ʼ і ʼ%ʼ символи які замінюються на іконки історії та улюблені відповідно
+                val src = application.resources.getString(R.string.filter_fragment_search_result_text_pattern)
 
                 val historyDrawable = ContextCompat.getDrawable(
                     application,
-                    com.ikvych.cocktail.R.drawable.ic_drink_history
+                    R.drawable.ic_drink_history
                 )
                 val favoriteDrawable = ContextCompat.getDrawable(
                     application,
-                    com.ikvych.cocktail.R.drawable.ic_drink_favorite
+                    R.drawable.ic_drink_favorite
                 )
 
                 //convert sp into px
@@ -205,7 +235,7 @@ class MainFragmentViewModel(
                 historyDrawable!!.setBounds(0, 0, drawableSize, drawableSize)
                 favoriteDrawable!!.setBounds(0, 0, drawableSize, drawableSize)
 
-                val emptySearch = "Нічого не знайдено"
+                val emptySearch = application.resources.getString(R.string.all_empty_search)
 
                 addSource(filteredDrinksLiveData) {
                     if (isFiltersPresent() && it.isEmpty() && filteredFavoriteDrinksLiveData.value!!.isEmpty()) {
@@ -264,6 +294,8 @@ class MainFragmentViewModel(
 
     fun isFiltersPresent(): Boolean {
         filtersLiveData.value?.forEach {
+            //загальне енам значення для фільтрів яке означає відстуність як такого
+            //в стрінгові ресурси не виношу бо наразі немає в цьому сенсу()
             if (it.value.key != "None") {
                 return true
             }

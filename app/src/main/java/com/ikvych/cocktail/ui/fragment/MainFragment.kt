@@ -110,7 +110,6 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
                 viewModel.viewPager2LiveData.value = Page.values()[tab!!.position]
             }
         })
-        viewModel.viewPager2LiveData.value = Page.values()[viewPager.currentItem]
         //відслідковує скрол по viewPager2 і переда відповідне значення в liveData щоб
         //забезпечити переключення таб
         viewModel.viewPager2LiveData.observe(this, Observer {

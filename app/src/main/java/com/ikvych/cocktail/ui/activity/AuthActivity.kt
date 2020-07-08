@@ -30,28 +30,18 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
     override var contentLayoutResId: Int = R.layout.activity_auth
     override val viewModel: AuthViewModel by viewModels()
 
-    private lateinit var textInputEditLogin: TextInputEditText
-    private lateinit var textInputEditPassword: TextInputEditText
-
-    private lateinit var submitButton: Button
     private val inputFilter: InputFilter = TextInputFilter()
 
     private lateinit var inputMethodManager: InputMethodManager
 
     override fun configureView(savedInstanceState: Bundle?) {
-        val keyboardObserver =
-            findViewById<LinerLayoutWithKeyboardListener>(R.id.llwkl_auth_container)
-        keyboardObserver.listener = this
+        llwkl_auth_container.listener = this
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        textInputEditLogin = tiet_auth_login
-        textInputEditLogin.filters = arrayOf(inputFilter)
-        textInputEditPassword = tiet_auth_password
-        textInputEditPassword.filters = arrayOf(inputFilter)
+        tiet_auth_login.filters = arrayOf(inputFilter)
+        tiet_auth_password.filters = arrayOf(inputFilter)
 
-        submitButton = b_auth_login
-
-        submitButton.setOnClickListener {
+        b_auth_login.setOnClickListener {
             closeKeyboard()
 
             if (viewModel.isLoginDataMatchPatternLiveData.value!!.first &&
@@ -63,17 +53,17 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
                 finish()
             } else {
                 if (!viewModel.isLoginDataMatchPatternLiveData.value!!.second) {
-                    textInputEditPassword.requestFocus()
+                    tiet_auth_password.requestFocus()
                 }
                 if (!viewModel.isLoginDataMatchPatternLiveData.value!!.first) {
-                    textInputEditLogin.requestFocus()
+                    tiet_auth_login.requestFocus()
                 }
                 ErrorAuthDialogFragment.newInstance {
                     titleText = getString(R.string.auth_invalid_title)
                     leftButtonText = getString(R.string.all_ok_button)
                     descriptionText = viewModel.errorMessageViewModel.value!!
                 }.show(supportFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
-                submitButton.background
+                b_auth_login.background
             }
         }
 
@@ -81,7 +71,7 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
         viewModel.errorMessageViewModel.observe(this, Observer { })
         viewModel.isLoginDataValidLiveData.observe(this, Observer { })
 
-        textInputEditLogin.requestFocus()
+        tiet_auth_login.requestFocus()
     }
 
     override fun configureDataBinding(binding: ActivityAuthBinding) {

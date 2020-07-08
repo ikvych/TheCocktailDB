@@ -8,6 +8,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.ikvych.cocktail.util.delegate.stateHandleLiveData
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.regex.Pattern
+import com.ikvych.cocktail.R
 
 class AuthViewModel(
     application: Application,
@@ -23,12 +24,11 @@ class AuthViewModel(
         Pattern.compile("(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z~!@#\$%^&*]{6,}") //не менше 6 символів і містить хоча б одну цифру і хоча б одну літеру
     private val loginPattern: Pattern = Pattern.compile(".{7,}") //більше 6 символів
 
-    private val correctLogin = "123qweasd"
-    private val correctPassword = "123qweasd"
+    private val correctLogin = application.resources.getString(R.string.auth_correct_login)
+    private val correctPassword = application.resources.getString(R.string.auth_correct_password)
 
-    private val loginErrorMessage: String = "Логін повинний містити більше 6 символів"
-    private val passwordErrorMessage: String =
-        "Пароль повинний містити більше 6 символів, одну літеру і одну цифру"
+    private val loginErrorMessage: String = application.resources.getString(R.string.auth_invalid_login)
+    private val passwordErrorMessage: String = application.resources.getString(R.string.auth_invalid_password)
 
     val isKeyboardShown: MutableLiveData<Boolean> = MutableLiveData()
     val loginInputLiveData: MutableLiveData<String?> by stateHandleLiveData(EXTRA_KEY_LOGIN)
@@ -114,9 +114,10 @@ class AuthViewModel(
                         finalErrorMessage = passwordErrorMessage
                     }
                 }
-                //блок виконується коли є помилка у співпадінні захардкодженого логіну або паролю з введеними
+                //блок виконується коли немає помилок у попередньому блоці але є помилка
+                // у співпадінні захардкодженого логіну або паролю з введеними
             } else if (!isLoginDataValidLiveData.value!!) {
-                finalErrorMessage = "Невірні логін або пароль!"
+                finalErrorMessage = application.resources.getString(R.string.auth_invalid_data)
             }
             value = finalErrorMessage
         }

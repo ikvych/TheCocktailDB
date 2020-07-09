@@ -25,6 +25,7 @@ open class BaseViewModel(
     protected val appSettingRepository: AppSettingRepository =
         AppSettingRepositoryImpl.instance(application)
 
+
     val startDrinkDetailsLiveData: MutableLiveData<Drink?> = MutableLiveData<Drink?>()
     val selectedLanguageLiveData: MutableLiveData<Int> =
         appSettingRepository.selectedLanguageLiveData

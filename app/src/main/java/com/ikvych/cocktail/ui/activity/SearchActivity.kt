@@ -20,7 +20,7 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivitySearchBinding
 import com.ikvych.cocktail.listener.DrinkOfferListener
 import com.ikvych.cocktail.receiver.DrinkOfferReceiver
-import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.util.setEmptySearchVisible
 import com.ikvych.cocktail.util.setSearchEmptyListVisible
 import com.ikvych.cocktail.util.setSearchRecyclerViewVisible

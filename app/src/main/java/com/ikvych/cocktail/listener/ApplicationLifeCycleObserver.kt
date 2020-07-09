@@ -22,7 +22,7 @@ class ApplicationLifeCycleObserver(
         if (sharedPreferences.contains(CURRENT_TIME_MILLIS)) {
             val savedTime = sharedPreferences.getLong(CURRENT_TIME_MILLIS, -1)
             val currentTime = System.currentTimeMillis()
-            if ((currentTime - savedTime) <= 10000L) {
+            if ((currentTime - savedTime) >= 5000L) {
                 listener.shouldShowDrinkOfTheDay()
             }
         }

@@ -68,6 +68,7 @@
                 android:backgroundTint="@color/color_primary"
                 android:hint="@string/auth_password_tint"
                 android:text="@={viewModel.passwordInputLiveData}"
+                android:saveEnabled="false"
                 android:inputType="textPassword"
                 android:textCursorDrawable="@drawable/cursor_shape" />
 

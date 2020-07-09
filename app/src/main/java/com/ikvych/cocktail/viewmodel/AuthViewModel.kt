@@ -4,26 +4,40 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.SavedStateHandle
+import com.ikvych.cocktail.util.delegate.stateHandleLiveData
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.regex.Pattern
+import com.ikvych.cocktail.R
 
-class AuthViewModel(application: Application) : BaseViewModel(application) {
+class AuthViewModel(
+    application: Application,
+    savedStateHandle: SavedStateHandle
+) : BaseViewModel(application, savedStateHandle) {
+
+    companion object {
+        const val EXTRA_KEY_LOGIN = "EXTRA_KEY_LOGIN"
+        const val EXTRA_KEY_PASSWORD = "EXTRA_KEY_PASSWORD"
+    }
+
     private val passwordPattern: Pattern =
         Pattern.compile("(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z~!@#\$%^&*]{6,}") //не менше 6 символів і містить хоча б одну цифру і хоча б одну літеру
     private val loginPattern: Pattern = Pattern.compile(".{7,}") //більше 6 символів
 
-    private val correctLogin = "123qweasd"
-    private val correctPassword = "123qweasd"
+    private val correctLogin = application.resources.getString(R.string.auth_correct_login)
+    private val correctPassword = application.resources.getString(R.string.auth_correct_password)
 
-    private val loginErrorMessage: String = "Логін повинний містити більше 6 символів"
-    private val passwordErrorMessage: String =
-        "Пароль повинний містити більше 6 символів, одну літеру і одну цифру"
+    private val loginErrorMessage: String = application.resources.getString(R.string.auth_invalid_login)
+    private val passwordErrorMessage: String = application.resources.getString(R.string.auth_invalid_password)
 
     val isKeyboardShown: MutableLiveData<Boolean> = MutableLiveData()
-    val loginInputLiveData: MutableLiveData<String?> = MutableLiveData()
-    val passwordInputLiveData: MutableLiveData<String?> = MutableLiveData()
+    val loginInputLiveData: MutableLiveData<String?> by stateHandleLiveData()
+    val passwordInputLiveData: MutableLiveData<String?> by stateHandleLiveData()
+
     init {
+        if (loginInputLiveData.value.isNullOrEmpty())
         loginInputLiveData.value = correctLogin
+        if (passwordInputLiveData.value.isNullOrEmpty())
         passwordInputLiveData.value = correctPassword
     }
     //відслідковує чи введені логін і пароль відповідають паттернам логіну і пароля
@@ -100,9 +114,10 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
                         finalErrorMessage = passwordErrorMessage
                     }
                 }
-                //блок виконується коли є помилка у співпадінні захардкодженого логіну або паролю з введеними
+                //блок виконується коли немає помилок у попередньому блоці але є помилка
+                // у співпадінні захардкодженого логіну або паролю з введеними
             } else if (!isLoginDataValidLiveData.value!!) {
-                finalErrorMessage = "Невірні логін або пароль!"
+                finalErrorMessage = application.resources.getString(R.string.auth_invalid_data)
             }
             value = finalErrorMessage
         }

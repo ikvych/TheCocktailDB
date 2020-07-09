@@ -1,16 +1,20 @@
-package com.ikvych.cocktail.ui.dialog
+package com.ikvych.cocktail.ui.dialog.regular
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.base.ActionSingleDialogButton
+import com.ikvych.cocktail.ui.dialog.base.NotificationDialogType
+import com.ikvych.cocktail.ui.dialog.base.SimpleBaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.SingleDialogButton
 
 
 class ErrorAuthDialogFragment :
     SimpleBaseDialogFragment<String, SingleDialogButton, NotificationDialogType, SimpleBaseDialogFragment.SimpleDialogBuilder>() {
 
-    override val dialogType: NotificationDialogType = NotificationDialogType
+    override val dialogType: NotificationDialogType =
+        NotificationDialogType
 
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
     override var data: String? = null
@@ -33,7 +37,9 @@ class ErrorAuthDialogFragment :
 
     companion object {
         fun newInstance(builder: SimpleDialogBuilder.() -> Unit): ErrorAuthDialogFragment {
-            return getInstance(builder)
+            return getInstance(
+                builder
+            )
         }
 
         /**
@@ -43,7 +49,8 @@ class ErrorAuthDialogFragment :
         fun getInstance(
             builder: SimpleDialogBuilder.() -> Unit
         ): ErrorAuthDialogFragment {
-            val fragment = ErrorAuthDialogFragment()
+            val fragment =
+                ErrorAuthDialogFragment()
             fragment.arguments = bundleOf(
                 EXTRA_KEY_BUILDER to (SimpleDialogBuilder().apply(builder))
             )

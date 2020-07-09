@@ -10,6 +10,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -20,17 +21,18 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.constant.DRINK
 import com.ikvych.cocktail.databinding.FragmentMainBinding
-import com.ikvych.cocktail.databinding.adapter.DataBindingAdapter
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.receiver.BatteryReceiver
-import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.ui.activity.SearchActivity
-import com.ikvych.cocktail.ui.base.*
-import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
-import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.DialogType
+import com.ikvych.cocktail.ui.dialog.base.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.SortDrinkDrinkDialogType
+import com.ikvych.cocktail.ui.dialog.regular.SortDrinkDialogFragment
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.util.Page
+import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 
@@ -38,6 +40,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
 
     override var contentLayoutResId: Int = R.layout.fragment_main
     override val viewModel: MainFragmentViewModel by viewModels()
+    private val mainViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var batteryReceiver: BatteryReceiver
 
@@ -107,12 +110,21 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
                 viewModel.viewPager2LiveData.value = Page.values()[tab!!.position]
             }
         })
-        viewModel.viewPager2LiveData.value = Page.values()[viewPager.currentItem]
         //відслідковує скрол по viewPager2 і переда відповідне значення в liveData щоб
         //забезпечити переключення таб
         viewModel.viewPager2LiveData.observe(this, Observer {
             tabLayout.selectTab(tabLayout.getTabAt(it.ordinal))
         })
+
+        mainViewModel.showBatteryStateLiveData.observe(this, Observer {
+            ll_battery_state_container.visibility = if (it) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
+        })
+
+
 
         val filterRecyclerView: RecyclerView = dataBinding.rvFilterList
         filterAdapter = FilterAdapter(viewModel)
@@ -174,8 +186,8 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             }
         })
 
-        viewModel.filtersLiveData.observe(this, Observer {
-            filterAdapter.setData(it.values.toList() as ArrayList)
+        viewModel.filtersLiveData!!.observe(this, Observer {
+            filterAdapter.setData(it!!.values.toList() as ArrayList)
             if (viewModel.isFiltersPresent()) {
                 filterIndicator.visibility = View.VISIBLE
             } else {

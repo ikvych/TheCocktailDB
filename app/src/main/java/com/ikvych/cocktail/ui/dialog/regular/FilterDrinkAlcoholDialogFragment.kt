@@ -1,20 +1,21 @@
-package com.ikvych.cocktail.ui.dialog
+package com.ikvych.cocktail.ui.dialog.regular
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.ui.base.ItemListDialogButton
-import com.ikvych.cocktail.ui.base.ListDialogButton
-import com.ikvych.cocktail.ui.base.AlcoholDrinkDialogType
-import com.ikvych.cocktail.ui.base.ListBaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.ListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.AlcoholDrinkDialogType
+import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
 
 
 class FilterDrinkAlcoholDialogFragment :
     ListBaseDialogFragment<AlcoholDrinkFilter?, ListDialogButton, AlcoholDrinkDialogType>() {
 
-    override val dialogType: AlcoholDrinkDialogType = AlcoholDrinkDialogType
+    override val dialogType: AlcoholDrinkDialogType =
+        AlcoholDrinkDialogType
     override var data: AlcoholDrinkFilter? = AlcoholDrinkFilter.NONE
     private var selectedAlcoholDrinkFilter: AlcoholDrinkFilter? = AlcoholDrinkFilter.NONE
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
@@ -55,7 +56,8 @@ class FilterDrinkAlcoholDialogFragment :
 
     companion object {
         fun newInstance(selectedAlcohol: AlcoholDrinkFilter? = null): FilterDrinkAlcoholDialogFragment {
-            return FilterDrinkAlcoholDialogFragment().apply {
+            return FilterDrinkAlcoholDialogFragment()
+                .apply {
                 arguments = bundleOf(
                     EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                         titleTextResId = R.string.dialog_sort_title

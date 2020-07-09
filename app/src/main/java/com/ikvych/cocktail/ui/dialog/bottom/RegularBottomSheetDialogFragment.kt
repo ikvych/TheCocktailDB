@@ -1,16 +1,17 @@
-package com.ikvych.cocktail.ui.dialog
+package com.ikvych.cocktail.ui.dialog.bottom
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.base.*
 
 
 open class RegularBottomSheetDialogFragment :
     SimpleBottomSheetBaseDialogFragment<Any, RegularDialogButton, RegularDialogType, SimpleBottomSheetBaseDialogFragment.SimpleBottomSheetDialogBuilder>() {
 
-    override val dialogType: RegularDialogType = RegularDialogType
+    override val dialogType: RegularDialogType =
+        RegularDialogType
 
     override var dialogBuilder: SimpleBottomSheetDialogBuilder = SimpleBottomSheetDialogBuilder()
     override var data: Any? = null
@@ -34,7 +35,9 @@ open class RegularBottomSheetDialogFragment :
 
     companion object {
         fun newInstance(builder: SimpleBottomSheetDialogBuilder.() -> Unit): RegularBottomSheetDialogFragment {
-            return getInstance(builder)
+            return getInstance(
+                builder
+            )
         }
 
         /**
@@ -44,7 +47,8 @@ open class RegularBottomSheetDialogFragment :
         fun getInstance(
             builder: SimpleBottomSheetDialogBuilder.() -> Unit
         ): RegularBottomSheetDialogFragment {
-            val fragment = RegularBottomSheetDialogFragment()
+            val fragment =
+                RegularBottomSheetDialogFragment()
             fragment.arguments = bundleOf(
                 EXTRA_KEY_BUILDER to (SimpleBottomSheetDialogBuilder().apply(builder))
             )

@@ -1,17 +1,21 @@
-package com.ikvych.cocktail.ui.dialog
+package com.ikvych.cocktail.ui.dialog.regular
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.base.IngredientDrinkDialogType
+import com.ikvych.cocktail.ui.dialog.base.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.ListDialogButton
 
 
 class FilterDrinkIngredientDialogFragment :
     ListBaseDialogFragment<IngredientDrinkFilter?, ListDialogButton, IngredientDrinkDialogType>() {
 
-    override val dialogType: IngredientDrinkDialogType = IngredientDrinkDialogType
+    override val dialogType: IngredientDrinkDialogType =
+        IngredientDrinkDialogType
     override var data: IngredientDrinkFilter? = IngredientDrinkFilter.NONE
     private var selectedIngredientDrinkFilter: IngredientDrinkFilter? = IngredientDrinkFilter.NONE
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
@@ -54,7 +58,8 @@ class FilterDrinkIngredientDialogFragment :
         fun newInstance(
             selectedIngredient: IngredientDrinkFilter? = null
         ): FilterDrinkIngredientDialogFragment {
-            return FilterDrinkIngredientDialogFragment().apply {
+            return FilterDrinkIngredientDialogFragment()
+                .apply {
                 arguments = bundleOf(
                     EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                         titleTextResId = R.string.dialog_sort_title

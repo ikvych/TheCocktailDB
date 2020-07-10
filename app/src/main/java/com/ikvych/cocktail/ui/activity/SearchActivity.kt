@@ -21,13 +21,13 @@ import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 
 class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOfferListener {
 
+    override var contentLayoutResId: Int = R.layout.activity_search
+
     lateinit var toolbarSearchView: SearchView
     private val drinkOfferReceiver: DrinkOfferReceiver = DrinkOfferReceiver(this)
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_search)
-
+    override fun configureView(savedInstanceState: Bundle?) {
+        super.configureView(savedInstanceState)
         initViewModel(SearchActivityViewModel::class.java)
         initRecyclerView(viewModel.getCurrentData(), R.id.db_recycler_view)
         initLiveDataObserver()

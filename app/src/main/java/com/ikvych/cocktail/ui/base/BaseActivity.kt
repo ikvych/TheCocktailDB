@@ -2,6 +2,7 @@ package com.ikvych.cocktail.ui.base
 
 import android.content.Intent
 import android.content.IntentFilter
+import android.os.Bundle
 import android.view.View
 import androidx.annotation.CallSuper
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +18,17 @@ abstract class BaseActivity : AppCompatActivity(),
     View.OnClickListener, View.OnLongClickListener{
 
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()
+    protected abstract var contentLayoutResId: Int
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(contentLayoutResId)
+        configureView(savedInstanceState)
+    }
+
+    protected open fun configureView(savedInstanceState: Bundle?) {
+        //stub
+    }
 
     @CallSuper
     override fun onDialogFragmentDismiss(

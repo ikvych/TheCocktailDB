@@ -7,9 +7,11 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.ui.base.BaseActivity
 
 class SplashActivity : BaseActivity() {
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_splash)
+
+    override var contentLayoutResId: Int = R.layout.activity_splash
+
+    override fun configureView(savedInstanceState: Bundle?) {
+        super.configureView(savedInstanceState)
         Handler().postDelayed({
             val intent = Intent(this@SplashActivity, AuthActivity::class.java)
             startActivity(intent)

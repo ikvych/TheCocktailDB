@@ -39,6 +39,8 @@ import kotlin.collections.HashSet
 
 class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, FilterResultCallBack {
 
+    override var contentLayoutResId: Int = R.layout.activity_main
+
     override val callbacks: HashSet<FilterFragment.OnFilterResultListener> = hashSetOf()
     lateinit var viewModel: MainViewModel
 
@@ -69,10 +71,8 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
+    override fun configureView(savedInstanceState: Bundle?) {
+        super.configureView(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         bottomNavigationView = findViewById(R.id.bnv_main)

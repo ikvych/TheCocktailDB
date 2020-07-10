@@ -21,6 +21,8 @@ import com.ikvych.cocktail.viewmodel.MainViewModel
 
 class DrinkDetailActivity : BaseActivity() {
 
+    override var contentLayoutResId: Int = R.layout.activity_drink_details
+
     private var drink: Drink? = null
     private var modelType: String? = null
     private lateinit var viewModel : MainViewModel
@@ -38,10 +40,8 @@ class DrinkDetailActivity : BaseActivity() {
 
     private lateinit var imageViewParams: LinearLayout.LayoutParams
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_drink_details)
-
+    override fun configureView(savedInstanceState: Bundle?) {
+        super.configureView(savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         val intent = intent

@@ -2,7 +2,6 @@ package com.ikvych.cocktail.data.repository.base
 
 import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.data.entity.Ingredient
 
 
 interface DrinkDbRepository {
@@ -12,8 +11,6 @@ interface DrinkDbRepository {
     fun getFavoriteDrinks(): LiveData<List<Drink>>
 
     fun saveDrink(drink: Drink)
-
-    fun getAllIngredient(): List<Ingredient>
 
     fun findDrinkById(drinkId: Long): Drink
 

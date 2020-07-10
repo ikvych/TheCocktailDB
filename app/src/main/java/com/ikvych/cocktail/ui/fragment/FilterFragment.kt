@@ -3,11 +3,13 @@ package com.ikvych.cocktail.ui.fragment
 import android.content.Context
 import android.os.Bundle
 import android.view.View
-import android.widget.*
+import android.widget.Button
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
@@ -64,7 +66,6 @@ class FilterFragment : BaseFragment() {
 
         initCategoryFilters()
         initAlcoholFilters()
-        initIngredientFilters()
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
@@ -90,7 +91,7 @@ class FilterFragment : BaseFragment() {
 
         ingredientFilter = view.findViewById(R.id.im_ingredient_filter)
         ingredientFilter.setOnClickListener { v ->
-            FilterDrinkIngredientDialogFragment.newInstance(viewModel.getAllIngredient())
+            FilterDrinkIngredientDialogFragment.newInstance()
                 .show(
                     childFragmentManager,
                     FilterDrinkIngredientDialogFragment::class.java.simpleName
@@ -145,19 +146,6 @@ class FilterFragment : BaseFragment() {
         }
     }
 
-    private fun initIngredientFilters() {
-        val ingredientKey = requireArguments().getString(DrinkFilterType.INGREDIENT.key)
-            ?: "None"
-
-        if (ingredientKey == "None") {
-            drinkFilters.remove(DrinkFilterType.INGREDIENT)
-        } else {
-            val ingredient = IngredientDrinkFilter.INGREDIENT
-            ingredient.key = ingredientKey
-            drinkFilters.put(DrinkFilterType.INGREDIENT, ingredient)
-        }
-    }
-
     override fun onDialogFragmentClick(
         dialog: DialogFragment,
         buttonType: DialogButton,
@@ -184,15 +172,13 @@ class FilterFragment : BaseFragment() {
                 chosenCategoryFilter.text = categoryType.key
             }
             IngredientDrinkType -> {
-                val ingredientType = data as Ingredient
-                val ingredient = IngredientDrinkFilter.INGREDIENT
-                ingredient.key = ingredientType.strIngredient1!!
-                if (ingredientType.strIngredient1 == "None") {
-                    drinkFilters.remove(DrinkFilterType.INGREDIENT)
+                val ingredientType = data as IngredientDrinkFilter
+                if (ingredientType != IngredientDrinkFilter.NONE) {
+                    drinkFilters[ingredientType.type] = ingredientType
                 } else {
-                    drinkFilters[ingredient.type] = ingredient
+                    drinkFilters.remove(ingredientType.type)
                 }
-                chosenIngredientFilter.text = ingredient.key
+                chosenIngredientFilter.text = ingredientType.key
             }
         }
 

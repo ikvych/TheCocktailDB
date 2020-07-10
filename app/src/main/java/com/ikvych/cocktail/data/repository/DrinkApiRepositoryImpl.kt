@@ -7,8 +7,6 @@ import com.ikvych.cocktail.data.database.DrinkDao
 import com.ikvych.cocktail.data.database.DrinkDataBase
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.data.entity.DrinkApiResponse
-import com.ikvych.cocktail.data.entity.Ingredient
-import com.ikvych.cocktail.data.entity.IngredientApiResponse
 import com.ikvych.cocktail.data.network.DrinkApiService
 import com.ikvych.cocktail.data.network.RetrofitInstance
 import com.ikvych.cocktail.data.repository.base.DrinkApiRepository
@@ -22,8 +20,6 @@ class DrinkApiRepositoryImpl(context: Context) :
 
     private val apiService: DrinkApiService = RetrofitInstance.service
     val drinksLiveData: MutableLiveData<List<Drink>> = MutableLiveData()
-
-    private val drinkDao: DrinkDao = DrinkDataBase.getInstance(context)!!.drinkDao()
 
     override fun updateDrinksLiveData(query: String) {
         val call: Call<DrinkApiResponse?> = apiService.getDrinksByName(query)
@@ -49,28 +45,6 @@ class DrinkApiRepositoryImpl(context: Context) :
         })
     }
 
-    override fun initAllIngredient() {
-        val call: Call<IngredientApiResponse?> = apiService.getAllIngredients()
-
-        call.enqueue(object : Callback<IngredientApiResponse?> {
-
-            override fun onFailure(call: Call<IngredientApiResponse?>, t: Throwable) {
-                println("Jello")
-            }
-
-            override fun onResponse(
-                call: Call<IngredientApiResponse?>,
-                response: Response<IngredientApiResponse?>
-            ) {
-                val drinkApiResponse = response.body()
-                if (drinkApiResponse?.ingredients != null) {
-                    SaveIngredientsAsyncTask(drinkDao).execute(*drinkApiResponse.ingredients.toTypedArray())
-                }
-            }
-
-        })
-    }
-
     override fun getLiveData(): MutableLiveData<List<Drink>> {
         return drinksLiveData
     }
@@ -79,13 +53,4 @@ class DrinkApiRepositoryImpl(context: Context) :
         return drinksLiveData.value ?: emptyList()
     }
 
-    private companion object
-    class SaveIngredientsAsyncTask(private val drinkDao: DrinkDao) :
-        AsyncTask<Ingredient, Unit, Unit>() {
-
-        override fun doInBackground(vararg params: Ingredient) {
-            params.forEach { ingredient -> drinkDao.saveIngredient(ingredient) }
-        }
-
-    }
 }

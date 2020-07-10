@@ -3,7 +3,6 @@ package com.ikvych.cocktail.viewmodel
 import android.app.Application
 import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.data.repository.DrinkApiRepositoryImpl
 import com.ikvych.cocktail.data.repository.DrinkDbRepositoryImpl
 import com.ikvych.cocktail.data.repository.base.DrinkApiRepository
@@ -47,13 +46,5 @@ class MainViewModel(
 
     fun getFavoriteLiveData(): LiveData<List<Drink>> {
         return favoriteDrinksLiveData
-    }
-
-    override fun getAllIngredient(): List<Ingredient> {
-        val ingredientList: List<Ingredient> = dbRepository.getAllIngredient()
-        if (ingredientList.isEmpty()) {
-            apiRepository.initAllIngredient()
-        }
-        return dbRepository.getAllIngredient()
     }
 }

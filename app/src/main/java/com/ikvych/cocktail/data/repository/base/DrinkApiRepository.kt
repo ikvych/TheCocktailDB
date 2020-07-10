@@ -9,5 +9,4 @@ interface DrinkApiRepository {
     fun getLiveData(): MutableLiveData<List<Drink>>
     fun updateDrinksLiveData(query: String)
     fun getCurrentData(): List<Drink>
-    fun initAllIngredient()
 }

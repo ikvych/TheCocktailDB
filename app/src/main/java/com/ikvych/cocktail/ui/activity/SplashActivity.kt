@@ -13,7 +13,7 @@ class SplashActivity : BaseActivity() {
     override fun configureView(savedInstanceState: Bundle?) {
         super.configureView(savedInstanceState)
         Handler().postDelayed({
-            val intent = Intent(this@SplashActivity, AuthActivity::class.java)
+            val intent = Intent(this@SplashActivity, MainActivity::class.java)
             startActivity(intent)
             finish()
         }, 1000)

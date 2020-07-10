@@ -157,6 +157,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
         filterBtn.setOnClickListener {
             val fragmentTransaction = childFragmentManager.beginTransaction()
+            val f = filters
             filterFragment = FilterFragment.newInstance(filters)
             fragmentTransaction.add(R.id.fcv_main_fragment, filterFragment, FilterFragment::class.java.simpleName)
             fragmentTransaction.addToBackStack(FilterFragment::class.java.name)

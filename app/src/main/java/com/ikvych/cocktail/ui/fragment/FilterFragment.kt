@@ -66,21 +66,26 @@ class FilterFragment : BaseFragment() {
 
         initCategoryFilters()
         initAlcoholFilters()
+        initIngredientsFilters()
 
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         alcoholFilter = view.findViewById(R.id.im_alcohol_filter)
-        alcoholFilter.setOnClickListener { v ->
-            FilterDrinkAlcoholDialogFragment.newInstance(AlcoholDrinkFilter.values()[(v.tag as? Int) ?: 0])
+        alcoholFilter.setOnClickListener {
+            FilterDrinkAlcoholDialogFragment.newInstance(drinkFilters[DrinkFilterType.ALCOHOL] as? AlcoholDrinkFilter)
                 .show(childFragmentManager, FilterDrinkAlcoholDialogFragment::class.java.simpleName)
         }
         chosenAlcoholFilter = view.findViewById(R.id.tv_chosen_alcohol_filter)
         chosenAlcoholFilter.text =
             drinkFilters[DrinkFilterType.ALCOHOL]?.key ?: AlcoholDrinkFilter.NONE.key
 
+
+
+
+
         categoryFilter = view.findViewById(R.id.im_category_filter)
-        categoryFilter.setOnClickListener { v ->
-            FilterDrinkCategoryDialogFragment.newInstance(CategoryDrinkFilter.values()[(v.tag as? Int) ?: 0]).show(
+        categoryFilter.setOnClickListener {
+            FilterDrinkCategoryDialogFragment.newInstance(drinkFilters[DrinkFilterType.CATEGORY] as? CategoryDrinkFilter).show(
                 childFragmentManager,
                 FilterDrinkCategoryDialogFragment::class.java.simpleName
             )
@@ -89,9 +94,10 @@ class FilterFragment : BaseFragment() {
         chosenCategoryFilter.text =
             drinkFilters[DrinkFilterType.CATEGORY]?.key ?: CategoryDrinkFilter.NONE.key
 
+
         ingredientFilter = view.findViewById(R.id.im_ingredient_filter)
-        ingredientFilter.setOnClickListener { v ->
-            FilterDrinkIngredientDialogFragment.newInstance(IngredientDrinkFilter.values()[(v.tag as? Int) ?: 0])
+        ingredientFilter.setOnClickListener {
+            FilterDrinkIngredientDialogFragment.newInstance(drinkFilters[DrinkFilterType.INGREDIENT] as? IngredientDrinkFilter)
                 .show(
                     childFragmentManager,
                     FilterDrinkIngredientDialogFragment::class.java.simpleName
@@ -99,7 +105,8 @@ class FilterFragment : BaseFragment() {
         }
         chosenIngredientFilter = view.findViewById(R.id.tv_chosen_ingredient_filter)
         chosenIngredientFilter.text =
-            drinkFilters[DrinkFilterType.INGREDIENT]?.key ?: CategoryDrinkFilter.NONE.key
+            drinkFilters[DrinkFilterType.INGREDIENT]?.key ?: IngredientDrinkFilter.NONE.key
+
 
         acceptBtn = view.findViewById(R.id.btn_accept)
         acceptBtn.setOnClickListener {
@@ -127,7 +134,7 @@ class FilterFragment : BaseFragment() {
         if (categoryKey != CategoryDrinkFilter.NONE.key) {
             CategoryDrinkFilter.values().forEach {
                 if (it.key == categoryKey) {
-                    drinkFilters[CategoryDrinkFilter.COCKTAIL.type] = it
+                    drinkFilters[CategoryDrinkFilter.NONE.type] = it
                 }
             }
         }
@@ -140,7 +147,20 @@ class FilterFragment : BaseFragment() {
         if (alcoholKey != AlcoholDrinkFilter.NONE.key) {
             AlcoholDrinkFilter.values().forEach {
                 if (it.key == alcoholKey) {
-                    drinkFilters[AlcoholDrinkFilter.ALCOHOLIC.type] = it
+                    drinkFilters[AlcoholDrinkFilter.NONE.type] = it
+                }
+            }
+        }
+    }
+
+    private fun initIngredientsFilters() {
+        val ingredientKey = requireArguments().getString(DrinkFilterType.INGREDIENT.key)
+            ?: IngredientDrinkFilter.NONE.key
+
+        if (ingredientKey != IngredientDrinkFilter.NONE.key) {
+            IngredientDrinkFilter.values().forEach {
+                if (it.key == ingredientKey) {
+                    drinkFilters[IngredientDrinkFilter.NONE.type] = it
                 }
             }
         }
@@ -161,7 +181,6 @@ class FilterFragment : BaseFragment() {
                     drinkFilters.remove(alcoholType.type)
                 }
                 chosenAlcoholFilter.text = alcoholType.key
-                alcoholFilter.tag = alcoholType.ordinal
             }
             CategoryDrinkType -> {
                 val categoryType = data as CategoryDrinkFilter
@@ -171,7 +190,6 @@ class FilterFragment : BaseFragment() {
                     drinkFilters.remove(categoryType.type)
                 }
                 chosenCategoryFilter.text = categoryType.key
-                categoryFilter.tag = categoryType.ordinal
             }
             IngredientDrinkType -> {
                 val ingredientType = data as IngredientDrinkFilter
@@ -181,7 +199,6 @@ class FilterFragment : BaseFragment() {
                     drinkFilters.remove(ingredientType.type)
                 }
                 chosenIngredientFilter.text = ingredientType.key
-                ingredientFilter.tag = ingredientType.ordinal
             }
         }
 

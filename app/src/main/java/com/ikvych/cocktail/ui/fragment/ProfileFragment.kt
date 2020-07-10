@@ -11,11 +11,11 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.ui.activity.AuthActivity
-import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.type.*
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.ProfileFragmentViewModel
-import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
 class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
@@ -82,7 +82,7 @@ class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
                     RightDialogButton -> {
                         val intent = Intent(requireContext(), AuthActivity::class.java)
                         requireContext().startActivity(intent)
-                        requireActivity().finish()
+                        requireActivity().finishAffinity()
                     }
                     LeftDialogButton -> {
                         dialog.dismiss()

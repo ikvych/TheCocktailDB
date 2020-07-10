@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ui.base
+package com.ikvych.cocktail.ui.dialog.base
 
 import android.app.Dialog
 import android.content.Context
@@ -10,10 +10,9 @@ import android.view.ViewGroup
 import android.view.Window
 import androidx.annotation.CallSuper
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
-import androidx.fragment.app.FragmentTransaction
-import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.DialogType
 
 abstract class BaseDialogFragment<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> protected constructor() :
     DialogFragment(),

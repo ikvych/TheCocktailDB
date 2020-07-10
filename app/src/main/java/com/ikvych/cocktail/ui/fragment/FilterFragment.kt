@@ -17,10 +17,11 @@ import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
-import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.FilterDrinkAlcoholDialogFragment
 import com.ikvych.cocktail.ui.dialog.FilterDrinkCategoryDialogFragment
 import com.ikvych.cocktail.ui.dialog.FilterDrinkIngredientDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.type.*
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*

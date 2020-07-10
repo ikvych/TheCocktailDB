@@ -4,7 +4,11 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.base.*
+import com.ikvych.cocktail.ui.dialog.base.type.LeftDialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.RegularDialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.ResumeApplicationDialogType
+import com.ikvych.cocktail.ui.dialog.base.type.RightDialogButton
 
 
 class ResumeAppBottomSheetDialogFragment :

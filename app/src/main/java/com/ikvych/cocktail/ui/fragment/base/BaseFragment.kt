@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ui.base
+package com.ikvych.cocktail.ui.fragment.base
 
 import android.content.Context
 import android.os.Bundle
@@ -8,8 +8,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
-import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.ui.dialog.base.BaseBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.BaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.DialogType
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 const val FRAGMENT_ID = "com.ikvych.cocktail.ViewId"
@@ -18,7 +20,7 @@ abstract class BaseFragment<ViewModel : BaseViewModel> : Fragment(),
     BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseDialogFragment.OnDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
-    BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>{
+    BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>> {
 
     protected abstract var contentLayoutResId: Int
     protected abstract val viewModel: ViewModel

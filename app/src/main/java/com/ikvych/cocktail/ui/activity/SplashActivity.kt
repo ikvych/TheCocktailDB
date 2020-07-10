@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.os.Handler
 import androidx.activity.viewModels
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class SplashActivity : BaseActivity<BaseViewModel>() {

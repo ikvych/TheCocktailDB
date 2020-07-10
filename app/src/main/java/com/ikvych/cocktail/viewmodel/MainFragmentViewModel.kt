@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.data.entity.Drink
@@ -160,7 +161,9 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
     val allFilteredLiveData: LiveData<SpannableString> =
         object : MediatorLiveData<SpannableString>() {
             init {
-                val src = "Знайдено: h @, f %"
+                //Петтерн містить "Found: h @, f %" - де 'h' і ʼfʼ символи які заміюються на кількість знайдених коктейлів
+                //у історії і улюблених, відповідно, а ʼ@ʼ і ʼ%ʼ символи які замінюються на іконки історії та улюблені відповідно
+                val srcPattern = application.resources.getString(R.string.filter_fragment_search_result_text_pattern)
 
                 val historyDrawable = ContextCompat.getDrawable(
                     application,
@@ -176,13 +179,13 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
                 historyDrawable!!.setBounds(0, 0, drawableSize, drawableSize)
                 favoriteDrawable!!.setBounds(0, 0, drawableSize, drawableSize)
 
-                val emptySearch = "Нічого не знайдено"
+                val emptySearch = application.resources.getString(R.string.all_empty_search)
 
                 addSource(filteredDrinksLiveData) {
                     if (isFiltersPresent() && it.isEmpty() && filteredFavoriteDrinksLiveData.value!!.isEmpty()) {
                         value = SpannableString(emptySearch)
                     } else {
-                        var currentResult = src.replace("h", it.size.toString())
+                        var currentResult = srcPattern.replace("h", it.size.toString())
                         currentResult = currentResult.replace("f", filteredFavoriteDrinksLiveData.value!!.size.toString())
                         val historyIndexDrw = currentResult.indexOf("@")
                         val favoriteIndexDrw = currentResult.indexOf("%")

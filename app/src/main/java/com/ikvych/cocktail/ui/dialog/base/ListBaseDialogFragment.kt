@@ -1,14 +1,15 @@
-package com.ikvych.cocktail.ui.base
+package com.ikvych.cocktail.ui.dialog.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckedTextView
 import android.widget.FrameLayout
+import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.button.MaterialButton
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.adapter.list.base.BaseAdapter
-import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
+import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.DialogType
 import kotlinx.android.synthetic.main.layout_dialog_filter_list_component.*
 
 abstract class ListBaseDialogFragment<
@@ -21,7 +22,7 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
     override val extraContentLayoutResId: Int = R.layout.layout_dialog_filter_list_component
 
     abstract val dialogListDataAdapter: DialogListDataAdapter<Data>
-    protected open val listAdapter: BaseAdapter<Data, *> = DialogListAdapter()
+    protected open lateinit var listAdapter: DialogListAdapter
 
     open var listData: List<Data> = mutableListOf()
 
@@ -34,19 +35,35 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
         }
     }
 
-    protected inner class DialogListAdapter : BaseAdapter<Data, BaseViewHolder>(R.layout.item_filter_type),
+
+
+    protected inner class DialogListAdapter(private val selectedButton: Any? = null) :
+        RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         View.OnClickListener {
 
-        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder {
-            val itemView: View = LayoutInflater.from(parent.context)
-                .inflate(layoutId, parent, false)
-            return BaseViewHolder(itemView)
+        private val layoutId = R.layout.item_filter_type
+
+        var newData: List<Data> = arrayListOf()
+            set(value) {
+                field = value
+                notifyDataSetChanged()
+            }
+
+        override fun getItemCount(): Int {
+            return newData.size
         }
 
-        override fun onBindViewHolder(holder: BaseViewHolder, position: Int) {
-            with(holder.itemView as CheckedTextView) {
-                text = dialogListDataAdapter.getName(listData[position])
-                tag = listData[position]
+        override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+            val itemView: View = LayoutInflater.from(parent.context)
+                .inflate(layoutId, parent, false)
+            return ViewHolder(itemView)
+        }
+
+        override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+            with(holder.itemView as MaterialButton) {
+                text = dialogListDataAdapter.getName(newData[position])
+                tag = newData[position]
+                isEnabled = (tag != selectedButton)
                 setOnClickListener(this@DialogListAdapter)
             }
         }
@@ -59,6 +76,7 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
             callOnClick(v ?: return, getButtonType(v))
         }
 
+        inner class ViewHolder(val view: View) : RecyclerView.ViewHolder(view)
     }
 
     interface DialogListDataAdapter<Data> {

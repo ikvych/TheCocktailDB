@@ -17,8 +17,12 @@ import com.google.android.material.textfield.TextInputLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.listener.AuthTextWatcher
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.ui.dialog.ErrorAuthDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.type.ActionSingleDialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.DialogType
+import com.ikvych.cocktail.ui.dialog.base.type.NotificationDialogType
 import com.ikvych.cocktail.viewmodel.AuthViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 
@@ -90,7 +94,7 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
             ) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-                finish()
+                finishAffinity()
             } else {
                 if (!viewModel.isLoginDataMatchPatternLiveData.value!!.second) {
                     textInputEditPassword.requestFocus()

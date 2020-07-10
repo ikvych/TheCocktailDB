@@ -61,12 +61,12 @@ class FilterDrinkAlcoholDialogFragment :
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
                     },
-                    EXTRA_KEY_SELECTED_ALCOHOL to selectedAlcohol
+                    EXTRA_KEY_SELECTED_ALCOHOL to selectedAlcohol?.ordinal
                 )
             }
         }
 
         private const val EXTRA_KEY_BUILDER = "EXTRA_KEY_BUILDER"
-        private const val EXTRA_KEY_SELECTED_ALCOHOL = "EXTRA_KEY_SELECTED_SEX"
+        private const val EXTRA_KEY_SELECTED_ALCOHOL = "EXTRA_KEY_SELECTED_ALCOHOL"
     }
 }

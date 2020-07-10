@@ -71,7 +71,7 @@ class FilterFragment : BaseFragment() {
 
         alcoholFilter = view.findViewById(R.id.im_alcohol_filter)
         alcoholFilter.setOnClickListener { v ->
-            FilterDrinkAlcoholDialogFragment.newInstance()
+            FilterDrinkAlcoholDialogFragment.newInstance(AlcoholDrinkFilter.values()[(v.tag as? Int) ?: 0])
                 .show(childFragmentManager, FilterDrinkAlcoholDialogFragment::class.java.simpleName)
         }
         chosenAlcoholFilter = view.findViewById(R.id.tv_chosen_alcohol_filter)
@@ -80,7 +80,7 @@ class FilterFragment : BaseFragment() {
 
         categoryFilter = view.findViewById(R.id.im_category_filter)
         categoryFilter.setOnClickListener { v ->
-            FilterDrinkCategoryDialogFragment.newInstance().show(
+            FilterDrinkCategoryDialogFragment.newInstance(CategoryDrinkFilter.values()[(v.tag as? Int) ?: 0]).show(
                 childFragmentManager,
                 FilterDrinkCategoryDialogFragment::class.java.simpleName
             )
@@ -91,7 +91,7 @@ class FilterFragment : BaseFragment() {
 
         ingredientFilter = view.findViewById(R.id.im_ingredient_filter)
         ingredientFilter.setOnClickListener { v ->
-            FilterDrinkIngredientDialogFragment.newInstance()
+            FilterDrinkIngredientDialogFragment.newInstance(IngredientDrinkFilter.values()[(v.tag as? Int) ?: 0])
                 .show(
                     childFragmentManager,
                     FilterDrinkIngredientDialogFragment::class.java.simpleName
@@ -161,6 +161,7 @@ class FilterFragment : BaseFragment() {
                     drinkFilters.remove(alcoholType.type)
                 }
                 chosenAlcoholFilter.text = alcoholType.key
+                alcoholFilter.tag = alcoholType.ordinal
             }
             CategoryDrinkType -> {
                 val categoryType = data as CategoryDrinkFilter
@@ -170,6 +171,7 @@ class FilterFragment : BaseFragment() {
                     drinkFilters.remove(categoryType.type)
                 }
                 chosenCategoryFilter.text = categoryType.key
+                categoryFilter.tag = categoryType.ordinal
             }
             IngredientDrinkType -> {
                 val ingredientType = data as IngredientDrinkFilter
@@ -179,6 +181,7 @@ class FilterFragment : BaseFragment() {
                     drinkFilters.remove(ingredientType.type)
                 }
                 chosenIngredientFilter.text = ingredientType.key
+                ingredientFilter.tag = ingredientType.ordinal
             }
         }
 

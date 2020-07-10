@@ -5,6 +5,7 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
+import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.ui.dialog.base.CategoryDrinkType
 import com.ikvych.cocktail.ui.dialog.base.ItemListDialogButton
 import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
@@ -34,9 +35,10 @@ class FilterDrinkCategoryDialogFragment :
         listAdapter = DialogListAdapter(selectedCategoryDrinkFilter)
     }
 
-    override var listData: List<CategoryDrinkFilter?> = mutableListOf<CategoryDrinkFilter?>().apply {
-        addAll(CategoryDrinkFilter.values())
-    }.toList()
+    override var listData: List<CategoryDrinkFilter?> =
+        mutableListOf<CategoryDrinkFilter?>().apply {
+            addAll(CategoryDrinkFilter.values())
+        }.toList()
 
     override fun getButtonType(view: View): ListDialogButton {
         return when (view.id) {
@@ -54,19 +56,19 @@ class FilterDrinkCategoryDialogFragment :
     }
 
     companion object {
-        fun newInstance(selectedAlcohol: CategoryDrinkFilter? = null): FilterDrinkCategoryDialogFragment {
+        fun newInstance(selectedCategory: CategoryDrinkFilter? = null): FilterDrinkCategoryDialogFragment {
             return FilterDrinkCategoryDialogFragment().apply {
                 arguments = bundleOf(
                     EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
                     },
-                    EXTRA_KEY_SELECTED_CATEGORY to selectedAlcohol
+                    EXTRA_KEY_SELECTED_CATEGORY to selectedCategory?.ordinal
                 )
             }
         }
 
         private const val EXTRA_KEY_BUILDER = "EXTRA_KEY_BUILDER"
-        private const val EXTRA_KEY_SELECTED_CATEGORY = "EXTRA_KEY_SELECTED_SEX"
+        private const val EXTRA_KEY_SELECTED_CATEGORY = "EXTRA_KEY_SELECTED_CATEGORY"
     }
 }

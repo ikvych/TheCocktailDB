@@ -76,7 +76,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
                 val dialogFragment =
                     supportFragmentManager.findFragmentByTag(ResumeAppBottomSheetDialogFragment::class.java.simpleName)
                 if (dialogFragment !is ResumeAppBottomSheetDialogFragment) {
-                    ResumeAppBottomSheetDialogFragment.newInstance {
+                    ResumeAppBottomSheetDialogFragment.newInstance(it.getIdDrink()!!) {
                         titleText = getString(R.string.resume_app_dialog_title)
                         descriptionText =
                             getString(R.string.resume_app_dialog_description) + "${it.getStrDrink()}"
@@ -86,6 +86,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
                         supportFragmentManager,
                         ResumeAppBottomSheetDialogFragment::class.java.simpleName
                     )
+                    viewModel.drinkOfTheDayLiveData.value = null
                 }
             }
         })
@@ -178,7 +179,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
             if (drinkName != null) {
                 val drink = viewModel.findDrinkByName(drinkName.toString())
                 val intent = Intent(this, DrinkDetailActivity::class.java)
-                intent.putExtra(DRINK, drink)
+                intent.putExtra(DRINK_ID, drink!!.getIdDrink())
                 startActivity(intent)
             }
         }
@@ -311,7 +312,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
                 when (buttonType) {
                     RightDialogButton -> {
                         val intent = Intent(this, DrinkDetailActivity::class.java)
-                        intent.putExtra(DRINK, viewModel.drinkOfTheDayLiveData.value)
+                        intent.putExtra(DRINK_ID, data as Long)
                         startActivity(intent)
                     }
                     LeftDialogButton -> {

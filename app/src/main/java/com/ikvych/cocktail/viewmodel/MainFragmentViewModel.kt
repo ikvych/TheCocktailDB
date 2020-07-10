@@ -13,7 +13,6 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
@@ -216,15 +215,6 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
     fun saveDrinkIntoDb(drink: Drink) {
         drinkRepository.saveDrinkIntoDb(drink)
     }
-
-    fun getAllIngredientFromDb(): List<Ingredient> {
-        val ingredientList: List<Ingredient> = drinkRepository.getAllIngredientFromDb()
-        if (ingredientList.isEmpty()) {
-            drinkRepository.initAllIngredient()
-        }
-        return drinkRepository.getAllIngredientFromDb()
-    }
-
 
     fun filterData(drinks: List<Drink>, drinkFilters: ArrayList<DrinkFilter>): List<Drink> {
         var drinksCopy = drinks

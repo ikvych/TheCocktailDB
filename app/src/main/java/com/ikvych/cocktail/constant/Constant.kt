@@ -1,6 +1,8 @@
 package com.ikvych.cocktail.constant
 
 const val VIEW_MODEL_TYPE = "viewModelType"
+const val SHOULD_SAVE_DRINK = "SHOULD_SAVE_DRINK"
+const val SHOW_DRINK_OFFER_ON_DESTROY = "SHOW_DRINK_OFFER_ON_DESTROY"
 const val MAIN_MODEL_TYPE = "main"
 const val SEARCH_MODEL_TYPE = "search"
 const val DRINK = "drink"

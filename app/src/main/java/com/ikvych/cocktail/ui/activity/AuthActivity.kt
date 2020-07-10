@@ -39,9 +39,6 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
     private var loginTextWatcher: TextWatcher? = null
     private var passwordTextWatcher: TextWatcher? = null
 
-    private lateinit var loginInputLayout: TextInputLayout
-    private lateinit var passwordInputLayout: TextInputLayout
-
     private lateinit var textInputEditLogin: TextInputEditText
     private lateinit var textInputEditPassword: TextInputEditText
 
@@ -62,12 +59,8 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
         keyboardObserver.listener = this
         inputMethodManager = getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
 
-        loginInputLayout = findViewById(R.id.til_auth_login)
-        passwordInputLayout = findViewById(R.id.til_auth_password)
-
         loginTextWatcher = LoginTextWatcher()
         passwordTextWatcher = PasswordTextWatcher()
-
 
         textInputEditLogin = findViewById(R.id.tiet_auth_login)
         textInputEditLogin.filters = arrayOf(inputFilter)
@@ -77,11 +70,6 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
 
         viewModel.loginInputLiveData.value = textInputEditLogin.text.toString()
         viewModel.passwordInputLiveData.value = textInputEditPassword.text.toString()
-
-        if (savedInstanceState != null) {
-            textInputEditLogin.setText(savedInstanceState.getString(EXTRA_KEY_LOGIN))
-            textInputEditPassword.setText(savedInstanceState.getString(EXTRA_KEY_PASSWORD))
-        }
 
         submitButton = findViewById(R.id.b_auth_login)
 

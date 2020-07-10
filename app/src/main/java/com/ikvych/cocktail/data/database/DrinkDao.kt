@@ -6,16 +6,12 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.data.entity.Ingredient
 
 @Dao
 interface DrinkDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(drink: Drink)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun saveIngredient(ingredient: Ingredient)
 
     @Query("SELECT * FROM drink WHERE drink_of_day=:stringDate")
     fun findDrinkOfTheDay(stringDate: String) : Drink?
@@ -28,9 +24,6 @@ interface DrinkDao {
 
     @Query("SELECT * FROM drink")
     fun getAllDrinks() : List<Drink>
-
-    @Query("SELECT * FROM ingredient ORDER BY str_ingredient ASC")
-    fun getAllIngredients() : List<Ingredient>
 
     @Query("SELECT * FROM drink ORDER BY created DESC")
     fun getAllDrinksLiveData() : LiveData<List<Drink>>

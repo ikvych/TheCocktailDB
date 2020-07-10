@@ -80,6 +80,4 @@ class MainActivityViewModel(
         //передаємо напій дня в liveData яку відслідковує activity
         drinkOfTheDayLiveData.value = drinkOfTheDay
     }
-
-
 }

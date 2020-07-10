@@ -59,10 +59,12 @@ class ApplicationService : JobIntentService() {
             }
             ACTION_SHOW_DRINK_OFFER -> {
                 val drinkId: Long = intent.getLongExtra(DRINK_ID, -1L)
-                Intent().apply {
-                    action = ACTION_SHOW_DRINK_OFFER
-                    putExtra(DRINK_ID, drinkId)
-                    sendBroadcast(this)
+                if (drinkId != -1L) {
+                    Intent().apply {
+                        action = ACTION_SHOW_DRINK_OFFER
+                        putExtra(DRINK_ID, drinkId)
+                        sendBroadcast(this)
+                    }
                 }
             }
         }

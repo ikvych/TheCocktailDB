@@ -143,7 +143,8 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
 
         if (drink != null) {
             val intent = Intent(this, DrinkDetailActivity::class.java)
-            intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
+            intent.putExtra(SHOULD_SAVE_DRINK, SHOULD_SAVE_DRINK)
+            intent.putExtra(SHOW_DRINK_OFFER_ON_DESTROY, SHOW_DRINK_OFFER_ON_DESTROY)
             intent.putExtra(DRINK, drink)
             startActivity(intent)
         }

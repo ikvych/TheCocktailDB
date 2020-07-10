@@ -45,8 +45,8 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
     lateinit var viewModel: MainViewModel
 
     private lateinit var bottomNavigationView: BottomNavigationView
-    private lateinit var mainFragment: MainFragment
-    private lateinit var profileFragment: ProfileFragment
+    private var mainFragment: MainFragment? = null
+    private var profileFragment: ProfileFragment? = null
 
     override fun onBackPressed() {
         super.onBackPressed()
@@ -88,8 +88,8 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
                 R.id.menu_main_fragment -> {
                     if (lastEntry != null && lastEntry.name != MainFragment::class.java.simpleName) {
                         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                        ft.hide(profileFragment)
-                        ft.show(mainFragment)
+                        ft.hide(profileFragment!!)
+                        ft.show(mainFragment!!)
                         ft.setPrimaryNavigationFragment(mainFragment)
                         ft.addToBackStack(MainFragment::class.java.simpleName)
                         ft.commit()
@@ -102,8 +102,8 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
                 R.id.menu_profile_fragment -> {
                     if (lastEntry == null || lastEntry.name != ProfileFragment::class.java.simpleName) {
                         val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                        ft.hide(mainFragment)
-                        ft.show(profileFragment)
+                        ft.hide(mainFragment!!)
+                        ft.show(profileFragment!!)
                         ft.setPrimaryNavigationFragment(profileFragment)
                         ft.addToBackStack(ProfileFragment::class.java.simpleName)
                         ft.commit()
@@ -116,17 +116,29 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
             }
         }
 
-        profileFragment = ProfileFragment.newInstance()
-        mainFragment = MainFragment.newInstance()
+        profileFragment = supportFragmentManager.findFragmentByTag(ProfileFragment::class.java.simpleName)
+                as? ProfileFragment
+        mainFragment = supportFragmentManager.findFragmentByTag(MainFragment::class.java.simpleName)
+                as? MainFragment
         val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        fragmentTransaction.replace(
-            R.id.fcv_main,
-            profileFragment,
-            ProfileFragment::class.java.simpleName
-        )
-        fragmentTransaction.hide(profileFragment)
-        fragmentTransaction.add(R.id.fcv_main, mainFragment, MainFragment::class.java.simpleName)
-        fragmentTransaction.setPrimaryNavigationFragment(mainFragment)
+        if (profileFragment == null) {
+            profileFragment = ProfileFragment.newInstance()
+            fragmentTransaction.add(
+                R.id.fcv_main,
+                profileFragment!!,
+                ProfileFragment::class.java.simpleName
+            )
+            fragmentTransaction.hide(profileFragment!!)
+        }
+        if (mainFragment == null) {
+            mainFragment = MainFragment.newInstance()
+            fragmentTransaction.add(
+                R.id.fcv_main,
+                mainFragment!!,
+                MainFragment::class.java.simpleName
+            )
+            fragmentTransaction.setPrimaryNavigationFragment(mainFragment!!)
+        }
         fragmentTransaction.commit()
     }
 

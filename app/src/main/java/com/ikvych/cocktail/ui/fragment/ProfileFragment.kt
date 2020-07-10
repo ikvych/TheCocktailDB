@@ -15,6 +15,7 @@ import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 
 class ProfileFragment : BaseFragment() {
 
+    override var contentLayoutResId: Int = R.layout.fragment_profile
     private lateinit var logOut: Button
     private lateinit var startTestFragmentBtn: Button
     private lateinit var testFragment: TestFragment
@@ -42,7 +43,7 @@ class ProfileFragment : BaseFragment() {
         }
         startTestFragmentBtn = view.findViewById(R.id.b_test_fragment)
         startTestFragmentBtn.setOnClickListener {
-            testFragment = TestFragment.newInstance(R.layout.fragment_test, 5, "Ivan Kvych")
+            testFragment = TestFragment.newInstance( 5, "Ivan Kvych")
             val fragmentTransaction: FragmentTransaction = parentFragmentManager.beginTransaction()
             fragmentTransaction.replace(R.id.fcv_main, testFragment)
             fragmentTransaction.addToBackStack(TestFragment::class.java.name)
@@ -74,11 +75,6 @@ class ProfileFragment : BaseFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(fragmentId: Int) =
-            ProfileFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(FRAGMENT_ID, fragmentId)
-                }
-            }
+        fun newInstance() = ProfileFragment()
     }
 }

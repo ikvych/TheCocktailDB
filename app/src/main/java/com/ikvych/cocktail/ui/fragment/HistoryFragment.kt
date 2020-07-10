@@ -18,6 +18,7 @@ import com.ikvych.cocktail.viewmodel.MainViewModel
 class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
     FilterFragment.OnFilterResultListener, MainFragment.OnSortResultListener {
 
+    override var contentLayoutResId: Int = R.layout.fragment_history
     private lateinit var fragmentView: View
 
     override fun onAttach(context: Context) {
@@ -88,11 +89,6 @@ class HistoryFragment : RecyclerViewFragment<MainViewModel>(),
 
     companion object {
         @JvmStatic
-        fun newInstance(fragmentId: Int) =
-            HistoryFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(FRAGMENT_ID, fragmentId)
-                }
-            }
+        fun newInstance() = HistoryFragment()
     }
 }

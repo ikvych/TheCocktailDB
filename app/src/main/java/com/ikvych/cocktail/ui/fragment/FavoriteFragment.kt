@@ -17,9 +17,10 @@ import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.MainViewModel
 
-class FavoriteFragment : RecyclerViewFragment<MainViewModel>(),
+class FavoriteFragment() : RecyclerViewFragment<MainViewModel>(),
     FilterFragment.OnFilterResultListener, MainFragment.OnSortResultListener {
 
+    override var contentLayoutResId: Int = R.layout.fragment_favorite
     lateinit var fragmentView: View
 
     override fun onAttach(context: Context) {
@@ -42,15 +43,7 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(),
         }
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(fragmentId: Int) =
-            FavoriteFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(FRAGMENT_ID, fragmentId)
-                }
-            }
-    }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -107,5 +100,10 @@ class FavoriteFragment : RecyclerViewFragment<MainViewModel>(),
     override fun onResult(sortDrinkType: SortDrinkType) {
         super.sortDrinkType = sortDrinkType
         sortData(sortDrinkType)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = FavoriteFragment()
     }
 }

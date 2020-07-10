@@ -18,39 +18,7 @@ abstract class BaseFragment() : Fragment(),
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>{
 
-    override fun onDialogFragmentDismiss(
-        dialog: DialogFragment,
-        type: DialogType<DialogButton>,
-        data: Any?
-    ) {
-
-    }
-
-    override fun onDialogFragmentClick(
-        dialog: DialogFragment,
-        buttonType: DialogButton,
-        type: DialogType<DialogButton>,
-        data: Any?
-    ) {
-
-    }
-
-    override fun onBottomSheetDialogFragmentDismiss(
-        dialog: DialogFragment,
-        type: DialogType<DialogButton>,
-        data: Any?
-    ) {
-
-    }
-
-    override fun onBottomSheetDialogFragmentClick(
-        dialog: DialogFragment,
-        buttonType: DialogButton,
-        type: DialogType<DialogButton>,
-        data: Any?
-    ) {
-
-    }
+    protected abstract var contentLayoutResId: Int
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -68,7 +36,7 @@ abstract class BaseFragment() : Fragment(),
         savedInstanceState: Bundle?
     ): View? {
         Log.d("MyLog", "onCreateView - ${this.toString()}")
-        return inflater.inflate(requireArguments().getInt(FRAGMENT_ID), container, false)
+        return inflater.inflate(contentLayoutResId, container, false)
     }
 
     protected open fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -113,5 +81,39 @@ abstract class BaseFragment() : Fragment(),
     override fun onDetach() {
         super.onDetach()
         Log.d("MyLog", "onDetach - ${this.toString()}")
+    }
+
+    override fun onDialogFragmentDismiss(
+        dialog: DialogFragment,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+
+    }
+
+    override fun onDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+
+    }
+
+    override fun onBottomSheetDialogFragmentDismiss(
+        dialog: DialogFragment,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+
+    }
+
+    override fun onBottomSheetDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+
     }
 }

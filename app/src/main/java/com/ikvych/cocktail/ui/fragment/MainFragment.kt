@@ -35,6 +35,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterResultListener,
     FilterAdapter.OnClickItemFilterCloseListener, SortResultCallBack {
 
+    override var contentLayoutResId: Int = R.layout.fragment_main
     override val callbacks: HashSet<OnSortResultListener> = hashSetOf()
 
     private lateinit var batteryReceiver: BatteryReceiver
@@ -74,15 +75,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         fun onResult(sortDrinkType: SortDrinkType)
     }
 
-    companion object {
-        @JvmStatic
-        fun newInstance(fragmentId: Int) =
-            MainFragment().apply {
-                arguments = Bundle().apply {
-                    putInt(FRAGMENT_ID, fragmentId)
-                }
-            }
-    }
+
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
@@ -107,8 +100,8 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        historyFragment = HistoryFragment.newInstance(R.layout.fragment_history)
-        favoriteFragment = FavoriteFragment.newInstance(R.layout.fragment_favorite)
+        historyFragment = HistoryFragment.newInstance()
+        favoriteFragment = FavoriteFragment.newInstance()
 
         drinkPagerAdapter = DrinkPagerAdapter(
             arrayListOf(historyFragment, favoriteFragment),
@@ -160,7 +153,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
         filterBtn.setOnClickListener {
             val fragmentTransaction = childFragmentManager.beginTransaction()
-            filterFragment = FilterFragment.newInstance(R.layout.fragment_filter, filters)
+            filterFragment = FilterFragment.newInstance(filters)
             fragmentTransaction.add(R.id.fcv_main_fragment, filterFragment, FilterFragment::class.java.simpleName)
             fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
             fragmentTransaction.commit()
@@ -387,5 +380,10 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     override fun onClick(drinkFilter: DrinkFilter) {
         filters.remove(drinkFilter)
         fragmentListener!!.onFilterApply(filters)
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = MainFragment()
     }
 }

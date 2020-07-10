@@ -23,6 +23,7 @@ import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 
 class FilterFragment : BaseFragment() {
 
+    override var contentLayoutResId: Int = R.layout.fragment_filter
     private lateinit var returnBtn: ImageButton
     private lateinit var acceptBtn: Button
     private lateinit var resetBtn: Button
@@ -205,11 +206,9 @@ class FilterFragment : BaseFragment() {
 
         @JvmStatic
         fun newInstance(
-            viewId: Int,
             drinkFilters: ArrayList<DrinkFilter> = arrayListOf()
         ) = FilterFragment().apply {
             arguments = Bundle().apply {
-                putInt(FRAGMENT_ID, viewId)
                 drinkFilters.forEach {
                     putString(it.type.key, it.key)
                 }

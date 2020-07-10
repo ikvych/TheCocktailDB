@@ -20,12 +20,16 @@ import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import java.util.regex.Pattern
 
 
-class AuthActivity() : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardListener {
+class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardListener {
 
     override var contentLayoutResId: Int = R.layout.activity_auth
 
+    private val correctLogin = "123qweasd"
+    private val correctPassword = "123qweasd"
+
     private var isValidLogin: Boolean = false
     private var isValidPassword: Boolean = false
+    private var isLoginAndPasswordCorrect: Boolean = false
     private var isKeyboardShown: Boolean = false
 
     private lateinit var loginErrorMessage: String
@@ -83,9 +87,10 @@ class AuthActivity() : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardL
     private fun onLoginButtonListener(): (v: View) -> Unit {
         return {
             invalidateAuthData()
-            if (isValidLogin && isValidPassword) {
+            if (isValidLogin && isValidPassword && isLoginAndPasswordCorrect) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
+                finishAffinity()
             } else {
                 var finalErrorMessage: String? = null
                 if (!isValidLogin) {
@@ -97,6 +102,10 @@ class AuthActivity() : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardL
                     } else {
                         finalErrorMessage = passwordErrorMessage
                     }
+                }
+                if (isValidLogin && isValidPassword && !isLoginAndPasswordCorrect) {
+                    finalErrorMessage = "Invalid login or password!"
+                    textInputEditLogin.requestFocus()
                 }
                 ErrorAuthDialogFragment.newInstance(){
                     titleText = "Invalid data"
@@ -147,6 +156,8 @@ class AuthActivity() : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardL
             isValidLogin = false
             textInputEditLogin.requestFocus()
         }
+
+        isLoginAndPasswordCorrect = !(login != correctLogin || password != correctPassword)
     }
 
     private fun closeKeyboard() {

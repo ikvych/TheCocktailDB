@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ui.base
+package com.ikvych.cocktail.ui.dialog.base
 
 import android.os.Bundle
 import android.os.Parcel
@@ -14,14 +14,14 @@ import com.ikvych.cocktail.R
 import kotlinx.android.synthetic.main.layout_dialog_simple.*
 
 
-abstract class SimpleBottomSheetBaseDialogFragment<
+abstract class SimpleBaseDialogFragment<
         Data,
         ButtonType : DialogButton,
         Type : DialogType<ButtonType>,
-        Builder : SimpleBottomSheetBaseDialogFragment.SimpleBottomSheetDialogBuilder>
-protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>() {
+        Builder : SimpleBaseDialogFragment.SimpleDialogBuilder>
+protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
 
-    override val contentLayoutResId = R.layout.layout_bottom_sheet_dialog_simple
+    override val contentLayoutResId = R.layout.layout_dialog_simple
     protected open val extraContentLayoutResId: Int = 0
 
     protected open lateinit var dialogBuilder: Builder
@@ -33,7 +33,7 @@ protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>(
 
         @Suppress("SENSELESS_COMPARISON")
         check(dialogBuilder != null) {
-            "${SimpleBottomSheetBaseDialogFragment::class.java.simpleName}. " +
+            "${SimpleBaseDialogFragment::class.java.simpleName}. " +
                     "Property dialogBuilder must not be implemented and must not be null after " +
                     "super.onViewCreated(view, savedInstanceState) called and afterwards"
         }
@@ -101,7 +101,7 @@ protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>(
     )
 
 
-    open class SimpleBottomSheetDialogBuilder constructor() : Parcelable {
+    open class SimpleDialogBuilder constructor() : Parcelable {
         /**
          * Use either [titleTextResId] or [titleText].
          * If both defined - text takes precedence.
@@ -156,14 +156,14 @@ protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>(
             return 0
         }
 
-        companion object CREATOR : Parcelable.Creator<SimpleBottomSheetDialogBuilder> {
-            override fun createFromParcel(parcel: Parcel): SimpleBottomSheetDialogBuilder {
-                return SimpleBottomSheetDialogBuilder(
+        companion object CREATOR : Parcelable.Creator<SimpleDialogBuilder> {
+            override fun createFromParcel(parcel: Parcel): SimpleDialogBuilder {
+                return SimpleDialogBuilder(
                     parcel
                 )
             }
 
-            override fun newArray(size: Int): Array<SimpleBottomSheetDialogBuilder?> {
+            override fun newArray(size: Int): Array<SimpleDialogBuilder?> {
                 return arrayOfNulls(size)
             }
         }

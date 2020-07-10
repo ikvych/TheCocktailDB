@@ -2,15 +2,9 @@ package com.ikvych.cocktail.ui.dialog
 
 import android.os.Bundle
 import android.view.View
-import android.widget.CheckBox
-import android.widget.CompoundButton
-import android.widget.FrameLayout
-import android.widget.TextView
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.comparator.type.SortOrder
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.base.*
 
 
 class RegularBottomSheetDialogFragment :

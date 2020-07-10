@@ -7,8 +7,7 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.base.BaseFragment
-import com.ikvych.cocktail.ui.base.FRAGMENT_ID
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import java.util.*
 
 const val ARBITRARY_NUMBER = "com.ikvych.cocktail.ArbitraryNumber"

@@ -14,8 +14,12 @@ import com.google.android.material.textfield.TextInputLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.listener.AuthTextWatcher
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.ui.dialog.ErrorAuthDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.ActionSingleDialogButton
+import com.ikvych.cocktail.ui.dialog.base.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.DialogType
+import com.ikvych.cocktail.ui.dialog.base.NotificationDialogType
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import java.util.regex.Pattern
 

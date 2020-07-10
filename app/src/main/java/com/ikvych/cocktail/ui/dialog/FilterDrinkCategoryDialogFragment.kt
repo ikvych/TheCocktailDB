@@ -10,10 +10,10 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.base.BaseAdapter
 import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.ui.base.ItemListDialogButton
-import com.ikvych.cocktail.ui.base.ListDialogButton
-import com.ikvych.cocktail.ui.base.CategoryDrinkType
-import com.ikvych.cocktail.ui.base.ListBaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.ListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.CategoryDrinkType
+import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
 
 
 class FilterDrinkCategoryDialogFragment :

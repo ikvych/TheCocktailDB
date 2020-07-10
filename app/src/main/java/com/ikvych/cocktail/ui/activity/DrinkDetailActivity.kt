@@ -15,7 +15,7 @@ import com.ikvych.cocktail.constant.*
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
 import com.ikvych.cocktail.service.ApplicationService
-import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.MainViewModel
 
 

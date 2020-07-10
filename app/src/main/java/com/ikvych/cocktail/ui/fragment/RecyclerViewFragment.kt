@@ -1,28 +1,19 @@
 package com.ikvych.cocktail.ui.fragment
 
-import android.content.Intent
 import android.content.res.Configuration
 import android.view.View
-import android.widget.TextView
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
-import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.comparator.type.SortOrder
-import com.ikvych.cocktail.constant.DRINK
-import com.ikvych.cocktail.constant.SEARCH_MODEL_TYPE
-import com.ikvych.cocktail.constant.VIEW_MODEL_TYPE
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
-import com.ikvych.cocktail.ui.base.BaseFragment
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 abstract class RecyclerViewFragment<T : BaseViewModel> : BaseFragment() {

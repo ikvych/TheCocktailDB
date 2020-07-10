@@ -11,7 +11,10 @@ import com.ikvych.cocktail.adapter.list.base.BaseAdapter
 import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
 import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.base.IngredientDrinkType
+import com.ikvych.cocktail.ui.dialog.base.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.ListDialogButton
 
 
 class FilterDrinkIngredientDialogFragment :

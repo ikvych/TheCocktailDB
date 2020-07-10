@@ -7,7 +7,7 @@ import androidx.core.os.bundleOf
 import androidx.core.view.get
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.base.*
 import kotlinx.android.synthetic.main.layout_dialog_drink_sort_component.*
 
 

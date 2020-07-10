@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ui.base
+package com.ikvych.cocktail.ui.dialog.base
 
 sealed class DialogType<out ButtonTypeParent: DialogButton>
 object RegularDialogType: DialogType<RegularDialogButton>()

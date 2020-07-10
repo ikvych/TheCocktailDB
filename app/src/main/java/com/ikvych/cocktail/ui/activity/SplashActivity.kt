@@ -4,7 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.Handler
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.ui.activity.base.BaseActivity
 
 class SplashActivity : BaseActivity() {
 

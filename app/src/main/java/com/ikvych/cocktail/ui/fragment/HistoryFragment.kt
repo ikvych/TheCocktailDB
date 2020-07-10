@@ -5,12 +5,10 @@ import android.os.Bundle
 import android.view.View
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.listener.SortResultCallBack
-import com.ikvych.cocktail.ui.base.FRAGMENT_ID
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.MainViewModel

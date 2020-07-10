@@ -26,9 +26,13 @@ import com.ikvych.cocktail.listener.FilterResultCallBack
 import com.ikvych.cocktail.listener.SortResultCallBack
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
-import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.DialogType
+import com.ikvych.cocktail.ui.dialog.base.RegularDialogType
+import com.ikvych.cocktail.ui.dialog.base.RightDialogButton
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.fragment_main.*
 

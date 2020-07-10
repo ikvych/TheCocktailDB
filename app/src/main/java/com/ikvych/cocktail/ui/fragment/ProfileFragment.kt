@@ -1,6 +1,5 @@
 package com.ikvych.cocktail.ui.fragment
 
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
@@ -9,9 +8,9 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.ui.activity.AuthActivity
-import com.ikvych.cocktail.ui.activity.MainActivity
-import com.ikvych.cocktail.ui.base.*
 import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.*
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 
 class ProfileFragment : BaseFragment() {
 

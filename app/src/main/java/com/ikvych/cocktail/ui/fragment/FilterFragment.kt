@@ -80,9 +80,6 @@ class FilterFragment : BaseFragment() {
             drinkFilters[DrinkFilterType.ALCOHOL]?.key ?: AlcoholDrinkFilter.NONE.key
 
 
-
-
-
         categoryFilter = view.findViewById(R.id.im_category_filter)
         categoryFilter.setOnClickListener {
             FilterDrinkCategoryDialogFragment.newInstance(drinkFilters[DrinkFilterType.CATEGORY] as? CategoryDrinkFilter).show(

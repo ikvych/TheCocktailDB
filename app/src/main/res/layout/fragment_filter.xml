@@ -1,15 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="#FFFFFF"
     android:clickable="true"
-    tools:context=".ui.fragment.FilterFragment"
-    android:focusable="true">
+    android:focusable="true"
+    android:orientation="vertical"
+    tools:context=".ui.fragment.FilterFragment">
 
     <com.ikvych.cocktail.widget.custom.ApplicationToolBar
         android:id="@+id/atb_fragment_filter"
@@ -22,153 +21,159 @@
         app:layout_constraintTop_toTopOf="parent"
         app:tl_enable_custom_btn="true" />
 
-
-    <LinearLayout
-        android:id="@+id/im_alcohol_filter"
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginVertical="8dp"
-        android:background="@drawable/iten_drink_filter_shape"
-        android:orientation="horizontal"
+        android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/atb_fragment_filter">
 
-        <TextView
-            android:layout_width="0dp"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="4"
-            android:text="@string/tv_filter_fragment_alcohol_filter"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+            android:orientation="vertical">
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.75"
-            android:src="@drawable/ic_drink_alcohol_filter_arrow" />
+            <LinearLayout
+                android:id="@+id/im_alcohol_filter"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="8dp"
+                android:background="@drawable/iten_drink_filter_shape"
+                android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/tv_chosen_alcohol_filter"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="4"
-            android:textAlignment="center"
-            android:textAppearance="@style/AppTextAppearanceHeadline6" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="4"
+                    android:text="@string/tv_filter_fragment_alcohol_filter"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-    </LinearLayout>
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:src="@drawable/ic_drink_alcohol_filter_arrow" />
 
-    <LinearLayout
-        android:id="@+id/im_category_filter"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginVertical="8dp"
-        android:background="@drawable/iten_drink_filter_shape"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/im_alcohol_filter">
+                <TextView
+                    android:id="@+id/tv_chosen_alcohol_filter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="4"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/AppTextAppearanceHeadline6" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/im_category_filter"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="8dp"
+                android:background="@drawable/iten_drink_filter_shape"
+                android:orientation="horizontal">
 
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="4"
-            android:text="@string/tv_filter_fragment_category_filter"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="4"
+                    android:text="@string/tv_filter_fragment_category_filter"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.75"
-            android:src="@drawable/ic_drink_alcohol_filter_arrow" />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:src="@drawable/ic_drink_alcohol_filter_arrow" />
 
-        <TextView
-            android:id="@+id/tv_chosen_category_filter"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="4"
-            android:textAlignment="center"
-            android:textAppearance="@style/AppTextAppearanceHeadline6" />
+                <TextView
+                    android:id="@+id/tv_chosen_category_filter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="4"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/AppTextAppearanceHeadline6" />
 
-    </LinearLayout>
+            </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/im_ingredient_filter"
-        android:layout_width="match_parent"
-        android:layout_height="48dp"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginVertical="8dp"
-        android:background="@drawable/iten_drink_filter_shape"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/im_category_filter">
+            <LinearLayout
+                android:id="@+id/im_ingredient_filter"
+                android:layout_width="match_parent"
+                android:layout_height="48dp"
+                android:layout_marginHorizontal="24dp"
+                android:layout_marginVertical="8dp"
+                android:background="@drawable/iten_drink_filter_shape"
+                android:orientation="horizontal">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="4"
-            android:text="@string/tv_filter_fragment_ingredient_filter"
-            android:textAlignment="center"
-            android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="4"
+                    android:text="@string/tv_filter_fragment_ingredient_filter"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6" />
 
-        <ImageView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="0.75"
-            android:src="@drawable/ic_drink_alcohol_filter_arrow" />
+                <ImageView
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="0.75"
+                    android:src="@drawable/ic_drink_alcohol_filter_arrow" />
 
-        <TextView
-            android:id="@+id/tv_chosen_ingredient_filter"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_weight="4"
-            android:textAlignment="center"
-            android:textAppearance="@style/AppTextAppearanceHeadline6" />
+                <TextView
+                    android:id="@+id/tv_chosen_ingredient_filter"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="4"
+                    android:textAlignment="center"
+                    android:textAppearance="@style/AppTextAppearanceHeadline6" />
 
-    </LinearLayout>
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
 
     <LinearLayout
         android:id="@+id/ll_btn_container"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        style="?android:attr/buttonBarStyle">
+        app:layout_constraintStart_toStartOf="parent">
 
         <Button
             android:id="@+id/btn_accept"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/auth_login_btn_margin_start"
             android:layout_margin="8dp"
             android:layout_marginVertical="@dimen/auth_indents"
             android:layout_weight="1"
             android:text="@string/accept"
-            style="?android:attr/buttonBarButtonStyle"
             android:textColor="#FFFFFF"
             app:backgroundTint="@color/design_default_color_primary_dark" />
 
         <Button
             android:id="@+id/btn_reject"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="0dp"
             android:layout_height="@dimen/auth_login_btn_margin_start"
             android:layout_margin="8dp"
             android:layout_marginVertical="@dimen/auth_indents"
             android:layout_weight="1"
             android:text="@string/reset"
-            style="?android:attr/buttonBarButtonStyle"
             android:textColor="#FFFFFF"
             app:backgroundTint="@color/design_default_color_primary_dark" />
 

@@ -1,4 +1,11 @@
 <resources>
+
+    <string name="all_ok_button">OK</string>
+
+    <string name="auth_invalid_data_title">Invalid data</string>
+    <string name="auth_correct_login">123qweasd</string>
+    <string name="auth_correct_password">123qweasd</string>
+
     <string name="app_name">CocktailApp</string>
     <string name="empty_list">Enter text to start search</string>
     <string name="empty_history">History is empty</string>
@@ -17,6 +24,7 @@
     <string name="password">Password</string>
     <string name="invalid_password_text">Пароль повинний містити більше 6 символів, одну літеру і одну цифру</string>
     <string name="invalid_login_text">Логін повинний містити більше 6 символів</string>
+    <string name="invalid_data_error_message">Невірні логін або пароль</string>
 
     <string name="dialog_sort_title">Sort By</string>
 
@@ -43,10 +51,6 @@
     <string name="menu_profile_fragment_title">Profile</string>
 
    <!-- bottom sheet dialog strings-->
-    <string name="bottom_sheet_option_camera">Use Camera</string>
-    <string name="bottom_sheet_option_gallery">Upload from Gallery</string>
-    <string name="bottom_sheet_option_heading">Add Photo</string>
-    <string name="bottom_sheet_option_remove_photo">Remove Photo</string>
     <string name="content_description_return_button">Return button</string>
     <string name="content_description_sort_history">Sort history</string>
     <string name="content_description_custom_button">Custom button</string>

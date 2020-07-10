@@ -24,8 +24,8 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
 
     override var contentLayoutResId: Int = R.layout.activity_auth
 
-    private val correctLogin = "123qweasd"
-    private val correctPassword = "123qweasd"
+    private lateinit var correctLogin: String
+    private lateinit var correctPassword: String
 
     private var isValidLogin: Boolean = false
     private var isValidPassword: Boolean = false
@@ -34,6 +34,7 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
 
     private lateinit var loginErrorMessage: String
     private lateinit var passwordErrorMessage: String
+    private lateinit var invalidDataErrorMessage: String
 
     private var loginTextWatcher: TextWatcher? = null
     private var passwordTextWatcher: TextWatcher? = null
@@ -78,8 +79,12 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
         textInputEditLogin.addTextChangedListener(loginTextWatcher)
         textInputEditPassword.addTextChangedListener(passwordTextWatcher)
 
+        correctLogin = resources.getString(R.string.auth_correct_login)
+        correctPassword = resources.getString(R.string.auth_correct_password)
+
         loginErrorMessage = resources.getString(R.string.invalid_login_text)
         passwordErrorMessage = resources.getString(R.string.invalid_password_text)
+        invalidDataErrorMessage = resources.getString(R.string.invalid_data_error_message)
 
         textInputEditLogin.requestFocus()
     }
@@ -104,12 +109,13 @@ class AuthActivity : BaseActivity(), LinerLayoutWithKeyboardListener.KeyBoardLis
                     }
                 }
                 if (isValidLogin && isValidPassword && !isLoginAndPasswordCorrect) {
-                    finalErrorMessage = "Invalid login or password!"
+                    finalErrorMessage = invalidDataErrorMessage
                     textInputEditLogin.requestFocus()
                 }
+
                 ErrorAuthDialogFragment.newInstance(){
-                    titleText = "Invalid data"
-                    leftButtonText = "Ok"
+                    titleText = resources.getString(R.string.auth_invalid_data_title)
+                    leftButtonText = resources.getString(R.string.all_ok_button)
                     descriptionText = finalErrorMessage!!
                 }.show(supportFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
             }

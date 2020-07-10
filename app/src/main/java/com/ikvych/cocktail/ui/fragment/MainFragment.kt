@@ -65,7 +65,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     private lateinit var historyFragment: HistoryFragment
     private lateinit var favoriteFragment: FavoriteFragment
 
-    private var isPowerConnected: Boolean = false
+    private var isBatteryCharging: Boolean = false
     private var isBatteryLow: Boolean = false
     private var percent: Int = 0
 
@@ -78,7 +78,6 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
     interface OnSortResultListener {
         fun onResult(sortDrinkType: SortDrinkType)
     }
-
 
 
     override fun onAttach(context: Context) {
@@ -113,7 +112,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         )
         batteryReceiver = BatteryReceiver(this)
 
-        bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance{
+        bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance {
             titleText = "Log Out"
             descriptionText = "Are you Really want to exit?"
             leftButtonText = "Cancel"
@@ -157,9 +156,12 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
         filterBtn.setOnClickListener {
             val fragmentTransaction = childFragmentManager.beginTransaction()
-            val f = filters
             filterFragment = FilterFragment.newInstance(filters)
-            fragmentTransaction.add(R.id.fcv_main_fragment, filterFragment, FilterFragment::class.java.simpleName)
+            fragmentTransaction.add(
+                R.id.fcv_main_fragment,
+                filterFragment,
+                FilterFragment::class.java.simpleName
+            )
             fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
             fragmentTransaction.commit()
         }
@@ -266,29 +268,27 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
 
     override fun onBatteryChange(intent: Intent) {
         when (intent.action) {
-            Intent.ACTION_POWER_CONNECTED -> {
-                isPowerConnected = true
-                isPowerConnected(isPowerConnected)
-            }
-            Intent.ACTION_POWER_DISCONNECTED -> {
-                isPowerConnected = false
-                isPowerConnected(isPowerConnected)
-            }
             Intent.ACTION_BATTERY_LOW -> {
                 isBatteryLow = true
-                isBatteryLow(isBatteryLow)
+                isBatteryLow()
             }
             Intent.ACTION_BATTERY_OKAY -> {
                 isBatteryLow = false
             }
             Intent.ACTION_BATTERY_CHANGED -> {
+                val status: Int = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
+                isBatteryCharging = status == BatteryManager.BATTERY_STATUS_CHARGING
+                        || status == BatteryManager.BATTERY_STATUS_FULL
+
                 percent = intent.let {
                     val level: Int = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
                     val scale: Int = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
                     level * 100 / scale.toFloat()
                 }.toInt()
 
+                displayBatteryCharging()
                 displayBatteryState()
+
             }
         }
     }
@@ -297,7 +297,7 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         val textPercent = "${percent}%"
         batteryPercent.text = textPercent
 
-        if (!isBatteryLow && !isPowerConnected) {
+        if (!isBatteryLow && !isBatteryCharging) {
             batteryPercent.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),
@@ -325,8 +325,8 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
         }
     }
 
-    private fun isPowerConnected(isPowerConnected: Boolean) {
-        if (isPowerConnected) {
+    private fun displayBatteryCharging() {
+        if (isBatteryCharging) {
             powerConnected.visibility = View.VISIBLE
             batteryPercent.setTextColor(
                 ContextCompat.getColor(
@@ -354,13 +354,13 @@ class MainFragment : BaseFragment(), BatteryListener, FilterFragment.OnFilterRes
             )
         } else {
             powerConnected.visibility = View.GONE
-            isBatteryLow(isBatteryLow)
             displayBatteryState()
+            isBatteryLow()
         }
     }
 
-    private fun isBatteryLow(isBatteryLow: Boolean) {
-        if (isBatteryLow) {
+    private fun isBatteryLow() {
+        if (isBatteryLow && !isBatteryCharging) {
             batteryPercent.setTextColor(
                 ContextCompat.getColor(
                     requireContext(),

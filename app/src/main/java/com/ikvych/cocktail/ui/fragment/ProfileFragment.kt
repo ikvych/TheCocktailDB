@@ -63,6 +63,7 @@ class ProfileFragment : BaseFragment() {
                     RightDialogButton -> {
                         val intent = Intent(requireContext(), AuthActivity::class.java)
                         requireContext().startActivity(intent)
+                        requireActivity().finishAffinity()
                     }
                     LeftDialogButton -> {
                         dialog.dismiss()

@@ -69,14 +69,14 @@ class SearchActivity : RecyclerViewActivity<SearchActivityViewModel>(), DrinkOff
         toolbarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                val searchQuery: String = query?.trim() ?: ""
-                viewModel.updateDrinksLiveData(searchQuery)
                 toolbarSearchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                return false
+                val searchQuery: String = newText?.trim() ?: ""
+                viewModel.updateDrinksLiveData(searchQuery)
+                return true
             }
 
         })

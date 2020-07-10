@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.data.entity
+package com.ikvych.cocktail.data.db.model
 
 import android.os.Parcel
 import android.os.Parcelable

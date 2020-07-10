@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.data.database.convertor
+package com.ikvych.cocktail.data.db.impl.typeconverter
 
 import androidx.room.TypeConverter
 import java.util.*

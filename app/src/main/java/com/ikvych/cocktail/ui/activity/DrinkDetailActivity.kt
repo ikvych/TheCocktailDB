@@ -6,23 +6,26 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.activity.viewModels
 import androidx.core.content.ContextCompat
 import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
-import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.db.model.Drink
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
 import com.ikvych.cocktail.service.ApplicationService
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
+import kotlin.reflect.KClass
 
 
-class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDetailsBinding>() {
+class DrinkDetailActivity
+    : BaseActivity<DrinkDetailViewModel, ActivityDrinkDetailsBinding>() {
 
     private var drink: Drink? = null
     private var modelType: String? = null
-    override val viewModel: DrinkDetailViewModel by viewModels()
+
+    override val viewModelClass: KClass<DrinkDetailViewModel>
+        get() = DrinkDetailViewModel::class
     override var contentLayoutResId: Int = R.layout.activity_drink_details
 
     private lateinit var appBarLayout: AppBarLayout
@@ -60,13 +63,14 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
         if (intent != null && intent.hasExtra(DRINK_ID)) {
             val drinkId: Long = intent.getLongExtra(DRINK_ID, -1L)
             if (drinkId != -1L) {
-                drink = viewModel.findDrinkInDbById(drinkId)
+/*                drink = viewModel.findDrinkInDbById(drinkId)*/
             } else {
                 finish()
             }
         }
 
-        viewModel.drinkIdLiveData.value = drink!!.getIdDrink()
+/*        viewModel.drinkIdLiveData.value = drink!!.getIdDrink()*/
+        viewModel.findDrinkInDbById(drink!!.getIdDrink()!!)
         dataBinding.viewModel = viewModel
 
 

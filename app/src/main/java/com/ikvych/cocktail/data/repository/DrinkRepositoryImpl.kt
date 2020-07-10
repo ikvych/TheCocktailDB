@@ -3,12 +3,10 @@ package com.ikvych.cocktail.data.repository
 import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ikvych.cocktail.data.database.DrinkDao
-import com.ikvych.cocktail.data.database.DrinkDataBase
-import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.data.entity.DrinkApiResponse
-import com.ikvych.cocktail.data.entity.Ingredient
-import com.ikvych.cocktail.data.entity.IngredientApiResponse
+import com.ikvych.cocktail.data.db.impl.dao.DrinkDao
+import com.ikvych.cocktail.data.db.impl.DrinkDataBase
+import com.ikvych.cocktail.data.db.model.Drink
+import com.ikvych.cocktail.data.db.model.DrinkApiResponse
 import com.ikvych.cocktail.data.network.DrinkApiService
 import com.ikvych.cocktail.data.network.RetrofitInstance
 import com.ikvych.cocktail.data.repository.base.DrinkRepository
@@ -16,7 +14,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DrinkRepositoryImpl (application: Application) : DrinkRepository {
+class DrinkRepositoryImpl (
+    application: Application
+) : DrinkRepository {
 
     private val drinkDao: DrinkDao = DrinkDataBase.getInstance(application)!!.drinkDao()
     private val apiService: DrinkApiService = RetrofitInstance.service
@@ -53,29 +53,6 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
     }
 
 
-    // Methods for work with Api and Db at same time
-    override fun initAllIngredient() {
-        val call: Call<IngredientApiResponse?> = apiService.getAllIngredients()
-
-        call.enqueue(object : Callback<IngredientApiResponse?> {
-
-            override fun onFailure(call: Call<IngredientApiResponse?>, t: Throwable) {
-                println("Can't get ingredients from Api")
-            }
-
-            override fun onResponse(
-                call: Call<IngredientApiResponse?>,
-                response: Response<IngredientApiResponse?>
-            ) {
-                val drinkApiResponse = response.body()
-                if (drinkApiResponse?.ingredients != null) {
-                    SaveIngredientsAsyncTask(drinkDao).execute(*drinkApiResponse.ingredients.toTypedArray())
-                }
-            }
-
-        })
-    }
-
 
     // Methods for work with Db
     override fun getAllDrinksFromDbLiveData(): LiveData<List<Drink>> {
@@ -88,10 +65,6 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
 
     override fun saveDrinkIntoDb(drink: Drink) {
         SaveDrinkAsyncTask(drinkDao).execute(drink)
-    }
-
-    override fun getAllIngredientFromDb(): List<Ingredient> {
-        return FindAllIngredientAsyncTask(drinkDao).execute().get()
     }
 
     override fun getAllDrinksFromDb(): List<Drink> {

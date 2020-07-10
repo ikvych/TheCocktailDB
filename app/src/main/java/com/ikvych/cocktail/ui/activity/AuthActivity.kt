@@ -6,11 +6,8 @@ import android.os.Bundle
 import android.text.InputFilter
 import android.view.View
 import android.view.inputmethod.InputMethodManager
-import android.widget.Button
-import androidx.activity.viewModels
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
-import com.google.android.material.textfield.TextInputEditText
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ActivityAuthBinding
 import com.ikvych.cocktail.filter.TextInputFilter
@@ -20,15 +17,18 @@ import com.ikvych.cocktail.ui.dialog.base.DialogButton
 import com.ikvych.cocktail.ui.dialog.base.DialogType
 import com.ikvych.cocktail.ui.dialog.base.NotificationDialogType
 import com.ikvych.cocktail.ui.dialog.regular.ErrorAuthDialogFragment
+import com.ikvych.cocktail.ui.extension.viewModels
 import com.ikvych.cocktail.viewmodel.AuthViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import kotlinx.android.synthetic.main.activity_auth.*
+import kotlin.reflect.KClass
 
 class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
     LinerLayoutWithKeyboardListener.KeyBoardListener {
 
     override var contentLayoutResId: Int = R.layout.activity_auth
-    override val viewModel: AuthViewModel by viewModels()
+    override val viewModelClass: KClass<AuthViewModel>
+        get() = AuthViewModel::class
 
     private val inputFilter: InputFilter = TextInputFilter()
 
@@ -50,7 +50,7 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
             ) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
-                finish()
+                finishAffinity()
             } else {
                 if (!viewModel.isLoginDataMatchPatternLiveData.value!!.second) {
                     tiet_auth_password.requestFocus()
@@ -106,4 +106,6 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
     override fun onSoftKeyboardShown(isShowing: Boolean) {
         viewModel.isKeyboardShown.value = isShowing
     }
+
+
 }

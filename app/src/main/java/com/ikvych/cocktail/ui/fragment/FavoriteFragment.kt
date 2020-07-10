@@ -9,12 +9,11 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.DRINK
 import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
 import com.ikvych.cocktail.constant.VIEW_MODEL_TYPE
-import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.db.model.Drink
 import com.ikvych.cocktail.databinding.FragmentFavoriteBinding
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
-import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class FavoriteFragment : RecyclerViewFragment<BaseViewModel, FragmentFavoriteBinding>() {

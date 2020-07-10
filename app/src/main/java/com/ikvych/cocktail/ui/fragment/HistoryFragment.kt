@@ -4,7 +4,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.viewModels
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.db.model.Drink
 import com.ikvych.cocktail.databinding.FragmentHistoryBinding
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible

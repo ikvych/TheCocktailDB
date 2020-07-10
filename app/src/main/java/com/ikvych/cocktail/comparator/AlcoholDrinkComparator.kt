@@ -1,6 +1,6 @@
 package com.ikvych.cocktail.comparator
 
-import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.db.model.Drink
 
 class AlcoholDrinkComparator : Comparator<Drink> {
 

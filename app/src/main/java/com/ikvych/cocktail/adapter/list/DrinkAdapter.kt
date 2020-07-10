@@ -4,19 +4,13 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.base.BaseRecyclerViewAdapter
-import com.ikvych.cocktail.adapter.list.base.BaseViewHolder
-import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
+import com.ikvych.cocktail.data.db.model.Drink
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
-import com.ikvych.cocktail.databinding.ItemSelectedFilterBinding
 import com.ikvych.cocktail.ui.activity.MainActivity
-import com.ikvych.cocktail.ui.activity.SearchActivity
-import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 

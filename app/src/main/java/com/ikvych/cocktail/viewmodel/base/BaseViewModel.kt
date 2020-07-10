@@ -1,19 +1,14 @@
 package com.ikvych.cocktail.viewmodel.base
 
 import android.app.Application
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.data.entity.Ingredient
+import androidx.lifecycle.*
+import com.ikvych.cocktail.data.db.model.Drink
 import com.ikvych.cocktail.data.repository.DrinkRepositoryImpl
 import com.ikvych.cocktail.data.repository.base.DrinkRepository
 import com.ikvych.cocktail.dataTest.repository.AppSettingRepository
 import com.ikvych.cocktail.dataTest.repository.impl.AppSettingRepositoryImpl
-import kotlin.properties.ReadOnlyProperty
-import kotlin.properties.ReadWriteProperty
-import kotlin.reflect.KProperty
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 
 open class BaseViewModel(
@@ -25,6 +20,28 @@ open class BaseViewModel(
     protected val appSettingRepository: AppSettingRepository =
         AppSettingRepositoryImpl.instance(application)
 
+    protected fun <T> launchRequest(
+        liveData: LiveData<T>? = null,
+        context: CoroutineContext = Dispatchers.IO,
+        request: suspend CoroutineScope.() -> T
+    ): Job {
+        return viewModelScope.async {
+            try {
+                withContext(context) { request() }.apply { liveData?.setValue(this) }
+            } catch (e: Exception) {
+                e.printStackTrace()
+                throw e
+            }
+        }
+    }
+
+    protected fun <T> LiveData<T>.setValue(value: T) {
+        (this as? MutableLiveData)?.value = value
+    }
+
+    protected fun <T> LiveData<T>.postValue(value: T) {
+        (this as? MutableLiveData)?.postValue(value)
+    }
 
     val startDrinkDetailsLiveData: MutableLiveData<Drink?> = MutableLiveData<Drink?>()
     val selectedLanguageLiveData: MutableLiveData<Int> =

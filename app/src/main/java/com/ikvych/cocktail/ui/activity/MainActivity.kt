@@ -28,13 +28,16 @@ import com.ikvych.cocktail.ui.dialog.base.*
 import com.ikvych.cocktail.ui.dialog.bottom.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
+import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import kotlin.reflect.KClass
 
 
 class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
 
     override var contentLayoutResId: Int = R.layout.activity_main
-    override val viewModel: MainActivityViewModel by viewModels()
+    override val viewModelClass: KClass<MainActivityViewModel>
+        get() = MainActivityViewModel::class
 
     private lateinit var bottomNavigationView: BottomNavigationView
     private var mainFragment: MainFragment? = null

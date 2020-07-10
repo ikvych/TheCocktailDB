@@ -1,16 +1,16 @@
-package com.ikvych.cocktail.data.database
+package com.ikvych.cocktail.data.db.impl
 
 import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.ikvych.cocktail.data.database.convertor.DateConverter
-import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.data.entity.Ingredient
+import com.ikvych.cocktail.data.db.impl.dao.DrinkDao
+import com.ikvych.cocktail.data.db.impl.typeconverter.DateConverter
+import com.ikvych.cocktail.data.db.model.Drink
 
 
-@Database(entities = [Drink::class, Ingredient::class], version = 1, exportSchema = false)
+@Database(entities = [Drink::class], version = 3, exportSchema = false)
 @TypeConverters(DateConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {
 

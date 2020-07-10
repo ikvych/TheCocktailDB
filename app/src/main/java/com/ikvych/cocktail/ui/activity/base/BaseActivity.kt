@@ -17,9 +17,11 @@ import com.ikvych.cocktail.ui.dialog.base.BaseBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.BaseDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.DialogButton
 import com.ikvych.cocktail.ui.dialog.base.DialogType
+import com.ikvych.cocktail.ui.extension.baseViewModels
 import com.ikvych.cocktail.util.Language
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
+import kotlin.reflect.KClass
 
 
 abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBinding> :
@@ -32,8 +34,9 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
 
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()
     protected abstract var contentLayoutResId: Int
-    protected abstract val viewModel: ViewModel
+    protected val viewModel: ViewModel by baseViewModels()
     protected lateinit var dataBinding: DataBinding
+    abstract val viewModelClass: KClass<ViewModel>
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {

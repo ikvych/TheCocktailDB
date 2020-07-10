@@ -15,7 +15,7 @@ import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.constant.DRINK
 import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
 import com.ikvych.cocktail.constant.VIEW_MODEL_TYPE
-import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.db.model.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment

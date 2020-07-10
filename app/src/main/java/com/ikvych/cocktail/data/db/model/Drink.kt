@@ -1,12 +1,10 @@
-package com.ikvych.cocktail.data.entity
+package com.ikvych.cocktail.data.db.model
 
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.LayoutInflater
 import android.widget.ImageView
 import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
 import androidx.databinding.BaseObservable
 import androidx.databinding.Bindable
 import androidx.databinding.BindingAdapter
@@ -20,6 +18,7 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.ikvych.cocktail.BR
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.data.db.Table
 import com.ikvych.cocktail.databinding.ItemDrinkIngredientBinding
 import java.util.*
 import kotlin.collections.HashMap
@@ -28,9 +27,12 @@ import kotlin.collections.HashMap
 @BindingAdapter("ingredients")
 fun getIngredients(
     tableLayout: TableLayout,
-    ingredients: Map<String?, String?>
+    ingredients: Map<String?, String?>? = null
 ) {
     var count = 1
+    if (ingredients == null) {
+        return
+    }
     for ((key, value) in ingredients) {
         if (key == null) {
             continue
@@ -55,7 +57,7 @@ fun getIngredients(
     }
 }
 
-@Entity(tableName = "drink")
+@Entity(tableName = Table.DRINK)
 class Drink : BaseObservable, Parcelable {
     @SerializedName("idDrink")
     @Expose
@@ -99,7 +101,7 @@ class Drink : BaseObservable, Parcelable {
     @ColumnInfo(name = "str_drink")
     private var strDrink: String? = null
 
-    @ColumnInfo(name = "if_favorite")
+    @ColumnInfo(name = "is_favorite")
     private var isFavorite: Boolean = false
 
     @SerializedName("strDrinkAlternate")

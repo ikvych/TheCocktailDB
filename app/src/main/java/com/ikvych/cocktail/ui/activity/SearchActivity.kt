@@ -6,7 +6,6 @@ import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
-import android.widget.TextView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DefaultItemAnimator
@@ -20,7 +19,7 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivitySearchBinding
 import com.ikvych.cocktail.listener.DrinkOfferListener
 import com.ikvych.cocktail.receiver.DrinkOfferReceiver
-import com.ikvych.cocktail.ui.base.BaseActivity
+import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.util.setEmptySearchVisible
 import com.ikvych.cocktail.util.setSearchEmptyListVisible
 import com.ikvych.cocktail.util.setSearchRecyclerViewVisible
@@ -55,7 +54,8 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
         viewModel.startDrinkDetailsLiveData.observe(this, Observer {
             if (it != null) {
                 val intent = Intent(this, DrinkDetailActivity::class.java)
-                intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
+                intent.putExtra(SHOULD_SAVE_DRINK, SHOULD_SAVE_DRINK)
+                intent.putExtra(SHOW_DRINK_OFFER_ON_DESTROY, SHOW_DRINK_OFFER_ON_DESTROY)
                 intent.putExtra(DRINK, it)
                 startActivity(intent)
             }
@@ -149,19 +149,5 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
                 drinkIntent.putExtra(DRINK, drink)
                 startActivity(drinkIntent)
             }.show()
-    }
-
-    override fun onClick(v: View?) {
-        val view = v?.findViewById<TextView>(R.id.tv_drink_name)
-        val drinkName = view?.text ?: ""
-        val drink: Drink? =
-            drinkAdapter.listData.find { drink -> drink.getStrDrink() == drinkName }
-
-        if (drink != null) {
-            val intent = Intent(this, DrinkDetailActivity::class.java)
-            intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
-            intent.putExtra(DRINK, drink)
-            startActivity(intent)
-        }
     }
 }

@@ -1,7 +1,5 @@
 package com.ikvych.cocktail.filter.type
 
-import android.graphics.drawable.Drawable
-import com.ikvych.cocktail.data.entity.Ingredient
 import com.ikvych.cocktail.filter.DrinkFilter
 
 enum class IngredientDrinkFilter(

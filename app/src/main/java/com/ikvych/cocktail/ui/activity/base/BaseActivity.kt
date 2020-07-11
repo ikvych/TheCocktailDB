@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ui.base
+package com.ikvych.cocktail.ui.activity.base
 
 import android.content.Intent
 import android.content.IntentFilter
@@ -12,6 +12,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
 import com.ikvych.cocktail.receiver.FlyModeReceiver
+import com.ikvych.cocktail.ui.dialog.base.BaseBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.BaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.DialogType
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
 
@@ -30,6 +35,7 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBind
 
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         val locale = Locale("uk")
         Locale.setDefault(locale)
         val resources = resources
@@ -43,8 +49,6 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBind
             }
         }
         resources.updateConfiguration(configuration, resources.displayMetrics)
-        super.onCreate(savedInstanceState)
-        setContentView(contentLayoutResId)
         dataBinding = DataBindingUtil.setContentView(this, contentLayoutResId)
         dataBinding.lifecycleOwner = this@BaseActivity
         configureDataBinding(dataBinding)

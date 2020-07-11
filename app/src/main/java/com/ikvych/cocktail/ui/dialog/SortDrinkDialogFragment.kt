@@ -5,7 +5,10 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.ui.base.*
+import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.type.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.ListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.SortDrinkDrinkDialogType
 
 
 class SortDrinkDialogFragment :

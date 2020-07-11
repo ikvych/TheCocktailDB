@@ -7,10 +7,9 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.ikvych.cocktail.data.database.convertor.DateConverter
 import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.data.entity.Ingredient
 
 
-@Database(entities = [Drink::class, Ingredient::class], version = 1, exportSchema = false)
+@Database(entities = [Drink::class], version = 2, exportSchema = false)
 @TypeConverters(DateConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {
 

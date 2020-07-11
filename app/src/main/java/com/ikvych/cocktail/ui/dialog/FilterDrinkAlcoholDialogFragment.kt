@@ -5,10 +5,10 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.ui.base.ItemListDialogButton
-import com.ikvych.cocktail.ui.base.ListDialogButton
-import com.ikvych.cocktail.ui.base.AlcoholDrinkDialogType
-import com.ikvych.cocktail.ui.base.ListBaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.type.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.ListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.AlcoholDrinkDialogType
+import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
 
 
 class FilterDrinkAlcoholDialogFragment :

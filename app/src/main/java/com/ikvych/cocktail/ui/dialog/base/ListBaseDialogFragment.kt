@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ui.base
+package com.ikvych.cocktail.ui.dialog.base
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,8 @@ import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.DialogType
 import kotlinx.android.synthetic.main.layout_dialog_filter_list_component.*
 
 abstract class ListBaseDialogFragment<

@@ -20,16 +20,16 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.constant.DRINK
 import com.ikvych.cocktail.databinding.FragmentMainBinding
-import com.ikvych.cocktail.databinding.adapter.DataBindingAdapter
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.receiver.BatteryReceiver
-import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.ui.activity.SearchActivity
-import com.ikvych.cocktail.ui.base.*
-import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.DialogType
+import com.ikvych.cocktail.ui.dialog.base.type.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.type.SortDrinkDrinkDialogType
+import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
@@ -108,7 +108,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             }
         })
         viewModel.viewPager2LiveData.value = Page.values()[viewPager.currentItem]
-        //відслідковує скрол по viewPager2 і переда відповідне значення в liveData щоб
+        //відслідковує скрол по viewPager2 і передає відповідне значення в liveData щоб
         //забезпечити переключення таб
         viewModel.viewPager2LiveData.observe(this, Observer {
             tabLayout.selectTab(tabLayout.getTabAt(it.ordinal))

@@ -4,28 +4,36 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
+import com.ikvych.cocktail.R
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.regex.Pattern
 
 class AuthViewModel(application: Application) : BaseViewModel(application) {
+
+    private val triggerObserver: Observer<in Any?> = Observer { }
     private val passwordPattern: Pattern =
         Pattern.compile("(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z~!@#\$%^&*]{6,}") //не менше 6 символів і містить хоча б одну цифру і хоча б одну літеру
     private val loginPattern: Pattern = Pattern.compile(".{7,}") //більше 6 символів
 
-    private val correctLogin = "123qweasd"
-    private val correctPassword = "123qweasd"
+    private val correctLogin = application.resources.getString(R.string.auth_correct_login)
+    private val correctPassword = application.resources.getString(R.string.auth_correct_password)
 
-    private val loginErrorMessage: String = "Логін повинний містити більше 6 символів"
-    private val passwordErrorMessage: String =
-        "Пароль повинний містити більше 6 символів, одну літеру і одну цифру"
+    private val loginErrorMessage: String = application.resources.getString(R.string.auth_invalid_login)
+    private val passwordErrorMessage: String = application.resources.getString(R.string.auth_invalid_password)
 
-    val isKeyboardShown: MutableLiveData<Boolean> = MutableLiveData()
+    val shouldLogInLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val requestFocusOnLoginLiveData: MutableLiveData<Unit> = MutableLiveData()
+    val requestFocusOnPasswordLiveData: MutableLiveData<Unit> = MutableLiveData()
+    val isKeyboardShownLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val loginInputLiveData: MutableLiveData<String?> = MutableLiveData()
     val passwordInputLiveData: MutableLiveData<String?> = MutableLiveData()
+
     init {
         loginInputLiveData.value = correctLogin
         passwordInputLiveData.value = correctPassword
     }
+
     //відслідковує чи введені логін і пароль відповідають паттернам логіну і пароля
     //liveData містить в собі пару Boolean значень, перше відповідає чи валідний логін,
     // друге відповідає чи валідний пароль
@@ -77,7 +85,7 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
         }
 
 
-    val errorMessageViewModel: LiveData<String?> = object : MediatorLiveData<String?>() {
+    val errorMessageLiveData: LiveData<String?> = object : MediatorLiveData<String?>() {
         init {
             value = "${loginErrorMessage}\n${passwordErrorMessage}"
             addSource(isLoginDataMatchPatternLiveData) {
@@ -105,6 +113,36 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
                 finalErrorMessage = "Невірні логін або пароль!"
             }
             value = finalErrorMessage
+        }
+    }
+
+    init {
+        isLoginDataMatchPatternLiveData.observeForever(triggerObserver)
+        errorMessageLiveData.observeForever(triggerObserver)
+        isLoginDataValidLiveData.observeForever(triggerObserver)
+    }
+
+    override fun onCleared() {
+        isLoginDataMatchPatternLiveData.removeObserver(triggerObserver)
+        errorMessageLiveData.removeObserver(triggerObserver)
+        isLoginDataValidLiveData.removeObserver(triggerObserver)
+        super.onCleared()
+    }
+
+    fun submit() {
+        if (isLoginDataMatchPatternLiveData.value!!.first &&
+            isLoginDataMatchPatternLiveData.value!!.second &&
+            isLoginDataValidLiveData.value!!
+        ) {
+            shouldLogInLiveData.value = true
+        } else {
+            if (!isLoginDataMatchPatternLiveData.value!!.second) {
+                requestFocusOnPasswordLiveData.value = requestFocusOnPasswordLiveData.value
+            }
+            if (!isLoginDataMatchPatternLiveData.value!!.first) {
+                requestFocusOnLoginLiveData.value = requestFocusOnLoginLiveData.value
+            }
+            shouldLogInLiveData.value = false
         }
     }
 }

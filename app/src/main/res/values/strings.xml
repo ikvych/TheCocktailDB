@@ -32,6 +32,8 @@
     <!--#endregion-->
 
     <!--#region AuthActivity-->
+    <string name="auth_correct_login">123qweasd</string>
+    <string name="auth_correct_password">123qweasd</string>
     <string name="auth_login_button">Login</string>
     <string name="auth_password_tint">Password</string>
     <string name="auth_login_hint">Login</string>

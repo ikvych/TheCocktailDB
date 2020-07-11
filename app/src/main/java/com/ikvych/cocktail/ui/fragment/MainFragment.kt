@@ -66,9 +66,6 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
     private lateinit var batteryPercent: TextView
     private lateinit var batteryIcon: ImageView
     private lateinit var powerConnected: ImageView
-
-    private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
-
     companion object {
         @JvmStatic
         fun newInstance() = MainFragment()

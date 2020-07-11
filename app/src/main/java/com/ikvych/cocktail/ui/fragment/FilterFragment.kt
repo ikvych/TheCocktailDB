@@ -76,7 +76,6 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
         })
 
 
-
         ingredientFilterItem = im_ingredient_filter_item
         ingredientFilterItem.setOnClickListener {
             FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.ingredientFilterLiveData.value)
@@ -89,7 +88,6 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
         parentViewModel.ingredientFilterLiveData.observe(this, Observer {
             ingredientFilterValue.text = it.key
         })
-
 
 
         acceptBtn = btn_accept

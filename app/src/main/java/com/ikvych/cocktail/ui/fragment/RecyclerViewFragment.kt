@@ -20,7 +20,6 @@ abstract class RecyclerViewFragment<ViewModel : BaseViewModel> : BaseFragment<Vi
     protected lateinit var drinkAdapter: DrinkAdapter
 
     lateinit var parentViewModel: MainFragmentViewModel
-    var filters: ArrayList<DrinkFilter> = arrayListOf()
     protected var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
 
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()

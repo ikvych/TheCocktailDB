@@ -88,6 +88,17 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
                     imageView.layoutParams = imageViewParams
                 }
 
+                //change transparency of background
+/*                val stateList =
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.iv_return_button_bg
+                        )
+                    ).withAlpha((scaleFactor * 255).toInt())
+                findViewById<ImageView>(R.id.ib_return).backgroundTintList = stateList*/
+
+
                 val stateList =
                     ColorStateList.valueOf(
                         Color.rgb(

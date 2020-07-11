@@ -86,13 +86,14 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
                         supportFragmentManager,
                         ResumeAppBottomSheetDialogFragment::class.java.simpleName
                     )
+                    //обнуляю liveData для того щоб на перестворенні актівіті не спамилось
                     viewModel.drinkOfTheDayLiveData.value = null
                 }
             }
         })
 
-        viewModel.navBarTitleVisibilityLiveData.observe(this, object : Observer<Boolean> {
-            override fun onChanged(t: Boolean?) {
+        viewModel.navBarTitleVisibilityLiveData.observe(this,
+            Observer<Boolean> { t ->
                 if (t!!) {
                     bottomNavigationView.labelVisibilityMode =
                         LabelVisibilityMode.LABEL_VISIBILITY_LABELED
@@ -100,8 +101,7 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
                     bottomNavigationView.labelVisibilityMode =
                         LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
                 }
-            }
-        })
+            })
 
         bottomNavigationView = findViewById(R.id.bnv_main)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->

@@ -59,7 +59,7 @@ class TestFragment : BaseFragment() {
             val ft3: FragmentTransaction = parentFragmentManager.beginTransaction()
             ft3.add(R.id.fcv_profile_fragment, testFragment4)
             ft3.add(R.id.fcv_profile_fragment, testFragment5)
-/*            ft3.addToBackStack("transaction3")*/
+            ft3.addToBackStack("transaction3")
             ft3.commit()
 
             if (optionalString != null) {

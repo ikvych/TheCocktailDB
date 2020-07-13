@@ -33,7 +33,6 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
     override var contentLayoutResId: Int = R.layout.activity_search
     override val viewModel: SearchActivityViewModel by viewModels()
 
-    private lateinit var toolbarSearchView: SearchView
     private val drinkOfferReceiver: DrinkOfferReceiver = DrinkOfferReceiver(this)
     private lateinit var drinkAdapter: DrinkAdapter
     private lateinit var recyclerView: RecyclerView
@@ -113,12 +112,11 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
     }
 
     private fun initSearchView() {
-        toolbarSearchView = findViewById<ApplicationToolBar>(R.id.atb_search_activity).searchView
-        toolbarSearchView.isIconifiedByDefault = false
-        toolbarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        atb_search_activity.searchView.isIconifiedByDefault = false
+        atb_search_activity.searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                toolbarSearchView.clearFocus()
+                atb_search_activity.searchView.clearFocus()
                 return true
             }
 
@@ -127,11 +125,10 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
                 viewModel.updateDrinksLiveData(searchQuery)
                 return true
             }
-
         })
     }
 
-    override fun makeOffer(intent: Intent) {
+    override fun makeOfferOfDrink(intent: Intent) {
         val drinks = viewModel.drinkLiveData.value
         if (drinks.isNullOrEmpty()) {
             return
@@ -142,7 +139,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
 
         val view: View = findViewById(R.id.rv_search_result)
 
-        Snackbar.make(view, "Як щодо - ${drink.getStrDrink()}", 3500)
+        Snackbar.make(view, "${getString(R.string.search_drink_offer_snackbar_title)} ${drink.getStrDrink()}", 3500)
             .setAction(R.string.toast_action_view) {
                 val drinkIntent = Intent(this, DrinkDetailActivity::class.java)
                 drinkIntent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)

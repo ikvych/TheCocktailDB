@@ -22,8 +22,6 @@ class FavoriteFragment : RecyclerViewFragment<BaseViewModel, FragmentFavoriteBin
     override var contentLayoutResId: Int = R.layout.fragment_favorite
     override val viewModel: BaseViewModel by viewModels()
 
-    private lateinit var fragmentView: View
-
     companion object {
         @JvmStatic
         fun newInstance() = FavoriteFragment()
@@ -36,7 +34,7 @@ class FavoriteFragment : RecyclerViewFragment<BaseViewModel, FragmentFavoriteBin
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
-        fragmentView = view
+
         initRecyclerView(
             view,
             parentViewModel.filteredFavoriteDrinksLiveData.value ?: emptyList(),
@@ -61,17 +59,17 @@ class FavoriteFragment : RecyclerViewFragment<BaseViewModel, FragmentFavoriteBin
 
     override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
         if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(fragmentView)
+            setDbEmptyHistoryVisible(requireView())
         } else {
-            setDbRecyclerViewVisible(fragmentView)
+            setDbRecyclerViewVisible(requireView())
         }
     }
 
     override fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
         if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(fragmentView)
+            setDbEmptyHistoryVisible(requireView())
         } else {
-            setDbRecyclerViewVisible(fragmentView)
+            setDbRecyclerViewVisible(requireView())
         }
     }
 

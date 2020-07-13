@@ -129,7 +129,7 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
         super.onCleared()
     }
 
-    fun submit() {
+    fun onSubmit() {
         if (isLoginDataMatchPatternLiveData.value!!.first &&
             isLoginDataMatchPatternLiveData.value!!.second &&
             isLoginDataValidLiveData.value!!

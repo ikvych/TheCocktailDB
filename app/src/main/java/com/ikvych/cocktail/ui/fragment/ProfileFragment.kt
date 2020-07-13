@@ -26,13 +26,7 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
     override var contentLayoutResId: Int = R.layout.fragment_profile
     override val viewModel: ProfileFragmentViewModel by viewModels()
 
-    private lateinit var startTestFragmentBtn: Button
-    private lateinit var testFragment: TestFragment
-
-    private lateinit var changeBottomNavBarTitleVisibility: CheckBox
-
     private lateinit var mainViewModel: MainActivityViewModel
-
     private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -49,6 +43,7 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
     override fun configureDataBinding(binding: FragmentProfileBinding) {
         super.configureDataBinding(binding)
         binding.viewModel = viewModel
+        binding.parentViewModel = mainViewModel
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -62,20 +57,21 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
                 viewModel.logOutLiveData.value = false
             }
         })
-        startTestFragmentBtn = view.findViewById(R.id.b_start_test_fragment)
-        testFragment = TestFragment.newInstance(5, "Ivan Kvych")
-        startTestFragmentBtn.setOnClickListener {
-            val fragmentTransaction: FragmentTransaction = childFragmentManager.beginTransaction()
-            fragmentTransaction.add(R.id.fcv_profile_fragment, testFragment, TestFragment::class.java.simpleName)
-            fragmentTransaction.addToBackStack(TestFragment::class.java.name)
-            fragmentTransaction.commit()
-        }
 
-        changeBottomNavBarTitleVisibility = cb_main_nav_bar_title_visibility
-        // видимість титульного напису на BottomNavigationView по замовчуванню true
-        mainViewModel.navBarTitleVisibilityLiveData.value = changeBottomNavBarTitleVisibility.isChecked
-        changeBottomNavBarTitleVisibility.setOnCheckedChangeListener { _, isChecked ->
-            mainViewModel.navBarTitleVisibilityLiveData.value = isChecked }
+        viewModel.startTestFragmentLiveData.observe(this, Observer {
+            if (it) {
+                val fragmentTransaction: FragmentTransaction =
+                    childFragmentManager.beginTransaction()
+                fragmentTransaction.add(
+                    R.id.fcv_profile_fragment,
+                    TestFragment.newInstance(5, "Ivan Kvych"),
+                    TestFragment::class.java.simpleName
+                )
+                fragmentTransaction.addToBackStack(TestFragment::class.java.name)
+                fragmentTransaction.commit()
+                viewModel.startTestFragmentLiveData.value = false
+            }
+        })
     }
 
     override fun onBottomSheetDialogFragmentClick(

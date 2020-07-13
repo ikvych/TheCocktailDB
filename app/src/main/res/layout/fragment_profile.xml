@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -46,6 +47,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/offset_8"
                 android:text="@string/profile_start_test_fragment_button"
+                android:onClick="@{() -> viewModel.onStartFragment()}"
                 android:textColor="#FFFFFF"
                 app:backgroundTint="@color/design_default_color_primary_dark" />
 
@@ -54,8 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_height"
                 android:layout_margin="@dimen/offset_8"
-                android:checked="true"
-
+                bind:cb_checked="@={parentViewModel.navBarTitleVisibilityLiveData}"
                 android:text="@string/profile_show_hide_main_navigation_bar_titles" />
 
 

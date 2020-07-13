@@ -4,9 +4,7 @@ import android.content.res.ColorStateList
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.LinearLayout
+import android.widget.*
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.databinding.*
@@ -41,6 +39,33 @@ class DataBindingAdapter {
         @JvmStatic
         fun View.isVisibleView(isVisible: Boolean) {
             this.isVisible = isVisible
+        }
+    }
+
+    object CheckBoxBindingAdapter {
+
+        @BindingAdapter("bind:cb_checked")
+        @JvmStatic
+        fun CheckBox.setIsChecked(newValue: Boolean) {
+            if (isChecked != newValue) {
+                isChecked = newValue
+            }
+        }
+
+        @InverseBindingAdapter(attribute = "bind:cb_checked", event = "bind:cb_checkedAttrChanged")
+        @JvmStatic
+        fun CheckBox.getIsChecked(): Boolean? {
+            return isChecked
+        }
+
+        @BindingAdapter("bind:cb_checkedAttrChanged")
+        @JvmStatic
+        fun CheckBox.setListener(
+            attrChange: InverseBindingListener?
+        ) {
+            if (attrChange != null) {
+                setOnCheckedChangeListener { _, _ -> attrChange.onChange() }
+            }
         }
     }
 

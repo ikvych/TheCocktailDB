@@ -44,8 +44,8 @@ class TestFragment : BaseFragment<BaseViewModel, FragmentTestBinding>() {
         testTextView.setOnClickListener {
             arbitraryNumber  = arbitraryNumber!!.inc()
             val testFragment1 = newInstance(arbitraryNumber!!)
-            val ft1: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            ft1.add(R.id.fcv_container, testFragment1)
+            val ft1: FragmentTransaction = parentFragmentManager.beginTransaction()
+            ft1.add(R.id.fcv_profile_fragment, testFragment1)
             ft1.addToBackStack("transaction1")
             ft1.commit()
 
@@ -53,22 +53,22 @@ class TestFragment : BaseFragment<BaseViewModel, FragmentTestBinding>() {
             val testFragment2 = newInstance(arbitraryNumber!!)
             arbitraryNumber  = arbitraryNumber!!.inc()
             val testFragment3 = newInstance(arbitraryNumber!!)
-            val ft2: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            ft2.add(R.id.fcv_container, testFragment2)
-            ft2.add(R.id.fcv_container, testFragment3)
+            val ft2: FragmentTransaction = parentFragmentManager.beginTransaction()
+            ft2.add(R.id.fcv_profile_fragment, testFragment2)
+            ft2.add(R.id.fcv_profile_fragment, testFragment3)
             ft2.addToBackStack("transaction2")
             ft2.commit()
 
             val testFragment4 = newInstance(arbitraryNumber!!.inc())
             val testFragment5 = newInstance(arbitraryNumber!!, "Some text")
-            val ft3: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
-            ft3.add(R.id.fcv_container, testFragment4)
-            ft3.add(R.id.fcv_container, testFragment5)
-/*            ft3.addToBackStack("transaction3")*/
+            val ft3: FragmentTransaction = parentFragmentManager.beginTransaction()
+            ft3.add(R.id.fcv_profile_fragment, testFragment4)
+            ft3.add(R.id.fcv_profile_fragment, testFragment5)
+            ft3.addToBackStack("transaction3")
             ft3.commit()
 
             if (optionalString != null) {
-                val ft4: FragmentTransaction = requireActivity().supportFragmentManager.beginTransaction()
+                val ft4: FragmentTransaction = parentFragmentManager.beginTransaction()
                 ft4.remove(this)
                 ft4.addToBackStack("transaction4")
                 ft4.commit()

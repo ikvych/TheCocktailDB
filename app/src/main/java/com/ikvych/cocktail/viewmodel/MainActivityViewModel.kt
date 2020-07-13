@@ -23,7 +23,7 @@ class MainActivityViewModel(
         MAIN_ACTIVITY_SHARED_PREFERENCE,
         Context.MODE_PRIVATE
     )
-    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData(true)
 
     init {
         lifecycleObserver = ApplicationLifeCycleObserver(this, sharedPreferences)

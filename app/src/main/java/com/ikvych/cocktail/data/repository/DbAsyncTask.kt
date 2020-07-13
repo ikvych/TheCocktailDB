@@ -14,6 +14,15 @@ class FindDrinkAsyncTask(private val drinkDao: DrinkDao) :
 
 }
 
+class RemoveDrinkAsyncTask(private val drinkDao: DrinkDao) :
+    AsyncTask<Drink, Unit, Unit>() {
+
+    override fun doInBackground(vararg params: Drink?) {
+        return drinkDao.delete(params[0]!!)
+    }
+
+}
+
 class FindDrinkByNameAsyncTask(private val drinkDao: DrinkDao) :
     AsyncTask<String, Unit, Drink>() {
 

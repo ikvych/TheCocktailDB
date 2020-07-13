@@ -27,6 +27,10 @@ class DrinkDbRepositoryImpl(context: Context):
         SaveDrinkAsyncTask(drinkDao).execute(drink)
     }
 
+    override fun removeDrink(drink: Drink) {
+        RemoveDrinkAsyncTask(drinkDao).execute(drink)
+    }
+
     override fun findDrinkById(drinkId: Long): Drink {
         return FindDrinkAsyncTask(drinkDao).execute(drinkId).get()
     }

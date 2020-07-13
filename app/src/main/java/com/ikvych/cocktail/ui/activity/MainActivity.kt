@@ -188,6 +188,59 @@ class MainActivity : BaseActivity(), FilterFragment.OnFilterResultListener, Filt
                         startActivity(intent)
                         true
                     }
+                    R.id.menu_drink_add_favorite -> {
+                        val view = v?.findViewById<TextView>(R.id.drinkName)
+                        val drinkName = view?.text ?: ""
+                        val drink = viewModel.findDrinkByName(drinkName.toString())
+
+                        if (!drink.isFavorite()) {
+                            drink.setIsFavorite(true)
+                            viewModel.saveDrink(drink)
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Added to favorite",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Already added to favorite",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        true
+                    }
+                    R.id.menu_drink_remove_favorite -> {
+                        val view = v?.findViewById<TextView>(R.id.drinkName)
+                        val drinkName = view?.text ?: ""
+                        val drink = viewModel.findDrinkByName(drinkName.toString())
+
+                        if (drink.isFavorite()) {
+                            drink.setIsFavorite(false)
+                            viewModel.saveDrink(drink)
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Removed from favorite",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Not added yet",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        true
+                    }
+                    R.id.menu_drink_remove -> {
+                        val view = v?.findViewById<TextView>(R.id.drinkName)
+                        val drinkName = view?.text ?: ""
+                        val drink = viewModel.findDrinkByName(drinkName.toString())
+
+                        viewModel.removeDrink(drink)
+                        Toast.makeText(this@MainActivity, "Drink removed", Toast.LENGTH_SHORT).show()
+                        true
+                    }
                     // створює pinned shortcut
                     R.id.menu_drink_pin_shortcut -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

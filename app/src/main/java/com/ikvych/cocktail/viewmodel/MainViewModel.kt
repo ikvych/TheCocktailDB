@@ -40,6 +40,11 @@ class MainViewModel(
         dbRepository.saveDrink(drink)
     }
 
+    fun removeDrink(drink: Drink) {
+        dbRepository.removeDrink(drink)
+    }
+
+
     override fun getLiveData(): LiveData<List<Drink>> {
         return drinksLiveData
     }

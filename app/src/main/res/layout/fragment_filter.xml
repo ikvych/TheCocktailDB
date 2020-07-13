@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
+
+    <data>
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.MainFragmentViewModel" />
+        <variable
+            name="drinkFilterType"
+            type="com.ikvych.cocktail.filter.type.DrinkFilterType" />
+    </data>
+
 <androidx.constraintlayout.widget.ConstraintLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -21,8 +31,7 @@
         android:elevation="@dimen/elevation_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:tl_enable_custom_btn="true" />
+        app:layout_constraintTop_toTopOf="parent"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_fragment_filter"
@@ -52,6 +61,7 @@
                 android:layout_marginHorizontal="@dimen/offset_24"
                 android:layout_marginVertical="@dimen/offset_8"
                 android:background="@drawable/iten_drink_filter_shape"
+                android:onClick="@{() -> viewModel.onFilterPress(drinkFilterType.ALCOHOL)}"
                 android:orientation="horizontal">
 
                 <TextView
@@ -76,6 +86,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="4"
+                    android:text="@{viewModel.alcoholFilterLiveData.key}"
                     android:textAlignment="center"
                     android:textAppearance="@style/AppTextAppearanceHeadline6" />
 
@@ -88,6 +99,7 @@
                 android:layout_marginHorizontal="@dimen/offset_24"
                 android:layout_marginVertical="@dimen/offset_8"
                 android:background="@drawable/iten_drink_filter_shape"
+                android:onClick="@{() -> viewModel.onFilterPress(drinkFilterType.CATEGORY)}"
                 android:orientation="horizontal">
 
 
@@ -113,6 +125,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="4"
+                    android:text="@{viewModel.categoryFilterLiveData.key}"
                     android:textAlignment="center"
                     android:textAppearance="@style/AppTextAppearanceHeadline6" />
 
@@ -125,6 +138,7 @@
                 android:layout_marginHorizontal="@dimen/offset_24"
                 android:layout_marginVertical="@dimen/offset_8"
                 android:background="@drawable/iten_drink_filter_shape"
+                android:onClick="@{() -> viewModel.onFilterPress(drinkFilterType.INGREDIENT)}"
                 android:orientation="horizontal">
 
                 <TextView
@@ -149,6 +163,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="4"
+                    android:text="@{viewModel.ingredientFilterLiveData.key}"
                     android:textAlignment="center"
                     android:textAppearance="@style/AppTextAppearanceHeadline6" />
 
@@ -176,6 +191,7 @@
                     android:layout_marginVertical="@dimen/offset_16"
                     android:layout_weight="1"
                     android:text="@string/filter_fragment_result_button"
+                    android:onClick="@{() -> viewModel.onAcceptPress()}"
                     android:textColor="#FFFFFF"
                     app:backgroundTint="@color/design_default_color_primary_dark" />
 
@@ -188,6 +204,7 @@
                     android:layout_marginVertical="@dimen/offset_16"
                     android:layout_weight="1"
                     android:text="@string/all_reset_button"
+                    android:onClick="@{() -> viewModel.onResetPress()}"
                     android:textColor="#FFFFFF"
                     app:backgroundTint="@color/design_default_color_primary_dark" />
 

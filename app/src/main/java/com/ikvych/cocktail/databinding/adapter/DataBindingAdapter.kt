@@ -27,6 +27,12 @@ fun setBackgroundTint(view: View, resource: String) {
     view.backgroundTintList = stateList
 }
 
+@BindingAdapter("bind:onLongClick")
+fun setOnLongClickListener(view: View, lambda: (view: View?) -> Boolean) {
+    view.setOnLongClickListener {
+        lambda(it)
+    }
+}
 
 class DataBindingAdapter {
 

@@ -25,8 +25,8 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBind
     BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseDialogFragment.OnDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
-    BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
-    View.OnClickListener, View.OnLongClickListener{
+    BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>
+     {
 
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()
     protected abstract var contentLayoutResId: Int
@@ -128,14 +128,5 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBind
     override fun onStop() {
         super.onStop()
         unregisterReceiver(flyModeReceiver)
-    }
-
-    override fun onClick(v: View?) {
-        //stub
-    }
-
-    override fun onLongClick(v: View?): Boolean {
-        //stub
-        return false
     }
 }

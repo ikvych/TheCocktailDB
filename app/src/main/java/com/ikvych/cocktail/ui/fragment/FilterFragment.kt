@@ -33,16 +33,7 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
     override val viewModel: BaseViewModel by viewModels()
 
     private lateinit var returnBtn: ImageButton
-    private lateinit var acceptBtn: Button
-    private lateinit var resetBtn: Button
-    lateinit var parentViewModel: MainFragmentViewModel
-
-    private lateinit var alcoholFilterItem: LinearLayout
-    private lateinit var alcoholFilterValue: TextView
-    private lateinit var categoryFilterItem: LinearLayout
-    private lateinit var categoryFilterValue: TextView
-    private lateinit var ingredientFilterItem: LinearLayout
-    private lateinit var ingredientFilterValue: TextView
+    private lateinit var parentViewModel: MainFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,62 +41,55 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
             ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
     }
 
+    override fun configureDataBinding(binding: FragmentFilterBinding) {
+        super.configureDataBinding(binding)
+        binding.viewModel = parentViewModel
+    }
+
     @ExperimentalStdlibApi
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
 
-        alcoholFilterItem = im_alcohol_filter_item
-        alcoholFilterItem.setOnClickListener {
-            FilterDrinkAlcoholDialogFragment.newInstance(parentViewModel.alcoholFilterLiveData.value)
-                .show(childFragmentManager, FilterDrinkAlcoholDialogFragment::class.java.simpleName)
-        }
-        alcoholFilterValue = tv_alcohol_filter_value
-        parentViewModel.alcoholFilterLiveData.observe(this, Observer {
-            alcoholFilterValue.text = it.key
+        parentViewModel.showFilterLiveData.observe(this, Observer {
+            when (it) {
+                DrinkFilterType.ALCOHOL -> {
+                    FilterDrinkAlcoholDialogFragment.newInstance(parentViewModel.alcoholFilterLiveData.value)
+                        .show(
+                            childFragmentManager,
+                            FilterDrinkAlcoholDialogFragment::class.java.simpleName
+                        )
+                }
+                DrinkFilterType.CATEGORY -> {
+                    FilterDrinkCategoryDialogFragment.newInstance(parentViewModel.categoryFilterLiveData.value)
+                        .show(
+                            childFragmentManager,
+                            FilterDrinkCategoryDialogFragment::class.java.simpleName
+                        )
+                }
+                DrinkFilterType.INGREDIENT -> {
+                    FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.ingredientFilterLiveData.value)
+                        .show(
+                            childFragmentManager,
+                            FilterDrinkIngredientDialogFragment::class.java.simpleName
+                        )
+                }
+                DrinkFilterType.GLASS -> {
+                }
+            }
         })
 
-        categoryFilterItem = im_category_filter_item
-        categoryFilterItem.setOnClickListener {
-            FilterDrinkCategoryDialogFragment.newInstance(parentViewModel.categoryFilterLiveData.value).show(
-                childFragmentManager,
-                FilterDrinkCategoryDialogFragment::class.java.simpleName
-            )
-        }
-        categoryFilterValue = tv_category_filter_value
-        parentViewModel.categoryFilterLiveData.observe(this, Observer {
-            categoryFilterValue.text = it.key
+        parentViewModel.popBackStackLiveData.observe(this, Observer {
+            if (it) {
+                parentFragmentManager.popBackStack()
+                parentViewModel.popBackStackLiveData.value = false
+            }
         })
-
-
-
-        ingredientFilterItem = im_ingredient_filter_item
-        ingredientFilterItem.setOnClickListener {
-            FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.ingredientFilterLiveData.value)
-                .show(
-                    childFragmentManager,
-                    FilterDrinkIngredientDialogFragment::class.java.simpleName
-                )
-        }
-        ingredientFilterValue = view.findViewById(R.id.tv_ingredient_filter_value)
-        parentViewModel.ingredientFilterLiveData.observe(this, Observer {
-            ingredientFilterValue.text = it.key
-        })
-
-
-
-        acceptBtn = btn_accept
-        acceptBtn.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-        resetBtn = btn_reject
-        resetBtn.setOnClickListener {
-            parentViewModel.resetFilters()
-        }
 
         returnBtn = atb_fragment_filter.returnBtn
         returnBtn.setOnClickListener {
             parentFragmentManager.popBackStack()
         }
+
         parentViewModel.allFilteredLiveData.observe(this, Observer {
             if (parentViewModel.isFiltersPresent()) {
                 val snackBar = Snackbar.make(coordinator_fragment_filter, it, Snackbar.LENGTH_LONG)
@@ -131,19 +115,28 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
                 val alcoholType = data as AlcoholDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
                     parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[alcoholType.type] = alcoholType }
+                parentViewModel.filtersLiveData.value =
+                    parentViewModel.filtersLiveData.value!!.apply {
+                        this[alcoholType.type] = alcoholType
+                    }
             }
             CategoryDrinkDialogType -> {
                 val categoryType = data as CategoryDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
                     parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[categoryType.type] = categoryType }
+                parentViewModel.filtersLiveData.value =
+                    parentViewModel.filtersLiveData.value!!.apply {
+                        this[categoryType.type] = categoryType
+                    }
             }
             IngredientDrinkDialogType -> {
                 val ingredientType = data as IngredientDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
                     parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[ingredientType.type] = ingredientType }
+                parentViewModel.filtersLiveData.value =
+                    parentViewModel.filtersLiveData.value!!.apply {
+                        this[ingredientType.type] = ingredientType
+                    }
             }
         }
     }

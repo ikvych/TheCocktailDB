@@ -20,7 +20,6 @@ import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
 
 class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDetailsBinding>() {
 
-    private var drink: Drink? = null
     override val viewModel: DrinkDetailViewModel by viewModels()
     override var contentLayoutResId: Int = R.layout.activity_drink_details
 
@@ -133,7 +132,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
             val intent = Intent(this, ApplicationService::class.java)
             //зупиняю сервіс якщо він був запущений для того щоб не спамити повідомленнями
             stopService(intent)
-            intent.putExtra(DRINK_ID, drink?.getIdDrink())
+            intent.putExtra(DRINK_ID, viewModel.drinkLiveData.value?.getIdDrink())
             intent.action = ACTION_SHOW_DRINK_OFFER
             startService(intent)
         }

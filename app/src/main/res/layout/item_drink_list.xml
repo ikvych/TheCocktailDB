@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
-    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+    xmlns:card_view="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -13,7 +14,7 @@
             type="com.ikvych.cocktail.viewmodel.base.BaseViewModel" />
     </data>
 
-    <androidx.cardview.widget.CardView
+    <com.ikvych.cocktail.widget.custom.CardViewWithOnLongClickListener
         android:id="@+id/cv_item_list_container"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -22,6 +23,7 @@
         card_view:cardElevation="@dimen/elevation_4"
         android:longClickable="true"
         android:onClick="@{() -> viewModel.startNewDrinkDetails(obj)}"
+        bind:onLongPress="onLongClick"
         card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
@@ -61,5 +63,5 @@
 
         </RelativeLayout>
 
-    </androidx.cardview.widget.CardView>
+    </com.ikvych.cocktail.widget.custom.CardViewWithOnLongClickListener>
 </layout>

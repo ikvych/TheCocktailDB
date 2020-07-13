@@ -28,6 +28,8 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
     val isBatteryChargingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
+    val popBackStackLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val showFilterLiveData: MutableLiveData<DrinkFilterType?> = MutableLiveData()
 
     init {
         isBatteryLowLiveData.value = false
@@ -236,6 +238,22 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
         drinkRepository.saveDrinkIntoDb(drink)
     }
 
+    fun onResetPress() {
+        resetFilters()
+    }
+
+    fun onReturnPress() {
+        popBackStackLiveData.value = true
+    }
+
+    fun onAcceptPress() {
+        popBackStackLiveData.value = true
+    }
+
+    fun onFilterPress(filterType: DrinkFilterType) {
+        showFilterLiveData.value = filterType
+        showFilterLiveData.value = null
+    }
 
     fun filterData(drinks: List<Drink>, drinkFilters: ArrayList<DrinkFilter>): List<Drink> {
         var drinksCopy = drinks

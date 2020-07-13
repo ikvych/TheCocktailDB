@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.viewmodel.base
 
 import android.app.Application
+import android.view.View
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
@@ -14,10 +15,16 @@ open class BaseViewModel(application: Application): AndroidViewModel(application
     protected val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
 
     val startDrinkDetailsLiveData: MutableLiveData<Drink?> = MutableLiveData()
+    val shouldShowOnLongClickLiveData: MutableLiveData<Unit?> = MutableLiveData()
 
     fun startNewDrinkDetails(drink: Drink) {
         startDrinkDetailsLiveData.value = drink
     }
+
+/*    fun onLongClick(view: View?): Boolean {
+        shouldShowOnLongClickLiveData.value = view
+        return true
+    }*/
 
     fun saveFavoriteDrink(drink: Drink) {
         if (drink.isFavorite()) {

@@ -14,6 +14,7 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
 import com.ikvych.cocktail.databinding.ItemSelectedFilterBinding
+import com.ikvych.cocktail.listener.Listener
 import com.ikvych.cocktail.ui.activity.MainActivity
 import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
@@ -41,9 +42,6 @@ class DrinkAdapter(
             is ItemDrinkListBinding -> {
                 binding.obj = item
                 binding.viewModel = viewModel
-                if (context is MainActivity) {
-                    binding.root.setOnLongClickListener(context as View.OnLongClickListener)
-                }
             }
         }
     }

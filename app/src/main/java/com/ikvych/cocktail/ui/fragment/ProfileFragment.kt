@@ -8,6 +8,7 @@ import android.widget.CheckBox
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.FragmentProfileBinding
@@ -25,7 +26,6 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
     override var contentLayoutResId: Int = R.layout.fragment_profile
     override val viewModel: ProfileFragmentViewModel by viewModels()
 
-    private lateinit var logOut: Button
     private lateinit var startTestFragmentBtn: Button
     private lateinit var testFragment: TestFragment
 
@@ -46,15 +46,22 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
         mainViewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
     }
 
+    override fun configureDataBinding(binding: FragmentProfileBinding) {
+        super.configureDataBinding(binding)
+        binding.viewModel = viewModel
+    }
+
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
-        logOut = view.findViewById(R.id.b_log_out)
-        logOut.setOnClickListener {
-            bottomSheetDialogFragment.show(
-                childFragmentManager,
-                RegularBottomSheetDialogFragment::class.java.simpleName
-            )
-        }
+        viewModel.logOutLiveData.observe(this, Observer {
+            if (it) {
+                bottomSheetDialogFragment.show(
+                    childFragmentManager,
+                    RegularBottomSheetDialogFragment::class.java.simpleName
+                )
+                viewModel.logOutLiveData.value = false
+            }
+        })
         startTestFragmentBtn = view.findViewById(R.id.b_start_test_fragment)
         testFragment = TestFragment.newInstance(5, "Ivan Kvych")
         startTestFragmentBtn.setOnClickListener {

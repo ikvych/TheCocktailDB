@@ -131,7 +131,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
         })
     }
 
-    override fun update(intent: Intent) {
+    override fun makeOffer(intent: Intent) {
         val drinks = viewModel.drinkLiveData.value
         if (drinks.isNullOrEmpty()) {
             return

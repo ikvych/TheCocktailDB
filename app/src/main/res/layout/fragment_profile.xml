@@ -3,6 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.ProfileFragmentViewModel" />
+        <variable
+            name="parentViewModel"
+            type="com.ikvych.cocktail.viewmodel.MainActivityViewModel" />
+    </data>
+
     <FrameLayout
         android:layout_height="match_parent"
         android:layout_width="match_parent"
@@ -26,6 +35,7 @@
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/offset_8"
                 android:text="@string/profile_log_out_button"
+                android:onClick="@{() -> viewModel.onLogOut()}"
                 android:textColor="#FFFFFF"
                 app:backgroundTint="@color/design_default_color_primary_dark" />
 
@@ -45,6 +55,7 @@
                 android:layout_height="@dimen/view_height"
                 android:layout_margin="@dimen/offset_8"
                 android:checked="true"
+
                 android:text="@string/profile_show_hide_main_navigation_bar_titles" />
 
 

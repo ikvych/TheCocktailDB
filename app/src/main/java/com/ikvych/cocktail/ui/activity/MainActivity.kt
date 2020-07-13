@@ -171,11 +171,15 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
             fragmentTransaction.setPrimaryNavigationFragment(mainFragment!!)
             fragmentTransaction.commit()
         }
+
+        viewModel.shouldShowOnLongClickLiveData.observe(this, Observer {
+
+        })
     }
 
     // Залишив реалізацію цього метода, бо поки не знаю як за допомогою viewModel зробити
     // виклик у view onLongClick
-    override fun onLongClick(v: View?): Boolean {
+    fun onLongClick(v: View?): Boolean {
         PopupMenu(this, v).apply {
             setOnMenuItemClickListener {
                 when (it.itemId) {

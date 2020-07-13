@@ -43,8 +43,8 @@ class ProfileFragment : BaseFragment() {
         startTestFragmentBtn = view.findViewById(R.id.b_test_fragment)
         startTestFragmentBtn.setOnClickListener {
             testFragment = TestFragment.newInstance( 5, "Ivan Kvych")
-            val fragmentTransaction: FragmentTransaction = parentFragmentManager.beginTransaction()
-            fragmentTransaction.replace(R.id.fcv_main, testFragment)
+            val fragmentTransaction: FragmentTransaction = childFragmentManager.beginTransaction()
+            fragmentTransaction.replace(R.id.fcv_profile_fragment, testFragment)
             fragmentTransaction.addToBackStack(TestFragment::class.java.name)
             fragmentTransaction.commit()
         }

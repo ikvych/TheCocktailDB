@@ -18,7 +18,6 @@ class DrinkRepositoryImpl (
     application: Application
 ) : DrinkRepository {
 
-    private val drinkDao: DrinkDao = DrinkDataBase.getInstance(application)!!.drinkDao()
     private val apiService: DrinkApiService = RetrofitInstance.service
     val drinksApiLiveData: MutableLiveData<List<Drink>> = MutableLiveData()
 
@@ -52,34 +51,4 @@ class DrinkRepositoryImpl (
         })
     }
 
-
-
-    // Methods for work with Db
-    override fun getAllDrinksFromDbLiveData(): LiveData<List<Drink>> {
-        return drinkDao.getAllDrinksLiveData()
-    }
-
-    override fun findDrinkLiveDataById(drinkId: Long): LiveData<Drink?> {
-        return drinkDao.findDrinkLiveDataById(drinkId)
-    }
-
-    override fun saveDrinkIntoDb(drink: Drink) {
-        SaveDrinkAsyncTask(drinkDao).execute(drink)
-    }
-
-    override fun getAllDrinksFromDb(): List<Drink> {
-        return FindAllDrinksAsyncTask(drinkDao).execute().get()
-    }
-
-    override fun findDrinkById(drinkId: Long): Drink? {
-        return FindDrinkByIdAsyncTask(drinkDao).execute(drinkId).get()
-    }
-
-    override fun findDrinkByName(drinkName: String): Drink {
-        return FindDrinkByNameAsyncTask(drinkDao).execute(drinkName).get()
-    }
-
-    override fun findDrinkOfTheDay(stringDate: String): Drink? {
-        return FindDrinkOfTheDayAsyncTask(drinkDao).execute(stringDate).get()
-    }
 }

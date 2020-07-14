@@ -3,6 +3,7 @@ package com.ikvych.cocktail.viewmodel
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.SavedStateHandle
@@ -19,7 +20,8 @@ class MainActivityViewModel(
     private val drinkRepository1: DrinkRepository,
     application: Application,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel(application, savedStateHandle), ApplicationLifeCycleObserver.OnLifecycleObserverListener {
+) : BaseViewModel(application, savedStateHandle),
+    ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
     val drinkOfTheDayLiveData: MutableLiveData<Drink?> = MutableLiveData()
     private var lifecycleObserver: ApplicationLifeCycleObserver
@@ -27,8 +29,10 @@ class MainActivityViewModel(
         MAIN_ACTIVITY_SHARED_PREFERENCE,
         Context.MODE_PRIVATE
     )
-    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = appSettingRepository.showNavigationBarTitleLiveData
-    val showBatteryStateLiveData: MutableLiveData<Boolean> = appSettingRepository.showBatteryStateLiveData
+    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> =
+        appSettingRepository.showNavigationBarTitleLiveData
+    val showBatteryStateLiveData: MutableLiveData<Boolean> =
+        appSettingRepository.showBatteryStateLiveData
 
     init {
         lifecycleObserver = ApplicationLifeCycleObserver(this, sharedPreferences)
@@ -44,48 +48,36 @@ class MainActivityViewModel(
         setDrinkOfTheDay()
     }
 
-    fun findDrinkByName(drinkName: String): Drink? {
-        return drinkRepository.findDrinkByName(drinkName)
+    fun findDrinkByName(drinkName: String): MutableLiveData<Drink?> {
+        val drinkLiveData: MutableLiveData<Drink?> = MutableLiveData()
+        launchRequest(drinkLiveData) {
+            drinkRepository1.findDrinkByName(drinkName)
+        }
+        return drinkLiveData
     }
-
-    fun saveDrinkIntoDb(drink: Drink) {
-        drinkRepository.saveDrinkIntoDb(drink)
-    }
-
 
     private fun setDrinkOfTheDay() {
-        //Оскільки lifecycle, до якого привязана робота цього метода, належить MainActivity, яка по своїй природні працює тільки з базою даних, то
-        //даний метод не працює при повному перевстановленні додатку, оскільки разом з додатком видаляється сама база даних
-        //в якій ми шукаємо напій дня
 
-        //отримаю і форматую сьогоднішню дату, яка являється унікальним ключем для напою дня
         val currentDate = Date()
         val pattern = "MM-dd-yyyy"
         val simpleDateFormat = SimpleDateFormat(pattern, Locale.getDefault())
         val stringDate: String = simpleDateFormat.format(currentDate)
 
-        //шукаю в базі даних напій який має сьогоднішню дату в якості ключа
-        var drinkOfTheDay = drinkRepository.findDrinkOfTheDay(stringDate)
-        //якщо напій не знайдено значить сьогодні напій дня ще не визначався і потрібно його обрати
-        if (drinkOfTheDay == null) {
-            //витягаю з БД усі напої, якщо їх немає, або список порожній, значить
-            // напій немає з чого вибирати і тому виходимо з методу getDrinkOfTheDay()
-            val allDrinks = drinkRepository.getAllDrinksFromDb()
-            if (allDrinks.isNullOrEmpty()) {
-                return
+        launchRequest(drinkOfTheDayLiveData) {
+            val drinkOfTheDay: Drink? = drinkRepository1.findDrinkOfTheDay(stringDate)
+            if (drinkOfTheDay == null) {
+                val allDrinks = drinkRepository1.getAllDrinksFromDb()
+                if (allDrinks.isNullOrEmpty()) {
+                    return@launchRequest null
+                } else {
+                    val newDrinkOfTheDay: Drink = allDrinks.random()
+                    newDrinkOfTheDay.setDrinkOfDay(stringDate)
+                    drinkRepository1.saveDrinkIntoDb(newDrinkOfTheDay)
+                    drinkRepository1.findDrinkByName(stringDate)
+                }
             } else {
-                //якщо список не порожній, дістаємо з нього випадковий напій і присвоюємо йому сьогоднішню дату
-                // в якості унікального ключа, і зберігаємо в базу даних
-                val newDrinkOfTheDay: Drink = allDrinks.random()
-                newDrinkOfTheDay.setDrinkOfDay(stringDate)
-                drinkRepository.saveDrinkIntoDb(newDrinkOfTheDay)
+                drinkOfTheDay
             }
-            //знову шукаємо напі по даній даті(очікується той що тільки що зберегли)
-            drinkOfTheDay = drinkRepository.findDrinkOfTheDay(stringDate)
         }
-        //передаємо напій дня в liveData яку відслідковує activity
-        drinkOfTheDayLiveData.value = drinkOfTheDay
     }
-
-
 }

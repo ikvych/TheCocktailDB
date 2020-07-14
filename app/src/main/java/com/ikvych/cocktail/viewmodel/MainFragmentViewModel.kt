@@ -37,12 +37,13 @@ class MainFragmentViewModel(
         const val EXTRA_KEY_SORT_ORDER = "EXTRA_KEY_SORT_ORDER"
     }
 
-    val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getAllDrinksFromDbLiveData()
+    val drinksLiveData: LiveData<List<Drink>> = drinkRepository1.getAllDrinksFromDbLiveData()
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
     val viewPager2LiveData: MutableLiveData<Page> = object : MutableLiveData<Page>() {
         init {
             value = value
         }
+
         override fun setValue(value: Page?) {
             savedStateHandle.set(EXTRA_KEY_PAGE_NUMBER, value?.ordinal)
             super.setValue(value)
@@ -117,7 +118,8 @@ class MainFragmentViewModel(
                         DrinkFilterType.INGREDIENT -> {
                             IngredientDrinkFilter.values().first { it.key == value }
                         }
-                        DrinkFilterType.GLASS -> {}
+                        DrinkFilterType.GLASS -> {
+                        }
                     } as DrinkFilter
                     map[drinkFilterType] = drinkFilter
                 }
@@ -134,7 +136,7 @@ class MainFragmentViewModel(
 
 
     val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
-        MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
+        MutableLiveData()
 
     val alcoholFilterLiveData: MutableLiveData<AlcoholDrinkFilter> =
         object : MediatorLiveData<AlcoholDrinkFilter>() {
@@ -217,7 +219,8 @@ class MainFragmentViewModel(
             init {
                 //Петтерн містить "Found: h @, f %" - де 'h' і ʼfʼ символи які заміюються на кількість знайдених коктейлів
                 //у історії і улюблених, відповідно, а ʼ@ʼ і ʼ%ʼ символи які замінюються на іконки історії та улюблені відповідно
-                val src = application.resources.getString(R.string.filter_fragment_search_result_text_pattern)
+                val src =
+                    application.resources.getString(R.string.filter_fragment_search_result_text_pattern)
 
                 val historyDrawable = ContextCompat.getDrawable(
                     application,
@@ -268,11 +271,6 @@ class MainFragmentViewModel(
                 }
             }
         }
-
-
-    fun getAllDrinksFromDb(): List<Drink> {
-        return drinksLiveData.value ?: emptyList()
-    }
 
     fun resetFilter(filter: DrinkFilter) {
         when (filter.type) {

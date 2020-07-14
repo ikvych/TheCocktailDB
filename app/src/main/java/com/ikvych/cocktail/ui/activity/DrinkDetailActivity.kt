@@ -45,7 +45,9 @@ class DrinkDetailActivity
                 viewModel.drinkLiveData.value = intent.getParcelableExtra(DRINK)
             }
             intent.hasExtra(DRINK_ID) -> {
-                viewModel.drinkIdLiveData.value = intent.getLongExtra(DRINK_ID, -1L)
+                val currentDrinkId = intent.getLongExtra(DRINK_ID, -1L)
+                if (currentDrinkId == -1L) finish()
+                viewModel.findDrinkDbById(currentDrinkId)
             }
             else -> {
                 finish()
@@ -55,15 +57,16 @@ class DrinkDetailActivity
             viewModel.saveDrinkIntoDb()
         }
 
-        val activityDrinkDetailsBinding: ActivityDrinkDetailsBinding =
-            DataBindingUtil.setContentView(this, R.layout.activity_drink_details)
-        activityDrinkDetailsBinding.viewModel = viewModel
-
         appBarLayout = findViewById(R.id.abl_drink_detail)
         imageView = findViewById(R.id.iv_drink_image)
         imageViewContainer = findViewById(R.id.ll_drink_image_container)
 
         initAppBarLayoutListener()
+    }
+
+    override fun configureDataBinding(binding: ActivityDrinkDetailsBinding) {
+        super.configureDataBinding(binding)
+        dataBinding.viewModel = viewModel
     }
 
     private fun initAppBarLayoutListener() {

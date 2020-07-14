@@ -19,7 +19,7 @@ class DrinkRepositoryImpl(
 
     }
 
-    override suspend fun getAllDrinksFromDbLiveData(): LiveData<List<Drink>> {
+    override fun getAllDrinksFromDbLiveData(): LiveData<List<Drink>> {
         return dbSource.getAllDrinksLiveData()
     }
 

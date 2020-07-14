@@ -13,14 +13,7 @@ class DrinkDetailViewModel(
 ) : BaseViewModel(application, savedStateHandle) {
 
     private val triggerObserver: Observer<in Drink?> = Observer { }
-    val drinkIdLiveData: MutableLiveData<Long> = MutableLiveData()
-    val drinkLiveData: MutableLiveData<Drink?> = object : MediatorLiveData<Drink?>() {
-        init {
-            addSource(drinkIdLiveData) {
-                value = findDrinkInDbById(it)
-            }
-        }
-    }
+    val drinkLiveData: MutableLiveData<Drink?> = MutableLiveData()
 
     init {
         drinkLiveData.observeForever(triggerObserver)
@@ -31,12 +24,16 @@ class DrinkDetailViewModel(
         super.onCleared()
     }
 
-    fun findDrinkInDbById(drinkId: Long): Drink? {
-        return drinkRepository.findDrinkById(drinkId)
+    fun findDrinkDbById(drinkId: Long) {
+        launchRequest(drinkLiveData)  {
+            drinkRepository1.findDrinkById(drinkId)
+        }
     }
 
     fun saveDrinkIntoDb() {
-        val drink = drinkLiveData.value ?: return
-        drinkRepository.saveDrinkIntoDb(drink)
+        val currentDrink = drinkLiveData.value ?: return
+        launchRequest {
+            drinkRepository1.saveDrinkIntoDb(currentDrink)
+        }
     }
 }

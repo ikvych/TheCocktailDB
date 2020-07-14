@@ -14,7 +14,7 @@ interface DrinkRepository : BaseRepository{
     suspend fun updateDrinkApiLiveData(query: String)
 
     // Methods for work with Db
-    suspend fun getAllDrinksFromDbLiveData(): LiveData<List<Drink>>
+    fun getAllDrinksFromDbLiveData(): LiveData<List<Drink>>
 
     fun findDrinkLiveDataById(drinkId: Long): LiveData<Drink?>
 

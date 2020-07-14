@@ -11,6 +11,6 @@ interface DrinkDbSource : BaseDbSource{
     suspend fun findDrinkById(drinkId: Long) : Drink
     suspend fun findDrinkByName(drinkName: String) : Drink
     suspend fun getAllDrinks() : List<Drink>
-    suspend fun getAllDrinksLiveData() : LiveData<List<Drink>>
+    fun getAllDrinksLiveData() : LiveData<List<Drink>>
 
 }

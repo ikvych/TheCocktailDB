@@ -39,7 +39,7 @@ class DrinkDbSourceImpl(
     }
 
 
-    override suspend fun getAllDrinksLiveData() : LiveData<List<Drink>> {
+    override fun getAllDrinksLiveData() : LiveData<List<Drink>> {
         return drinkDao.getAllDrinksLiveData()
     }
 }

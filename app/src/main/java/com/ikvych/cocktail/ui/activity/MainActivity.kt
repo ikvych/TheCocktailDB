@@ -98,6 +98,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                         supportFragmentManager,
                         ResumeAppBottomSheetDialogFragment::class.java.simpleName
                     )
+                    viewModel.drinkOfTheDayLiveData.value = null
                 }
             }
         })
@@ -191,11 +192,13 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                     R.id.menu_drink_open -> {
                         val view = v?.findViewById<TextView>(R.id.tv_drink_name)
                         val drinkName = view?.text ?: ""
-                        val drink = viewModel.findDrinkByName(drinkName.toString())
-
-                        val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
-                        intent.putExtra(DRINK, drink)
-                        startActivity(intent)
+                        val drinkLiveData = viewModel.findDrinkByName(drinkName.toString())
+                        drinkLiveData.observe(this@MainActivity, Observer { drink ->
+                            if (drink == null) { return@Observer }
+                            val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
+                            intent.putExtra(DRINK, drink)
+                            startActivity(intent)
+                        })
                         true
                     }
                     // створює pinned shortcut
@@ -204,55 +207,56 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                             val textViewDrinkName =
                                 v?.findViewById<TextView>(R.id.tv_drink_name)
                             val drinkName = textViewDrinkName?.text ?: ""
-                            val drink = viewModel.findDrinkByName(drinkName.toString())
-                                ?: return@setOnMenuItemClickListener false
-                            val shortcutManager: ShortcutManager? =
-                                ContextCompat.getSystemService(
-                                    this@MainActivity,
-                                    ShortcutManager::class.java
-                                )
-                            val drinkImageView =
-                                v!!.findViewById<ImageView>(R.id.iv_drink_image)
-                            val drinkBitmapIcon =
-                                drinkImageView.drawToBitmap()
-                            val drinkAdaptiveIcon = drinkBitmapIcon.toAdaptiveIcon()
-                            val shortcut =
-                                ShortcutInfo.Builder(this@MainActivity, drink.getStrDrink())
-                                    .setShortLabel(drink.getStrDrink()!!)
-                                    .setLongLabel("Launch ${drink.getStrDrink()}")
-                                    .setIcon(drinkAdaptiveIcon)
-                                    .setIntents(
-                                        arrayOf(
-                                            Intent(
-                                                this@MainActivity,
-                                                MainActivity::class.java
-                                            ).apply {
-                                                action = Intent.ACTION_CREATE_SHORTCUT
-                                                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                            },
-                                            Intent(
-                                                this@MainActivity,
-                                                DrinkDetailActivity::class.java
-                                            ).apply {
-                                                putExtra(DRINK_ID, drink.getIdDrink())
-                                                action = Intent.ACTION_CREATE_SHORTCUT
-                                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                            })
+                            val drinkLiveData = viewModel.findDrinkByName(drinkName.toString())
+                            drinkLiveData.observe(this@MainActivity, Observer {drink ->
+                                if (drink == null) { return@Observer }
+                                val shortcutManager: ShortcutManager? =
+                                    ContextCompat.getSystemService(
+                                        this@MainActivity,
+                                        ShortcutManager::class.java
                                     )
-                                    .build()
+                                val drinkImageView =
+                                    v!!.findViewById<ImageView>(R.id.iv_drink_image)
+                                val drinkBitmapIcon =
+                                    drinkImageView.drawToBitmap()
+                                val drinkAdaptiveIcon = drinkBitmapIcon.toAdaptiveIcon()
+                                val shortcut =
+                                    ShortcutInfo.Builder(this@MainActivity, drink.getStrDrink())
+                                        .setShortLabel(drink.getStrDrink()!!)
+                                        .setLongLabel("Launch ${drink.getStrDrink()}")
+                                        .setIcon(drinkAdaptiveIcon)
+                                        .setIntents(
+                                            arrayOf(
+                                                Intent(
+                                                    this@MainActivity,
+                                                    MainActivity::class.java
+                                                ).apply {
+                                                    action = Intent.ACTION_CREATE_SHORTCUT
+                                                    flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                                },
+                                                Intent(
+                                                    this@MainActivity,
+                                                    DrinkDetailActivity::class.java
+                                                ).apply {
+                                                    putExtra(DRINK_ID, drink.getIdDrink())
+                                                    action = Intent.ACTION_CREATE_SHORTCUT
+                                                    flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                                                })
+                                        )
+                                        .build()
 
-                            shortcutManager!!.dynamicShortcuts = listOf(shortcut)
+                                shortcutManager!!.dynamicShortcuts = listOf(shortcut)
 
-                            if (alreadyExist(shortcut)) {
-                                Toast.makeText(
-                                    this@MainActivity,
-                                    "Shortcut already exist",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                shortcutManager.requestPinShortcut(shortcut, null)
-                            }
-
+                                if (alreadyExist(shortcut)) {
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        "Shortcut already exist",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                } else {
+                                    shortcutManager.requestPinShortcut(shortcut, null)
+                                }
+                            })
                         } else {
                             Toast.makeText(
                                 this@MainActivity,

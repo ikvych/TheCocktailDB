@@ -2,7 +2,7 @@ package com.ikvych.cocktail.data.repository.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ikvych.cocktail.data.db.model.Drink
+import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.data.repository.source.base.BaseRepository
 
 interface DrinkRepository : BaseRepository{

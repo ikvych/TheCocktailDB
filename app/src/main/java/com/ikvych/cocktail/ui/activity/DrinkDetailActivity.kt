@@ -7,12 +7,9 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
-import androidx.databinding.DataBindingUtil
 import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
-import com.ikvych.cocktail.data.db.model.Drink
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
 import com.ikvych.cocktail.service.ApplicationService
 import com.ikvych.cocktail.ui.activity.base.BaseActivity

@@ -8,7 +8,7 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.base.BaseRecyclerViewAdapter
-import com.ikvych.cocktail.data.db.model.Drink
+import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
 import com.ikvych.cocktail.ui.activity.MainActivity
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel

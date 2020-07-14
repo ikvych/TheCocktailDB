@@ -3,13 +3,10 @@ package com.ikvych.cocktail.ui.fragment
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.DRINK
-import com.ikvych.cocktail.constant.MAIN_MODEL_TYPE
-import com.ikvych.cocktail.constant.VIEW_MODEL_TYPE
-import com.ikvych.cocktail.data.db.model.Drink
+import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.databinding.FragmentFavoriteBinding
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible

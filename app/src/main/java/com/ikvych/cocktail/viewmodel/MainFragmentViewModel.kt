@@ -13,7 +13,7 @@ import androidx.lifecycle.SavedStateHandle
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.data.db.model.Drink
+import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.data.repository.source.DrinkRepository
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter

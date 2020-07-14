@@ -1,7 +1,7 @@
 package com.ikvych.cocktail.data.network.base
 
 import androidx.lifecycle.MutableLiveData
-import com.ikvych.cocktail.data.db.model.Drink
+import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.data.repository.source.base.BaseRepository
 
 interface DrinkApiRepository : BaseRepository {

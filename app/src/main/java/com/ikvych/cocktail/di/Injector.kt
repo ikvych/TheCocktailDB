@@ -10,7 +10,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.savedstate.SavedStateRegistryOwner
 import com.ikvych.cocktail.data.db.impl.DrinkDataBase
-import com.ikvych.cocktail.data.db.impl.dao.DrinkDao
+import com.ikvych.cocktail.data.db.impl.dao.CocktailDao
 import com.ikvych.cocktail.data.db.impl.dao.base.BaseDao
 import com.ikvych.cocktail.data.db.impl.source.DrinkDbSourceImpl
 import com.ikvych.cocktail.data.db.source.BaseDbSource
@@ -80,7 +80,7 @@ object Injector {
 
     inline fun <reified T: BaseDao> provideDao(context: Context): T {
         return when (T::class.java) {
-            DrinkDao::class.java -> DrinkDataBase.getInstance(context)?.drinkDao()
+            CocktailDao::class.java -> DrinkDataBase.getInstance(context)?.drinkDao()
             else -> throw IllegalStateException("Must provide repository for class ${T::class.java.simpleName}")
         } as T
     }

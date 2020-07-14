@@ -5,16 +5,16 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
-import com.ikvych.cocktail.data.db.impl.dao.DrinkDao
+import com.ikvych.cocktail.data.db.impl.dao.CocktailDao
 import com.ikvych.cocktail.data.db.impl.typeconverter.DateConverter
-import com.ikvych.cocktail.data.db.model.Drink
+import com.xtreeivi.cocktailsapp.data.db.model.CocktailDbModel
 
 
-@Database(entities = [Drink::class], version = 3, exportSchema = false)
+@Database(entities = [CocktailDbModel::class], version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {
 
-    abstract fun drinkDao(): DrinkDao
+    abstract fun drinkDao(): CocktailDao
 
     companion object {
 

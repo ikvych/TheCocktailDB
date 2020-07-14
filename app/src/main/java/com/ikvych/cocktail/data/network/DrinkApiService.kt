@@ -1,6 +1,6 @@
 package com.ikvych.cocktail.data.network
 
-import com.ikvych.cocktail.data.db.model.DrinkApiResponse
+import com.ikvych.cocktail.data.network.model.DrinkApiResponse
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Query

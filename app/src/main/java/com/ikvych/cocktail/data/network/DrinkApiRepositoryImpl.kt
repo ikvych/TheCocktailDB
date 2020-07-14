@@ -2,8 +2,8 @@ package com.ikvych.cocktail.data.network
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
-import com.ikvych.cocktail.data.db.model.Drink
-import com.ikvych.cocktail.data.db.model.DrinkApiResponse
+import com.ikvych.cocktail.data.network.model.Drink
+import com.ikvych.cocktail.data.network.model.DrinkApiResponse
 import com.ikvych.cocktail.data.network.base.DrinkApiRepository
 import retrofit2.Call
 import retrofit2.Callback

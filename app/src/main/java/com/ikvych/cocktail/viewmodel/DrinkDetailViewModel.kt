@@ -2,7 +2,7 @@ package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.ikvych.cocktail.data.db.model.Drink
+import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.data.repository.source.DrinkRepository
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 

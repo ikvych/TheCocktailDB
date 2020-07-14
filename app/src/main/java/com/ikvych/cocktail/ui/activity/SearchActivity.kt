@@ -57,7 +57,8 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
         viewModel.startDrinkDetailsLiveData.observe(this, Observer {
             if (it != null) {
                 val intent = Intent(this, DrinkDetailActivity::class.java)
-                intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
+                intent.putExtra(SHOULD_SAVE_DRINK, SHOULD_SAVE_DRINK)
+                intent.putExtra(SHOW_DRINK_OFFER_ON_DESTROY, SHOW_DRINK_OFFER_ON_DESTROY)
                 intent.putExtra(DRINK, it)
                 startActivity(intent)
             }
@@ -147,13 +148,12 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
         Snackbar.make(view, "Як щодо - ${drink.getStrDrink()}", 3500)
             .setAction(R.string.toast_action_view) {
                 val drinkIntent = Intent(this, DrinkDetailActivity::class.java)
-                drinkIntent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
                 drinkIntent.putExtra(DRINK, drink)
                 startActivity(drinkIntent)
             }.show()
     }
 
-    override fun onClick(v: View?) {
+/*    override fun onClick(v: View?) {
         val view = v?.findViewById<TextView>(R.id.tv_drink_name)
         val drinkName = view?.text ?: ""
         val drink: Drink? =
@@ -161,9 +161,10 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
 
         if (drink != null) {
             val intent = Intent(this, DrinkDetailActivity::class.java)
-            intent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
+            intent.putExtra(SHOULD_SAVE_DRINK, SHOULD_SAVE_DRINK)
+            intent.putExtra(SHOW_DRINK_OFFER_ON_DESTROY, SHOW_DRINK_OFFER_ON_DESTROY)
             intent.putExtra(DRINK, drink)
             startActivity(intent)
         }
-    }
+    }*/
 }

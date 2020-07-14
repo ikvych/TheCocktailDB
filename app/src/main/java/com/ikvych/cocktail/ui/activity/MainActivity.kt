@@ -7,8 +7,10 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.*
-import androidx.activity.viewModels
+import android.widget.ImageView
+import android.widget.PopupMenu
+import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
 import androidx.core.view.drawToBitmap
@@ -28,7 +30,6 @@ import com.ikvych.cocktail.ui.dialog.base.*
 import com.ikvych.cocktail.ui.dialog.bottom.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
-import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import kotlin.reflect.KClass
 
@@ -87,7 +88,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                 val dialogFragment =
                     supportFragmentManager.findFragmentByTag(ResumeAppBottomSheetDialogFragment::class.java.simpleName)
                 if (dialogFragment !is ResumeAppBottomSheetDialogFragment) {
-                    ResumeAppBottomSheetDialogFragment.newInstance {
+                    ResumeAppBottomSheetDialogFragment.newInstance(drinkId = it.getIdDrink()!!) {
                         titleText = getString(R.string.resume_app_dialog_title)
                         descriptionText =
                             getString(R.string.resume_app_dialog_description) + "${it.getStrDrink()}"
@@ -298,7 +299,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                 when (buttonType) {
                     RightDialogButton -> {
                         val intent = Intent(this, DrinkDetailActivity::class.java)
-                        intent.putExtra(DRINK, viewModel.drinkOfTheDayLiveData.value)
+                        intent.putExtra(DRINK_ID, data as Long)
                         startActivity(intent)
                     }
                     LeftDialogButton -> {

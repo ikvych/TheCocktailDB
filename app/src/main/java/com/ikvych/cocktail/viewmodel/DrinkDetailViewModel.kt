@@ -1,9 +1,7 @@
 package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import androidx.lifecycle.Transformations
+import androidx.lifecycle.*
 import com.ikvych.cocktail.data.db.model.Drink
 import com.ikvych.cocktail.data.repository.source.DrinkRepository
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
@@ -14,18 +12,31 @@ class DrinkDetailViewModel(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle) {
 
-    val drinkIdLiveData: MutableLiveData<Long?> = MutableLiveData()
-    val drinkLiveData: MutableLiveData<Drink?> = MutableLiveData()
-
-    fun findDrinkInDbById(drinkId: Long) {
-        launchRequest(drinkLiveData)  {
-            drinkRepository1.findDrinkById(drinkId)
+    private val triggerObserver: Observer<in Drink?> = Observer { }
+    val drinkIdLiveData: MutableLiveData<Long> = MutableLiveData()
+    val drinkLiveData: MutableLiveData<Drink?> = object : MediatorLiveData<Drink?>() {
+        init {
+            addSource(drinkIdLiveData) {
+                value = findDrinkInDbById(it)
+            }
         }
     }
 
-    fun saveDrinkIntoDb(drink: Drink) {
-        launchRequest {
-            drinkRepository1.saveDrinkIntoDb(drink)
-        }
+    init {
+        drinkLiveData.observeForever(triggerObserver)
+    }
+
+    override fun onCleared() {
+        drinkLiveData.removeObserver(triggerObserver)
+        super.onCleared()
+    }
+
+    fun findDrinkInDbById(drinkId: Long): Drink? {
+        return drinkRepository.findDrinkById(drinkId)
+    }
+
+    fun saveDrinkIntoDb() {
+        val drink = drinkLiveData.value ?: return
+        drinkRepository.saveDrinkIntoDb(drink)
     }
 }

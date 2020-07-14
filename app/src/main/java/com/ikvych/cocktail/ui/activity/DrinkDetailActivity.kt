@@ -2,11 +2,13 @@ package com.ikvych.cocktail.ui.activity
 
 import android.content.Intent
 import android.content.res.ColorStateList
+import android.graphics.Color
 import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.core.content.ContextCompat
+import androidx.databinding.DataBindingUtil
 import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
@@ -20,9 +22,6 @@ import kotlin.reflect.KClass
 
 class DrinkDetailActivity
     : BaseActivity<DrinkDetailViewModel, ActivityDrinkDetailsBinding>() {
-
-    private var drink: Drink? = null
-    private var modelType: String? = null
 
     override val viewModelClass: KClass<DrinkDetailViewModel>
         get() = DrinkDetailViewModel::class
@@ -41,38 +40,24 @@ class DrinkDetailActivity
     private lateinit var imageViewParams: LinearLayout.LayoutParams
 
     override fun configureView(savedInstanceState: Bundle?) {
-        val intent = intent
-
-        if (intent != null && intent.hasExtra(DRINK)) {
-            drink = intent.getParcelableExtra(DRINK)
-            if (intent.hasExtra(VIEW_MODEL_TYPE)) {
-                val viewModelType = intent.getStringExtra(VIEW_MODEL_TYPE)
-                if (viewModelType != null) {
-                    when (viewModelType) {
-                        MAIN_MODEL_TYPE -> {
-                            modelType = MAIN_MODEL_TYPE
-                        }
-                        SEARCH_MODEL_TYPE -> {
-                            modelType = SEARCH_MODEL_TYPE
-                            saveDrinkIntoDb(drink!!)
-                        }
-                    }
-                }
+        when {
+            intent.hasExtra(DRINK) -> {
+                viewModel.drinkLiveData.value = intent.getParcelableExtra(DRINK)
             }
-        }
-        if (intent != null && intent.hasExtra(DRINK_ID)) {
-            val drinkId: Long = intent.getLongExtra(DRINK_ID, -1L)
-            if (drinkId != -1L) {
-/*                drink = viewModel.findDrinkInDbById(drinkId)*/
-            } else {
+            intent.hasExtra(DRINK_ID) -> {
+                viewModel.drinkIdLiveData.value = intent.getLongExtra(DRINK_ID, -1L)
+            }
+            else -> {
                 finish()
             }
         }
+        if (intent.hasExtra(SHOULD_SAVE_DRINK)) {
+            viewModel.saveDrinkIntoDb()
+        }
 
-/*        viewModel.drinkIdLiveData.value = drink!!.getIdDrink()*/
-        viewModel.findDrinkInDbById(drink!!.getIdDrink()!!)
-        dataBinding.viewModel = viewModel
-
+        val activityDrinkDetailsBinding: ActivityDrinkDetailsBinding =
+            DataBindingUtil.setContentView(this, R.layout.activity_drink_details)
+        activityDrinkDetailsBinding.viewModel = viewModel
 
         appBarLayout = findViewById(R.id.abl_drink_detail)
         imageView = findViewById(R.id.iv_drink_image)
@@ -105,15 +90,26 @@ class DrinkDetailActivity
                     imageView.layoutParams = imageViewParams
                 }
 
-                if (scaleFactor == .0F) {
-                    val stateList =
-                        ColorStateList.valueOf(ContextCompat.getColor(this, R.color.color_primary))
-                    findViewById<ImageView>(R.id.ib_return).backgroundTintList = stateList
-                } else {
-                    val stateList =
-                        ColorStateList.valueOf(ContextCompat.getColor(this, R.color.iv_return_button_bg))
-                    findViewById<ImageView>(R.id.ib_return).backgroundTintList = stateList
-                }
+                //change transparency of background
+/*                val stateList =
+                    ColorStateList.valueOf(
+                        ContextCompat.getColor(
+                            this,
+                            R.color.iv_return_button_bg
+                        )
+                    ).withAlpha((scaleFactor * 255).toInt())
+                findViewById<ImageView>(R.id.ib_return).backgroundTintList = stateList*/
+
+
+                val stateList =
+                    ColorStateList.valueOf(
+                        Color.rgb(
+                            ((0.85 + (0.15 * offsetFactor)) * 255).toInt(),
+                            ((0.85 + (0.15 * offsetFactor)) * 255).toInt(),
+                            ((0.85 + (0.15 * offsetFactor)) * 255).toInt()
+                        )
+                    )
+                findViewById<ImageView>(R.id.ib_return).backgroundTintList = stateList
             })
     }
 
@@ -130,20 +126,15 @@ class DrinkDetailActivity
         imageViewParams = imageView.layoutParams as LinearLayout.LayoutParams
     }
 
-    private fun saveDrinkIntoDb(drink: Drink) {
-        viewModel.saveDrinkIntoDb(drink)
-    }
-
     fun resumePreviousActivity(view: View?) {
         finish()
     }
 
     override fun onDestroy() {
-        if (modelType == SEARCH_MODEL_TYPE) {
+        if (intent.hasExtra(SHOW_DRINK_OFFER_ON_DESTROY)) {
             val intent = Intent(this, ApplicationService::class.java)
-            //зупиняю сервіс якщо він був запущений для того щоб не спамити повідомленнями
             stopService(intent)
-            intent.putExtra(DRINK_ID, drink?.getIdDrink())
+            intent.putExtra(DRINK_ID, viewModel.drinkLiveData.value?.getIdDrink())
             intent.action = ACTION_SHOW_DRINK_OFFER
             startService(intent)
         }

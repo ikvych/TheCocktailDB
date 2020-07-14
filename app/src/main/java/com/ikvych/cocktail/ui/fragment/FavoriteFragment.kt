@@ -53,7 +53,6 @@ class FavoriteFragment() : RecyclerViewFragment<BaseViewModel, FragmentFavoriteB
         viewModel.startDrinkDetailsLiveData.observe(this, Observer {
             if (it != null) {
                 val intent = Intent(requireActivity(), DrinkDetailActivity::class.java)
-                intent.putExtra(VIEW_MODEL_TYPE, MAIN_MODEL_TYPE)
                 intent.putExtra(DRINK, it)
                 startActivity(intent)
             }

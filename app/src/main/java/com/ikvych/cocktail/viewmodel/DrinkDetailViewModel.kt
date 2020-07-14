@@ -7,7 +7,7 @@ import com.ikvych.cocktail.data.repository.source.DrinkRepository
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class DrinkDetailViewModel(
-    private val drinkRepository1: DrinkRepository,
+    private val drinkRepository: DrinkRepository,
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle) {
@@ -26,14 +26,14 @@ class DrinkDetailViewModel(
 
     fun findDrinkDbById(drinkId: Long) {
         launchRequest(drinkLiveData)  {
-            drinkRepository1.findDrinkById(drinkId)
+            drinkRepository.findDrinkById(drinkId)
         }
     }
 
     fun saveDrinkIntoDb() {
         val currentDrink = drinkLiveData.value ?: return
         launchRequest {
-            drinkRepository1.saveDrinkIntoDb(currentDrink)
+            drinkRepository.saveDrinkIntoDb(currentDrink)
         }
     }
 }

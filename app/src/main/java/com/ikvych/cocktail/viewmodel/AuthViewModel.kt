@@ -5,11 +5,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
+import com.ikvych.cocktail.R
 import com.ikvych.cocktail.util.delegate.stateHandleLiveData
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.regex.Pattern
-import com.ikvych.cocktail.R
-import com.ikvych.cocktail.data.repository.base.DrinkRepository
 
 class AuthViewModel(
     application: Application,

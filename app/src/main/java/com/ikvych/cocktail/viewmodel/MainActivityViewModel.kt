@@ -17,7 +17,7 @@ import java.util.*
 const val MAIN_ACTIVITY_SHARED_PREFERENCE = "MAIN_ACTIVITY_SHARED_PREFERENCE"
 
 class MainActivityViewModel(
-    private val drinkRepository1: DrinkRepository,
+    private val drinkRepository: DrinkRepository,
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle),
@@ -51,7 +51,7 @@ class MainActivityViewModel(
     fun findDrinkByName(drinkName: String): MutableLiveData<Drink?> {
         val drinkLiveData: MutableLiveData<Drink?> = MutableLiveData()
         launchRequest(drinkLiveData) {
-            drinkRepository1.findDrinkByName(drinkName)
+            drinkRepository.findDrinkByName(drinkName)
         }
         return drinkLiveData
     }
@@ -64,16 +64,16 @@ class MainActivityViewModel(
         val stringDate: String = simpleDateFormat.format(currentDate)
 
         launchRequest(drinkOfTheDayLiveData) {
-            val drinkOfTheDay: Drink? = drinkRepository1.findDrinkOfTheDay(stringDate)
+            val drinkOfTheDay: Drink? = drinkRepository.findDrinkOfTheDay(stringDate)
             if (drinkOfTheDay == null) {
-                val allDrinks = drinkRepository1.getAllDrinksFromDb()
+                val allDrinks = drinkRepository.getAllDrinksFromDb()
                 if (allDrinks.isNullOrEmpty()) {
                     return@launchRequest null
                 } else {
                     val newDrinkOfTheDay: Drink = allDrinks.random()
                     newDrinkOfTheDay.setDrinkOfDay(stringDate)
-                    drinkRepository1.saveDrinkIntoDb(newDrinkOfTheDay)
-                    drinkRepository1.findDrinkByName(stringDate)
+                    drinkRepository.saveDrinkIntoDb(newDrinkOfTheDay)
+                    drinkRepository.findDrinkByName(stringDate)
                 }
             } else {
                 drinkOfTheDay

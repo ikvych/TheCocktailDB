@@ -1,22 +1,17 @@
-package com.ikvych.cocktail.data.repository
+package com.ikvych.cocktail.data.network
 
 import android.app.Application
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ikvych.cocktail.data.db.impl.dao.DrinkDao
-import com.ikvych.cocktail.data.db.impl.DrinkDataBase
 import com.ikvych.cocktail.data.db.model.Drink
 import com.ikvych.cocktail.data.db.model.DrinkApiResponse
-import com.ikvych.cocktail.data.network.DrinkApiService
-import com.ikvych.cocktail.data.network.RetrofitInstance
-import com.ikvych.cocktail.data.repository.base.DrinkRepository
+import com.ikvych.cocktail.data.network.base.DrinkApiRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class DrinkRepositoryImpl (
+class DrinkApiRepositoryImpl (
     application: Application
-) : DrinkRepository {
+) : DrinkApiRepository {
 
     private val apiService: DrinkApiService = RetrofitInstance.service
     val drinksApiLiveData: MutableLiveData<List<Drink>> = MutableLiveData()

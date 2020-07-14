@@ -25,7 +25,7 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
 
 class MainFragmentViewModel(
-    private val drinkRepository1: DrinkRepository,
+    drinkRepository: DrinkRepository,
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle) {
@@ -37,7 +37,7 @@ class MainFragmentViewModel(
         const val EXTRA_KEY_SORT_ORDER = "EXTRA_KEY_SORT_ORDER"
     }
 
-    val drinksLiveData: LiveData<List<Drink>> = drinkRepository1.getAllDrinksFromDbLiveData()
+    val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getAllDrinksFromDbLiveData()
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
     val viewPager2LiveData: MutableLiveData<Page> = object : MutableLiveData<Page>() {
         init {

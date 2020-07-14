@@ -13,7 +13,7 @@ import kotlin.coroutines.CoroutineContext
 open class BaseViewModel(
     application: Application,
     val savedStateHandle: SavedStateHandle,
-    private val drinkRepository1: DrinkRepository? = null
+    private val drinkRepository: DrinkRepository? = null
 ) : AndroidViewModel(application) {
 
     protected val appSettingRepository: AppSettingRepository =
@@ -57,7 +57,7 @@ open class BaseViewModel(
             drink.setIsFavorite(true)
         }
         launchRequest {
-            drinkRepository1?.saveDrinkIntoDb(drink)
+            drinkRepository?.saveDrinkIntoDb(drink)
         }
     }
 }

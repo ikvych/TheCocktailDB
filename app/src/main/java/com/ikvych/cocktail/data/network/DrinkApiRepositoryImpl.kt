@@ -2,9 +2,10 @@ package com.ikvych.cocktail.data.network
 
 import android.app.Application
 import androidx.lifecycle.MutableLiveData
+import com.ikvych.cocktail.data.network.impl.RetrofitInstance
+import com.ikvych.cocktail.data.network.impl.service.CocktailNetService
 import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.data.network.model.DrinkApiResponse
-import com.ikvych.cocktail.data.network.base.DrinkApiRepository
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -13,9 +14,8 @@ class DrinkApiRepositoryImpl (
     application: Application
 ) : DrinkApiRepository {
 
-    private val apiService: DrinkApiService = RetrofitInstance.service
+    private val apiService: CocktailNetService = RetrofitInstance.service
     val drinksApiLiveData: MutableLiveData<List<Drink>> = MutableLiveData()
-
 
     // Methods for work with Api
     override fun getDrinkApiLiveData(): MutableLiveData<List<Drink>> {
@@ -42,7 +42,6 @@ class DrinkApiRepositoryImpl (
                     drinksApiLiveData.setValue(emptyList())
                 }
             }
-
         })
     }
 

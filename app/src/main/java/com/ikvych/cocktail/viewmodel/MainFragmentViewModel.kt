@@ -14,7 +14,7 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.data.network.model.Drink
-import com.ikvych.cocktail.data.repository.source.DrinkRepository
+import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
@@ -25,7 +25,7 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
 
 class MainFragmentViewModel(
-    drinkRepository: DrinkRepository,
+    drinkRepository: CocktailRepository,
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle) {

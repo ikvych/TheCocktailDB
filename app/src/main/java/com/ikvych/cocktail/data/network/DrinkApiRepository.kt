@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.data.network.base
+package com.ikvych.cocktail.data.network
 
 import androidx.lifecycle.MutableLiveData
 import com.ikvych.cocktail.data.network.model.Drink
@@ -8,7 +8,6 @@ interface DrinkApiRepository : BaseRepository {
 
     // Methods for work with Api
     fun getDrinkApiLiveData(): MutableLiveData<List<Drink>>
-
     fun updateDrinkApiLiveData(query: String)
 
 }

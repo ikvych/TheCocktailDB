@@ -3,7 +3,7 @@ package com.ikvych.cocktail.viewmodel.base
 import android.app.Application
 import androidx.lifecycle.*
 import com.ikvych.cocktail.data.network.model.Drink
-import com.ikvych.cocktail.data.repository.source.DrinkRepository
+import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.dataTest.repository.AppSettingRepository
 import com.ikvych.cocktail.dataTest.repository.impl.AppSettingRepositoryImpl
 import kotlinx.coroutines.*
@@ -13,7 +13,7 @@ import kotlin.coroutines.CoroutineContext
 open class BaseViewModel(
     application: Application,
     val savedStateHandle: SavedStateHandle,
-    private val drinkRepository: DrinkRepository? = null
+    private val drinkRepository: CocktailRepository? = null
 ) : AndroidViewModel(application) {
 
     protected val appSettingRepository: AppSettingRepository =

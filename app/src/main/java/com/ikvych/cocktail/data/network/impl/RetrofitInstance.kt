@@ -1,5 +1,6 @@
-package com.ikvych.cocktail.data.network
+package com.ikvych.cocktail.data.network.impl
 
+import com.ikvych.cocktail.data.network.impl.service.CocktailNetService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -7,7 +8,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 object RetrofitInstance {
     private var retrofit: Retrofit? = null
     private const val BASE_URL = "https://www.thecocktaildb.com/"
-    val service: DrinkApiService
+    val service: CocktailNetService
         get() {
             if (retrofit == null) {
                 retrofit = Retrofit.Builder()
@@ -15,6 +16,6 @@ object RetrofitInstance {
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
             }
-            return retrofit!!.create(DrinkApiService::class.java)
+            return retrofit!!.create(CocktailNetService::class.java)
         }
 }

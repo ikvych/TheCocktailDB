@@ -7,7 +7,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.SavedStateHandle
 import com.ikvych.cocktail.data.network.model.Drink
-import com.ikvych.cocktail.data.repository.source.DrinkRepository
+import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.text.SimpleDateFormat
@@ -16,7 +16,7 @@ import java.util.*
 const val MAIN_ACTIVITY_SHARED_PREFERENCE = "MAIN_ACTIVITY_SHARED_PREFERENCE"
 
 class MainActivityViewModel(
-    private val drinkRepository: DrinkRepository,
+    private val drinkRepository: CocktailRepository,
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle),

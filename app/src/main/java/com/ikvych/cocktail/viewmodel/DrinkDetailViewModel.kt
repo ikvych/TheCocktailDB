@@ -3,11 +3,11 @@ package com.ikvych.cocktail.viewmodel
 import android.app.Application
 import androidx.lifecycle.*
 import com.ikvych.cocktail.data.network.model.Drink
-import com.ikvych.cocktail.data.repository.source.DrinkRepository
+import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class DrinkDetailViewModel(
-    private val drinkRepository: DrinkRepository,
+    private val drinkRepository: CocktailRepository,
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle) {

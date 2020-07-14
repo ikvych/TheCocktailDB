@@ -13,7 +13,8 @@ import kotlin.coroutines.CoroutineContext
 
 open class BaseViewModel(
     application: Application,
-    val savedStateHandle: SavedStateHandle
+    val savedStateHandle: SavedStateHandle,
+    private val drinkRepository1: com.ikvych.cocktail.data.repository.source.DrinkRepository? = null
 ) : AndroidViewModel(application) {
 
     protected val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)

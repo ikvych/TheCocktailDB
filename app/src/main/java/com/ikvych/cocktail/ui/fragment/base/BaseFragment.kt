@@ -14,7 +14,9 @@ import com.ikvych.cocktail.ui.dialog.base.BaseBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.BaseDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.DialogButton
 import com.ikvych.cocktail.ui.dialog.base.DialogType
+import com.ikvych.cocktail.ui.extension.baseViewModels
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import kotlin.reflect.KClass
 
 abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBinding> : Fragment(),
     BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
@@ -23,8 +25,9 @@ abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBind
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>{
 
     protected abstract var contentLayoutResId: Int
-    protected abstract val viewModel: ViewModel
+    protected val viewModel: ViewModel by baseViewModels()
     protected lateinit var dataBinding: DataBinding
+    abstract val viewModelClass: KClass<ViewModel>
 
     override fun onCreateView(
         inflater: LayoutInflater,

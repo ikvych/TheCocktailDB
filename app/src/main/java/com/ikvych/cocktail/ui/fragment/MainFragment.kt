@@ -35,11 +35,13 @@ import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlin.reflect.KClass
 
 class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(), BatteryListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_main
-    override val viewModel: MainFragmentViewModel by viewModels()
+    override val viewModelClass: KClass<MainFragmentViewModel>
+        get() = MainFragmentViewModel::class
     private val mainViewModel: MainActivityViewModel by activityViewModels()
 
     private lateinit var batteryReceiver: BatteryReceiver

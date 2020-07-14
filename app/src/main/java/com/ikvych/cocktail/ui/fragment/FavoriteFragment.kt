@@ -15,12 +15,13 @@ import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import kotlin.reflect.KClass
 
-class FavoriteFragment : RecyclerViewFragment<BaseViewModel, FragmentFavoriteBinding>() {
+class FavoriteFragment() : RecyclerViewFragment<BaseViewModel, FragmentFavoriteBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_favorite
-    override val viewModel: BaseViewModel by viewModels()
-
+    override val viewModelClass: KClass<BaseViewModel>
+    get() = BaseViewModel::class
     private lateinit var fragmentView: View
 
     companion object {

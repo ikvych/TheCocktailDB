@@ -26,16 +26,18 @@ import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
+import kotlin.reflect.KClass
 
 class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_filter
-    override val viewModel: BaseViewModel by viewModels()
 
     private lateinit var returnBtn: ImageButton
     private lateinit var acceptBtn: Button
     private lateinit var resetBtn: Button
     lateinit var parentViewModel: MainFragmentViewModel
+    override val viewModelClass: KClass<BaseViewModel>
+        get() = BaseViewModel::class
 
     private lateinit var alcoholFilterItem: LinearLayout
     private lateinit var alcoholFilterValue: TextView
@@ -152,4 +154,6 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
         @JvmStatic
         fun newInstance() = FilterFragment()
     }
+
+
 }

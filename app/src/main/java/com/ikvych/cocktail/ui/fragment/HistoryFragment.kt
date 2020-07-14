@@ -9,12 +9,13 @@ import com.ikvych.cocktail.databinding.FragmentHistoryBinding
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import kotlin.reflect.KClass
 
 class HistoryFragment : RecyclerViewFragment<BaseViewModel, FragmentHistoryBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_history
-    override val viewModel: BaseViewModel by viewModels()
-
+    override val viewModelClass: KClass<BaseViewModel>
+        get() = BaseViewModel::class
     private lateinit var fragmentView: View
 
     override fun onCreate(savedInstanceState: Bundle?) {

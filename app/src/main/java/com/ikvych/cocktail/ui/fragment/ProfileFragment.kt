@@ -24,12 +24,13 @@ import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.ProfileFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
+import kotlin.reflect.KClass
 
-class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
+class ProfileFragment() : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_profile
-    override val viewModel: ProfileFragmentViewModel by viewModels()
-
+    override val viewModelClass: KClass<BaseViewModel>
+    get() = BaseViewModel::class
     private lateinit var logOut: Button
     private lateinit var startTestFragmentBtn: Button
     private lateinit var testFragment: TestFragment

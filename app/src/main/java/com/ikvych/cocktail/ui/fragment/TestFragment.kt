@@ -12,6 +12,7 @@ import com.ikvych.cocktail.databinding.FragmentTestBinding
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
+import kotlin.reflect.KClass
 
 const val ARBITRARY_NUMBER = "com.ikvych.cocktail.ArbitraryNumber"
 const val OPTIONAL_STRING = "com.ikvych.cocktail.OptionalString"
@@ -19,7 +20,8 @@ const val OPTIONAL_STRING = "com.ikvych.cocktail.OptionalString"
 class TestFragment : BaseFragment<BaseViewModel, FragmentTestBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_test
-    override val viewModel: BaseViewModel by viewModels()
+    override val viewModelClass: KClass<BaseViewModel>
+    get() = BaseViewModel::class
 
     lateinit var testTextView: TextView
     private var optionalString: String? = null

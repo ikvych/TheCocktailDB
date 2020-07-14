@@ -18,10 +18,8 @@ import com.ikvych.cocktail.data.db.source.DrinkDbSource
 import com.ikvych.cocktail.data.repository.impl.source.DrinkRepositoryImpl
 import com.ikvych.cocktail.data.repository.source.DrinkRepository
 import com.ikvych.cocktail.data.repository.source.base.BaseRepository
-import com.ikvych.cocktail.viewmodel.AuthViewModel
-import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
-import com.ikvych.cocktail.viewmodel.MainActivityViewModel
-import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
+import com.ikvych.cocktail.viewmodel.*
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 object Injector {
     private lateinit var appContext: Context
@@ -37,7 +35,7 @@ object Injector {
     class ViewModelFactory(
         val application: Application,
         owner: SavedStateRegistryOwner,
-        defaultArguments: Bundle? = (owner as? Activity)?.intent?.extras ?: (owner as? Fragment)?.requireArguments()
+        defaultArguments: Bundle? = (owner as? Activity)?.intent?.extras ?: (owner as? Fragment)?.arguments
     ) : AbstractSavedStateViewModelFactory(
         owner,
         defaultArguments
@@ -51,8 +49,11 @@ object Injector {
             return when(modelClass) {
                 AuthViewModel::class.java -> AuthViewModel(application, handle) as T
                 DrinkDetailViewModel::class.java -> DrinkDetailViewModel(provideRepository(appContext), application, handle) as T
-                MainActivityViewModel::class.java -> MainActivityViewModel(application, handle) as T
-                SearchActivityViewModel::class.java -> SearchActivityViewModel(application, handle) as T
+                MainActivityViewModel::class.java -> MainActivityViewModel(provideRepository(appContext),application, handle) as T
+                SearchActivityViewModel::class.java -> SearchActivityViewModel(provideRepository(appContext),application, handle) as T
+                ProfileFragmentViewModel::class.java -> ProfileFragmentViewModel(application, handle) as T
+                MainFragmentViewModel::class.java -> MainFragmentViewModel(provideRepository(appContext),application, handle) as T
+                BaseViewModel::class.java -> BaseViewModel(application, handle, provideRepository(appContext)) as T
                 else -> throw NotImplementedError("Must provide repository for class ${modelClass.simpleName}")
             }
         }

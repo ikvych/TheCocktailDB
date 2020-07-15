@@ -1,9 +1,9 @@
-package com.ikvych.cocktail.dataTest.local.impl.source
+package com.ikvych.cocktail.data.local.impl.source
 
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
-import com.ikvych.cocktail.dataTest.local.impl.SharedPrefsHelper
-import com.ikvych.cocktail.dataTest.local.source.AppSettingLocalSource
+import com.ikvych.cocktail.data.local.impl.SharedPrefsHelper
+import com.ikvych.cocktail.data.local.source.AppSettingLocalSource
 import com.ikvych.cocktail.util.SingletonHolder
 
 const val EXTRA_KEY_SHOW_NAV_BAR_TITLE = "EXTRA_KEY_SHOW_NAV_BAR_TITLE"

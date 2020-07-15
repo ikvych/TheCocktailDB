@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.dataTest.local.source
+package com.ikvych.cocktail.data.local.source
 
 import androidx.lifecycle.MutableLiveData
 

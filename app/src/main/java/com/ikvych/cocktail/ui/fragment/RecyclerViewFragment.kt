@@ -5,7 +5,6 @@ import android.content.res.Configuration
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelLazy
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
@@ -14,7 +13,6 @@ import com.ikvych.cocktail.adapter.list.DrinkAdapter
 import com.ikvych.cocktail.comparator.AlcoholCocktailComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.constant.COCKTAIL_ID
-import com.ikvych.cocktail.di.Injector
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment

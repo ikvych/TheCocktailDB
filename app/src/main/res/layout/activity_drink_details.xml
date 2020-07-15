@@ -70,7 +70,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/offset_40"
-                                android:text="@{viewModel.cocktailLiveData.strDrink}"
+                                android:text="@{viewModel.cocktailLiveData.names.defaults}"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
                         </TableRow>
 
@@ -92,7 +92,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/offset_40"
-                                android:text="@{viewModel.cocktailLiveData.strAlcoholic}"
+                                android:text="@{viewModel.cocktailLiveData.alcoholType.key}"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
                         </TableRow>
 
@@ -114,7 +114,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/offset_40"
-                                android:text="@{viewModel.cocktailLiveData.strGlass}"
+                                android:text="@{viewModel.cocktailLiveData.glass.key}"
                                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1" />
                         </TableRow>
 
@@ -142,8 +142,8 @@
                         android:id="@+id/tl_drink_ingredients_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/offset_16"
-                        bind:ingredients="@{viewModel.cocktailLiveData.ingredients}"/>
+                        android:layout_marginTop="@dimen/offset_16"/>
+                        <!--bind:ingredients="@{viewModel.cocktailLiveData.ingredients}"-->
 
                     <LinearLayout
                         android:id="@+id/ll_drink_instruction_title_container"
@@ -176,7 +176,7 @@
                             android:lineSpacingExtra="5sp"
                             android:layout_marginHorizontal="@dimen/offset_20"
                             android:layout_marginBottom="@dimen/offset_20"
-                            android:text="@{viewModel.cocktailLiveData.strInstructions}"
+                            android:text="@{viewModel.cocktailLiveData.instructions.defaults}"
                             android:textStyle="bold"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"/>
                     </LinearLayout>
@@ -202,7 +202,7 @@
                 app:expandedTitleMarginBottom="@dimen/offset_32"
                 app:expandedTitleMarginStart="@dimen/offset_24"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
-                app:title="@{viewModel.cocktailLiveData.strDrink}">
+                app:title="@{viewModel.cocktailLiveData.names.defaults}">
 
                 <LinearLayout
                     android:id="@+id/ll_drink_image_container"
@@ -219,7 +219,7 @@
                         android:adjustViewBounds="true"
                         android:contentDescription="@string/all_content_description"
                         android:scaleType="centerCrop"
-                        bind:strDrinkThumb="@{viewModel.cocktailLiveData.strDrinkThumb}" />
+                        bind:strDrinkThumb="@{viewModel.cocktailLiveData.image}" />
 
                 </LinearLayout>
 

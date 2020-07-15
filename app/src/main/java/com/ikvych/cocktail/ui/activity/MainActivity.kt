@@ -7,13 +7,9 @@ import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.ImageView
 import android.widget.PopupMenu
 import android.widget.TextView
-import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.graphics.drawable.toAdaptiveIcon
-import androidx.core.view.drawToBitmap
 import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentManager
@@ -22,7 +18,6 @@ import androidx.lifecycle.Observer
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.constant.DRINK
 import com.ikvych.cocktail.constant.COCKTAIL_ID
 import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
@@ -91,7 +86,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                     ResumeAppBottomSheetDialogFragment.newInstance(drinkId = it.id) {
                         titleText = getString(R.string.resume_app_dialog_title)
                         descriptionText =
-                            getString(R.string.resume_app_dialog_description) + "${it.names.default}"
+                            getString(R.string.resume_app_dialog_description) + "${it.names.defaults}"
                         rightButtonText = getString(R.string.resume_app_dialog_right_button)
                         leftButtonText = getString(R.string.resume_app_dialog_left_button)
                     }.show(

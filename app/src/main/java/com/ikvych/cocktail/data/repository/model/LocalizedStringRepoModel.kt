@@ -1,7 +1,7 @@
 package com.xtreeivi.cocktailsapp.data.repository.model
 
 class LocalizedStringRepoModel(
-    val default: String? = null,
+    val defaults: String? = null,
     val defaultAlternate: String? = null,
     val es: String? = null,
     val de: String? = null,

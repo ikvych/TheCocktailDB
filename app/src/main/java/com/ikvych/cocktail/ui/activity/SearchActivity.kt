@@ -14,7 +14,6 @@ import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
 import com.ikvych.cocktail.constant.*
-import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.databinding.ActivitySearchBinding
 import com.ikvych.cocktail.listener.DrinkOfferListener
 import com.ikvych.cocktail.receiver.DrinkOfferReceiver
@@ -145,7 +144,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
 
         val view: View = findViewById(R.id.rv_search_result)
 
-        Snackbar.make(view, "Як щодо - ${cocktail.names.default}", 3500)
+        Snackbar.make(view, "Як щодо - ${cocktail.names.defaults}", 3500)
             .setAction(R.string.toast_action_view) {
                 val drinkIntent = Intent(this, DrinkDetailActivity::class.java)
                 drinkIntent.putExtra(COCKTAIL_ID, cocktail.id)

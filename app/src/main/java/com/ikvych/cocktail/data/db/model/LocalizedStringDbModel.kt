@@ -3,8 +3,8 @@ package com.xtreeivi.cocktailsapp.data.db.model
 import androidx.room.ColumnInfo
 
 data class LocalizedStringDbModel(
-    @ColumnInfo(name = "default")
-    var default: String? = null,
+    @ColumnInfo(name = "defaults")
+    var defaults: String? = null,
 
     @ColumnInfo(name = "default_alternate")
     var defaultAlternate: String? = null,

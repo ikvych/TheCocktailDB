@@ -368,8 +368,8 @@ class MainFragmentViewModel(
         var cocktailCopy = cocktails
         cocktailCopy = when (sortDrinkType) {
             SortDrinkType.RECENT -> cocktailCopy.sortedByDescending { cocktail -> cocktail.id }
-            SortDrinkType.NAME_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.names.default }
-            SortDrinkType.NAME_DESC -> cocktailCopy.sortedByDescending { cocktail -> cocktail.names.default }
+            SortDrinkType.NAME_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.names.defaults }
+            SortDrinkType.NAME_DESC -> cocktailCopy.sortedByDescending { cocktail -> cocktail.names.defaults }
             SortDrinkType.ALCOHOL_ASC -> cocktailCopy.sortedWith(alcoholComparator)
             SortDrinkType.ALCOHOL_DESC -> cocktailCopy.sortedWith(alcoholComparator).asReversed()
             SortDrinkType.INGREDIENT_COUNT_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.ingredients.size }

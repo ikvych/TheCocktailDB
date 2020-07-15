@@ -25,7 +25,7 @@ interface CocktailDao : BaseDao {
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE id = :cocktailId")
     fun findCocktailById(cocktailId: Long) : CocktailDbModel?
 
-    @Query("SELECT * FROM ${Table.COCKTAIL} WHERE name_default = :defaultCocktailName")
+    @Query("SELECT * FROM ${Table.COCKTAIL} WHERE name_defaults = :defaultCocktailName")
     fun findCocktailByDefaultName(defaultCocktailName: String) : CocktailDbModel?
 
     @Query("SELECT * FROM ${Table.COCKTAIL}")

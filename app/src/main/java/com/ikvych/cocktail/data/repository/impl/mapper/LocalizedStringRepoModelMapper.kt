@@ -9,7 +9,7 @@ class LocalizedStringRepoModelMapper :
     BaseRepoModelMapper<LocalizedStringRepoModel, LocalizedStringDbModel, CocktailNetModel>() {
     override fun mapDbToRepo(db: LocalizedStringDbModel) = with(db) {
         LocalizedStringRepoModel(
-            default = default,
+            defaults = defaults,
             defaultAlternate = defaultAlternate,
             es = es,
             de = de,
@@ -21,7 +21,7 @@ class LocalizedStringRepoModelMapper :
 
     override fun mapRepoToDb(repo: LocalizedStringRepoModel) = with(repo) {
         LocalizedStringDbModel(
-            default = default,
+            defaults = defaults,
             defaultAlternate = defaultAlternate,
             es = es,
             de = de,
@@ -33,7 +33,7 @@ class LocalizedStringRepoModelMapper :
 
     override fun mapNetToRepo(net: CocktailNetModel): LocalizedStringRepoModel = with(net) {
         LocalizedStringRepoModel(
-            default = strDrink,
+            defaults = strDrink,
             defaultAlternate = strDrinkAlternate,
             es = strDrinkES,
             de = strDrinkDE,
@@ -45,7 +45,7 @@ class LocalizedStringRepoModelMapper :
 
     override fun mapRepoToNet(repo: LocalizedStringRepoModel) = with(repo) {
         CocktailNetModel().apply {
-            strDrink = default
+            strDrink = defaults
             strDrinkAlternate = defaultAlternate
             strDrinkES = es
             strDrinkDE = de

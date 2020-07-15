@@ -19,6 +19,7 @@ import com.ikvych.cocktail.databinding.ActivitySearchBinding
 import com.ikvych.cocktail.listener.DrinkOfferListener
 import com.ikvych.cocktail.receiver.DrinkOfferReceiver
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
+import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import com.ikvych.cocktail.util.setEmptySearchVisible
 import com.ikvych.cocktail.util.setSearchEmptyListVisible
 import com.ikvych.cocktail.util.setSearchRecyclerViewVisible
@@ -48,17 +49,17 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
     }
 
     private fun initLiveDataObserver() {
-        viewModel.drinkLiveData.observe(this, Observer { drinks ->
-            drinkAdapter.listData = drinks
-            determineVisibleLayerOnUpdateData(drinks)
+        viewModel.cocktailLiveData.observe(this, Observer { cocktails ->
+            drinkAdapter.listData = cocktails
+            determineVisibleLayerOnUpdateData(cocktails)
         })
 
-        viewModel.startDrinkDetailsLiveData.observe(this, Observer {
+        viewModel.startCocktailDetailsLiveData.observe(this, Observer {
             if (it != null) {
                 val intent = Intent(this, DrinkDetailActivity::class.java)
-                intent.putExtra(SHOULD_SAVE_DRINK, SHOULD_SAVE_DRINK)
-                intent.putExtra(SHOW_DRINK_OFFER_ON_DESTROY, SHOW_DRINK_OFFER_ON_DESTROY)
-                intent.putExtra(DRINK, it)
+                intent.putExtra(SHOULD_SAVE_COCKTAIL, SHOULD_SAVE_COCKTAIL)
+                intent.putExtra(SHOW_COCKTAIL_OFFER_ON_DESTROY, SHOW_COCKTAIL_OFFER_ON_DESTROY)
+                intent.putExtra(COCKTAIL_ID, it.id)
                 startActivity(intent)
             }
         })
@@ -83,7 +84,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
     override fun onStart() {
         super.onStart()
         val filter = IntentFilter().apply {
-            addAction(ACTION_SHOW_DRINK_OFFER)
+            addAction(ACTION_SHOW_COCKTAIL_OFFER)
         }
         registerReceiver(drinkOfferReceiver, filter)
     }
@@ -98,16 +99,16 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
         drinkAdapter.setLifecycleDestroyed()
     }
 
-    private fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
+    private fun determineVisibleLayerOnCreate(cocktails: List<CocktailModel?>?) {
+        if (cocktails!!.isEmpty()) {
             setSearchEmptyListVisible(this@SearchActivity)
         } else {
             setSearchRecyclerViewVisible(this@SearchActivity)
         }
     }
 
-    private fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
+    private fun determineVisibleLayerOnUpdateData(cocktails: List<CocktailModel?>?) {
+        if (cocktails!!.isEmpty()) {
             setEmptySearchVisible(this@SearchActivity)
         } else {
             setSearchRecyclerViewVisible(this@SearchActivity)
@@ -134,20 +135,20 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
     }
 
     override fun update(intent: Intent) {
-        val drinks = viewModel.drinkLiveData.value
-        if (drinks.isNullOrEmpty()) {
+        val cocktails = viewModel.cocktailLiveData.value
+        if (cocktails.isNullOrEmpty()) {
             return
         }
 
-        val currentDrinkId: Long = intent.getLongExtra(DRINK_ID, -1L)
-        val drink: Drink = drinks.shuffled().find { it.getIdDrink() != currentDrinkId } ?: return
+        val currentCocktailId: Long = intent.getLongExtra(COCKTAIL_ID, -1L)
+        val cocktail: CocktailModel = cocktails.shuffled().find { it.id != currentCocktailId } ?: return
 
         val view: View = findViewById(R.id.rv_search_result)
 
-        Snackbar.make(view, "Як щодо - ${drink.getStrDrink()}", 3500)
+        Snackbar.make(view, "Як щодо - ${cocktail.names.default}", 3500)
             .setAction(R.string.toast_action_view) {
                 val drinkIntent = Intent(this, DrinkDetailActivity::class.java)
-                drinkIntent.putExtra(DRINK, drink)
+                drinkIntent.putExtra(COCKTAIL_ID, cocktail.id)
                 startActivity(drinkIntent)
             }.show()
     }

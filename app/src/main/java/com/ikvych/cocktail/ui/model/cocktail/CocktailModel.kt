@@ -16,6 +16,6 @@ data class CocktailModel(
     val ingredients: List<IngredientDrinkFilter> = emptyList(),
     val measures: List<String> = emptyList(),
     val cocktailOfTheDay: String = "",
-    val isFavorite: Boolean = false/*,
+    var isFavorite: Boolean = false/*,
     val date: Date = Date()*/
 )

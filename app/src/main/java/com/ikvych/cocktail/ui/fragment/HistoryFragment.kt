@@ -5,6 +5,7 @@ import android.view.View
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.databinding.FragmentHistoryBinding
+import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
@@ -29,16 +30,16 @@ class HistoryFragment : RecyclerViewFragment<BaseViewModel, FragmentHistoryBindi
         initLiveDataObserver()
     }
 
-    override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
+    override fun determineVisibleLayerOnCreate(cocktails: List<CocktailModel?>?) {
+        if (cocktails!!.isEmpty()) {
             setDbEmptyHistoryVisible(fragmentView)
         } else {
             setDbRecyclerViewVisible(fragmentView)
         }
     }
 
-    override fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
+    override fun determineVisibleLayerOnUpdateData(cocktails: List<CocktailModel?>?) {
+        if (cocktails!!.isEmpty()) {
             setDbEmptyHistoryVisible(fragmentView)
         } else {
             setDbRecyclerViewVisible(fragmentView)

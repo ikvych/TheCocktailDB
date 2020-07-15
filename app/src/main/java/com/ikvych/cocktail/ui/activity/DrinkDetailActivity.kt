@@ -38,20 +38,20 @@ class DrinkDetailActivity
 
     override fun configureView(savedInstanceState: Bundle?) {
         when {
-            intent.hasExtra(DRINK) -> {
+/*            intent.hasExtra(DRINK) -> {
                 viewModel.cocktailLiveData.value = intent.getParcelableExtra(DRINK)
-            }
-            intent.hasExtra(DRINK_ID) -> {
-                val currentDrinkId = intent.getLongExtra(DRINK_ID, -1L)
-                if (currentDrinkId == -1L) finish()
-                viewModel.findDrinkDbById(currentDrinkId)
+            }*/
+            intent.hasExtra(COCKTAIL_ID) -> {
+                val currentCocktailId = intent.getLongExtra(COCKTAIL_ID, -1L)
+                if (currentCocktailId == -1L) finish()
+                viewModel.findCocktailDbById(currentCocktailId)
             }
             else -> {
                 finish()
             }
         }
-        if (intent.hasExtra(SHOULD_SAVE_DRINK)) {
-            viewModel.saveDrinkIntoDb()
+        if (intent.hasExtra(SHOULD_SAVE_COCKTAIL)) {
+            viewModel.saveCocktailIntoDb()
         }
 
         appBarLayout = findViewById(R.id.abl_drink_detail)
@@ -131,11 +131,11 @@ class DrinkDetailActivity
     }
 
     override fun onDestroy() {
-        if (intent.hasExtra(SHOW_DRINK_OFFER_ON_DESTROY)) {
+        if (intent.hasExtra(SHOW_COCKTAIL_OFFER_ON_DESTROY)) {
             val intent = Intent(this, ApplicationService::class.java)
             stopService(intent)
-            intent.putExtra(DRINK_ID, viewModel.cocktailLiveData.value?.getIdDrink())
-            intent.action = ACTION_SHOW_DRINK_OFFER
+            intent.putExtra(COCKTAIL_ID, viewModel.cocktailLiveData.value?.id)
+            intent.action = ACTION_SHOW_COCKTAIL_OFFER
             startService(intent)
         }
         super.onDestroy()

@@ -78,8 +78,6 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
             categoryFilterValue.text = it.key
         })
 
-
-
         ingredientFilterItem = im_ingredient_filter_item
         ingredientFilterItem.setOnClickListener {
             FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.ingredientFilterLiveData.value)
@@ -92,8 +90,6 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
         parentViewModel.ingredientFilterLiveData.observe(this, Observer {
             ingredientFilterValue.text = it.key
         })
-
-
 
         acceptBtn = btn_accept
         acceptBtn.setOnClickListener {
@@ -132,20 +128,20 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
             AlcoholDrinkDialogType -> {
                 val alcoholType = data as AlcoholDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData!!.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData!!.value = parentViewModel!!.filtersLiveData!!.value!!.apply { this[alcoholType.type] = alcoholType }
+                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
+                parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[alcoholType.type] = alcoholType }
             }
             CategoryDrinkDialogType -> {
                 val categoryType = data as CategoryDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData!!.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData!!.value = parentViewModel!!.filtersLiveData!!.value!!.apply { this[categoryType.type] = categoryType }
+                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
+                parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[categoryType.type] = categoryType }
             }
             IngredientDrinkDialogType -> {
                 val ingredientType = data as IngredientDrinkFilter
                 parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData!!.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData!!.value = parentViewModel!!.filtersLiveData!!.value!!.apply { this[ingredientType.type] = ingredientType }
+                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
+                parentViewModel.filtersLiveData.value = parentViewModel.filtersLiveData.value!!.apply { this[ingredientType.type] = ingredientType }
             }
         }
     }

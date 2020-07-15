@@ -69,7 +69,8 @@ object Injector {
                 ProfileFragmentViewModel::class.java -> ProfileFragmentViewModel(application, handle) as T
                 MainFragmentViewModel::class.java -> MainFragmentViewModel(provideRepository(appContext), provideModelMapper(
                     appContext),application, handle) as T
-                BaseViewModel::class.java -> BaseViewModel(application, handle, provideRepository(appContext)) as T
+                BaseViewModel::class.java -> BaseViewModel(application, handle, provideRepository(appContext), provideModelMapper(
+                    appContext)) as T
                 else -> throw NotImplementedError("Must provide repository for class ${modelClass.simpleName}")
             }
         }

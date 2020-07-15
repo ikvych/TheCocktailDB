@@ -6,6 +6,8 @@ import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.dataTest.repository.AppSettingRepository
 import com.ikvych.cocktail.dataTest.repository.impl.AppSettingRepositoryImpl
+import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
+import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -13,7 +15,8 @@ import kotlin.coroutines.CoroutineContext
 open class BaseViewModel(
     application: Application,
     val savedStateHandle: SavedStateHandle,
-    private val drinkRepository: CocktailRepository? = null
+    private val drinkRepository: CocktailRepository? = null,
+    private val mapper: CocktailModelMapper? = null
 ) : AndroidViewModel(application) {
 
     protected val appSettingRepository: AppSettingRepository =
@@ -42,22 +45,18 @@ open class BaseViewModel(
         (this as? MutableLiveData)?.postValue(value)
     }
 
-    val startDrinkDetailsLiveData: MutableLiveData<Drink?> = MutableLiveData()
+    val startCocktailDetailsLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
     val selectedLanguageLiveData: MutableLiveData<Int> =
         appSettingRepository.selectedLanguageLiveData
 
-    fun startNewDrinkDetails(drink: Drink) {
-        startDrinkDetailsLiveData.value = drink
+    fun startNewDrinkDetails(cocktail: CocktailModel) {
+        startCocktailDetailsLiveData.value = cocktail
     }
 
-    fun saveFavoriteDrink(drink: Drink) {
-        if (drink.isFavorite()) {
-            drink.setIsFavorite(false)
-        } else {
-            drink.setIsFavorite(true)
-        }
+    fun saveFavoriteDrink(cocktail: CocktailModel) {
+        cocktail.isFavorite = !cocktail.isFavorite
         launchRequest {
-            drinkRepository?.saveDrinkIntoDb(drink)
+            drinkRepository?.addOrReplaceCocktail(mapper!!.mapFrom(cocktail))
         }
     }
 }

@@ -5,10 +5,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.constant.DRINK
-import com.ikvych.cocktail.data.network.model.Drink
+import com.ikvych.cocktail.constant.COCKTAIL_ID
 import com.ikvych.cocktail.databinding.FragmentFavoriteBinding
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
+import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
@@ -36,36 +36,36 @@ class FavoriteFragment() : RecyclerViewFragment<BaseViewModel, FragmentFavoriteB
         fragmentView = view
         initRecyclerView(
             view,
-            parentViewModel.filteredFavoriteDrinksLiveData.value ?: emptyList(),
+            parentViewModel.filteredFavoriteCocktailsLiveData.value ?: emptyList(),
             R.id.rv_search_result
         )
         initLiveDataObserver()
     }
 
     override fun initLiveDataObserver() {
-        parentViewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { drinks ->
-            drinkAdapter.listData = drinks
-            determineVisibleLayerOnUpdateData(drinks)
+        parentViewModel.filteredFavoriteCocktailsLiveData.observe(this, Observer { cocktails ->
+            cocktailAdapter.listData = cocktails
+            determineVisibleLayerOnUpdateData(cocktails)
         })
-        viewModel.startDrinkDetailsLiveData.observe(this, Observer {
+        viewModel.startCocktailDetailsLiveData.observe(this, Observer {
             if (it != null) {
                 val intent = Intent(requireActivity(), DrinkDetailActivity::class.java)
-                intent.putExtra(DRINK, it)
+                intent.putExtra(COCKTAIL_ID, it.id)
                 startActivity(intent)
             }
         })
     }
 
-    override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
+    override fun determineVisibleLayerOnCreate(cocktails: List<CocktailModel?>?) {
+        if (cocktails!!.isEmpty()) {
             setDbEmptyHistoryVisible(fragmentView)
         } else {
             setDbRecyclerViewVisible(fragmentView)
         }
     }
 
-    override fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
+    override fun determineVisibleLayerOnUpdateData(cocktails: List<CocktailModel?>?) {
+        if (cocktails!!.isEmpty()) {
             setDbEmptyHistoryVisible(fragmentView)
         } else {
             setDbRecyclerViewVisible(fragmentView)

@@ -9,9 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.*
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.AlcoholCocktailComparator
-import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
@@ -169,7 +167,7 @@ class MainFragmentViewModel(
         }
 
 
-    val filteredDrinksLiveData: MutableLiveData<List<CocktailModel>> =
+    val filteredCocktailsLiveData: MutableLiveData<List<CocktailModel>> =
         object : MediatorLiveData<List<CocktailModel>>() {
             init {
                 value = arrayListOf()
@@ -194,13 +192,13 @@ class MainFragmentViewModel(
             }
         }
 
-    val filteredFavoriteDrinksLiveData: MutableLiveData<ArrayList<CocktailModel>> =
+    val filteredFavoriteCocktailsLiveData: MutableLiveData<ArrayList<CocktailModel>> =
         object : MediatorLiveData<ArrayList<CocktailModel>>() {
             init {
                 if (value == null) {
                     value = arrayListOf()
                 }
-                addSource(filteredDrinksLiveData) {
+                addSource(filteredCocktailsLiveData) {
                     val resultList = favoriteFilter(it)
                     value = resultList
                 }
@@ -243,14 +241,14 @@ class MainFragmentViewModel(
 
                 val emptySearch = application.resources.getString(R.string.all_empty_search)
 
-                addSource(filteredDrinksLiveData) {
-                    if (isFiltersPresent() && it.isEmpty() && filteredFavoriteDrinksLiveData.value!!.isEmpty()) {
+                addSource(filteredCocktailsLiveData) {
+                    if (isFiltersPresent() && it.isEmpty() && filteredFavoriteCocktailsLiveData.value!!.isEmpty()) {
                         value = SpannableString(emptySearch)
                     } else {
                         var currentResult = src.replace("h", it.size.toString())
                         currentResult = currentResult.replace(
                             "f",
-                            filteredFavoriteDrinksLiveData.value!!.size.toString()
+                            filteredFavoriteCocktailsLiveData.value!!.size.toString()
                         )
                         val historyIndexDrw = currentResult.indexOf("@")
                         val favoriteIndexDrw = currentResult.indexOf("%")

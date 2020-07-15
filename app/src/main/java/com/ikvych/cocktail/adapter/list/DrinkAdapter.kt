@@ -11,13 +11,14 @@ import com.ikvych.cocktail.adapter.list.base.BaseRecyclerViewAdapter
 import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
 import com.ikvych.cocktail.ui.activity.MainActivity
+import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 
 class DrinkAdapter(
     private val viewModel: BaseViewModel,
     private val context: Context
-) : BaseRecyclerViewAdapter<Drink>() {
+) : BaseRecyclerViewAdapter<CocktailModel>() {
 
     private val layoutId = R.layout.item_drink_list
 
@@ -30,7 +31,7 @@ class DrinkAdapter(
         )
     }
 
-    override fun bind(binding: ViewDataBinding, item: Drink) {
+    override fun bind(binding: ViewDataBinding, item: CocktailModel) {
         when (binding) {
             is ItemDrinkListBinding -> {
                 binding.obj = item

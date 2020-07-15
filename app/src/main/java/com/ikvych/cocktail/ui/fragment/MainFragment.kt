@@ -11,7 +11,6 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -78,7 +77,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
         favoriteFragment = FavoriteFragment.newInstance()
 
         batteryReceiver = BatteryReceiver(this@MainFragment)
-        viewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { _ ->
+        viewModel.filteredFavoriteCocktailsLiveData.observe(this, Observer { _ ->
             //trigger to init filteredFavoriteLiveData
         })
     }

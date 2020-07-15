@@ -23,7 +23,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.DRINK
-import com.ikvych.cocktail.constant.DRINK_ID
+import com.ikvych.cocktail.constant.COCKTAIL_ID
 import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.ui.dialog.base.*
@@ -88,10 +88,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                 val dialogFragment =
                     supportFragmentManager.findFragmentByTag(ResumeAppBottomSheetDialogFragment::class.java.simpleName)
                 if (dialogFragment !is ResumeAppBottomSheetDialogFragment) {
-                    ResumeAppBottomSheetDialogFragment.newInstance(drinkId = it.getIdDrink()!!) {
+                    ResumeAppBottomSheetDialogFragment.newInstance(drinkId = it.id) {
                         titleText = getString(R.string.resume_app_dialog_title)
                         descriptionText =
-                            getString(R.string.resume_app_dialog_description) + "${it.getStrDrink()}"
+                            getString(R.string.resume_app_dialog_description) + "${it.names.default}"
                         rightButtonText = getString(R.string.resume_app_dialog_right_button)
                         leftButtonText = getString(R.string.resume_app_dialog_left_button)
                     }.show(
@@ -191,18 +191,18 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                     // відкриває деталізацію напою
                     R.id.menu_drink_open -> {
                         val view = v?.findViewById<TextView>(R.id.tv_drink_name)
-                        val drinkName = view?.text ?: ""
-                        val drinkLiveData = viewModel.findCocktailByName(drinkName.toString())
-                        drinkLiveData.observe(this@MainActivity, Observer { drink ->
-                            if (drink == null) { return@Observer }
+                        val cocktailName = view?.text ?: ""
+                        val cocktailLiveData = viewModel.findCocktailByName(cocktailName.toString())
+                        cocktailLiveData.observe(this@MainActivity, Observer { cocktail ->
+                            if (cocktail == null) { return@Observer }
                             val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
-                            intent.putExtra(DRINK, drink)
+                            intent.putExtra(COCKTAIL_ID, cocktail.id)
                             startActivity(intent)
                         })
                         true
                     }
                     // створює pinned shortcut
-                    R.id.menu_drink_pin_shortcut -> {
+                    /*R.id.menu_drink_pin_shortcut -> {
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                             val textViewDrinkName =
                                 v?.findViewById<TextView>(R.id.tv_drink_name)
@@ -238,7 +238,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                                                     this@MainActivity,
                                                     DrinkDetailActivity::class.java
                                                 ).apply {
-                                                    putExtra(DRINK_ID, drink.getIdDrink())
+                                                    putExtra(COCKTAIL_ID, drink.getIdDrink())
                                                     action = Intent.ACTION_CREATE_SHORTCUT
                                                     flags = Intent.FLAG_ACTIVITY_NEW_TASK
                                                 })
@@ -265,7 +265,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                             ).show()
                         }
                         true
-                    }
+                    }*/
                     else -> false
                 }
             }
@@ -303,7 +303,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                 when (buttonType) {
                     RightDialogButton -> {
                         val intent = Intent(this, DrinkDetailActivity::class.java)
-                        intent.putExtra(DRINK_ID, data as Long)
+                        intent.putExtra(COCKTAIL_ID, data as Long)
                         startActivity(intent)
                     }
                     LeftDialogButton -> {

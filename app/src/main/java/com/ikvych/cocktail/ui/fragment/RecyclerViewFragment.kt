@@ -10,46 +10,47 @@ import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.adapter.list.DrinkAdapter
-import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
+import com.ikvych.cocktail.comparator.AlcoholCocktailComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
+import com.ikvych.cocktail.constant.COCKTAIL_ID
 import com.ikvych.cocktail.constant.DRINK
-import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment
+import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 abstract class RecyclerViewFragment<ViewModel : BaseViewModel, DataBinding : ViewDataBinding> : BaseFragment<ViewModel, DataBinding>() {
-    protected lateinit var drinkAdapter: DrinkAdapter
+    protected lateinit var cocktailAdapter: DrinkAdapter
 
     lateinit var parentViewModel: MainFragmentViewModel
     var filters: ArrayList<DrinkFilter> = arrayListOf()
     protected var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
 
-    private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
+    private val alcoholComparator: AlcoholCocktailComparator = AlcoholCocktailComparator()
 
     fun initViewModel() {
         parentViewModel = ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
     }
 
     open fun initLiveDataObserver() {
-        parentViewModel.filteredDrinksLiveData.observe(this, Observer { drinks ->
-            drinkAdapter.listData = drinks
-            determineVisibleLayerOnUpdateData(drinks)
+        parentViewModel.filteredCocktailsLiveData.observe(this, Observer { cocktails ->
+            cocktailAdapter.listData = cocktails
+            determineVisibleLayerOnUpdateData(cocktails)
         })
-        viewModel.startDrinkDetailsLiveData.observe(this, Observer {
+        viewModel.startCocktailDetailsLiveData.observe(this, Observer {
             if (it != null) {
                 val intent = Intent(requireActivity(), DrinkDetailActivity::class.java)
-                intent.putExtra(DRINK, it)
+                intent.putExtra(COCKTAIL_ID, it.id)
                 startActivity(intent)
             }
         })
     }
 
-    fun initRecyclerView(view: View, drinks: List<Drink>, recyclerViewId: Int) {
+    fun initRecyclerView(view: View, drinks: List<CocktailModel>, recyclerViewId: Int) {
         val recyclerView: RecyclerView = view.findViewById(recyclerViewId)
-        drinkAdapter = DrinkAdapter(viewModel, requireContext())
+        cocktailAdapter = DrinkAdapter(viewModel, requireContext())
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -58,16 +59,16 @@ abstract class RecyclerViewFragment<ViewModel : BaseViewModel, DataBinding : Vie
         }
 
         recyclerView.itemAnimator = DefaultItemAnimator()
-        recyclerView.adapter = drinkAdapter
+        recyclerView.adapter = cocktailAdapter
 
         determineVisibleLayerOnCreate(drinks)
 
-        drinkAdapter.listData = drinks
+        cocktailAdapter.listData = drinks
     }
 
     override fun onDestroy() {
         super.onDestroy()
-        drinkAdapter.setLifecycleDestroyed()
+        cocktailAdapter.setLifecycleDestroyed()
     }
     /**
      * If drinks is empty, hide recyclerView and show appropriate textView,
@@ -77,7 +78,7 @@ abstract class RecyclerViewFragment<ViewModel : BaseViewModel, DataBinding : Vie
      *
      * @param drinks data list to check for items
      */
-    open fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
+    open fun determineVisibleLayerOnCreate(cocktails: List<CocktailModel?>?) {
         //TO DO
     }
 
@@ -89,7 +90,7 @@ abstract class RecyclerViewFragment<ViewModel : BaseViewModel, DataBinding : Vie
      *
      * @param drinks data list to check for items
      */
-    open fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
+    open fun determineVisibleLayerOnUpdateData(cocktails: List<CocktailModel?>?) {
         //TO DO
     }
 

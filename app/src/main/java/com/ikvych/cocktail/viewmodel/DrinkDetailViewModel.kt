@@ -26,13 +26,13 @@ class DrinkDetailViewModel(
         super.onCleared()
     }
 
-    fun findDrinkDbById(cocktailId: Long) {
+    fun findCocktailDbById(cocktailId: Long) {
         launchRequest(cocktailLiveData)  {
             mapper.mapTo(drinkRepository.findCocktailById(cocktailId)!!)
         }
     }
 
-    fun saveDrinkIntoDb() {
+    fun saveCocktailIntoDb() {
         val currentCocktail = cocktailLiveData.value ?: return
         launchRequest {
             drinkRepository.addOrReplaceCocktail(mapper.mapFrom(currentCocktail))

@@ -31,7 +31,7 @@ class LocalizedStringRepoModelMapper :
         )
     }
 
-    override fun mapNetToRepo(net: CocktailNetModel): LocalizedStringRepoModel = with(net) {
+/*    override fun mapNamesNetToRepo(net: CocktailNetModel): LocalizedStringRepoModel = with(net) {
         LocalizedStringRepoModel(
             defaults = strDrink,
             defaultAlternate = strDrinkAlternate,
@@ -43,7 +43,7 @@ class LocalizedStringRepoModelMapper :
         )
     }
 
-    override fun mapRepoToNet(repo: LocalizedStringRepoModel) = with(repo) {
+    override fun mapNamesRepoToNet(repo: LocalizedStringRepoModel) = with(repo) {
         CocktailNetModel().apply {
             strDrink = defaults
             strDrinkAlternate = defaultAlternate
@@ -54,4 +54,26 @@ class LocalizedStringRepoModelMapper :
             strDrinkZHHANT = zhHant
         }
     }
+
+    override fun mapInstructionNetToRepo(net: CocktailNetModel): LocalizedStringRepoModel = with(net) {
+        LocalizedStringRepoModel(
+            defaults = strInstructions,
+            es = strInstructionsES,
+            de = strInstructionsDE,
+            fr = strInstructionsFR,
+            zhHans = strInstructionsZHHANS,
+            zhHant = strInstructionsZHHANT
+        )
+    }
+
+    override fun mapInstructionRepoToNet(repo: LocalizedStringRepoModel) = with(repo) {
+        CocktailNetModel().apply {
+            strInstructions = defaults
+            strInstructionsES = es
+            strInstructionsDE = de
+            strInstructionsFR = fr
+            strInstructionsZHHANS = zhHans
+            strInstructionsZHHANT = zhHant
+        }
+    }*/
 }

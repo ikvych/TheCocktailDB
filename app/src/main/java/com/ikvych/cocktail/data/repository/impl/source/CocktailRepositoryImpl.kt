@@ -50,7 +50,6 @@ class CocktailRepositoryImpl(
         })
     }
 
-
     override fun findAllCocktailsLiveData(): LiveData<List<CocktailRepoModel>?> {
         return dbSource.findAllCocktailsLiveData().map{list -> list?.map{mapper.mapDbToRepo(it)}}
     }

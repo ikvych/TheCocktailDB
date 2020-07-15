@@ -38,9 +38,9 @@ class DrinkDetailActivity
 
     override fun configureView(savedInstanceState: Bundle?) {
         when {
-/*            intent.hasExtra(DRINK) -> {
-                viewModel.cocktailLiveData.value = intent.getParcelableExtra(DRINK)
-            }*/
+            intent.hasExtra(COCKTAIL) -> {
+                viewModel.cocktailLiveData.value = intent.getParcelableExtra(COCKTAIL)
+            }
             intent.hasExtra(COCKTAIL_ID) -> {
                 val currentCocktailId = intent.getLongExtra(COCKTAIL_ID, -1L)
                 if (currentCocktailId == -1L) finish()

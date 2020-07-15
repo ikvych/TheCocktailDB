@@ -1,9 +1,7 @@
 package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.*
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
 import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
@@ -17,14 +15,8 @@ class SearchActivityViewModel(
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle) {
 
-    val cocktailLiveData: MutableLiveData<List<CocktailModel>> =
-        object : MediatorLiveData<List<CocktailModel>>() {
-            init {
-                addSource(cocktailRepository.cocktailNetResponseLiveData) {
-                    value = cocktailRepository.cocktailNetResponseLiveData.value?.map { mapper.mapTo(it) }
-                }
-            }
-        }
+    val cocktailLiveData: LiveData<List<CocktailModel>> =
+        cocktailRepository.cocktailNetResponseLiveData.map{mapper.mapTo(it)}
 
     fun updateDrinksLiveData(query: String) {
         cocktailRepository.getCocktailsByName(query)

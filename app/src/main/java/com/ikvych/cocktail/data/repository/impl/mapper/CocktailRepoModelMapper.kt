@@ -4,6 +4,7 @@ import com.ikvych.cocktail.data.network.model.CocktailNetModel
 import com.ikvych.cocktail.data.repository.impl.mapper.base.BaseRepoModelMapper
 import com.xtreeivi.cocktailsapp.data.db.model.CocktailDbModel
 import com.xtreeivi.cocktailsapp.data.repository.model.CocktailRepoModel
+import com.xtreeivi.cocktailsapp.data.repository.model.LocalizedStringRepoModel
 
 class CocktailRepoModelMapper(
     private val localizedStringRepoModelMapper: LocalizedStringRepoModelMapper
@@ -43,12 +44,16 @@ class CocktailRepoModelMapper(
     override fun mapNetToRepo(net: CocktailNetModel) = with(net) {
         CocktailRepoModel(
             id = idDrink!!,
-            names = this.run(localizedStringRepoModelMapper::mapNetToRepo),
+            names = LocalizedStringRepoModel(
+                strDrink, strDrinkAlternate, strDrinkES, strDrinkDE, strDrinkFR, strDrinkZHHANS, strDrinkZHHANT
+            ),
             category = strCategory!!,
             alcoholType = strAlcoholic!!,
             glass = strGlass!!,
             image = strDrinkThumb!!,
-            instructions = this.run(localizedStringRepoModelMapper::mapNetToRepo),
+            instructions = LocalizedStringRepoModel(
+                strInstructions, null, strInstructionsES, strInstructionsDE, strInstructionsFR, strInstructionsZHHANS, strInstructionsZHHANT
+            ),
             ingredients = getAllIngredients().keys.toList(),
             measures = getAllIngredients().values.toList()
         )

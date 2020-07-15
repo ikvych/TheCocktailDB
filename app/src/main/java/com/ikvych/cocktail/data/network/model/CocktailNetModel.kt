@@ -70,7 +70,7 @@ class CocktailNetModel {
 
     @SerializedName("strInstructionsES")
     @Expose
-    var strInstructionsES: Any? = null
+    var strInstructionsES: String? = null
 
     @SerializedName("strInstructionsDE")
     @Expose
@@ -78,15 +78,15 @@ class CocktailNetModel {
 
     @SerializedName("strInstructionsFR")
     @Expose
-    var strInstructionsFR: Any? = null
+    var strInstructionsFR: String? = null
 
     @SerializedName("strInstructionsZH-HANS")
     @Expose
-    var strInstructionsZHHANS: Any? = null
+    var strInstructionsZHHANS: String? = null
 
     @SerializedName("strInstructionsZH-HANT")
     @Expose
-    var strInstructionsZHHANT: Any? = null
+    var strInstructionsZHHANT: String? = null
 
     @SerializedName("strDrinkThumb")
     @Expose

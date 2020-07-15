@@ -58,7 +58,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
                 val intent = Intent(this, DrinkDetailActivity::class.java)
                 intent.putExtra(SHOULD_SAVE_COCKTAIL, SHOULD_SAVE_COCKTAIL)
                 intent.putExtra(SHOW_COCKTAIL_OFFER_ON_DESTROY, SHOW_COCKTAIL_OFFER_ON_DESTROY)
-                intent.putExtra(COCKTAIL_ID, it.id)
+                intent.putExtra(COCKTAIL, it)
                 startActivity(intent)
             }
         })

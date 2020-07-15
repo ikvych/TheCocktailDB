@@ -24,7 +24,7 @@ import java.util.*
 import kotlin.collections.HashMap
 
 /*Using getIngredients() method fills the tableLayout in activity_drink_details with ingredients and measure*/
-@BindingAdapter("ingredients")
+/*@BindingAdapter("ingredients")
 fun getIngredients(
     tableLayout: TableLayout,
     ingredients: Map<String?, String?>? = null
@@ -55,7 +55,7 @@ fun getIngredients(
         )
         count++
     }
-}
+}*/
 
 @Entity(tableName = Table.DRINK)
 class Drink : BaseObservable, Parcelable {

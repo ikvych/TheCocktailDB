@@ -142,8 +142,9 @@
                         android:id="@+id/tl_drink_ingredients_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="@dimen/offset_16"/>
-                        <!--bind:ingredients="@{viewModel.cocktailLiveData.ingredients}"-->
+                        android:layout_marginTop="@dimen/offset_16"
+                        bind:ingredients="@{viewModel.cocktailLiveData.ingredients}"
+                        bind:measures="@{viewModel.cocktailLiveData.measures}"/>
 
                     <LinearLayout
                         android:id="@+id/ll_drink_instruction_title_container"

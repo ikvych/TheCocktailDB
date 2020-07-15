@@ -27,6 +27,9 @@ import com.ikvych.cocktail.data.repository.impl.mapper.base.BaseRepoModelMapper
 import com.ikvych.cocktail.data.repository.impl.source.CocktailRepositoryImpl
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.data.repository.source.base.BaseRepository
+import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
+import com.ikvych.cocktail.ui.mapper.LocalizedStringModelMapper
+import com.ikvych.cocktail.ui.mapper.base.BaseModelMapper
 import com.ikvych.cocktail.viewmodel.*
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
@@ -57,11 +60,15 @@ object Injector {
         ): T {
             return when(modelClass) {
                 AuthViewModel::class.java -> AuthViewModel(application, handle) as T
-                DrinkDetailViewModel::class.java -> DrinkDetailViewModel(provideRepository(appContext), application, handle) as T
-                MainActivityViewModel::class.java -> MainActivityViewModel(provideRepository(appContext),application, handle) as T
-                SearchActivityViewModel::class.java -> SearchActivityViewModel(provideRepository(appContext),application, handle) as T
+                DrinkDetailViewModel::class.java -> DrinkDetailViewModel(provideRepository(appContext), provideModelMapper(
+                    appContext), application, handle) as T
+                MainActivityViewModel::class.java -> MainActivityViewModel(provideRepository(appContext), provideModelMapper(
+                    appContext),application, handle) as T
+                SearchActivityViewModel::class.java -> SearchActivityViewModel(provideRepository(appContext), provideModelMapper(
+                    appContext),application, handle) as T
                 ProfileFragmentViewModel::class.java -> ProfileFragmentViewModel(application, handle) as T
-                MainFragmentViewModel::class.java -> MainFragmentViewModel(provideRepository(appContext),application, handle) as T
+                MainFragmentViewModel::class.java -> MainFragmentViewModel(provideRepository(appContext), provideModelMapper(
+                    appContext),application, handle) as T
                 BaseViewModel::class.java -> BaseViewModel(application, handle, provideRepository(appContext)) as T
                 else -> throw NotImplementedError("Must provide repository for class ${modelClass.simpleName}")
             }
@@ -86,12 +93,12 @@ object Injector {
         } as T
     }
 
-/*    inline fun <reified T: BaseModelMapper<*, *>> provideModelMapper(context: Context): T {
+    inline fun <reified T: BaseModelMapper<*, *>> provideModelMapper(context: Context): T {
         return when (T::class.java) {
             CocktailModelMapper::class.java -> CocktailModelMapper(provideNestedModelMapper(context))
             else -> throw IllegalStateException("Must provide repository for class ${T::class.java.simpleName}")
         } as T
-    }*/
+    }
 
     inline fun <reified T: BaseRepoModelMapper<*, *, *>> provideNestedRepoModelMapper(context: Context): T {
         return when (T::class.java) {
@@ -101,13 +108,13 @@ object Injector {
 
     }
 
-/*    inline fun <reified T: BaseModelMapper<*, *>> provideNestedModelMapper(context: Context): T {
+    inline fun <reified T: BaseModelMapper<*, *>> provideNestedModelMapper(context: Context): T {
         return when (T::class.java) {
             LocalizedStringModelMapper::class.java -> LocalizedStringModelMapper()
             else -> throw IllegalStateException("Must provide repository for class ${T::class.java.simpleName}")
         } as T
 
-    }*/
+    }
 
     inline fun <reified T: BaseDbSource> provideDbDataSource(context: Context): T {
         return when (T::class.java) {

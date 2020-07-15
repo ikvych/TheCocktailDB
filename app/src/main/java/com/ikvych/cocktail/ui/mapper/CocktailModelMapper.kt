@@ -21,7 +21,9 @@ class CocktailModelMapper(
             image = image,
             instructions = instructions.run(localizedStringModelMapper::mapFrom),
             ingredients = ingredients.map { it.key },
-            measures = measures
+            measures = measures,
+            isFavorite = isFavorite,
+            cocktailOfTheDay = cocktailOfTheDay
         )
     }
 
@@ -41,7 +43,9 @@ class CocktailModelMapper(
                 IngredientDrinkFilter.values().firstOrNull { it.key == ingredient }
                     ?: IngredientDrinkFilter.NONE
             },
-            measures = measures
+            measures = measures,
+            isFavorite = isFavorite,
+            cocktailOfTheDay = cocktailOfTheDay
         )
     }
 }

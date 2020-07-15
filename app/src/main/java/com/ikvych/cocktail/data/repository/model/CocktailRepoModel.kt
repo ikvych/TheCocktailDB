@@ -9,6 +9,8 @@ data class CocktailRepoModel(
     val image: String = "",
     val instructions: LocalizedStringRepoModel = LocalizedStringRepoModel(),
     val ingredients: List<String> = emptyList(),
-    val measures: List<String> = emptyList()/*,
+    val measures: List<String> = emptyList(),
+    var isFavorite: Boolean = false,
+    var cocktailOfTheDay: String = ""/*,
     val date: Date = Date()*/
 )

@@ -2,38 +2,40 @@ package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
+import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
+import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class DrinkDetailViewModel(
     private val drinkRepository: CocktailRepository,
+    private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle) {
 
-    private val triggerObserver: Observer<in Drink?> = Observer { }
-    val drinkLiveData: MutableLiveData<Drink?> = MutableLiveData()
+    private val triggerObserver: Observer<in Any?> = Observer { }
+    val cocktailLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
 
     init {
-        drinkLiveData.observeForever(triggerObserver)
+        cocktailLiveData.observeForever(triggerObserver)
     }
 
     override fun onCleared() {
-        drinkLiveData.removeObserver(triggerObserver)
+        cocktailLiveData.removeObserver(triggerObserver)
         super.onCleared()
     }
 
-    fun findDrinkDbById(drinkId: Long) {
-        launchRequest(drinkLiveData)  {
-            drinkRepository.findDrinkById(drinkId)
+    fun findDrinkDbById(cocktailId: Long) {
+        launchRequest(cocktailLiveData)  {
+            mapper.mapTo(drinkRepository.findCocktailById(cocktailId)!!)
         }
     }
 
     fun saveDrinkIntoDb() {
-        val currentDrink = drinkLiveData.value ?: return
+        val currentCocktail = cocktailLiveData.value ?: return
         launchRequest {
-            drinkRepository.saveDrinkIntoDb(currentDrink)
+            drinkRepository.addOrReplaceCocktail(mapper.mapFrom(currentCocktail))
         }
     }
 }

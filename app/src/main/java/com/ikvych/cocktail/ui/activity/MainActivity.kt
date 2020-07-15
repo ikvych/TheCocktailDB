@@ -82,7 +82,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
 
     override fun configureView(savedInstanceState: Bundle?) {
         //Відслідковуємо напій дня, якщо він не дорівнює null значить потрібно показати діалог
-        viewModel.drinkOfTheDayLiveData.observe(this, Observer {
+        viewModel.cocktailOfTheDayLiveData.observe(this, Observer {
             if (it != null) {
                 //Якщо діалог фрагмент не дорівнює null значить попердній фрагмент ще не закрили і показувати новий не потрібно
                 val dialogFragment =
@@ -98,7 +98,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                         supportFragmentManager,
                         ResumeAppBottomSheetDialogFragment::class.java.simpleName
                     )
-                    viewModel.drinkOfTheDayLiveData.value = null
+                    viewModel.cocktailOfTheDayLiveData.value = null
                 }
             }
         })
@@ -192,7 +192,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                     R.id.menu_drink_open -> {
                         val view = v?.findViewById<TextView>(R.id.tv_drink_name)
                         val drinkName = view?.text ?: ""
-                        val drinkLiveData = viewModel.findDrinkByName(drinkName.toString())
+                        val drinkLiveData = viewModel.findCocktailByName(drinkName.toString())
                         drinkLiveData.observe(this@MainActivity, Observer { drink ->
                             if (drink == null) { return@Observer }
                             val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
@@ -207,7 +207,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                             val textViewDrinkName =
                                 v?.findViewById<TextView>(R.id.tv_drink_name)
                             val drinkName = textViewDrinkName?.text ?: ""
-                            val drinkLiveData = viewModel.findDrinkByName(drinkName.toString())
+                            val drinkLiveData = viewModel.findCocktailByName(drinkName.toString())
                             drinkLiveData.observe(this@MainActivity, Observer {drink ->
                                 if (drink == null) { return@Observer }
                                 val shortcutManager: ShortcutManager? =

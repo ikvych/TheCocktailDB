@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.data.repository.source
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.ikvych.cocktail.data.network.model.CocktailNetResponse
 import com.ikvych.cocktail.data.network.model.DrinkApiResponse
 import com.ikvych.cocktail.data.repository.source.base.BaseRepository
@@ -9,6 +10,7 @@ import retrofit2.Call
 
 interface CocktailRepository : BaseRepository{
 
+    val cocktailNetResponseLiveData: MutableLiveData<List<CocktailRepoModel>>
     fun getCocktailsByName(cocktailName: String)
 
     fun findAllCocktailsLiveData(): LiveData<List<CocktailRepoModel>?>

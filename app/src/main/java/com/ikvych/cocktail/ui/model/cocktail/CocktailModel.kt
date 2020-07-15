@@ -14,6 +14,8 @@ data class CocktailModel(
     val image: String = "",
     val instructions: LocalizedStringModel = LocalizedStringModel(),
     val ingredients: List<IngredientDrinkFilter> = emptyList(),
-    val measures: List<String> = emptyList()/*,
+    val measures: List<String> = emptyList(),
+    val cocktailOfTheDay: String = "",
+    val isFavorite: Boolean = false/*,
     val date: Date = Date()*/
 )

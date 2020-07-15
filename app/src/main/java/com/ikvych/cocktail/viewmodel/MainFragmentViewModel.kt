@@ -6,11 +6,9 @@ import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
+import androidx.lifecycle.*
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.comparator.AlcoholCocktailComparator
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.data.network.model.Drink
@@ -20,12 +18,15 @@ import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
 import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
+import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
+import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
 
 class MainFragmentViewModel(
-    drinkRepository: CocktailRepository,
+    private val cocktailRepository: CocktailRepository,
+    private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle) {
@@ -37,8 +38,8 @@ class MainFragmentViewModel(
         const val EXTRA_KEY_SORT_ORDER = "EXTRA_KEY_SORT_ORDER"
     }
 
-    val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getAllDrinksFromDbLiveData()
-    private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
+    val cocktailLiveData: LiveData<List<CocktailModel>> = cocktailRepository.findAllCocktailsLiveData().map{mapper.mapTo(it!!)}
+    private val alcoholComparator: AlcoholCocktailComparator = AlcoholCocktailComparator()
     val viewPager2LiveData: MutableLiveData<Page> = object : MutableLiveData<Page>() {
         init {
             value = value
@@ -168,33 +169,33 @@ class MainFragmentViewModel(
         }
 
 
-    val filteredDrinksLiveData: MutableLiveData<List<Drink>> =
-        object : MediatorLiveData<List<Drink>>() {
+    val filteredDrinksLiveData: MutableLiveData<List<CocktailModel>> =
+        object : MediatorLiveData<List<CocktailModel>>() {
             init {
                 value = arrayListOf()
-                addSource(drinksLiveData) {
-                    filterAndSortData(drinksLiveData.value)
+                addSource(cocktailLiveData) {
+                    filterAndSortData(cocktailLiveData.value)
                 }
                 addSource(filtersLiveData) {
-                    filterAndSortData(drinksLiveData.value)
+                    filterAndSortData(cocktailLiveData.value)
                 }
                 addSource(sortLiveData) {
-                    filterAndSortData(drinksLiveData.value)
+                    filterAndSortData(cocktailLiveData.value)
                 }
             }
 
-            private fun filterAndSortData(drinks: List<Drink>?) {
-                val drinksCopy = drinks ?: arrayListOf()
+            private fun filterAndSortData(cocktails: List<CocktailModel>?) {
+                val cocktailsCopy = cocktails ?: arrayListOf()
 
                 val filteredData =
-                    filterData(drinksCopy, filtersLiveData.value!!.values.toList() as ArrayList)
+                    filterData(cocktailsCopy, filtersLiveData.value!!.values.toList() as ArrayList)
                 val sortedData = sortData(filteredData, sortLiveData.value!!)
                 value = sortedData
             }
         }
 
-    val filteredFavoriteDrinksLiveData: MutableLiveData<ArrayList<Drink>> =
-        object : MediatorLiveData<ArrayList<Drink>>() {
+    val filteredFavoriteDrinksLiveData: MutableLiveData<ArrayList<CocktailModel>> =
+        object : MediatorLiveData<ArrayList<CocktailModel>>() {
             init {
                 if (value == null) {
                     value = arrayListOf()
@@ -205,12 +206,12 @@ class MainFragmentViewModel(
                 }
             }
 
-            fun favoriteFilter(drinks: List<Drink>): ArrayList<Drink> {
-                var drinksCopy = drinks
-                drinksCopy = drinksCopy.filter {
-                    it.isFavorite()
+            fun favoriteFilter(cocktails: List<CocktailModel>): ArrayList<CocktailModel> {
+                var cocktailsCopy = cocktails
+                cocktailsCopy = cocktailsCopy.filter {
+                    it.isFavorite
                 }
-                return drinksCopy as ArrayList<Drink>
+                return cocktailsCopy as ArrayList<CocktailModel>
             }
         }
 
@@ -326,30 +327,30 @@ class MainFragmentViewModel(
         return false
     }
 
-    fun filterData(drinks: List<Drink>, drinkFilters: ArrayList<DrinkFilter>): List<Drink> {
-        var drinksCopy = drinks
-        drinkFilters.forEach {
+    fun filterData(cocktails: List<CocktailModel>, cocktailFilters: ArrayList<DrinkFilter>): List<CocktailModel> {
+        var cocktailsCopy = cocktails
+        cocktailFilters.forEach {
             when (it.type) {
                 DrinkFilterType.ALCOHOL -> {
                     if (it != AlcoholDrinkFilter.NONE) {
-                        drinksCopy = drinksCopy.filter { drink ->
-                            drink.getStrAlcoholic() == it.key
+                        cocktailsCopy = cocktailsCopy.filter { cocktail ->
+                            cocktail.alcoholType == it
                         }
                     }
                 }
                 DrinkFilterType.CATEGORY -> {
                     if (it != CategoryDrinkFilter.NONE) {
-                        drinksCopy = drinksCopy.filter { drink ->
-                            drink.getStrCategory() == it.key
+                        cocktailsCopy = cocktailsCopy.filter { cocktail ->
+                            cocktail.category == it
                         }
                     }
                 }
                 DrinkFilterType.INGREDIENT -> {
                     if (it != IngredientDrinkFilter.NONE) {
-                        drinksCopy = drinksCopy.filter { drink ->
+                        cocktailsCopy = cocktailsCopy.filter { cocktail ->
                             var isValid = false
-                            for ((key, _) in drink.getIngredients()) {
-                                if (key.equals(it.key)) {
+                            for (i in cocktail.ingredients) {
+                                if (i == it) {
                                     isValid = true
                                     break
                                 }
@@ -362,20 +363,20 @@ class MainFragmentViewModel(
                 }
             }
         }
-        return drinksCopy
+        return cocktailsCopy
     }
 
-    fun sortData(drinks: List<Drink>, sortDrinkType: SortDrinkType): List<Drink> {
-        var drinksCopy = drinks
-        drinksCopy = when (sortDrinkType) {
-            SortDrinkType.RECENT -> drinksCopy.sortedByDescending { drink -> drink.getCreated() }
-            SortDrinkType.NAME_ASC -> drinksCopy.sortedBy { drink -> drink.getStrDrink() }
-            SortDrinkType.NAME_DESC -> drinksCopy.sortedByDescending { drink -> drink.getStrDrink() }
-            SortDrinkType.ALCOHOL_ASC -> drinksCopy.sortedWith(alcoholComparator)
-            SortDrinkType.ALCOHOL_DESC -> drinksCopy.sortedWith(alcoholComparator).asReversed()
-            SortDrinkType.INGREDIENT_COUNT_ASC -> drinksCopy.sortedBy { drink -> drink.getIngredients().size }
-            SortDrinkType.INGREDIENT_COUNT_DESC -> drinksCopy.sortedByDescending { drink -> drink.getIngredients().size }
+    fun sortData(cocktails: List<CocktailModel>, sortDrinkType: SortDrinkType): List<CocktailModel> {
+        var cocktailCopy = cocktails
+        cocktailCopy = when (sortDrinkType) {
+            SortDrinkType.RECENT -> cocktailCopy.sortedByDescending { cocktail -> cocktail.id }
+            SortDrinkType.NAME_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.names.default }
+            SortDrinkType.NAME_DESC -> cocktailCopy.sortedByDescending { cocktail -> cocktail.names.default }
+            SortDrinkType.ALCOHOL_ASC -> cocktailCopy.sortedWith(alcoholComparator)
+            SortDrinkType.ALCOHOL_DESC -> cocktailCopy.sortedWith(alcoholComparator).asReversed()
+            SortDrinkType.INGREDIENT_COUNT_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.ingredients.size }
+            SortDrinkType.INGREDIENT_COUNT_DESC -> cocktailCopy.sortedByDescending { cocktail -> cocktail.ingredients.size }
         }
-        return drinksCopy
+        return cocktailCopy
     }
 }

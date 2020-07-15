@@ -24,7 +24,7 @@ class CocktailRepositoryImpl(
     private val mapper: CocktailRepoModelMapper
 ) : BaseRepositoryImpl(), CocktailRepository {
 
-    val cocktailNetResponseLiveData: MutableLiveData<List<CocktailRepoModel>> = MutableLiveData()
+    override val cocktailNetResponseLiveData: MutableLiveData<List<CocktailRepoModel>> = MutableLiveData()
 
     override fun getCocktailsByName(cocktailName: String) {
         val call: Call<CocktailNetResponse?> = netSource.getCocktailsByName(cocktailName)

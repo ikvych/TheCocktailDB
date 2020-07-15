@@ -16,7 +16,7 @@ interface CocktailDao : BaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addOrReplaceCocktail(cocktail: CocktailDbModel)
 
-    @Query("SELECT * FROM ${Table.COCKTAIL} WHERE drink_of_day = :stringDate")
+    @Query("SELECT * FROM ${Table.COCKTAIL} WHERE cocktail_of_day = :stringDate")
     fun findCocktailOfTheDay(stringDate: String) : CocktailDbModel?
 
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE id = :cocktailId")

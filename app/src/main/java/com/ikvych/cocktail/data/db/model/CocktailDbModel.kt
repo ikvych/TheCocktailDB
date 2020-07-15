@@ -71,8 +71,8 @@ data class CocktailDbModel(
     @Embedded(prefix = "name_")
     val names: LocalizedStringDbModel = LocalizedStringDbModel(),
 
-    @ColumnInfo(name = "drink_of_day")
-    private var drinkOfDay: String? = "",
+    @ColumnInfo(name = "cocktail_of_day")
+    var cocktailOfDay: String = "",
 
     @ColumnInfo(name = "category")
     val category: String = "",

@@ -39,7 +39,7 @@ class DrinkDetailActivity
     override fun configureView(savedInstanceState: Bundle?) {
         when {
             intent.hasExtra(DRINK) -> {
-                viewModel.drinkLiveData.value = intent.getParcelableExtra(DRINK)
+                viewModel.cocktailLiveData.value = intent.getParcelableExtra(DRINK)
             }
             intent.hasExtra(DRINK_ID) -> {
                 val currentDrinkId = intent.getLongExtra(DRINK_ID, -1L)
@@ -134,7 +134,7 @@ class DrinkDetailActivity
         if (intent.hasExtra(SHOW_DRINK_OFFER_ON_DESTROY)) {
             val intent = Intent(this, ApplicationService::class.java)
             stopService(intent)
-            intent.putExtra(DRINK_ID, viewModel.drinkLiveData.value?.getIdDrink())
+            intent.putExtra(DRINK_ID, viewModel.cocktailLiveData.value?.getIdDrink())
             intent.action = ACTION_SHOW_DRINK_OFFER
             startService(intent)
         }

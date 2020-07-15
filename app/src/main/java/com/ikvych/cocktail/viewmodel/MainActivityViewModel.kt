@@ -9,6 +9,8 @@ import androidx.lifecycle.SavedStateHandle
 import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
+import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
+import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.text.SimpleDateFormat
 import java.util.*
@@ -17,12 +19,13 @@ const val MAIN_ACTIVITY_SHARED_PREFERENCE = "MAIN_ACTIVITY_SHARED_PREFERENCE"
 
 class MainActivityViewModel(
     private val drinkRepository: CocktailRepository,
+    private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle
 ) : BaseViewModel(application, savedStateHandle),
     ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
-    val drinkOfTheDayLiveData: MutableLiveData<Drink?> = MutableLiveData()
+    val cocktailOfTheDayLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
     private var lifecycleObserver: ApplicationLifeCycleObserver
     private var sharedPreferences: SharedPreferences = application.getSharedPreferences(
         MAIN_ACTIVITY_SHARED_PREFERENCE,
@@ -44,38 +47,38 @@ class MainActivityViewModel(
     }
 
     override fun shouldShowDrinkOfTheDay() {
-        setDrinkOfTheDay()
+        setCocktailOfTheDay()
     }
 
-    fun findDrinkByName(drinkName: String): MutableLiveData<Drink?> {
-        val drinkLiveData: MutableLiveData<Drink?> = MutableLiveData()
-        launchRequest(drinkLiveData) {
-            drinkRepository.findDrinkByName(drinkName)
+    fun findCocktailByName(cocktailName: String): MutableLiveData<CocktailModel?> {
+        val cocktailLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
+        launchRequest(cocktailLiveData) {
+            mapper.mapTo(drinkRepository.findCocktailByDefaultName(cocktailName)!!)
         }
-        return drinkLiveData
+        return cocktailLiveData
     }
 
-    private fun setDrinkOfTheDay() {
+    private fun setCocktailOfTheDay() {
 
         val currentDate = Date()
         val pattern = "MM-dd-yyyy"
         val simpleDateFormat = SimpleDateFormat(pattern, Locale.getDefault())
         val stringDate: String = simpleDateFormat.format(currentDate)
 
-        launchRequest(drinkOfTheDayLiveData) {
-            val drinkOfTheDay: Drink? = drinkRepository.findDrinkOfTheDay(stringDate)
-            if (drinkOfTheDay == null) {
-                val allDrinks = drinkRepository.getAllDrinksFromDb()
+        launchRequest(cocktailOfTheDayLiveData) {
+            val cocktailOfTheDay = drinkRepository.findCocktailOfTheDay(stringDate)
+            if (cocktailOfTheDay == null) {
+                val allDrinks = drinkRepository.findAllCocktails()
                 if (allDrinks.isNullOrEmpty()) {
                     return@launchRequest null
                 } else {
-                    val newDrinkOfTheDay: Drink = allDrinks.random()
-                    newDrinkOfTheDay.setDrinkOfDay(stringDate)
-                    drinkRepository.saveDrinkIntoDb(newDrinkOfTheDay)
-                    drinkRepository.findDrinkByName(stringDate)
+                    val newDrinkOfTheDay = allDrinks.random()
+                    newDrinkOfTheDay.cocktailOfTheDay = stringDate
+                    drinkRepository.addOrReplaceCocktail(newDrinkOfTheDay)
+                    mapper.mapTo(drinkRepository.findCocktailOfTheDay(stringDate)!!)
                 }
             } else {
-                drinkOfTheDay
+                mapper.mapTo(cocktailOfTheDay)
             }
         }
     }

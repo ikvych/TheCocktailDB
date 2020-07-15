@@ -18,7 +18,9 @@ class CocktailRepoModelMapper(
             image = image,
             instructions = instructions.run(localizedStringRepoModelMapper::mapDbToRepo),
             ingredients = ingredients,
-            measures = measures
+            measures = measures,
+            cocktailOfTheDay = cocktailOfDay,
+            isFavorite = isFavorite
         )
     }
 
@@ -32,7 +34,9 @@ class CocktailRepoModelMapper(
             image = image,
             instructions = instructions.run(localizedStringRepoModelMapper::mapRepoToDb),
             ingredients = ingredients,
-            measures = measures
+            measures = measures,
+            cocktailOfDay = cocktailOfTheDay,
+            isFavorite = isFavorite
         )
     }
 

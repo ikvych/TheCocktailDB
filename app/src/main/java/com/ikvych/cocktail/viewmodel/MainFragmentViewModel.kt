@@ -14,10 +14,7 @@ import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
+import com.ikvych.cocktail.filter.type.*
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
 
@@ -33,85 +30,19 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
     val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getAllDrinksFromDbLiveData()
-
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
-        MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
-
+        MutableLiveData()
     val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
-        MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
+        MutableLiveData()
 
     init {
         resetFilters()
     }
 
-    val sortLiveData: MutableLiveData<SortDrinkType> =
-        MutableLiveData<SortDrinkType>()
+    val sortTypeLiveData: MutableLiveData<SortDrinkType> =
+        MutableLiveData(SortDrinkType.RECENT)
 
-    init {
-        sortLiveData.value = SortDrinkType.RECENT
-    }
-
-    val alcoholFilterLiveData: MutableLiveData<AlcoholDrinkFilter> =
-        object : MediatorLiveData<AlcoholDrinkFilter>() {
-            init {
-                value = AlcoholDrinkFilter.NONE
-                addSource(filtersLiveData) {
-                    value = it[DrinkFilterType.ALCOHOL] as AlcoholDrinkFilter
-                }
-            }
-        }
-    val categoryFilterLiveData: MutableLiveData<CategoryDrinkFilter> =
-        object : MediatorLiveData<CategoryDrinkFilter>() {
-            init {
-                value = CategoryDrinkFilter.NONE
-                addSource(filtersLiveData) {
-                    value = it[DrinkFilterType.CATEGORY] as CategoryDrinkFilter
-                }
-            }
-        }
-    val ingredientFilterLiveData: MutableLiveData<IngredientDrinkFilter> =
-        object : MediatorLiveData<IngredientDrinkFilter>() {
-            init {
-                value = IngredientDrinkFilter.NONE
-                addSource(filtersLiveData) {
-                    value = it[DrinkFilterType.INGREDIENT] as IngredientDrinkFilter
-                }
-            }
-        }
-
-
-    fun isFiltersPresent(): Boolean {
-        filtersLiveData.value!!.forEach {
-            if (it.value.key != "None") {
-                return true
-            }
-        }
-        return false
-    }
-
-    fun resetFilters() {
-        filtersLiveData.value = hashMapOf(
-            Pair(DrinkFilterType.ALCOHOL, AlcoholDrinkFilter.NONE),
-            Pair(DrinkFilterType.CATEGORY, CategoryDrinkFilter.NONE),
-            Pair(DrinkFilterType.INGREDIENT, IngredientDrinkFilter.NONE)
-        )
-        lastAppliedFiltersLiveData.value = hashMapOf(
-            Pair(DrinkFilterType.ALCOHOL, AlcoholDrinkFilter.NONE),
-            Pair(DrinkFilterType.CATEGORY, CategoryDrinkFilter.NONE),
-            Pair(DrinkFilterType.INGREDIENT, IngredientDrinkFilter.NONE)
-        )
-    }
-
-    fun isUndoEnabled(): Boolean {
-        lastAppliedFiltersLiveData.value!!.forEach {
-            if (it.value != filtersLiveData.value!![it.key]) {
-                return true
-            }
-        }
-        return false
-    }
-
-    val filteredDrinksLiveData: MutableLiveData<List<Drink>> =
+    val filteredAndSortedDrinksLiveData: MutableLiveData<List<Drink>> =
         object : MediatorLiveData<List<Drink>>() {
             init {
                 value = arrayListOf()
@@ -121,7 +52,7 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
                 addSource(filtersLiveData) {
                     filterAndSortData(drinksLiveData.value)
                 }
-                addSource(sortLiveData) {
+                addSource(sortTypeLiveData) {
                     filterAndSortData(drinksLiveData.value)
                 }
             }
@@ -131,61 +62,65 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
                 val filteredData =
                     filterData(drinksCopy, filtersLiveData.value!!.values.toList() as ArrayList)
-                val sortedData = sortData(filteredData, sortLiveData.value!!)
-                value = sortedData
+                val filteredAndSortedData = sortData(filteredData, sortTypeLiveData.value!!)
+                value = filteredAndSortedData
             }
         }
 
-    val filteredFavoriteDrinksLiveData: MutableLiveData<ArrayList<Drink>> =
+    val filteredAndSortedFavoriteDrinksLiveData: MutableLiveData<ArrayList<Drink>> =
         object : MediatorLiveData<ArrayList<Drink>>() {
             init {
-                if (value == null) {
-                    value = arrayListOf()
-                }
-                addSource(filteredDrinksLiveData) {
-                    val resultList = favoriteFilter(it)
-                    value = resultList
+                value = arrayListOf()
+                addSource(filteredAndSortedDrinksLiveData) {
+                    value = filterFavorite(it)
                 }
             }
 
-            fun favoriteFilter(drinks: List<Drink>): ArrayList<Drink> {
-                var drinksCopy = drinks
-                drinksCopy = drinksCopy.filter {
-                    it.isFavorite()
-                }
-                return drinksCopy as ArrayList<Drink>
+            fun filterFavorite(drinks: List<Drink>): ArrayList<Drink> {
+                return drinks.filter { it.isFavorite() } as ArrayList<Drink>
             }
         }
 
-    val allFilteredLiveData: LiveData<SpannableString> =
+    val filteredAndSortedResultDrinksLiveData: LiveData<SpannableString> =
         object : MediatorLiveData<SpannableString>() {
             init {
                 //Петтерн містить "Found: h @, f %" - де 'h' і ʼfʼ символи які заміюються на кількість знайдених коктейлів
                 //у історії і улюблених, відповідно, а ʼ@ʼ і ʼ%ʼ символи які замінюються на іконки історії та улюблені відповідно
-                val srcPattern = application.resources.getString(R.string.filter_fragment_search_result_text_pattern)
+                val srcPattern =
+                    application.resources.getString(R.string.filter_fragment_search_result_text_pattern)
 
                 val historyDrawable = ContextCompat.getDrawable(
                     application,
-                    com.ikvych.cocktail.R.drawable.ic_drink_history
+                    R.drawable.ic_drink_history
                 )
                 val favoriteDrawable = ContextCompat.getDrawable(
                     application,
-                    com.ikvych.cocktail.R.drawable.ic_drink_favorite
+                    R.drawable.ic_drink_favorite
                 )
 
                 //convert sp into px
-                val drawableSize = TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_SP, 16F, Resources.getSystem().displayMetrics).toInt()
+                val drawableSize = TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_SP,
+                    16F,
+                    Resources.getSystem().displayMetrics
+                ).toInt()
+                //визначаю розміри і положення іконок
                 historyDrawable!!.setBounds(0, 0, drawableSize, drawableSize)
                 favoriteDrawable!!.setBounds(0, 0, drawableSize, drawableSize)
-
+                //відображається напис у випадку порожнього результату
                 val emptySearch = application.resources.getString(R.string.all_empty_search)
 
-                addSource(filteredDrinksLiveData) {
-                    if (isFiltersPresent() && it.isEmpty() && filteredFavoriteDrinksLiveData.value!!.isEmpty()) {
+                addSource(filteredAndSortedDrinksLiveData) {
+                    //якщо фільтрів немає і відфільтовані списки коктейлів (історія і улюблене) пусті,
+                    // тоді показую emptySearch
+                    if (isFiltersPresent() && it.isEmpty() && filteredAndSortedFavoriteDrinksLiveData.value!!.isEmpty()) {
                         value = SpannableString(emptySearch)
                     } else {
                         var currentResult = srcPattern.replace("h", it.size.toString())
-                        currentResult = currentResult.replace("f", filteredFavoriteDrinksLiveData.value!!.size.toString())
+                        currentResult = currentResult.replace(
+                            "f",
+                            filteredAndSortedFavoriteDrinksLiveData.value!!.size.toString()
+                        )
                         val historyIndexDrw = currentResult.indexOf("@")
                         val favoriteIndexDrw = currentResult.indexOf("%")
                         val currentSpannable = SpannableString(currentResult)
@@ -208,12 +143,38 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
         }
 
 
-    fun getAllDrinksFromDb(): List<Drink> {
-        return drinksLiveData.value ?: emptyList()
+    fun isFiltersPresent(): Boolean {
+        return filtersLiveData.value!![DrinkFilterType.ALCOHOL] != AlcoholDrinkFilter.NONE ||
+                filtersLiveData.value!![DrinkFilterType.CATEGORY] != CategoryDrinkFilter.NONE ||
+                filtersLiveData.value!![DrinkFilterType.INGREDIENT] != IngredientDrinkFilter.NONE ||
+                filtersLiveData.value!![DrinkFilterType.GLASS] != GlassDrinkFilter.NONE
     }
 
-    fun saveDrinkIntoDb(drink: Drink) {
-        drinkRepository.saveDrinkIntoDb(drink)
+    //обнуляє фільтри
+    fun resetFilters() {
+        filtersLiveData.value = hashMapOf(
+            Pair(DrinkFilterType.ALCOHOL, AlcoholDrinkFilter.NONE),
+            Pair(DrinkFilterType.CATEGORY, CategoryDrinkFilter.NONE),
+            Pair(DrinkFilterType.INGREDIENT, IngredientDrinkFilter.NONE),
+            Pair(DrinkFilterType.GLASS, GlassDrinkFilter.NONE)
+        )
+        lastAppliedFiltersLiveData.value = hashMapOf(
+            Pair(DrinkFilterType.ALCOHOL, AlcoholDrinkFilter.NONE),
+            Pair(DrinkFilterType.CATEGORY, CategoryDrinkFilter.NONE),
+            Pair(DrinkFilterType.INGREDIENT, IngredientDrinkFilter.NONE),
+            Pair(DrinkFilterType.GLASS, GlassDrinkFilter.NONE)
+        )
+    }
+
+    //Метод визначає чи відрізняються поточні фільтри від попередньо обраних.
+    //Якщо відрізняються то повертає true і в такому випадку можна показувати Undo button
+    fun isUndoEnabled(): Boolean {
+        lastAppliedFiltersLiveData.value!!.forEach {
+            if (it.value != filtersLiveData.value!![it.key]) {
+                return true
+            }
+        }
+        return false
     }
 
     fun filterData(drinks: List<Drink>, drinkFilters: ArrayList<DrinkFilter>): List<Drink> {
@@ -249,6 +210,11 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
                     }
                 }
                 DrinkFilterType.GLASS -> {
+                    if (it != GlassDrinkFilter.NONE) {
+                        drinksCopy = drinksCopy.filter { drink ->
+                            drink.getStrGlass() == it.key
+                        }
+                    }
                 }
             }
         }

@@ -102,7 +102,7 @@ abstract class BaseBottomSheetDialogFragment<Data, ButtonType : DialogButton, Ty
         val dialog = super.onCreateDialog(savedInstanceState)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.window?.also {
-            it.attributes.windowAnimations = R.style.DialogFragment
+            it.attributes.windowAnimations = R.style.Animation_Design_BottomSheetDialog
         }
         dialog.setOnDismissListener(this)
         configureDialog(dialog)

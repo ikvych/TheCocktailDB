@@ -2,7 +2,7 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
 
-    <solid android:color="#FFFFFF"/>
+    <solid android:color="@color/battery_charging"/>
     <corners android:topLeftRadius="@dimen/corner_16"
         android:bottomLeftRadius="@dimen/corner_16"/>
 </shape>

@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.ikvych.cocktail.R
@@ -35,8 +36,6 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
         }
     }
 
-
-
     protected inner class DialogListAdapter(private val selectedButton: Any? = null) :
         RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         View.OnClickListener {
@@ -60,7 +59,7 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            with(holder.itemView as MaterialButton) {
+            with(holder.itemView as AppCompatButton) {
                 text = dialogListDataAdapter.getName(newData[position])
                 tag = newData[position]
                 isEnabled = (tag != selectedButton)

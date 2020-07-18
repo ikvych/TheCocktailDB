@@ -22,7 +22,7 @@
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
             <androidx.core.widget.NestedScrollView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <LinearLayout
@@ -62,8 +62,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/offset_20"
-                                android:text="@string/drink_detail_drink_name"
-                                android:textAppearance="@style/AppTextAppearanceSubtitle1.Bold" />
+                                android:text="@string/drink_detail_drink_name"/>
 
                             <TextView
                                 android:id="@+id/tv_drink_name_value"
@@ -84,8 +83,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/offset_20"
-                                android:text="@string/drink_detail_drink_alcoholic"
-                                android:textAppearance="@style/AppTextAppearanceSubtitle1.Bold" />
+                                android:text="@string/drink_detail_drink_alcoholic"/>
 
                             <TextView
                                 android:id="@+id/tv_drink_alcoholic_value"
@@ -106,8 +104,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_marginStart="@dimen/offset_20"
-                                android:text="@string/drink_detail_drink_glass"
-                                android:textAppearance="@style/AppTextAppearanceSubtitle1.Bold" />
+                                android:text="@string/drink_detail_drink_glass"/>
 
                             <TextView
                                 android:id="@+id/tv_drink_glass_value"

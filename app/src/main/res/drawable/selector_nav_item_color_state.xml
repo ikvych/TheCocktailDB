@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:color="@color/battery_charging"
+    <item android:color="@color/color_on_surface_variant"
         android:state_selected="true"/>
-    <item android:color="#9D9D9D"
+    <item android:color="#CC555555"
         android:state_selected="false"/>
 </selector>

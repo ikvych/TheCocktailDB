@@ -3,8 +3,8 @@
     android:height="@dimen/icon_size"
     android:viewportWidth="20.8"
     android:viewportHeight="20.8"
-    android:tint="#000000"
-    android:alpha="0.8">
+    android:alpha="0.8"
+    android:tint="@color/color_secondary">
   <group android:translateX="-1.6"
       android:translateY="-1.1666666">
       <path

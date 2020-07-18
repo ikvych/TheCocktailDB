@@ -1,5 +1,6 @@
 package com.ikvych.cocktail.ui.dialog.base
 
+import android.content.res.Resources
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
@@ -8,6 +9,7 @@ import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.CallSuper
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.ikvych.cocktail.R
@@ -60,9 +62,11 @@ protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>(
         b_dialog_left_button.isVisible = !leftButtonText.isNullOrEmpty()
         b_dialog_right_button.isVisible = !rightButtonText.isNullOrEmpty()
 
+
         space_dialog_buttons.isVisible =
             b_dialog_left_button.isVisible && b_dialog_right_button.isVisible
-        ll_dialog_buttons.isVisible = b_dialog_left_button.isVisible || b_dialog_right_button.isVisible
+        ll_dialog_buttons.isVisible =
+            b_dialog_left_button.isVisible || b_dialog_right_button.isVisible
 
         b_dialog_left_button.text = leftButtonText ?: ""
         b_dialog_right_button.text = rightButtonText ?: ""
@@ -82,7 +86,6 @@ protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>(
 
         b_dialog_left_button.setOnClickListener(this)
         b_dialog_right_button.setOnClickListener(this)
-        iv_dialog_close.setOnClickListener(this)
 
         if (extraContentLayoutResId != 0) {
             fl_dialog_extra_contents?.let {
@@ -99,7 +102,8 @@ protected constructor() : BaseBottomSheetDialogFragment<Data, ButtonType, Type>(
 
     override fun obtainClickableViews(): List<View> = listOf(
         b_dialog_left_button,
-        b_dialog_right_button
+        b_dialog_right_button,
+        iv_dialog_close
     )
 
 

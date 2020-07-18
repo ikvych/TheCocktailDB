@@ -1,9 +1,12 @@
 package com.ikvych.cocktail.ui.dialog.base
 
+import android.app.Dialog
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
 import android.view.View
+import android.view.ViewGroup
+import android.view.WindowManager
 import android.widget.FrameLayout
 import android.widget.TextView
 import androidx.annotation.CallSuper
@@ -28,6 +31,19 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
 
     protected open lateinit var dialogBuilder: Builder
     override var data: Data? = null
+
+    override fun onResume() {
+        // Get existing layout params for the window
+        // Get existing layout params for the window
+        val params: ViewGroup.LayoutParams = dialog!!.window!!.attributes
+        // Assign window properties to fill the parent
+        // Assign window properties to fill the parent
+        params.width = WindowManager.LayoutParams.MATCH_PARENT
+        params.height = WindowManager.LayoutParams.WRAP_CONTENT
+        dialog!!.window!!.attributes = params as WindowManager.LayoutParams
+        // Call super onResume after sizing
+        super.onResume()
+    }
 
     @CallSuper
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -68,9 +84,7 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
         b_dialog_right_button.text = rightButtonText ?: ""
 
         if (dialogBuilder.isCloseButtonVisible) {
-            iv_dialog_close.setOnClickListener {
-                dismiss()
-            }
+            iv_dialog_close.setOnClickListener { dismiss() }
             iv_dialog_close.isVisible = true
         } else {
             iv_dialog_close.setOnClickListener(null)
@@ -82,7 +96,6 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
 
         b_dialog_left_button.setOnClickListener(this)
         b_dialog_right_button.setOnClickListener(this)
-        iv_dialog_close.setOnClickListener(this)
 
         if (extraContentLayoutResId != 0) {
             fl_dialog_extra_contents?.let {

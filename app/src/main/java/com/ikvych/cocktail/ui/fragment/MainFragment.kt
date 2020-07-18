@@ -22,14 +22,10 @@ import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
+import com.ikvych.cocktail.filter.type.*
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
-import com.ikvych.cocktail.ui.dialog.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
 import com.ikvych.cocktail.ui.dialog.base.type.DialogType
@@ -78,7 +74,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         favoriteFragment = FavoriteFragment.newInstance()
 
         batteryReceiver = BatteryReceiver(this@MainFragment)
-        viewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { _ ->
+        viewModel.filteredAndSortedFavoriteDrinksLiveData.observe(this, Observer { _ ->
             //trigger to init filteredFavoriteLiveData
         })
     }
@@ -135,13 +131,13 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
 
         sortBtn = atb_fragment_main.sortBtn
         sortBtn.setOnClickListener {
-            SortDrinkDialogFragment.newInstance(viewModel.sortLiveData.value)
+            SortDrinkDialogFragment.newInstance(viewModel.sortTypeLiveData.value)
                 .show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
         }
         sortIndicator = atb_fragment_main.sortIndicatorView
         sortBtn.setOnLongClickListener {
-            if (viewModel.sortLiveData.value != SortDrinkType.RECENT) {
-                viewModel.sortLiveData.value = SortDrinkType.RECENT
+            if (viewModel.sortTypeLiveData.value != SortDrinkType.RECENT) {
+                viewModel.sortTypeLiveData.value = SortDrinkType.RECENT
                 return@setOnLongClickListener true
             }
             false
@@ -155,7 +151,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         batteryIcon = iv_battery_icon
         powerConnected = iv_power_connected
 
-        viewModel.sortLiveData.observe(this, Observer{
+        viewModel.sortTypeLiveData.observe(this, Observer{
             if (it == SortDrinkType.RECENT) {
                 sortIndicator.visibility = View.GONE
             } else {
@@ -184,7 +180,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
             SortDrinkDrinkDialogType -> {
                 when (buttonType) {
                     ItemListDialogButton -> {
-                        viewModel.sortLiveData.value = data as SortDrinkType
+                        viewModel.sortTypeLiveData.value = data as SortDrinkType
                     }
                 }
             }
@@ -234,7 +230,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
                 viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = AlcoholDrinkFilter.NONE }
             }
             DrinkFilterType.GLASS -> {
-
+                viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = GlassDrinkFilter.NONE }
             }
             DrinkFilterType.INGREDIENT -> {
                 viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply { this[drinkFilter.type] = IngredientDrinkFilter.NONE }

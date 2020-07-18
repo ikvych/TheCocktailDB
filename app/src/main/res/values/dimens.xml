@@ -29,6 +29,8 @@
     <!--#region Corner-->
     <dimen name="corner_6">6dp</dimen>
     <dimen name="corner_8">8dp</dimen>
+    <dimen name="corner_12">12dp</dimen>
+    <dimen name="corner_16">16dp</dimen>
     <!--#endregion-->
 
     <!--#region Elevation-->
@@ -58,6 +60,7 @@
     <!--#endregion-->
 
     <!--#region Icon-->
+    <dimen name="icon_size_min">16dp</dimen>
     <dimen name="icon_size">24dp</dimen>
     <dimen name="icon_size_extra">48dp</dimen>
     <!--#endregion-->

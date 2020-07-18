@@ -27,9 +27,7 @@ class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
     private lateinit var startTestFragmentBtn: Button
     private lateinit var testFragment: TestFragment
 
-    private lateinit var changeBottomNavBarTitleVisibility: CheckBox
-
-    private lateinit var mainViewModel: MainActivityViewModel
+    private lateinit var activityViewModel: MainActivityViewModel
 
     private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
 
@@ -41,7 +39,7 @@ class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
             leftButtonText = getString(R.string.all_cancel_button)
             rightButtonText = getString(R.string.all_accept_button)
         }
-        mainViewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
+        activityViewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -62,11 +60,11 @@ class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
             fragmentTransaction.commit()
         }
 
-        changeBottomNavBarTitleVisibility = cb_main_nav_bar_title_visibility
+
         // видимість титульного напису на BottomNavigationView по замовчуванню true
-        mainViewModel.navBarTitleVisibilityLiveData.value = changeBottomNavBarTitleVisibility.isChecked
-        changeBottomNavBarTitleVisibility.setOnCheckedChangeListener { _, isChecked ->
-            mainViewModel.navBarTitleVisibilityLiveData.value = isChecked }
+        activityViewModel.navBarTitleVisibilityLiveData.value = cb_main_nav_bar_title_visibility.isChecked
+        cb_main_nav_bar_title_visibility.setOnCheckedChangeListener { _, isChecked ->
+            activityViewModel.navBarTitleVisibilityLiveData.value = isChecked }
     }
 
     override fun onBottomSheetDialogFragmentClick(

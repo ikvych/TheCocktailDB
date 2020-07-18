@@ -17,13 +17,13 @@ class MainActivityViewModel(
     application: Application
 ) : BaseViewModel(application), ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
+    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData(true)
     val drinkOfTheDayLiveData: MutableLiveData<Drink?> = MutableLiveData()
     private var lifecycleObserver: ApplicationLifeCycleObserver
     private var sharedPreferences: SharedPreferences = application.getSharedPreferences(
         MAIN_ACTIVITY_SHARED_PREFERENCE,
         Context.MODE_PRIVATE
     )
-    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData()
 
     init {
         lifecycleObserver = ApplicationLifeCycleObserver(this, sharedPreferences)

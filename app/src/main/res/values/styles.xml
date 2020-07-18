@@ -4,20 +4,14 @@
     <style name="Theme.App.Main" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="colorPrimaryDark">@color/color_primary_variant</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorSecondary">@color/color_secondary</item>
-        <item name="android:colorBackground">@color/color_background</item>
-        <item name="colorSurface">@color/color_surface</item>
         <item name="colorOnSecondary">@color/color_on_secondary</item>
         <item name="colorOnPrimary">@color/color_on_primary</item>
-        <item name="colorOnBackground">@color/color_on_background</item>
         <item name="colorOnSurface">@color/color_on_surface</item>
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="android:colorBackground">@color/color_background</item>
 
-        <item name="textAppearanceBody2">@style/AppTextAppearanceBody2</item>
-        <item name="textAppearanceSubtitle2">@style/AppTextAppearanceSubtitle2</item>
-        <item name="textAppearanceSubtitle1">@style/AppTextAppearanceSubtitle1</item>
-        <item name="textAppearanceHeadline6">@style/AppTextAppearanceHeadline6</item>
         <item name="textAppearanceHeadline4">@style/AppTextAppearanceHeadline4</item>
 
         <item name="android:popupMenuStyle">@style/Widget.PopupMenu</item>
@@ -57,45 +51,9 @@
         <item name="android:layout_marginEnd">@dimen/offset_24</item>
     </style>
 
-    <!--override textAppearanceBody2-->
-    <style name="AppTextAppearanceBody2" parent="TextAppearance.MaterialComponents.Body2">
-        <item name="fontFamily">sans-serif-medium</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/color_on_surface_variant</item>
-    </style>
-
-    <!--override textAppearanceSubtitle2-->
-    <style name="AppTextAppearanceSubtitle2" parent="TextAppearance.MaterialComponents.Subtitle2">
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/color_on_surface</item>
-    </style>
-
     <!--override textAppearanceHeadline4-->
     <style name="AppTextAppearanceHeadline4" parent="TextAppearance.MaterialComponents.Headline4">
         <item name="android:textColor">@color/color_on_secondary</item>
-    </style>
-
-    <!--override textAppearanceHeadline6-->
-    <style name="AppTextAppearanceHeadline6" parent="TextAppearance.MaterialComponents.Headline6">
-        <item name="fontFamily">sans-serif</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/headline_3</item>
-        <item name="android:gravity">center_horizontal</item>
-        <item name="android:textColor">@color/color_on_surface</item>
-    </style>
-
-    <!--override textAppearanceSubtitle1-->
-    <style name="AppTextAppearanceSubtitle1" parent="TextAppearance.MaterialComponents.Subtitle1">
-        <item name="fontFamily">sans-serif</item>
-        <item name="android:textStyle">bold</item>
-        <item name="android:textAllCaps">false</item>
-        <item name="android:textColor">@color/color_on_surface</item>
-    </style>
-
-    <!--override textAppearanceSubtitle1 bold-->
-    <style name="AppTextAppearanceSubtitle1.Bold">
-        <item name="android:textStyle">bold</item>
     </style>
 
     <!--Text When RecyclerView is Empty-->
@@ -143,7 +101,12 @@
         <item name="android:windowNoTitle">true</item>
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsTranslucent">true</item>
-        <item name="android:layout_gravity">bottom</item>>
+        <item name="android:layout_gravity">bottom</item>
     </style>
+
+    <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@drawable/inset_regular_dialog_fragment</item>
+    </style>
+
 
 </resources>

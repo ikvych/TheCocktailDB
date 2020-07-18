@@ -42,7 +42,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_primary"
-                        app:tabSelectedTextColor="@color/battery_charging">
+                        app:tabIndicatorColor="@color/color_on_surface_variant"
+                        app:tabSelectedTextColor="@color/color_on_surface_variant">
 
                     </com.google.android.material.tabs.TabLayout>
 
@@ -71,8 +72,7 @@
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_filter_list"
-                                style="@style/RecyclerView"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                 android:orientation="horizontal" />
@@ -97,6 +97,7 @@
                     android:layout_gravity="bottom|center"
                     android:layout_marginBottom="@dimen/offset_20"
                     android:background="@drawable/search_view_shape"
+                    android:visibility="gone"
                     android:orientation="horizontal">
 
                     <ImageView

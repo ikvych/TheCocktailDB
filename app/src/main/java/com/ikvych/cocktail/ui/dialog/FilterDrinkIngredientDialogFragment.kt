@@ -62,6 +62,7 @@ class FilterDrinkIngredientDialogFragment :
                         EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                             titleTextResId = R.string.dialog_sort_title
                             isCancelable = true
+                            isCloseButtonVisible = true
                         },
                         EXTRA_KEY_SELECTED_INGREDIENT to selectedIngredient?.ordinal
                     )

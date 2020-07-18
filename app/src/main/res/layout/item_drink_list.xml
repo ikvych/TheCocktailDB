@@ -47,6 +47,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@{drink.strDrink}"
+                android:textColor="#999999"
                 android:layout_below="@id/iv_drink_image"
                 android:layout_margin="@dimen/offset_8"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />

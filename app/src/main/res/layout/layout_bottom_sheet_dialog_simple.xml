@@ -4,19 +4,12 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical"
-    android:background="#00ffffff"
     android:clipChildren="false"
     android:clipToPadding="false"
+    android:orientation="vertical"
+    android:background="@drawable/shape_bottom_sheet_dialog_fragment"
     android:outlineProvider="none">
 
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="#FFFFFF"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/offset_8"
-        android:paddingBottom="@dimen/offset_16">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -42,7 +35,7 @@
                     android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:includeFontPadding="false"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle1"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"
                     android:maxLines="3"/>
 
                 <ImageView
@@ -54,13 +47,14 @@
                     android:src="@drawable/ic_item_drink_filter_close"/>
             </LinearLayout>
 
-
             <TextView
                 android:id="@+id/tv_dialog_description"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="@dimen/offset_24"
                 android:paddingHorizontal="@dimen/offset_16"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                android:textColor="#939393"
                 android:visibility="gone"/>
 
             <FrameLayout
@@ -74,25 +68,32 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
-                android:paddingHorizontal="@dimen/offset_16">
+                android:paddingVertical="@dimen/offset_16"
+                android:paddingHorizontal="@dimen/offset_8"
+                android:clipChildren="false"
+                android:clipToPadding="false">
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/b_dialog_left_button"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/btn_height"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textColor="@drawable/selector_app_button_text"
+                    android:background="@drawable/selector_app_button"/>
 
                 <Space
                     android:id="@+id/space_dialog_buttons"
-                    android:layout_width="16dp"
+                    android:layout_width="@dimen/offset_8"
                     android:layout_height="match_parent" />
 
-                <Button
+                <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/b_dialog_right_button"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/btn_height"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:textColor="@drawable/selector_app_button_text"
+                    android:background="@drawable/selector_app_button"/>
+
             </LinearLayout>
         </LinearLayout>
-    </FrameLayout>
 </FrameLayout>

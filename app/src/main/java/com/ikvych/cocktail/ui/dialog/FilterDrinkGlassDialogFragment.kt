@@ -5,23 +5,25 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
+import com.ikvych.cocktail.filter.type.GlassDrinkFilter
 import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.type.AlcoholDrinkDialogType
+import com.ikvych.cocktail.ui.dialog.base.type.GlassDrinkDialogType
 import com.ikvych.cocktail.ui.dialog.base.type.ItemListDialogButton
 import com.ikvych.cocktail.ui.dialog.base.type.ListDialogButton
 
 
-class FilterDrinkAlcoholDialogFragment :
-    ListBaseDialogFragment<AlcoholDrinkFilter?, ListDialogButton, AlcoholDrinkDialogType>() {
+class FilterDrinkGlassDialogFragment :
+    ListBaseDialogFragment<GlassDrinkFilter?, ListDialogButton, GlassDrinkDialogType>() {
 
-    override val dialogType: AlcoholDrinkDialogType = AlcoholDrinkDialogType
-    override var data: AlcoholDrinkFilter? = AlcoholDrinkFilter.NONE
-    private var selectedAlcoholDrinkFilter: AlcoholDrinkFilter? = AlcoholDrinkFilter.NONE
+    override val dialogType: GlassDrinkDialogType = GlassDrinkDialogType
+    override var data: GlassDrinkFilter? = GlassDrinkFilter.NONE
+    private var selectedGlassDrinkFilter: GlassDrinkFilter? = GlassDrinkFilter.NONE
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
 
-    override val dialogListDataAdapter: DialogListDataAdapter<AlcoholDrinkFilter?> =
-        object : DialogListDataAdapter<AlcoholDrinkFilter?> {
-            override fun getName(data: AlcoholDrinkFilter?): CharSequence {
+    override val dialogListDataAdapter: DialogListDataAdapter<GlassDrinkFilter?> =
+        object : DialogListDataAdapter<GlassDrinkFilter?> {
+            override fun getName(data: GlassDrinkFilter?): CharSequence {
                 return data?.key ?: ""
             }
         }
@@ -29,13 +31,13 @@ class FilterDrinkAlcoholDialogFragment :
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dialogBuilder = requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
-        val alcoholOrdinal = requireArguments().getInt(EXTRA_KEY_SELECTED_ALCOHOL)
-        selectedAlcoholDrinkFilter = AlcoholDrinkFilter.values()[alcoholOrdinal]
-        listAdapter = DialogListAdapter(selectedAlcoholDrinkFilter)
+        val glassOrdinal = requireArguments().getInt(EXTRA_KEY_SELECTED_GLASS)
+        selectedGlassDrinkFilter = GlassDrinkFilter.values()[glassOrdinal]
+        listAdapter = DialogListAdapter(selectedGlassDrinkFilter)
     }
 
-    override var listData: List<AlcoholDrinkFilter?> = mutableListOf<AlcoholDrinkFilter?>().apply {
-        addAll(AlcoholDrinkFilter.values())
+    override var listData: List<GlassDrinkFilter?> = mutableListOf<GlassDrinkFilter?>().apply {
+        addAll(GlassDrinkFilter.values())
     }.toList()
 
     override fun getButtonType(view: View): ListDialogButton {
@@ -46,28 +48,28 @@ class FilterDrinkAlcoholDialogFragment :
     }
 
 
-    override fun obtainDataForView(view: View): AlcoholDrinkFilter? {
+    override fun obtainDataForView(view: View): GlassDrinkFilter? {
         return when (getButtonType(view)) {
-            is ItemListDialogButton -> view.tag as? AlcoholDrinkFilter?
+            is ItemListDialogButton -> view.tag as? GlassDrinkFilter?
             else -> super.obtainDataForView(view)
         }
     }
 
     companion object {
-        fun newInstance(selectedAlcohol: AlcoholDrinkFilter? = null): FilterDrinkAlcoholDialogFragment {
-            return FilterDrinkAlcoholDialogFragment().apply {
+        fun newInstance(selectedGlass: GlassDrinkFilter? = null): FilterDrinkGlassDialogFragment {
+            return FilterDrinkGlassDialogFragment().apply {
                 arguments = bundleOf(
                     EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
                         isCloseButtonVisible = true
                     },
-                    EXTRA_KEY_SELECTED_ALCOHOL to selectedAlcohol?.ordinal
+                    EXTRA_KEY_SELECTED_GLASS to selectedGlass?.ordinal
                 )
             }
         }
 
         private const val EXTRA_KEY_BUILDER = "EXTRA_KEY_BUILDER"
-        private const val EXTRA_KEY_SELECTED_ALCOHOL = "EXTRA_KEY_SELECTED_ALCOHOL"
+        private const val EXTRA_KEY_SELECTED_GLASS = "EXTRA_KEY_SELECTED_ALCOHOL"
     }
 }

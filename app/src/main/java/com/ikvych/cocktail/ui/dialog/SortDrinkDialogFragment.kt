@@ -9,6 +9,7 @@ import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.type.ItemListDialogButton
 import com.ikvych.cocktail.ui.dialog.base.type.ListDialogButton
 import com.ikvych.cocktail.ui.dialog.base.type.SortDrinkDrinkDialogType
+import kotlinx.android.synthetic.main.layout_dialog_simple.*
 
 
 class SortDrinkDialogFragment :
@@ -64,6 +65,7 @@ class SortDrinkDialogFragment :
                         EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                             titleTextResId = R.string.dialog_sort_title
                             isCancelable = true
+                            isCloseButtonVisible = true
                         },
                         EXTRA_KEY_SORT_TYPE to sortType?.ordinal
                     )

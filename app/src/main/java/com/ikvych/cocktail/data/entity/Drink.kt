@@ -102,7 +102,7 @@ class Drink : BaseObservable, Parcelable {
     @ColumnInfo(name = "str_drink")
     private var strDrink: String? = null
 
-    @ColumnInfo(name = "if_favorite")
+    @ColumnInfo(name = "is_favorite")
     private var isFavorite: Boolean = false
 
     @SerializedName("strDrinkAlternate")

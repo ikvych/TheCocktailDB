@@ -42,8 +42,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_primary"
-                        app:tabIndicatorColor="@color/color_on_surface_variant"
-                        app:tabSelectedTextColor="@color/color_on_surface_variant">
+                        app:tabIndicatorColor="@color/color_surface_variant"
+                        app:tabSelectedTextColor="@color/color_surface_variant">
 
                     </com.google.android.material.tabs.TabLayout>
 

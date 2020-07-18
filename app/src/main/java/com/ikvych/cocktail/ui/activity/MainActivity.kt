@@ -151,16 +151,69 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
     override fun onLongClick(v: View?): Boolean {
         PopupMenu(this, v).apply {
             setOnMenuItemClickListener {
+                val view = v?.findViewById<TextView>(R.id.tv_drink_name)
                 when (it.itemId) {
                     // відкриває деталізацію напою
                     R.id.menu_drink_open -> {
-                        val view = v?.findViewById<TextView>(R.id.tv_drink_name)
+
                         val drinkName = view?.text ?: ""
                         val drink = viewModel.findDrinkByName(drinkName.toString())
 
                         val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
                         intent.putExtra(DRINK, drink)
                         startActivity(intent)
+                        true
+                    }
+                    R.id.menu_drink_add_favorite -> {
+
+                        val drinkName = view?.text ?: ""
+                        val drink = viewModel.findDrinkByName(drinkName.toString()) ?: return@setOnMenuItemClickListener false
+
+                        if (!drink.isFavorite()) {
+                            drink.setIsFavorite(true)
+                            viewModel.saveDrinkIntoDb(drink)
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Added to favorite",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Already added to favorite",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        true
+                    }
+                    R.id.menu_drink_remove_favorite -> {
+
+                        val drinkName = view?.text ?: ""
+                        val drink = viewModel.findDrinkByName(drinkName.toString()) ?: return@setOnMenuItemClickListener false
+                        if (drink.isFavorite()) {
+                            drink.setIsFavorite(false)
+                            viewModel.saveDrinkIntoDb(drink)
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Removed from favorite",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        } else {
+                            Toast.makeText(
+                                this@MainActivity,
+                                "Not added yet",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        true
+                    }
+                    R.id.menu_drink_remove -> {
+
+                        val drinkName = view?.text ?: ""
+                        val drink = viewModel.findDrinkByName(drinkName.toString()) ?: return@setOnMenuItemClickListener false
+
+                        viewModel.removeDrink(drink)
+                        Toast.makeText(this@MainActivity, "Drink removed", Toast.LENGTH_SHORT).show()
                         true
                     }
                     // створює pinned shortcut

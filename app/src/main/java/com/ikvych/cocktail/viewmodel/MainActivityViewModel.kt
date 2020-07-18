@@ -47,6 +47,11 @@ class MainActivityViewModel(
         drinkRepository.saveDrinkIntoDb(drink)
     }
 
+    fun removeDrink(drink: Drink) {
+        drinkRepository.removeDrink(drink)
+    }
+
+
     private fun setDrinkOfTheDay() {
         //Оскільки lifecycle, до якого привязана робота цього метода, належить MainActivity, яка по своїй природні працює тільки з базою даних, то
         //даний метод не працює при повному перевстановленні додатку, оскільки разом з додатком видаляється сама база даних

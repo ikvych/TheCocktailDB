@@ -9,7 +9,7 @@ import com.ikvych.cocktail.convertor.db.DateConverter
 import com.ikvych.cocktail.data.entity.Drink
 
 
-@Database(entities = [Drink::class], version = 2, exportSchema = false)
+@Database(entities = [Drink::class], version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {
 

@@ -18,7 +18,7 @@
                 android:topRightRadius="@dimen/offset_8"
                 android:bottomRightRadius="@dimen/offset_8"
                 />
-            <solid android:color="@color/color_on_surface_variant"/>
+            <solid android:color="@color/color_surface_variant"/>
         </shape>
     </item>
 

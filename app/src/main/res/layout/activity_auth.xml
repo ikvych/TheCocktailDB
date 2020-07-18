@@ -72,7 +72,7 @@
             android:layout_marginVertical="@dimen/offset_16"
             android:text="@string/auth_login_button"
             android:textColor="#FFFFFF"
-            app:backgroundTint="@color/color_on_surface_variant"
+            app:backgroundTint="@color/color_surface_variant"
             android:background="@drawable/login_button_shape"/>
 
     </com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener>

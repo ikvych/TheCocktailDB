@@ -83,7 +83,7 @@
 
                 <Space
                     android:id="@+id/space_dialog_buttons"
-                    android:layout_width="@dimen/offset_8"
+                    android:layout_width="@dimen/offset_16"
                     android:layout_height="match_parent" />
 
                 <androidx.appcompat.widget.AppCompatButton

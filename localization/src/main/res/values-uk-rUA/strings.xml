@@ -84,6 +84,7 @@
     <string name="filter_fragment_alcohol_filter_button">Вміст алкоголю</string>
     <string name="filter_fragment_category_filter_button">Категорія напою</string>
     <string name="filter_fragment_ingredient_filter_button">Містить інгредієнт</string>
+    <string name="filter_fragment_glass_filter_button">Тип бокалу</string>
     <string name="filter_fragment_result_button">До результатів</string>
     <string name="filter_fragment_search_result_text_pattern">Знайдено: h @, f %</string>
     <!--#endregion-->

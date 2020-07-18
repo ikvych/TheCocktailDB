@@ -83,6 +83,7 @@
     <string name="filter_fragment_alcohol_filter_button">Alcohol Filter</string>
     <string name="filter_fragment_category_filter_button">Category Filter</string>
     <string name="filter_fragment_ingredient_filter_button">Ingredient Filter</string>
+    <string name="filter_fragment_glass_filter_button">Glass Filter</string>
     <string name="filter_fragment_result_button">To result</string>
     <string name="filter_fragment_search_result_text_pattern">Found: h @, f %</string>
     <!--#endregion-->

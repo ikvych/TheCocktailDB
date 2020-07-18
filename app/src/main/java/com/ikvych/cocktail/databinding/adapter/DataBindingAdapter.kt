@@ -21,7 +21,7 @@ import com.ikvych.cocktail.util.Page
 
 @BindingAdapter("bind:src")
 fun setImageViewResource(imageButton: ImageButton, resource: Int) {
-    imageButton.setImageResource(resource)
+    imageButton.setImageResource(Math.abs(resource))
 }
 
 @BindingAdapter("bind:bg_color")

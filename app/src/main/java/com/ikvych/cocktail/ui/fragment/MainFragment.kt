@@ -77,7 +77,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
         favoriteFragment = FavoriteFragment.newInstance()
 
         batteryReceiver = BatteryReceiver(this@MainFragment)
-        viewModel.filteredFavoriteCocktailsLiveData.observe(this, Observer { _ ->
+        viewModel.filteredAndSortedFavoriteDrinksLiveData.observe(this, Observer { _ ->
             //trigger to init filteredFavoriteLiveData
         })
     }
@@ -159,13 +159,13 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
 
         sortBtn = atb_fragment_main.sortBtn
         sortBtn.setOnClickListener {
-            SortDrinkDialogFragment.newInstance(viewModel.sortLiveData.value)
+            SortDrinkDialogFragment.newInstance(viewModel.sortTypeLiveData.value)
                 .show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
         }
         sortIndicator = atb_fragment_main.sortIndicatorView
         sortBtn.setOnLongClickListener {
-            if (viewModel.sortLiveData.value != SortDrinkType.RECENT) {
-                viewModel.sortLiveData.value = SortDrinkType.RECENT
+            if (viewModel.sortTypeLiveData.value != SortDrinkType.RECENT) {
+                viewModel.sortTypeLiveData.value = SortDrinkType.RECENT
                 return@setOnLongClickListener true
             }
             false
@@ -179,7 +179,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
         batteryIcon = iv_battery_icon
         powerConnected = iv_power_connected
 
-        viewModel.sortLiveData.observe(this, Observer{
+        viewModel.sortTypeLiveData.observe(this, Observer{
             if (it == SortDrinkType.RECENT) {
                 sortIndicator.visibility = View.GONE
             } else {
@@ -212,7 +212,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             SortDrinkDrinkDialogType -> {
                 when (buttonType) {
                     ItemListDialogButton -> {
-                        viewModel.sortLiveData.value = data as SortDrinkType
+                        viewModel.sortTypeLiveData.value = data as SortDrinkType
                     }
                 }
             }

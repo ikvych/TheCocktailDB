@@ -40,7 +40,7 @@ abstract class RecyclerViewFragment<ViewModel : BaseViewModel, DataBinding : Vie
     private val alcoholComparator: AlcoholCocktailComparator = AlcoholCocktailComparator()
 
     open fun initLiveDataObserver() {
-        parentViewModel.filteredCocktailsLiveData.observe(this, Observer { cocktails ->
+        parentViewModel.filteredAndSortedDrinksLiveData.observe(this, Observer { cocktails ->
             cocktailAdapter.listData = cocktails
             determineVisibleLayerOnUpdateData(cocktails)
         })

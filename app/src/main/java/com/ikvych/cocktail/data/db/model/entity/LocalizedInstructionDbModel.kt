@@ -1,10 +1,18 @@
-package com.xtreeivi.cocktailsapp.data.db.model
+package com.ikvych.cocktail.data.db.model.entity
 
 import androidx.room.ColumnInfo
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+import com.ikvych.cocktail.data.db.Table
 
-data class LocalizedStringDbModel(
-    @ColumnInfo(name = "defaults")
-    var defaults: String? = null,
+@Entity(tableName = Table.INSTRUCTION)
+data class LocalizedInstructionDbModel(
+
+    @PrimaryKey
+    @ColumnInfo(name = "default_name")
+    var defaultsName: String,
+
+    val cocktailOwnerId: Long,
 
     @ColumnInfo(name = "default_alternate")
     var defaultAlternate: String? = null,

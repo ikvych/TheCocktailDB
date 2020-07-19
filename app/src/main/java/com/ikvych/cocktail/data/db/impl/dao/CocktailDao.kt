@@ -1,40 +1,64 @@
 package com.ikvych.cocktail.data.db.impl.dao
 
 import androidx.lifecycle.LiveData
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.ikvych.cocktail.data.db.Table
 import com.ikvych.cocktail.data.db.impl.dao.base.BaseDao
+import com.ikvych.cocktail.data.db.model.LocalizedCocktailDbModel
 import com.ikvych.cocktail.data.network.model.Drink
-import com.xtreeivi.cocktailsapp.data.db.model.CocktailDbModel
+import com.ikvych.cocktail.data.db.model.entity.CocktailDbModel
+import com.ikvych.cocktail.data.db.model.entity.LocalizedInstructionDbModel
+import com.ikvych.cocktail.data.db.model.entity.LocalizedNameDbModel
 
 @Dao
 interface CocktailDao : BaseDao {
 
+    @Transaction
+    fun addOrReplaceLocalizedCocktail(cocktail: LocalizedCocktailDbModel) {
+        addOrReplaceCocktail(cocktail = cocktail.cocktailDbModel)
+        addOrReplaceCocktailName(name = cocktail.localizedNameDbModel)
+        addOrReplaceCocktailInstruction(instruction = cocktail.localizedInstructionDbModel)
+    }
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addOrReplaceCocktail(cocktail: CocktailDbModel)
 
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addOrReplaceCocktailName(name: LocalizedNameDbModel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addOrReplaceCocktailInstruction(instruction: LocalizedInstructionDbModel)
+
+    @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE cocktail_of_day = :stringDate")
-    fun findCocktailOfTheDay(stringDate: String) : CocktailDbModel?
+    fun findCocktailOfTheDay(stringDate: String) : LocalizedCocktailDbModel?
 
+    @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE id = :cocktailId")
-    fun findCocktailByIdLiveData(cocktailId: Long) : LiveData<CocktailDbModel?>
+    fun findCocktailByIdLiveData(cocktailId: Long) : LiveData<LocalizedCocktailDbModel?>
 
+    @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE id = :cocktailId")
-    fun findCocktailById(cocktailId: Long) : CocktailDbModel?
+    fun findCocktailById(cocktailId: Long) : LocalizedCocktailDbModel?
 
-    @Query("SELECT * FROM ${Table.COCKTAIL} WHERE name_defaults = :defaultCocktailName")
-    fun findCocktailByDefaultName(defaultCocktailName: String) : CocktailDbModel?
-
+    @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL}")
-    fun findAllCocktails() : List<CocktailDbModel>?
+    fun findCocktailByDefaultName(/*defaultCocktailName: String*/) : LocalizedCocktailDbModel?
 
+    @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL}")
-    fun findAllCocktailsLiveData() : LiveData<List<CocktailDbModel>?>
+    fun findAllLocalizedCocktail(): LiveData<List<LocalizedCocktailDbModel>>
 
+    @Transaction
+    @Query("SELECT * FROM ${Table.COCKTAIL}")
+    fun findAllCocktails() : List<LocalizedCocktailDbModel>?
+
+    @Transaction
+    @Query("SELECT * FROM ${Table.COCKTAIL}")
+    fun findAllCocktailsLiveData() : LiveData<List<LocalizedCocktailDbModel>?>
+
+    @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE is_favorite = 1")
-    fun findAllFavoriteCocktailsLiveData() : LiveData<List<CocktailDbModel>?>
+    fun findAllFavoriteCocktailsLiveData() : LiveData<List<LocalizedCocktailDbModel>?>
 
 }

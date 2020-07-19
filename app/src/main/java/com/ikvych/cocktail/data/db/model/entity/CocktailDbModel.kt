@@ -1,4 +1,4 @@
-package com.xtreeivi.cocktailsapp.data.db.model
+package com.ikvych.cocktail.data.db.model.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Embedded
@@ -68,9 +68,6 @@ data class CocktailDbModel(
     @ColumnInfo(name = "id")
     val id: Long = -1L,
 
-    @Embedded(prefix = "name_")
-    val names: LocalizedStringDbModel = LocalizedStringDbModel(),
-
     @ColumnInfo(name = "cocktail_of_day")
     var cocktailOfDay: String = "",
 
@@ -85,9 +82,6 @@ data class CocktailDbModel(
 
     @ColumnInfo(name = "image")
     val image: String = "",
-
-    @Embedded(prefix = "instruction_")
-    val instructions: LocalizedStringDbModel = LocalizedStringDbModel(),
 
     @ColumnInfo(name = "ingredients")
     val ingredients: List<String> = emptyList(),

@@ -29,7 +29,7 @@ import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import kotlin.reflect.KClass
 
 
-class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
+class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() {
 
     override var contentLayoutResId: Int = R.layout.activity_main
     override val viewModelClass: KClass<MainActivityViewModel>
@@ -39,36 +39,6 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
     private var mainFragment: MainFragment? = null
     private var profileFragment: ProfileFragment? = null
 
-    override fun onBackPressed() {
-        super.onBackPressed()
-        // Відстежує активний елементи BottomNavigationView і переключає на відповідний таб
-
-        // Отримує останній номер транзакції в бекстеку
-        val lastIndex = supportFragmentManager.backStackEntryCount
-        val lastEntry: FragmentManager.BackStackEntry?
-        //Якщо lastIndex != 0 отже у стеку ще є елементи
-        if (lastIndex != 0) {
-            //Отримуємо останню транзакцію у стеку
-            lastEntry = supportFragmentManager.getBackStackEntryAt(lastIndex - 1)
-            //Взалежності від імені яке ми давали транзакції при переключенні на іншу вкладку
-            //визначаємо яка таба повинна стати активною
-            when (lastEntry.name) {
-                MainFragment::class.java.simpleName -> {
-                    val mainMenu = bottomNavigationView.menu[0]
-                    mainMenu.isChecked = true
-                }
-                ProfileFragment::class.java.simpleName -> {
-                    val profileMenu = bottomNavigationView.menu[1]
-                    profileMenu.isChecked = true
-                }
-            }
-            //Якщо lastIndex == 0 отже у стеку більше немає елементів а отже ми повернулися на той
-            // з якого починали, в даному випадку MainFragment
-        } else {
-            val mainMenu = bottomNavigationView.menu[0]
-            mainMenu.isChecked = true
-        }
-    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,51 +82,35 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
 
         bottomNavigationView = findViewById(R.id.bnv_main)
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            // знаходить останню транзацію і порівнює з поточною, щоб не зберігалися до BackStack
-            // виклики однієї і тієї самої таби підряд
-            val lastIndex = supportFragmentManager.backStackEntryCount
-            var lastEntry: FragmentManager.BackStackEntry? = null
-            if (lastIndex != 0) {
-                lastEntry = supportFragmentManager.getBackStackEntryAt(lastIndex - 1)
-            }
             when (item.itemId) {
                 R.id.menu_main_fragment -> {
-                    if (lastEntry != null && lastEntry.name != MainFragment::class.java.simpleName) {
-                        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                        ft.hide(profileFragment!!)
-                        ft.show(mainFragment!!)
-                        ft.setPrimaryNavigationFragment(mainFragment)
-                        ft.addToBackStack(MainFragment::class.java.simpleName)
-                        ft.commit()
-                        true
-                    } else {
-                        false
-                    }
+                    val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+                    ft.hide(profileFragment!!)
+                    ft.show(mainFragment!!)
+                    ft.setPrimaryNavigationFragment(mainFragment)
+                    ft.commit()
+                    true
                 }
 
                 R.id.menu_profile_fragment -> {
-                    if (lastEntry == null || lastEntry.name != ProfileFragment::class.java.simpleName) {
-                        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                        ft.hide(mainFragment!!)
-                        ft.show(profileFragment!!)
-                        ft.setPrimaryNavigationFragment(profileFragment)
-                        ft.addToBackStack(ProfileFragment::class.java.simpleName)
-                        ft.commit()
-                        true
-                    } else {
-                        false
-                    }
+                    val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+                    ft.hide(mainFragment!!)
+                    ft.show(profileFragment!!)
+                    ft.setPrimaryNavigationFragment(profileFragment)
+                    ft.commit()
+                    true
                 }
                 else -> false
             }
         }
 
-        profileFragment = supportFragmentManager.findFragmentByTag(ProfileFragment::class.java.simpleName)
-                as? ProfileFragment
+        profileFragment =
+            supportFragmentManager.findFragmentByTag(ProfileFragment::class.java.simpleName)
+                    as? ProfileFragment
         mainFragment = supportFragmentManager.findFragmentByTag(MainFragment::class.java.simpleName)
                 as? MainFragment
-        val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        if (profileFragment == null) {
+        if (profileFragment == null && mainFragment == null) {
+            val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
             profileFragment = ProfileFragment.newInstance()
             fragmentTransaction.add(
                 R.id.fcv_container,
@@ -164,8 +118,6 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                 ProfileFragment::class.java.simpleName
             )
             fragmentTransaction.hide(profileFragment!!)
-        }
-        if (mainFragment == null) {
             mainFragment = MainFragment.newInstance()
             fragmentTransaction.add(
                 R.id.fcv_container,
@@ -189,7 +141,9 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                         val cocktailName = view?.text ?: ""
                         val cocktailLiveData = viewModel.findCocktailByName(cocktailName.toString())
                         cocktailLiveData.observe(this@MainActivity, Observer { cocktail ->
-                            if (cocktail == null) { return@Observer }
+                            if (cocktail == null) {
+                                return@Observer
+                            }
                             val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
                             intent.putExtra(COCKTAIL_ID, cocktail.id)
                             startActivity(intent)

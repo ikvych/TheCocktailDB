@@ -1,13 +1,13 @@
 package com.ikvych.cocktail.data.repository.impl.mapper
 
+import com.ikvych.cocktail.data.db.model.LocalizedCocktailDbModel
 import com.ikvych.cocktail.data.network.model.CocktailNetModel
 import com.ikvych.cocktail.data.repository.impl.mapper.base.BaseRepoModelMapper
-import com.xtreeivi.cocktailsapp.data.db.model.LocalizedStringDbModel
 import com.xtreeivi.cocktailsapp.data.repository.model.LocalizedStringRepoModel
 
 class LocalizedStringRepoModelMapper :
-    BaseRepoModelMapper<LocalizedStringRepoModel, LocalizedStringDbModel, CocktailNetModel>() {
-    override fun mapDbToRepo(db: LocalizedStringDbModel) = with(db) {
+    BaseRepoModelMapper<LocalizedStringRepoModel, LocalizedCocktailDbModel, CocktailNetModel>() {
+/*    override fun mapDbToRepo(db: LocalizedStringDbModel) = with(db) {
         LocalizedStringRepoModel(
             defaults = defaults,
             defaultAlternate = defaultAlternate,
@@ -21,7 +21,7 @@ class LocalizedStringRepoModelMapper :
 
     override fun mapRepoToDb(repo: LocalizedStringRepoModel) = with(repo) {
         LocalizedStringDbModel(
-            defaults = defaults,
+            defaults = defaultName,
             defaultAlternate = defaultAlternate,
             es = es,
             de = de,
@@ -29,7 +29,7 @@ class LocalizedStringRepoModelMapper :
             zhHans = zhHans,
             zhHant = zhHant
         )
-    }
+    }*/
 
 /*    override fun mapNamesNetToRepo(net: CocktailNetModel): LocalizedStringRepoModel = with(net) {
         LocalizedStringRepoModel(

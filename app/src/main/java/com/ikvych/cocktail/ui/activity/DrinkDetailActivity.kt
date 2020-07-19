@@ -37,6 +37,10 @@ class DrinkDetailActivity
     private lateinit var imageViewParams: LinearLayout.LayoutParams
 
     override fun configureView(savedInstanceState: Bundle?) {
+        if (intent.hasExtra(SHOW_COCKTAIL_OFFER_ON_DESTROY)) {
+            val intent = Intent(this, ApplicationService::class.java)
+            stopService(intent)
+        }
         when {
             intent.hasExtra(COCKTAIL) -> {
                 viewModel.cocktailLiveData.value = intent.getParcelableExtra(COCKTAIL)

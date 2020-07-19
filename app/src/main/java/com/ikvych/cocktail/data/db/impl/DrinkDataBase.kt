@@ -8,10 +8,16 @@ import androidx.room.TypeConverters
 import com.ikvych.cocktail.data.db.impl.dao.CocktailDao
 import com.ikvych.cocktail.data.db.impl.typeconverter.DateConverter
 import com.ikvych.cocktail.data.db.impl.typeconverter.StringListToStringConverter
-import com.xtreeivi.cocktailsapp.data.db.model.CocktailDbModel
+import com.ikvych.cocktail.data.db.model.entity.CocktailDbModel
+import com.ikvych.cocktail.data.db.model.entity.LocalizedInstructionDbModel
+import com.ikvych.cocktail.data.db.model.entity.LocalizedNameDbModel
 
 
-@Database(entities = [CocktailDbModel::class], version = 2, exportSchema = false)
+@Database(entities = [
+    CocktailDbModel::class,
+    LocalizedNameDbModel::class,
+    LocalizedInstructionDbModel::class
+], version = 1, exportSchema = false)
 @TypeConverters(DateConverter::class, StringListToStringConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {
 

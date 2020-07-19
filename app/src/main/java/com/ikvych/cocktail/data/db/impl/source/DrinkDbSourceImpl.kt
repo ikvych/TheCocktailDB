@@ -2,39 +2,39 @@ package com.ikvych.cocktail.data.db.impl.source
 
 import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.data.db.impl.dao.CocktailDao
-import com.ikvych.cocktail.data.network.model.Drink
+import com.ikvych.cocktail.data.db.model.LocalizedCocktailDbModel
 import com.ikvych.cocktail.data.db.source.DrinkDbSource
-import com.xtreeivi.cocktailsapp.data.db.model.CocktailDbModel
+import com.ikvych.cocktail.data.db.model.entity.CocktailDbModel
 
 class DrinkDbSourceImpl(
     private val drinkDao: CocktailDao
 ) : DrinkDbSource {
 
-    override suspend fun addOrReplaceCocktail(cocktail: CocktailDbModel) {
-        drinkDao.addOrReplaceCocktail(cocktail)
+    override suspend fun addOrReplaceCocktail(cocktail: LocalizedCocktailDbModel) {
+        drinkDao.addOrReplaceLocalizedCocktail(cocktail)
     }
 
-    override suspend fun findCocktailOfTheDay(stringDate: String) : CocktailDbModel? {
+    override suspend fun findCocktailOfTheDay(stringDate: String) : LocalizedCocktailDbModel? {
         return drinkDao.findCocktailOfTheDay(stringDate)
     }
 
-    override fun findCocktailByIdLiveData(cocktailId: Long) : LiveData<CocktailDbModel?> {
+    override fun findCocktailByIdLiveData(cocktailId: Long) : LiveData<LocalizedCocktailDbModel?> {
         return drinkDao.findCocktailByIdLiveData(cocktailId)
     }
 
-    override suspend fun findCocktailById(cocktailId: Long) : CocktailDbModel? {
+    override suspend fun findCocktailById(cocktailId: Long) : LocalizedCocktailDbModel? {
         return drinkDao.findCocktailById(cocktailId)
     }
 
-    override suspend fun findCocktailByDefaultName(cocktailDefaultName: String) : CocktailDbModel? {
-        return drinkDao.findCocktailByDefaultName(cocktailDefaultName)
+    override suspend fun findCocktailByDefaultName(cocktailDefaultName: String) : LocalizedCocktailDbModel? {
+        return drinkDao.findCocktailByDefaultName(/*cocktailDefaultName*/)
     }
 
-    override suspend fun findAllCocktails() : List<CocktailDbModel>? {
+    override suspend fun findAllCocktails() : List<LocalizedCocktailDbModel>? {
         return drinkDao.findAllCocktails()
     }
 
-    override fun findAllCocktailsLiveData() : LiveData<List<CocktailDbModel>?> {
+    override fun findAllCocktailsLiveData() : LiveData<List<LocalizedCocktailDbModel>?> {
         return drinkDao.findAllCocktailsLiveData()
     }
 }

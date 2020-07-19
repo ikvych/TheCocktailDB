@@ -20,4 +20,5 @@ interface CocktailRepository : BaseRepository{
     suspend fun findCocktailById(cocktailId: Long): CocktailRepoModel?
     suspend fun findCocktailByDefaultName(defaultDrinkName: String): CocktailRepoModel?
     suspend fun findCocktailOfTheDay(stringDate: String): CocktailRepoModel?
+    suspend fun removeCocktail(cocktail: CocktailRepoModel)
 }

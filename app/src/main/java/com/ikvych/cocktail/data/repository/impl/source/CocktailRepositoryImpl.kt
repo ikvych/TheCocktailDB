@@ -73,4 +73,8 @@ class CocktailRepositoryImpl(
     override suspend fun findCocktailOfTheDay(stringDate: String): CocktailRepoModel? {
         return mapper.mapDbToRepo(dbSource.findCocktailOfTheDay(stringDate)!!)
     }
+
+    override suspend fun removeCocktail(cocktail: CocktailRepoModel) {
+        dbSource.removeCocktail(mapper.mapRepoToDb(cocktail))
+    }
 }

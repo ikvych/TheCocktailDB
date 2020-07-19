@@ -19,7 +19,7 @@ import com.ikvych.cocktail.data.db.model.entity.*
     IngredientDbModel::class,
     CocktailIngredientCrossRef::class,
     CocktailMeasureCrossRef::class
-], version = 1, exportSchema = false)
+], version = 6, exportSchema = false)
 @TypeConverters(DateConverter::class, StringListToStringConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {
 

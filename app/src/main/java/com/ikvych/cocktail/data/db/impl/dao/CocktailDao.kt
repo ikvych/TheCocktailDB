@@ -46,6 +46,19 @@ interface CocktailDao : BaseDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addOrReplaceCocktailMeasureCrossRef(crossRef: CocktailMeasureCrossRef)
 
+    @Delete
+    fun removeCocktail(cocktail: CocktailDbModel)
+
+    @Transaction
+    fun findCocktailByDefaultName(defaultCocktailName: String) : LocalizedCocktailDbModel? {
+        val localizedName = findLocalizedName(defaultCocktailName)
+        return findCocktailById(localizedName.cocktailOwnerId)
+    }
+
+    @Query("SELECT * FROM ${Table.NAME} WHERE defaults_name = :name")
+    fun findLocalizedName(name: String): LocalizedNameDbModel
+
+
     @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE cocktail_of_day = :stringDate")
     fun findCocktailOfTheDay(stringDate: String) : LocalizedCocktailDbModel?
@@ -58,9 +71,9 @@ interface CocktailDao : BaseDao {
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE id = :cocktailId")
     fun findCocktailById(cocktailId: Long) : LocalizedCocktailDbModel?
 
-    @Transaction
+/*    @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL}")
-    fun findCocktailByDefaultName(/*defaultCocktailName: String*/) : LocalizedCocktailDbModel?
+    fun findCocktailByDefaultName(*//*defaultCocktailName: String*//*) : LocalizedCocktailDbModel?*/
 
     @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL}")

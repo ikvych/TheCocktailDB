@@ -1,15 +1,25 @@
 package com.ikvych.cocktail.data.db.model.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
 import com.ikvych.cocktail.data.db.Table
 
-@Entity(tableName = Table.INSTRUCTION)
+@Entity(
+    tableName = Table.INSTRUCTION,
+    foreignKeys = [
+        ForeignKey(
+            entity = CocktailDbModel::class,
+            parentColumns = ["id"],
+            childColumns = ["cocktailOwnerId"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        )
+    ],
+    indices = [Index(value = ["cocktailOwnerId"], unique = true)]
+)
 data class LocalizedInstructionDbModel(
 
     @PrimaryKey
-    @ColumnInfo(name = "default_name")
+    @ColumnInfo(name = "default_instruction")
     var defaultsName: String,
 
     val cocktailOwnerId: Long,

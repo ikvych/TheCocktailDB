@@ -1,9 +1,7 @@
 package com.ikvych.cocktail.data.db.model.entity
 
-import androidx.room.ColumnInfo
-import androidx.room.Embedded
-import androidx.room.Entity
-import androidx.room.PrimaryKey
+import androidx.room.*
+import androidx.room.ForeignKey.CASCADE
 import com.ikvych.cocktail.data.db.Table
 
 //{
@@ -62,7 +60,9 @@ import com.ikvych.cocktail.data.db.Table
 //  "dateModified": "2015-08-18 14:42:59"
 //}
 
-@Entity(tableName = Table.COCKTAIL)
+@Entity(
+    tableName = Table.COCKTAIL
+)
 data class CocktailDbModel(
     @PrimaryKey
     @ColumnInfo(name = "id")

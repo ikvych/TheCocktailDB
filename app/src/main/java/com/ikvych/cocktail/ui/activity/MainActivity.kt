@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.PopupMenu
 import android.widget.TextView
+import android.widget.Toast
 import androidx.core.content.ContextCompat
 import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
@@ -147,6 +148,17 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                             val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
                             intent.putExtra(COCKTAIL_ID, cocktail.id)
                             startActivity(intent)
+                        })
+                        true
+                    }
+                    R.id.menu_drink_remove -> {
+                        val view = v?.findViewById<TextView>(R.id.tv_drink_name)
+                        val drinkName = view?.text ?: ""
+                        val cocktailLiveData = viewModel.findCocktailByName(drinkName.toString()) ?: return@setOnMenuItemClickListener false
+
+                        cocktailLiveData.observe(this@MainActivity, Observer { cocktail ->
+                            viewModel.removeCocktail(cocktail!!)
+                            Toast.makeText(this@MainActivity, "Drink removed", Toast.LENGTH_SHORT).show()
                         })
                         true
                     }

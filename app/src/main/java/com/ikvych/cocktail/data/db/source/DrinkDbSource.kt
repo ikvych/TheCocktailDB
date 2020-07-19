@@ -13,5 +13,6 @@ interface DrinkDbSource : BaseDbSource{
     suspend fun findCocktailByDefaultName(cocktailDefaultName: String) : LocalizedCocktailDbModel?
     suspend fun findAllCocktails() : List<LocalizedCocktailDbModel>?
     fun findAllCocktailsLiveData() : LiveData<List<LocalizedCocktailDbModel>?>
+    suspend fun removeCocktail(cocktail: LocalizedCocktailDbModel)
 
 }

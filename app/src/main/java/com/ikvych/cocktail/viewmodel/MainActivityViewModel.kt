@@ -6,7 +6,6 @@ import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.SavedStateHandle
-import com.ikvych.cocktail.data.network.model.Drink
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
@@ -18,7 +17,7 @@ import java.util.*
 const val MAIN_ACTIVITY_SHARED_PREFERENCE = "MAIN_ACTIVITY_SHARED_PREFERENCE"
 
 class MainActivityViewModel(
-    private val drinkRepository: CocktailRepository,
+    private val cocktailRepository: CocktailRepository,
     private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle
@@ -50,10 +49,16 @@ class MainActivityViewModel(
         setCocktailOfTheDay()
     }
 
+    fun removeCocktail(cocktail: CocktailModel) {
+        launchRequest {
+            cocktailRepository.removeCocktail(mapper.mapFrom(cocktail))
+        }
+    }
+
     fun findCocktailByName(cocktailName: String): MutableLiveData<CocktailModel?> {
         val cocktailLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
         launchRequest(cocktailLiveData) {
-            mapper.mapTo(drinkRepository.findCocktailByDefaultName(cocktailName)!!)
+            mapper.mapTo(cocktailRepository.findCocktailByDefaultName(cocktailName)!!)
         }
         return cocktailLiveData
     }
@@ -66,16 +71,16 @@ class MainActivityViewModel(
         val stringDate: String = simpleDateFormat.format(currentDate)
 
         launchRequest(cocktailOfTheDayLiveData) {
-            val cocktailOfTheDay = drinkRepository.findCocktailOfTheDay(stringDate)
+            val cocktailOfTheDay = cocktailRepository.findCocktailOfTheDay(stringDate)
             if (cocktailOfTheDay == null) {
-                val allDrinks = drinkRepository.findAllCocktails()
+                val allDrinks = cocktailRepository.findAllCocktails()
                 if (allDrinks.isNullOrEmpty()) {
                     return@launchRequest null
                 } else {
                     val newDrinkOfTheDay = allDrinks.random()
                     newDrinkOfTheDay.cocktailOfTheDay = stringDate
-                    drinkRepository.addOrReplaceCocktail(newDrinkOfTheDay)
-                    mapper.mapTo(drinkRepository.findCocktailOfTheDay(stringDate)!!)
+                    cocktailRepository.addOrReplaceCocktail(newDrinkOfTheDay)
+                    mapper.mapTo(cocktailRepository.findCocktailOfTheDay(stringDate)!!)
                 }
             } else {
                 mapper.mapTo(cocktailOfTheDay)

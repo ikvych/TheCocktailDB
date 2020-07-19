@@ -57,7 +57,7 @@ fun getIngredients(
     }
 }*/
 
-@Entity(tableName = Table.DRINK)
+
 class Drink : BaseObservable, Parcelable {
     @SerializedName("idDrink")
     @Expose

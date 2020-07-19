@@ -1,8 +1,27 @@
 package com.ikvych.cocktail.data.db.model.entity
 
 import androidx.room.Entity
+import androidx.room.ForeignKey
 
-@Entity(primaryKeys = ["id", "measure"])
+@Entity(
+    primaryKeys = ["id", "measure"],
+    foreignKeys = [
+        ForeignKey(
+            entity = CocktailDbModel::class,
+            parentColumns = ["id"],
+            childColumns = ["id"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        ),
+        ForeignKey(
+            entity = MeasureDbModel::class,
+            parentColumns = ["measure"],
+            childColumns = ["measure"],
+            onDelete = ForeignKey.CASCADE,
+            onUpdate = ForeignKey.CASCADE
+        )
+    ]
+)
 data class CocktailMeasureCrossRef(
     val id: Long,
     var measure: String

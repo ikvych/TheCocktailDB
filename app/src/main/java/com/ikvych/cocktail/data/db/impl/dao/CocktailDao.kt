@@ -5,10 +5,7 @@ import androidx.room.*
 import com.ikvych.cocktail.data.db.Table
 import com.ikvych.cocktail.data.db.impl.dao.base.BaseDao
 import com.ikvych.cocktail.data.db.model.LocalizedCocktailDbModel
-import com.ikvych.cocktail.data.network.model.Drink
-import com.ikvych.cocktail.data.db.model.entity.CocktailDbModel
-import com.ikvych.cocktail.data.db.model.entity.LocalizedInstructionDbModel
-import com.ikvych.cocktail.data.db.model.entity.LocalizedNameDbModel
+import com.ikvych.cocktail.data.db.model.entity.*
 
 @Dao
 interface CocktailDao : BaseDao {
@@ -18,6 +15,14 @@ interface CocktailDao : BaseDao {
         addOrReplaceCocktail(cocktail = cocktail.cocktailDbModel)
         addOrReplaceCocktailName(name = cocktail.localizedNameDbModel)
         addOrReplaceCocktailInstruction(instruction = cocktail.localizedInstructionDbModel)
+        cocktail.ingredients.forEach {
+            addOrReplaceCocktailIngredient(it)
+            addOrReplaceCocktailIngredientCrossRef(CocktailIngredientCrossRef(cocktail.cocktailDbModel.id, it.ingredient))
+        }
+        cocktail.measures.forEach {
+            addOrReplaceCocktailMeasure(it)
+            addOrReplaceCocktailMeasureCrossRef(CocktailMeasureCrossRef(cocktail.cocktailDbModel.id, it.measure))
+        }
     }
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -28,6 +33,18 @@ interface CocktailDao : BaseDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun addOrReplaceCocktailInstruction(instruction: LocalizedInstructionDbModel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addOrReplaceCocktailIngredient(ingredient: IngredientDbModel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addOrReplaceCocktailMeasure(measure: MeasureDbModel)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addOrReplaceCocktailIngredientCrossRef(crossRef: CocktailIngredientCrossRef)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun addOrReplaceCocktailMeasureCrossRef(crossRef: CocktailMeasureCrossRef)
 
     @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE cocktail_of_day = :stringDate")

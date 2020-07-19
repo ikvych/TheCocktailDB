@@ -51,7 +51,11 @@ fun getIngredients(
         )
         val numberedIngredient = "$count. ${ingredientDrinkFilter.key}"
         binding.tvIngredient.text = numberedIngredient
-        binding.tvMeasure.text = measures[index]
+        if (measures.size - 1 >= index) {
+            binding.tvMeasure.text = measures[index]
+        } else {
+            binding.tvMeasure.text = ""
+        }
         tableLayout.addView(
             binding.root,
             TableLayout.LayoutParams(

@@ -5,4 +5,6 @@ object Table {
     const val COCKTAIL = "cocktail"
     const val NAME = "name"
     const val INSTRUCTION = "instruction"
+    const val INGREDIENT = "ingredient"
+    const val MEASURE = "measure"
 }

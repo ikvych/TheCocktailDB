@@ -1,11 +1,9 @@
 package com.ikvych.cocktail.data.repository.impl.mapper
 
 import com.ikvych.cocktail.data.db.model.LocalizedCocktailDbModel
+import com.ikvych.cocktail.data.db.model.entity.*
 import com.ikvych.cocktail.data.network.model.CocktailNetModel
 import com.ikvych.cocktail.data.repository.impl.mapper.base.BaseRepoModelMapper
-import com.ikvych.cocktail.data.db.model.entity.CocktailDbModel
-import com.ikvych.cocktail.data.db.model.entity.LocalizedInstructionDbModel
-import com.ikvych.cocktail.data.db.model.entity.LocalizedNameDbModel
 import com.xtreeivi.cocktailsapp.data.repository.model.CocktailRepoModel
 import com.xtreeivi.cocktailsapp.data.repository.model.LocalizedStringRepoModel
 
@@ -37,8 +35,8 @@ class CocktailRepoModelMapper(
                 es = localizedInstructionDbModel.es,
                 de = localizedInstructionDbModel.de
             ),
-            ingredients = cocktailDbModel.ingredients,
-            measures = cocktailDbModel.measures,
+            ingredients = ingredients.map{it.ingredient},
+            measures = measures.map{it.measure},
             cocktailOfTheDay = cocktailDbModel.cocktailOfDay,
             isFavorite = cocktailDbModel.isFavorite
         )
@@ -52,8 +50,6 @@ class CocktailRepoModelMapper(
                 alcoholType = alcoholType,
                 glass = glass,
                 image = image,
-                ingredients = ingredients,
-                measures = measures,
                 cocktailOfDay = cocktailOfTheDay,
                 isFavorite = isFavorite
             ),
@@ -76,7 +72,9 @@ class CocktailRepoModelMapper(
                 fr = names.fr,
                 zhHans = names.zhHans,
                 zhHant = names.zhHant
-            )
+            ),
+            ingredients = ingredients.map{IngredientDbModel(it)},
+            measures = measures.map{MeasureDbModel(it)}
         )
     }
 

@@ -4,8 +4,10 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
 import androidx.room.Index
+import com.ikvych.cocktail.data.db.Table
 
 @Entity(
+    tableName = Table.COCKTAIL_INGREDIENT,
     primaryKeys = ["id", "ingredient"],
     foreignKeys = [
         ForeignKey(
@@ -22,6 +24,10 @@ import androidx.room.Index
             onDelete = CASCADE,
             onUpdate = CASCADE
         )
+    ],
+    indices = [
+        Index(value = ["id"], unique = true),
+        Index(value = ["ingredient"], unique = true)
     ]
 )
 data class CocktailIngredientCrossRef(

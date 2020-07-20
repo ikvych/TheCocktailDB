@@ -2,8 +2,10 @@ package com.ikvych.cocktail.data.db.model.entity
 
 import androidx.room.Entity
 import androidx.room.ForeignKey
+import com.ikvych.cocktail.data.db.Table
 
 @Entity(
+    tableName = Table.COCKTAIL_MEASURE,
     primaryKeys = ["id", "measure"],
     foreignKeys = [
         ForeignKey(

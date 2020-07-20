@@ -19,7 +19,7 @@ import com.ikvych.cocktail.data.db.model.entity.*
     IngredientDbModel::class,
     CocktailIngredientCrossRef::class,
     CocktailMeasureCrossRef::class
-], version = 10, exportSchema = false)
+], version = 2, exportSchema = false)
 @TypeConverters(DateConverter::class, StringListToStringConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {
 
@@ -34,7 +34,7 @@ abstract class DrinkDataBase : RoomDatabase() {
             if (instance == null) {
                 instance = Room.databaseBuilder(
                     context.applicationContext,
-                    DrinkDataBase::class.java, "CocktailsApp"
+                    DrinkDataBase::class.java, "IvanKvych"
                 )
                     .fallbackToDestructiveMigration()
                     .build()

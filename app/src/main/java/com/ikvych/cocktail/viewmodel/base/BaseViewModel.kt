@@ -14,7 +14,7 @@ import kotlin.coroutines.CoroutineContext
 open class BaseViewModel(
     application: Application,
     val savedStateHandle: SavedStateHandle,
-    private val drinkRepository: CocktailRepository? = null,
+    private val cocktailRepository: CocktailRepository? = null,
     private val mapper: CocktailModelMapper? = null
 ) : AndroidViewModel(application) {
 
@@ -55,7 +55,7 @@ open class BaseViewModel(
     fun saveFavoriteDrink(cocktail: CocktailModel) {
         cocktail.isFavorite = !cocktail.isFavorite
         launchRequest {
-            drinkRepository?.addOrReplaceCocktail(mapper!!.mapFrom(cocktail))
+            cocktailRepository?.addOrReplaceCocktail(mapper!!.mapFrom(cocktail))
         }
     }
 }

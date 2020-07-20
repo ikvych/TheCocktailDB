@@ -20,7 +20,7 @@ data class LocalizedNameDbModel(
 
     @PrimaryKey
     @ColumnInfo(name = "defaults_name")
-    var defaultsName: String,
+    var defaultName: String,
 
     val cocktailOwnerId: Long,
 

@@ -14,7 +14,7 @@ class CocktailRepoModelMapper(
         CocktailRepoModel(
             id = cocktailDbModel.id,
             names = LocalizedStringRepoModel(
-                defaultName = localizedNameDbModel.defaultsName,
+                defaultName = localizedNameDbModel.defaultName,
                 defaultAlternate = localizedNameDbModel.defaultAlternate,
                 zhHant = localizedNameDbModel.zhHant,
                 zhHans = localizedNameDbModel.zhHans,
@@ -64,7 +64,7 @@ class CocktailRepoModelMapper(
                 zhHant = instructions.zhHant
             ),
             localizedNameDbModel = LocalizedNameDbModel(
-                defaultsName = names.defaultName!!,
+                defaultName = names.defaultName!!,
                 cocktailOwnerId = id,
                 de = names.de,
                 defaultAlternate = names.defaultAlternate,

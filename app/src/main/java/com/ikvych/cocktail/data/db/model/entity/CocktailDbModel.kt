@@ -3,6 +3,7 @@ package com.ikvych.cocktail.data.db.model.entity
 import androidx.room.*
 import androidx.room.ForeignKey.CASCADE
 import com.ikvych.cocktail.data.db.Table
+import java.util.*
 
 //{
 //  "idDrink": "11007",
@@ -84,8 +85,8 @@ data class CocktailDbModel(
     val image: String = "",
 
     @ColumnInfo(name = "is_favorite")
-    val isFavorite: Boolean = false
+    val isFavorite: Boolean = false,
 
-//    @ColumnInfo(name = "date")
-//    val date: Date = Date(),
+    @ColumnInfo(name = "date_modified")
+    val dateModified: Date? = Date()
 )

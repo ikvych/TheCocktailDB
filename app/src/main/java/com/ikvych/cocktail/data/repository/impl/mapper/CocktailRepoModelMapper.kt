@@ -6,6 +6,8 @@ import com.ikvych.cocktail.data.network.model.CocktailNetModel
 import com.ikvych.cocktail.data.repository.impl.mapper.base.BaseRepoModelMapper
 import com.xtreeivi.cocktailsapp.data.repository.model.CocktailRepoModel
 import com.xtreeivi.cocktailsapp.data.repository.model.LocalizedStringRepoModel
+import java.text.SimpleDateFormat
+import java.util.*
 
 class CocktailRepoModelMapper(
     private val localizedStringRepoModelMapper: LocalizedStringRepoModelMapper
@@ -38,7 +40,8 @@ class CocktailRepoModelMapper(
             ingredients = ingredients.map{it.ingredient},
             measures = measures.map{it.measure},
             cocktailOfTheDay = cocktailDbModel.cocktailOfDay,
-            isFavorite = cocktailDbModel.isFavorite
+            isFavorite = cocktailDbModel.isFavorite,
+            dateModified = cocktailDbModel.dateModified ?: Date()
         )
     }
 
@@ -51,7 +54,8 @@ class CocktailRepoModelMapper(
                 glass = glass,
                 image = image,
                 cocktailOfDay = cocktailOfTheDay,
-                isFavorite = isFavorite
+                isFavorite = isFavorite,
+                dateModified = dateModified
             ),
             localizedInstructionDbModel = LocalizedInstructionDbModel(
                 defaultsName = instructions.defaultName!!,
@@ -79,6 +83,7 @@ class CocktailRepoModelMapper(
     }
 
     override fun mapNetToRepo(net: CocktailNetModel) = with(net) {
+        val formatter = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         CocktailRepoModel(
             id = idDrink!!,
             names = LocalizedStringRepoModel(
@@ -104,7 +109,8 @@ class CocktailRepoModelMapper(
                 strInstructionsZHHANT
             ),
             ingredients = getAllIngredients().keys.toList(),
-            measures = getAllIngredients().values.toList()
+            measures = getAllIngredients().values.toList(),
+            dateModified = formatter.parse(dateModified ?: "2020-02-12 13:45:30")
         )
     }
 

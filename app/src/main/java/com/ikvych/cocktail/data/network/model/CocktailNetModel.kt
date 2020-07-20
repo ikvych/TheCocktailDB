@@ -4,6 +4,8 @@ import androidx.room.Ignore
 import com.google.gson.annotations.Expose
 
 import com.google.gson.annotations.SerializedName
+import java.util.*
+import kotlin.collections.HashMap
 
 
 class CocktailNetModel {

@@ -5,6 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
+import com.ikvych.cocktail.data.db.Table
 import com.ikvych.cocktail.data.db.impl.dao.CocktailDao
 import com.ikvych.cocktail.data.db.impl.typeconverter.DateConverter
 import com.ikvych.cocktail.data.db.impl.typeconverter.StringListToStringConverter
@@ -19,7 +22,7 @@ import com.ikvych.cocktail.data.db.model.entity.*
     IngredientDbModel::class,
     CocktailIngredientCrossRef::class,
     CocktailMeasureCrossRef::class
-], version = 1, exportSchema = false)
+], version = 2, exportSchema = false)
 @TypeConverters(DateConverter::class, StringListToStringConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {
 
@@ -32,11 +35,19 @@ abstract class DrinkDataBase : RoomDatabase() {
         @Synchronized
         fun getInstance(context: Context): DrinkDataBase? {
             if (instance == null) {
+
+                val MIGRATION_1_2 = object : Migration(1, 2) {
+                    override fun migrate(database: SupportSQLiteDatabase) {
+                        database.execSQL("ALTER TABLE ${Table.COCKTAIL} ADD COLUMN date_modified INTEGER")
+                    }
+                }
+
                 instance = Room.databaseBuilder(
                     context.applicationContext,
                     DrinkDataBase::class.java, "IvanKvych"
                 )
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(MIGRATION_1_2)
+/*                    .fallbackToDestructiveMigration()*/
                     .build()
             }
             return instance

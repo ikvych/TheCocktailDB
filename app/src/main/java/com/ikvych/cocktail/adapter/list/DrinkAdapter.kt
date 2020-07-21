@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
+import com.ikvych.cocktail.ui.activity.MainActivity
 import com.ikvych.cocktail.ui.activity.SearchActivity
 
 
@@ -48,11 +49,13 @@ class DrinkAdapter(
         init {
             itemDrinkListBinding.root.setOnClickListener(context as View.OnClickListener)
             itemDrinkListBinding.root.setOnLongClickListener(context as View.OnLongClickListener)
-            val favorite = itemDrinkListBinding.root.findViewById<CheckBox>(R.id.cb_is_favorite)
+            val favoriteCheckBox = itemDrinkListBinding.root.findViewById<CheckBox>(R.id.cb_is_favorite)
             if (context is SearchActivity) {
-                favorite.visibility = View.GONE
+                favoriteCheckBox.visibility = View.GONE
             }
-            favorite.setOnClickListener(context as View.OnClickListener)
+            if (context is MainActivity) {
+                favoriteCheckBox.setOnClickListener(context as View.OnClickListener)
+            }
         }
     }
 }

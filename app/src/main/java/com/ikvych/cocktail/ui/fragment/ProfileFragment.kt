@@ -18,53 +18,59 @@ import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.ProfileFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
+class ProfileFragment : BaseFragment<ProfileFragmentViewModel>(), View.OnClickListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_profile
     override val viewModel: ProfileFragmentViewModel by viewModels()
-
-    private lateinit var logOut: Button
-    private lateinit var startTestFragmentBtn: Button
-    private lateinit var testFragment: TestFragment
-
     private lateinit var activityViewModel: MainActivityViewModel
-
-    private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance{
-            titleText = getString(R.string.profile_log_out_dialog_title)
-            descriptionText = getString(R.string.profile_log_out_dialog_message)
-            leftButtonText = getString(R.string.all_cancel_button)
-            rightButtonText = getString(R.string.all_accept_button)
-        }
-        activityViewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
+        activityViewModel =
+            ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
-        logOut = view.findViewById(R.id.b_log_out)
-        logOut.setOnClickListener {
-            bottomSheetDialogFragment.show(
-                childFragmentManager,
-                RegularBottomSheetDialogFragment::class.java.simpleName
-            )
-        }
-        startTestFragmentBtn = view.findViewById(R.id.b_start_test_fragment)
-        testFragment = TestFragment.newInstance(5, "Ivan Kvych")
-        startTestFragmentBtn.setOnClickListener {
-            val fragmentTransaction: FragmentTransaction = childFragmentManager.beginTransaction()
-            fragmentTransaction.add(R.id.fcv_profile_fragment, testFragment, TestFragment::class.java.simpleName)
-            fragmentTransaction.addToBackStack(TestFragment::class.java.name)
-            fragmentTransaction.commit()
-        }
 
+        b_log_out.setOnClickListener(this)
+        b_start_test_fragment.setOnClickListener(this)
 
         // видимість титульного напису на BottomNavigationView по замовчуванню true
-        activityViewModel.navBarTitleVisibilityLiveData.value = cb_main_nav_bar_title_visibility.isChecked
+        activityViewModel.navBarTitleVisibilityLiveData.value =
+            cb_main_nav_bar_title_visibility.isChecked
         cb_main_nav_bar_title_visibility.setOnCheckedChangeListener { _, isChecked ->
-            activityViewModel.navBarTitleVisibilityLiveData.value = isChecked }
+            activityViewModel.navBarTitleVisibilityLiveData.value = isChecked
+        }
+    }
+
+
+    override fun onClick(v: View?) {
+        if (v == null) return
+        when (v.id) {
+            R.id.b_log_out -> {
+                RegularBottomSheetDialogFragment.newInstance {
+                    titleText = getString(R.string.profile_log_out_dialog_title)
+                    descriptionText = getString(R.string.profile_log_out_dialog_message)
+                    leftButtonText = getString(R.string.all_cancel_button)
+                    rightButtonText = getString(R.string.all_accept_button)
+                }.show(
+                    childFragmentManager,
+                    RegularBottomSheetDialogFragment::class.java.simpleName
+                )
+            }
+            R.id.b_start_test_fragment -> {
+                val fragmentTransaction: FragmentTransaction =
+                    childFragmentManager.beginTransaction()
+                fragmentTransaction.add(
+                    R.id.fcv_profile_fragment,
+                    TestFragment.newInstance(5, "Ivan Kvych"),
+                    TestFragment::class.java.simpleName
+                )
+                fragmentTransaction.addToBackStack(TestFragment::class.java.name)
+                fragmentTransaction.commit()
+            }
+        }
     }
 
     override fun onBottomSheetDialogFragmentClick(
@@ -94,5 +100,4 @@ class ProfileFragment : BaseFragment<ProfileFragmentViewModel>() {
         @JvmStatic
         fun newInstance() = ProfileFragment()
     }
-
 }

@@ -20,7 +20,7 @@ class FilterAdapter(
 ) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
 
     interface OnClickItemFilterCloseListener {
-        fun onClick(drinkFilter: DrinkFilter)
+        fun onDrinkFilterClick(drinkFilter: DrinkFilter)
     }
 
     var filterList: List<DrinkFilter> = arrayListOf()
@@ -51,7 +51,7 @@ class FilterAdapter(
                         R.color.item_drink_filter_ingredient_bg
                     )
                 )
-                holder.closeButton.setOnClickListener { listener.onClick(filter) }
+                holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
             }
             DrinkFilterType.ALCOHOL -> {
                 holder.filterIcon.setImageDrawable(
@@ -66,7 +66,7 @@ class FilterAdapter(
                         R.color.item_drink_filter_ingredient_bg
                     )
                 )
-                holder.closeButton.setOnClickListener { listener.onClick(filter) }
+                holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
             }
             DrinkFilterType.INGREDIENT -> {
                 holder.filterIcon.setImageDrawable(
@@ -81,7 +81,7 @@ class FilterAdapter(
                         R.color.item_drink_filter_ingredient_bg
                     )
                 )
-                holder.closeButton.setOnClickListener { listener.onClick(filter) }
+                holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
             }
             DrinkFilterType.GLASS -> {
                 holder.filterIcon.setImageDrawable(
@@ -96,7 +96,7 @@ class FilterAdapter(
                         R.color.item_drink_filter_ingredient_bg
                     )
                 )
-                holder.closeButton.setOnClickListener { listener.onClick(filter) }
+                holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
             }
         }
         holder.textView.text = filter.key

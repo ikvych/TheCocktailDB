@@ -3,7 +3,7 @@
     <declare-styleable name="ApplicationToolBar">
         <attr name="tl_is_for_search" format="boolean"/>
         <attr name="tl_set_text" format="string"/>
-        <attr name="tl_enable_custom_btn" format="boolean"/>
+        <attr name="tl_enable_filter_btn" format="boolean"/>
         <attr name="tl_enable_sort_btn" format="boolean"/>
         <attr name="tl_disable_return_btn" format="boolean"/>
     </declare-styleable>

@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.ui.fragment
 
 import android.content.res.Configuration
+import android.os.Bundle
 import android.view.View
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,13 +18,16 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 abstract class RecyclerViewFragment<ViewModel : BaseViewModel> : BaseFragment<ViewModel>() {
     protected lateinit var drinkAdapter: DrinkAdapter
-
     lateinit var parentViewModel: MainFragmentViewModel
-    protected var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
 
-    private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
+    override fun configureView(view: View, savedInstanceState: Bundle?) {
+        super.configureView(view, savedInstanceState)
+        drinkAdapter = DrinkAdapter(requireContext())
+        initViewModel()
+        initLiveDataObserver()
+    }
 
-    fun initViewModel() {
+    private fun initViewModel() {
         parentViewModel = ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
     }
 
@@ -36,7 +40,6 @@ abstract class RecyclerViewFragment<ViewModel : BaseViewModel> : BaseFragment<Vi
 
     fun initRecyclerView(view: View, drinks: List<Drink>, recyclerViewId: Int) {
         val recyclerView: RecyclerView = view.findViewById(recyclerViewId)
-        drinkAdapter = DrinkAdapter(requireContext())
 
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
@@ -44,12 +47,8 @@ abstract class RecyclerViewFragment<ViewModel : BaseViewModel> : BaseFragment<Vi
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
         }
 
-        recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = drinkAdapter
-
         determineVisibleLayerOnCreate(drinks)
-
-        drinkAdapter.drinkList = drinks
     }
 
     /**

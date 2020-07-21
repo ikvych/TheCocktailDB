@@ -4,11 +4,13 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.regex.Pattern
 
 class AuthViewModel(application: Application) : BaseViewModel(application) {
+    private val triggerObserver: Observer<in Any?> = Observer { }
     private val passwordPattern: Pattern =
         Pattern.compile("(?=.*[0-9])(?=.*[a-zA-Z])[0-9a-zA-Z~!@#\$%^&*]{6,}") //не менше 6 символів і містить хоча б одну цифру і хоча б одну літеру
     private val loginPattern: Pattern = Pattern.compile(".{7,}") //більше 6 символів
@@ -19,13 +21,16 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
     private val loginErrorMessage: String = application.resources.getString(R.string.auth_invalid_login)
     private val passwordErrorMessage: String = application.resources.getString(R.string.auth_invalid_password)
 
+    //зберігає значення чи показана клавіатура чи прихована
     val isKeyboardShown: MutableLiveData<Boolean> = MutableLiveData()
+    //дані введені з поля логін
     val loginInputLiveData: MutableLiveData<String?> = MutableLiveData()
+    //дані введені з поля пароль
     val passwordInputLiveData: MutableLiveData<String?> = MutableLiveData()
     //відслідковує чи введені логін і пароль відповідають паттернам логіну і пароля
     //liveData містить в собі пару Boolean значень, перше відповідає чи валідний логін,
     // друге відповідає чи валідний пароль
-    val isLoginDataMatchPatternLiveData: LiveData<Pair<Boolean, Boolean>> =
+    val isAuthDataMatchPatternLiveData: LiveData<Pair<Boolean, Boolean>> =
         object : MediatorLiveData<Pair<Boolean, Boolean>>() {
             init {
                 value = Pair(false, false)
@@ -56,11 +61,11 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
         }
 
     //відслідковує чи введені пароль і логін відповідають захардкодженим
-    val isLoginDataValidLiveData: LiveData<Boolean> =
+    val isAuthDataValidLiveData: LiveData<Boolean> =
         object : MediatorLiveData<Boolean>() {
             init {
                 value = false
-                addSource(isLoginDataMatchPatternLiveData) {
+                addSource(isAuthDataMatchPatternLiveData) {
                     validateData()
                 }
             }
@@ -73,34 +78,51 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
         }
 
 
-    val errorMessageViewModel: LiveData<String?> = object : MediatorLiveData<String?>() {
+
+    //формує повідомлення з помилкою валідації логіну і паролю
+    val errorMessageLiveData: LiveData<String?> = object : MediatorLiveData<String?>() {
         init {
             value = "${loginErrorMessage}\n${passwordErrorMessage}"
-            addSource(isLoginDataMatchPatternLiveData) {
+
+            addSource(isAuthDataMatchPatternLiveData) {
                 generateErrorMessage()
             }
+
         }
 
         private fun generateErrorMessage() {
             var finalErrorMessage: String? = null
 
             //блок виконується коли є помилка у паттерні логіна або паролю
-            if (!isLoginDataMatchPatternLiveData.value!!.first || !isLoginDataMatchPatternLiveData.value!!.second) {
-                if (!isLoginDataMatchPatternLiveData.value!!.first) {
+            if (!isAuthDataMatchPatternLiveData.value!!.first || !isAuthDataMatchPatternLiveData.value!!.second) {
+                if (!isAuthDataMatchPatternLiveData.value!!.first) {
                     finalErrorMessage = loginErrorMessage
                 }
-                if (!isLoginDataMatchPatternLiveData.value!!.second) {
+                if (!isAuthDataMatchPatternLiveData.value!!.second) {
                     if (finalErrorMessage != null) {
                         finalErrorMessage += "\n${passwordErrorMessage}"
                     } else {
                         finalErrorMessage = passwordErrorMessage
                     }
                 }
-                //блок виконується коли є помилка у співпадінні захардкодженого логіну або паролю з введеними
-            } else if (!isLoginDataValidLiveData.value!!) {
+                //блок виконується коли захардкоджений логіну або пароль не відповідають введеним
+            } else if (!isAuthDataValidLiveData.value!!) {
                 finalErrorMessage = application.resources.getString(R.string.auth_invalid_data)
             }
             value = finalErrorMessage
         }
+    }
+
+    init {
+        isAuthDataMatchPatternLiveData.observeForever(triggerObserver)
+        errorMessageLiveData.observeForever(triggerObserver)
+        isAuthDataValidLiveData.observeForever(triggerObserver)
+    }
+
+    override fun onCleared() {
+        isAuthDataMatchPatternLiveData.removeObserver(triggerObserver)
+        errorMessageLiveData.removeObserver(triggerObserver)
+        isAuthDataValidLiveData.removeObserver(triggerObserver)
+        super.onCleared()
     }
 }

@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.repository.DrinkRepositoryImpl
+import com.ikvych.cocktail.data.repository.base.DrinkRepository
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.text.SimpleDateFormat
@@ -17,6 +19,7 @@ class MainActivityViewModel(
     application: Application
 ) : BaseViewModel(application), ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
+    private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
     val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData(true)
     val drinkOfTheDayLiveData: MutableLiveData<Drink?> = MutableLiveData()
     private var lifecycleObserver: ApplicationLifeCycleObserver
@@ -41,6 +44,10 @@ class MainActivityViewModel(
 
     fun findDrinkByName(drinkName: String): Drink? {
         return drinkRepository.findDrinkByName(drinkName)
+    }
+
+    fun findDrinkById(drinkId: Long): Drink? {
+        return drinkRepository.findDrinkById(drinkId)
     }
 
     fun saveDrinkIntoDb(drink: Drink) {

@@ -84,6 +84,8 @@
             android:layout_height="@dimen/btn_width_min"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
+            android:visibility="gone"
+            android:src="@drawable/ic_app_tool_bar_filter"
             android:padding="@dimen/offset_12"
             android:contentDescription="@string/all_content_description"/>
 

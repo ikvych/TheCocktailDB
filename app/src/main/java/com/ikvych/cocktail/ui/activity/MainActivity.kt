@@ -27,19 +27,21 @@ import com.ikvych.cocktail.ui.dialog.base.type.*
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.item_drink_list.*
 
 class MainActivity : BaseActivity<MainActivityViewModel>() {
 
     override var contentLayoutResId: Int = R.layout.activity_main
     override val viewModel: MainActivityViewModel by viewModels()
 
-    private lateinit var bottomNavigationView: BottomNavigationView
     private var mainFragment: MainFragment? = null
     private var profileFragment: ProfileFragment? = null
 
     override fun configureView(savedInstanceState: Bundle?) {
-        //Відслідковуємо напій дня, якщо він не дорівнює null значить потрібно показати діалог
+        //Відслідковуємо liveData з напоєм дня, якщо він не дорівнює null значить потрібно показати діалог
         viewModel.drinkOfTheDayLiveData.observe(this, Observer {
+            //якщо drink != null значить потрібно показати діалог з напоєм дня
             if (it != null) {
                 //Якщо діалог фрагмент не дорівнює null значить попердній фрагмент ще не закрили і показувати новий не потрібно
                 val dialogFragment =
@@ -55,45 +57,24 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
                         supportFragmentManager,
                         ResumeAppBottomSheetDialogFragment::class.java.simpleName
                     )
-                    //обнуляю liveData для того щоб на перестворенні актівіті не спамилось
+                    //обнуляю value у liveData. Це означатиме, що діалог уже був показаний і до наступного виходу з додатку
+                    //його поки не потрбіно показувати
                     viewModel.drinkOfTheDayLiveData.value = null
                 }
             }
         })
 
+        //взалежності від значення value показується або приховується титульний напис у BottomNavigationBar
         viewModel.navBarTitleVisibilityLiveData.observe(this,
             Observer<Boolean> { t ->
                 if (t!!) {
-                    bottomNavigationView.labelVisibilityMode =
+                    bnv_main.labelVisibilityMode =
                         LabelVisibilityMode.LABEL_VISIBILITY_LABELED
                 } else {
-                    bottomNavigationView.labelVisibilityMode =
+                    bnv_main.labelVisibilityMode =
                         LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
                 }
             })
-
-        bottomNavigationView = findViewById(R.id.bnv_main)
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            when (item.itemId) {
-                R.id.menu_main_fragment -> {
-                    val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                    ft.hide(profileFragment!!)
-                    ft.show(mainFragment!!)
-                    ft.setPrimaryNavigationFragment(mainFragment)
-                    ft.commit()
-                    true
-                }
-                R.id.menu_profile_fragment -> {
-                    val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                    ft.hide(mainFragment!!)
-                    ft.show(profileFragment!!)
-                    ft.setPrimaryNavigationFragment(profileFragment)
-                    ft.commit()
-                    true
-                }
-                else -> false
-            }
-        }
 
         profileFragment =
             supportFragmentManager.findFragmentByTag(ProfileFragment::class.java.simpleName)
@@ -119,31 +100,54 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
             fragmentTransaction.setPrimaryNavigationFragment(mainFragment!!)
             fragmentTransaction.commit()
         }
+
+        bnv_main.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_main_fragment -> {
+                    val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+                    ft.hide(profileFragment!!)
+                    ft.show(mainFragment!!)
+                    ft.setPrimaryNavigationFragment(mainFragment)
+                    ft.commit()
+                    true
+                }
+                R.id.menu_profile_fragment -> {
+                    val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+                    ft.hide(mainFragment!!)
+                    ft.show(profileFragment!!)
+                    ft.setPrimaryNavigationFragment(profileFragment)
+                    ft.commit()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
     override fun onClick(v: View?) {
-
-        // відкриває деталізацію коктейлю
-        if (v is CardView) {
-            val view = v.findViewById<TextView>(R.id.tv_drink_name)
-            val drinkName = view?.text
-            if (drinkName != null) {
-                val drink = viewModel.findDrinkByName(drinkName.toString())
-                val intent = Intent(this, DrinkDetailActivity::class.java)
-                intent.putExtra(DRINK_ID, drink!!.getIdDrink())
-                startActivity(intent)
-            }
-        }
-        // додає і видаляє з улюблених
-        if (v is CheckBox) {
-            val drinkName = v.tag as String
-            val drink = viewModel.findDrinkByName(drinkName) ?: return
-            if (v.isChecked) {
-                drink.setIsFavorite(true)
-                viewModel.saveDrinkIntoDb(drink)
-            } else {
-                drink.setIsFavorite(false)
-                viewModel.saveDrinkIntoDb(drink)
+        if (v == null) {
+            return
+        } else {
+            when (v.id) {
+                // відкриває деталізацію коктейлю
+                R.id.cv_item_drink -> {
+                    val drinkId = v.tag as Long
+                    val intent = Intent(this, DrinkDetailActivity::class.java)
+                    intent.putExtra(DRINK_ID, drinkId)
+                    startActivity(intent)
+                }
+                // додає і видаляє з улюблених
+                R.id.cb_is_favorite -> {
+                    val drinkId = v.tag as Long
+                    val drink = viewModel.findDrinkById(drinkId) ?: return
+                    if ((v as CheckBox).isChecked) {
+                        drink.setIsFavorite(true)
+                        viewModel.saveDrinkIntoDb(drink)
+                    } else {
+                        drink.setIsFavorite(false)
+                        viewModel.saveDrinkIntoDb(drink)
+                    }
+                }
             }
         }
     }
@@ -167,7 +171,8 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
                     R.id.menu_drink_add_favorite -> {
 
                         val drinkName = view?.text ?: ""
-                        val drink = viewModel.findDrinkByName(drinkName.toString()) ?: return@setOnMenuItemClickListener false
+                        val drink = viewModel.findDrinkByName(drinkName.toString())
+                            ?: return@setOnMenuItemClickListener false
 
                         if (!drink.isFavorite()) {
                             drink.setIsFavorite(true)
@@ -189,7 +194,8 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
                     R.id.menu_drink_remove_favorite -> {
 
                         val drinkName = view?.text ?: ""
-                        val drink = viewModel.findDrinkByName(drinkName.toString()) ?: return@setOnMenuItemClickListener false
+                        val drink = viewModel.findDrinkByName(drinkName.toString())
+                            ?: return@setOnMenuItemClickListener false
                         if (drink.isFavorite()) {
                             drink.setIsFavorite(false)
                             viewModel.saveDrinkIntoDb(drink)
@@ -210,10 +216,12 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
                     R.id.menu_drink_remove -> {
 
                         val drinkName = view?.text ?: ""
-                        val drink = viewModel.findDrinkByName(drinkName.toString()) ?: return@setOnMenuItemClickListener false
+                        val drink = viewModel.findDrinkByName(drinkName.toString())
+                            ?: return@setOnMenuItemClickListener false
 
                         viewModel.removeDrink(drink)
-                        Toast.makeText(this@MainActivity, "Drink removed", Toast.LENGTH_SHORT).show()
+                        Toast.makeText(this@MainActivity, "Drink removed", Toast.LENGTH_SHORT)
+                            .show()
                         true
                     }
                     // створює pinned shortcut

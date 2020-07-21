@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import androidx.activity.viewModels
-import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
@@ -17,15 +16,12 @@ import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
 import com.ikvych.cocktail.service.ApplicationService
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
+import kotlinx.android.synthetic.main.activity_drink_details.*
 
 class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
 
     override val viewModel: DrinkDetailViewModel by viewModels()
     override var contentLayoutResId: Int = R.layout.activity_drink_details
-
-    private lateinit var appBarLayout: AppBarLayout
-    private lateinit var imageView: ImageView
-    private lateinit var imageViewContainer: LinearLayout
 
     private var maxImageWidth: Int? = null
     private var minImageWidth: Int? = null
@@ -36,10 +32,13 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
     private lateinit var imageViewParams: LinearLayout.LayoutParams
 
     override fun configureView(savedInstanceState: Bundle?) {
+        //якщо присутній інтент SHOW_DRINK_OFFER_ON_DESTROY зупиняємо сервіс, для того щоб не спамились
+        // пропозиції переглянути напій
         if (intent.hasExtra(SHOW_DRINK_OFFER_ON_DESTROY)) {
-            val intent = Intent(this, ApplicationService::class.java)
-            stopService(intent)
+            stopService(Intent(this, ApplicationService::class.java))
         }
+        //в залажності від того чи було передано id напою чи сам напій, вибирається спосіб як ініціалізувати
+        //drinkLiveData з поточним напоєм. Якщо немає ніодого з варіантів, завершуємо актівіті
         when {
             intent.hasExtra(DRINK) -> {
                 viewModel.drinkLiveData.value = intent.getParcelableExtra(DRINK)
@@ -51,6 +50,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
                 finish()
             }
         }
+        //Якщо присутній інтен SHOULD_SAVE_DRINK, тоді зберігаємо його в базу даних
         if (intent.hasExtra(SHOULD_SAVE_DRINK)) {
             viewModel.saveDrinkIntoDb()
         }
@@ -59,18 +59,15 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
             DataBindingUtil.setContentView(this, R.layout.activity_drink_details)
         activityDrinkDetailsBinding.viewModel = viewModel
 
-        appBarLayout = findViewById(R.id.abl_drink_detail)
-        imageView = findViewById(R.id.iv_drink_image)
-        imageViewContainer = findViewById(R.id.ll_drink_image_container)
-
+        //ініціалізуємо слухач, для зміни розмірів і позиції зображення напою
         initAppBarLayoutListener()
     }
 
     private fun initAppBarLayoutListener() {
-        appBarLayout.addOnOffsetChangedListener(
+        abl_drink_detail.addOnOffsetChangedListener(
             AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
 
-                //init image parameters
+                //якщо maxImageWidth == null значить загальні параметри зображення потрібно ініціалізувати
                 if (maxImageWidth == null) {
                     initImageParameters()
                 }
@@ -89,7 +86,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
 
                 if (imageViewParams.width != cachedImageWidth) {
                     cachedImageWidth = currentImageWidth.toInt()
-                    imageView.layoutParams = imageViewParams
+                    iv_drink_image.layoutParams = imageViewParams
                 }
 
                 //change transparency of background
@@ -102,7 +99,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
                     ).withAlpha((scaleFactor * 255).toInt())
                 findViewById<ImageView>(R.id.ib_return).backgroundTintList = stateList*/
 
-
+                //плавно змінює колір тла для кнопки повернення
                 val stateList =
                     ColorStateList.valueOf(
                         Color.rgb(
@@ -111,34 +108,35 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
                             ((0.85 + (0.15 * offsetFactor)) * 255).toInt()
                         )
                     )
-                findViewById<ImageView>(R.id.ib_return).backgroundTintList = stateList
+                ib_return.backgroundTintList = stateList
             })
     }
 
     private fun initImageParameters() {
-        maxImageWidth = imageView.width
-        imageViewContainer.layoutParams.height = imageView.height
-        imageViewContainer.requestLayout()
+        maxImageWidth = iv_drink_image.width
+        ll_drink_image_container.layoutParams.height = iv_drink_image.height
+        ll_drink_image_container.requestLayout()
         cachedImageWidth = maxImageWidth
 
         imageMarginStart = (resources.getDimension(R.dimen.offset_64)).toInt()
         imageMarginTop = (resources.getDimension(R.dimen.offset_16)).toInt()
         minImageWidth = (resources.getDimension(R.dimen.offset_32)).toInt()
 
-        imageViewParams = imageView.layoutParams as LinearLayout.LayoutParams
+        imageViewParams = iv_drink_image.layoutParams as LinearLayout.LayoutParams
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun resumePreviousActivity(view: View?) {
         finish()
     }
 
     override fun onDestroy() {
+        //старту інтент який запускає сервіс з пропозицією переглянути випадковий напій
         if (intent.hasExtra(SHOW_DRINK_OFFER_ON_DESTROY)) {
-            val intent = Intent(this, ApplicationService::class.java)
-            stopService(intent)
-            intent.putExtra(DRINK_ID, viewModel.drinkLiveData.value?.getIdDrink())
-            intent.action = ACTION_SHOW_DRINK_OFFER
-            startService(intent)
+            val appServiceIntent = Intent(this, ApplicationService::class.java)
+            appServiceIntent.putExtra(DRINK_ID, viewModel.drinkLiveData.value?.getIdDrink())
+            appServiceIntent.action = ACTION_SHOW_DRINK_OFFER
+            startService(appServiceIntent)
         }
         super.onDestroy()
     }

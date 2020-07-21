@@ -17,8 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_height_max"
         android:background="@drawable/app_bar_bg_shape"
-        android:elevation="@dimen/elevation_16"
-        app:tl_enable_custom_btn="true" />
+        android:elevation="@dimen/elevation_16"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/coordinator_fragment_filter"
@@ -201,7 +200,7 @@
                 app:layout_behavior="@string/fab_transformation_sheet_behavior">
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_reject"
+                    android:id="@+id/acb_reset"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/btn_height"
                     android:layout_weight="1"
@@ -216,7 +215,7 @@
                     android:layout_height="match_parent"/>
 
                 <androidx.appcompat.widget.AppCompatButton
-                    android:id="@+id/btn_to_result"
+                    android:id="@+id/acb_to_result"
                     android:layout_width="0dp"
                     android:layout_height="@dimen/btn_height"
                     android:layout_weight="1"

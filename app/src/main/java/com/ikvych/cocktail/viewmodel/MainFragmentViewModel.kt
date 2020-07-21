@@ -13,6 +13,8 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.repository.DrinkRepositoryImpl
+import com.ikvych.cocktail.data.repository.base.DrinkRepository
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.*
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
@@ -20,6 +22,7 @@ import java.util.*
 
 class MainFragmentViewModel(application: Application) : BaseViewModel(application) {
 
+    private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
     val isBatteryChargingLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()

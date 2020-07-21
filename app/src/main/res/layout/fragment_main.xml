@@ -22,7 +22,7 @@
                 android:elevation="@dimen/elevation_16"
                 android:layout_gravity="top"
                 app:tl_disable_return_btn="true"
-                app:tl_enable_custom_btn="true"
+                app:tl_enable_filter_btn="true"
                 app:tl_enable_sort_btn="true" />
 
             <androidx.coordinatorlayout.widget.CoordinatorLayout

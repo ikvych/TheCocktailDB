@@ -20,7 +20,7 @@ import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
 
-class FilterFragment : BaseFragment<BaseViewModel>() {
+class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_filter
     override val viewModel: BaseViewModel by viewModels()
@@ -36,38 +36,13 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
 
-        //стартує dialogFragment для визначення типу фільтрування по вмісту алкоголю
-        im_alcohol_filter_item.setOnClickListener {
-            FilterDrinkAlcoholDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.ALCOHOL] as AlcoholDrinkFilter)
-                .show(childFragmentManager, FilterDrinkAlcoholDialogFragment::class.java.simpleName)
-        }
-
-        //стартує dialogFragment для визначення типу фільтрування по категорії напою
-        im_category_filter_item.setOnClickListener {
-            FilterDrinkCategoryDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.CATEGORY] as CategoryDrinkFilter)
-                .show(
-                    childFragmentManager,
-                    FilterDrinkCategoryDialogFragment::class.java.simpleName
-                )
-        }
-
-        //стартує dialogFragment для визначення типу фільтрування по інгредієнтах
-        im_ingredient_filter_item.setOnClickListener {
-            FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.INGREDIENT] as IngredientDrinkFilter)
-                .show(
-                    childFragmentManager,
-                    FilterDrinkIngredientDialogFragment::class.java.simpleName
-                )
-        }
-
-        //стартує dialogFragment для визначення типу фільтрування по бокалу
-        im_glass_filter_item.setOnClickListener {
-            FilterDrinkGlassDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.GLASS] as GlassDrinkFilter)
-                .show(
-                    childFragmentManager,
-                    FilterDrinkGlassDialogFragment::class.java.simpleName
-                )
-        }
+        im_alcohol_filter_item.setOnClickListener(this)
+        im_category_filter_item.setOnClickListener(this)
+        im_ingredient_filter_item.setOnClickListener(this)
+        im_glass_filter_item.setOnClickListener(this)
+        acb_to_result.setOnClickListener(this)
+        acb_reset.setOnClickListener(this)
+        atb_fragment_filter.returnBtn.setOnClickListener(this)
 
         //Відслідковує обрані фільтри і показує на ui, який тип фільтру якому значенню відповідає
         parentViewModel.filtersLiveData.observe(this, Observer {
@@ -84,21 +59,6 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
             im_glass_filter_item.isPressed = it[DrinkFilterType.GLASS] != GlassDrinkFilter.NONE
         })
 
-        //повертає на батьківський фрагмент
-        btn_to_result.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-
-        //обнуляє всі фільтри
-        btn_reject.setOnClickListener {
-            parentViewModel.resetFilters()
-        }
-
-        //кастомна кнопка return - повертає на батьківський фрагмент
-        atb_fragment_filter.returnBtn.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-
         //відслідковує і показує результати фільтрування в snackBar
         parentViewModel.filteredAndSortedResultDrinksLiveData.observe(this, Observer {
             if (parentViewModel.isFiltersPresent()) {
@@ -112,9 +72,53 @@ class FilterFragment : BaseFragment<BaseViewModel>() {
                 snackBar.show()
             }
         })
-
     }
 
+    override fun onClick(v: View?) {
+        if (v == null) return
+        when (v.id) {
+            //стартує dialogFragment для визначення типу фільтрування по вмісту алкоголю
+            R.id.im_alcohol_filter_item -> {
+                FilterDrinkAlcoholDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.ALCOHOL] as AlcoholDrinkFilter)
+                    .show(childFragmentManager, FilterDrinkAlcoholDialogFragment::class.java.simpleName)
+            }
+            //стартує dialogFragment для визначення типу фільтрування по категорії напою
+            R.id.im_category_filter_item -> {
+                FilterDrinkCategoryDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.CATEGORY] as CategoryDrinkFilter)
+                    .show(
+                        childFragmentManager,
+                        FilterDrinkCategoryDialogFragment::class.java.simpleName
+                    )}
+            //стартує dialogFragment для визначення типу фільтрування по інгредієнтах
+            R.id.im_ingredient_filter_item -> {
+                FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.INGREDIENT] as IngredientDrinkFilter)
+                    .show(
+                        childFragmentManager,
+                        FilterDrinkIngredientDialogFragment::class.java.simpleName
+                    )}
+            //стартує dialogFragment для визначення типу фільтрування по бокалу
+            R.id.im_glass_filter_item -> {
+                FilterDrinkGlassDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.GLASS] as GlassDrinkFilter)
+                    .show(
+                        childFragmentManager,
+                        FilterDrinkGlassDialogFragment::class.java.simpleName
+                    )}
+            //повертає на батьківський фрагмент
+            R.id.acb_to_result -> {
+                parentFragmentManager.popBackStack()
+            }
+            //обнуляє всі фільтри
+            R.id.acb_reset -> {
+                parentViewModel.resetFilters()
+            }
+            //кастомна кнопка return - повертає на батьківський фрагмент
+            R.id.ib_return_button -> {
+                parentFragmentManager.popBackStack()
+            }
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
     override fun onDialogFragmentClick(
         dialog: DialogFragment,
         buttonType: DialogButton,

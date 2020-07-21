@@ -5,7 +5,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.View
 import android.widget.*
-import androidx.core.content.ContextCompat
 import com.ikvych.cocktail.R
 import kotlinx.android.synthetic.main.widget_app_toolbar.view.*
 
@@ -16,7 +15,7 @@ class ApplicationToolBar(
 
     var returnBtn: ImageButton
     private var frameLayout: FrameLayout
-    var customBtn: ImageButton
+    var filterBtn: ImageButton
     var indicatorView: TextView
     var sortBtn: ImageButton
     var sortIndicatorView: TextView
@@ -45,14 +44,14 @@ class ApplicationToolBar(
             requestLayout()
         }
 
-    var isCustomBtnEnabled: Boolean = false
+    var isFilterBtnEnabled: Boolean = false
     set(value) {
         field = value
         if (field) {
-            customBtn.visibility = View.VISIBLE
+            filterBtn.visibility = View.VISIBLE
             relativeLayoutCustomBtn.visibility = View.VISIBLE
         } else {
-            customBtn.visibility = View.GONE
+            filterBtn.visibility = View.GONE
             relativeLayoutCustomBtn.visibility = View.GONE
         }
         invalidate()
@@ -89,7 +88,7 @@ class ApplicationToolBar(
     init {
         View.inflate(context, R.layout.widget_app_toolbar, this)
         this.returnBtn = findViewById(R.id.ib_return_button)
-        this.customBtn = findViewById(R.id.ib_filer_btn)
+        this.filterBtn = findViewById(R.id.ib_filer_btn)
         this.indicatorView = findViewById(R.id.tv_filter_indicator)
         this.frameLayout = findViewById(R.id.fl_toolbar)
         this.searchView = findViewById(R.id.sv_toolbar)
@@ -106,7 +105,7 @@ class ApplicationToolBar(
             try {
                 isForSearch = getBoolean(R.styleable.ApplicationToolBar_tl_is_for_search, false)
                 mainTitle = getString(R.styleable.ApplicationToolBar_tl_set_text) ?: context.getString(R.string.app_name)
-                isCustomBtnEnabled = getBoolean(R.styleable.ApplicationToolBar_tl_enable_custom_btn, false)
+                isFilterBtnEnabled = getBoolean(R.styleable.ApplicationToolBar_tl_enable_filter_btn, false)
                 isReturnBtnDisabled = getBoolean(R.styleable.ApplicationToolBar_tl_disable_return_btn, false)
                 isSortBtnEnabled = getBoolean(R.styleable.ApplicationToolBar_tl_enable_sort_btn, false)
             } finally {

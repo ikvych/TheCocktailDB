@@ -15,27 +15,13 @@ class FavoriteFragment : RecyclerViewFragment<BaseViewModel>() {
     override var contentLayoutResId: Int = R.layout.fragment_favorite
     override val viewModel: BaseViewModel by viewModels()
 
-    private lateinit var fragmentView: View
-
-    companion object {
-        @JvmStatic
-        fun newInstance() = FavoriteFragment()
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initViewModel()
-    }
-
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
-        fragmentView = view
         initRecyclerView(
             view,
             parentViewModel.filteredAndSortedFavoriteDrinksLiveData.value ?: emptyList(),
             R.id.rv_search_result
         )
-        initLiveDataObserver()
     }
 
     override fun initLiveDataObserver() {
@@ -47,18 +33,23 @@ class FavoriteFragment : RecyclerViewFragment<BaseViewModel>() {
 
     override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
         if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(fragmentView)
+            setDbEmptyHistoryVisible(requireView())
         } else {
-            setDbRecyclerViewVisible(fragmentView)
+            setDbRecyclerViewVisible(requireView())
         }
     }
 
     override fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
         if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(fragmentView)
+            setDbEmptyHistoryVisible(requireView())
         } else {
-            setDbRecyclerViewVisible(fragmentView)
+            setDbRecyclerViewVisible(requireView())
         }
+    }
+
+    companion object {
+        @JvmStatic
+        fun newInstance() = FavoriteFragment()
     }
 
 }

@@ -8,8 +8,8 @@ import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
 import androidx.activity.viewModels
+import androidx.cardview.widget.CardView
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -24,7 +24,6 @@ import com.ikvych.cocktail.util.setEmptySearchVisible
 import com.ikvych.cocktail.util.setSearchEmptyListVisible
 import com.ikvych.cocktail.util.setSearchRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
-import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.activity_search.*
 
 
@@ -33,7 +32,6 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
     override var contentLayoutResId: Int = R.layout.activity_search
     override val viewModel: SearchActivityViewModel by viewModels()
 
-    private lateinit var toolbarSearchView: SearchView
     private val drinkOfferReceiver: DrinkOfferReceiver = DrinkOfferReceiver(this)
     private val drinkAdapter: DrinkAdapter = DrinkAdapter(this)
     private lateinit var recyclerView: RecyclerView
@@ -44,13 +42,6 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
         initSearchView()
     }
 
-    private fun initLiveDataObserver() {
-        viewModel.drinkLiveData.observe(this, Observer { drinks ->
-            drinkAdapter.drinkList = drinks
-            determineVisibleLayerOnUpdateData(drinks)
-        })
-    }
-
     private fun initRecyclerView() {
         recyclerView = rv_search_result
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -58,26 +49,8 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
         } else {
             recyclerView.layoutManager = GridLayoutManager(this, 4)
         }
-
-        recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = drinkAdapter
-
         determineVisibleLayerOnCreate(arrayListOf())
-
-        drinkAdapter.drinkList = arrayListOf()
-    }
-
-    override fun onStart() {
-        super.onStart()
-        val filter = IntentFilter().apply {
-            addAction(ACTION_SHOW_DRINK_OFFER)
-        }
-        registerReceiver(drinkOfferReceiver, filter)
-    }
-
-    override fun onStop() {
-        super.onStop()
-        unregisterReceiver(drinkOfferReceiver)
     }
 
     private fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
@@ -86,6 +59,13 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
         } else {
             setSearchRecyclerViewVisible(this@SearchActivity)
         }
+    }
+
+    private fun initLiveDataObserver() {
+        viewModel.drinkLiveData.observe(this, Observer { drinks ->
+            drinkAdapter.drinkList = drinks
+            determineVisibleLayerOnUpdateData(drinks)
+        })
     }
 
     private fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
@@ -97,25 +77,43 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
     }
 
     private fun initSearchView() {
-        toolbarSearchView = findViewById<ApplicationToolBar>(R.id.atb_search_activity).searchView
-        toolbarSearchView.isIconifiedByDefault = false
-        toolbarSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        atb_search_activity.searchView.isIconifiedByDefault = false
+        atb_search_activity.searchView.setOnQueryTextListener(object :
+            SearchView.OnQueryTextListener {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
-                toolbarSearchView.clearFocus()
+                atb_search_activity.searchView.clearFocus()
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                val searchQuery: String = newText?.trim() ?: ""
-                viewModel.updateDrinksLiveData(searchQuery)
-                return true
+                return if (!newText.isNullOrBlank()) {
+                    val searchQuery: String = newText.trim()
+                    viewModel.updateDrinksLiveData(searchQuery)
+                    return true
+                } else {
+                    false
+                }
             }
 
         })
     }
 
-    override fun update(intent: Intent) {
+    override fun onStart() {
+        super.onStart()
+        val receiverFilter = IntentFilter().apply {
+            addAction(ACTION_SHOW_DRINK_OFFER)
+        }
+        registerReceiver(drinkOfferReceiver, receiverFilter)
+    }
+
+    override fun onStop() {
+        super.onStop()
+        unregisterReceiver(drinkOfferReceiver)
+    }
+
+
+    override fun showDrinkOffer(intent: Intent) {
         val drinks = viewModel.drinkLiveData.value
         if (drinks.isNullOrEmpty()) {
             return
@@ -124,9 +122,11 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
         val currentDrinkId: Long = intent.getLongExtra(DRINK_ID, -1L)
         val drink: Drink = drinks.shuffled().find { it.getIdDrink() != currentDrinkId } ?: return
 
-        val view: View = findViewById(R.id.rv_search_result)
-
-        Snackbar.make(view, "Як щодо - ${drink.getStrDrink()}", 3500)
+        Snackbar.make(
+            ll_search_container,
+            "${resources.getString(R.string.search_activity_drink_offer_title)}${drink.getStrDrink()}",
+            3500
+        )
             .setAction(R.string.toast_action_view) {
                 val drinkIntent = Intent(this, DrinkDetailActivity::class.java)
                 drinkIntent.putExtra(VIEW_MODEL_TYPE, SEARCH_MODEL_TYPE)
@@ -136,17 +136,22 @@ class SearchActivity : BaseActivity<SearchActivityViewModel>(), DrinkOfferListen
     }
 
     override fun onClick(v: View?) {
-        val view = v?.findViewById<TextView>(R.id.tv_drink_name)
-        val drinkName = view?.text ?: ""
-        val drink: Drink? =
-            drinkAdapter.drinkList.find { drink -> drink.getStrDrink() == drinkName }
-
-        if (drink != null) {
-            val intent = Intent(this, DrinkDetailActivity::class.java)
-            intent.putExtra(SHOULD_SAVE_DRINK, SHOULD_SAVE_DRINK)
-            intent.putExtra(SHOW_DRINK_OFFER_ON_DESTROY, SHOW_DRINK_OFFER_ON_DESTROY)
-            intent.putExtra(DRINK, drink)
-            startActivity(intent)
+        if (v == null) {
+            return
+        } else {
+            when (v.id) {
+                R.id.cv_item_drink -> {
+                    val drinkId = (v as CardView).tag as Long
+                    val drink: Drink =
+                        drinkAdapter.drinkList.find { drink -> drink.getIdDrink() == drinkId }
+                            ?: return
+                    val intent = Intent(this, DrinkDetailActivity::class.java)
+                    intent.putExtra(SHOULD_SAVE_DRINK, SHOULD_SAVE_DRINK)
+                    intent.putExtra(SHOW_DRINK_OFFER_ON_DESTROY, SHOW_DRINK_OFFER_ON_DESTROY)
+                    intent.putExtra(DRINK, drink)
+                    startActivity(intent)
+                }
+            }
         }
     }
 }

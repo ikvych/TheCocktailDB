@@ -121,8 +121,14 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
             }
         })
 
-        viewModel.filtersLiveData.observe(this, Observer {
-            filterAdapter.filterList = it.values.toList() as ArrayList
+        viewModel.filtersLiveData.observe(this, Observer { it ->
+            val filterList: ArrayList<DrinkFilter> = arrayListOf()
+            it.values.forEach {list ->
+                list.forEach {
+                    filterList.add(it)
+                }
+            }
+            filterAdapter.filterList = filterList
             if (viewModel.isFiltersPresent()) {
                 atb_fragment_main.indicatorView.visibility = View.VISIBLE
             } else {
@@ -241,22 +247,22 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         when (drinkFilter.type) {
             DrinkFilterType.CATEGORY -> {
                 viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply {
-                    this[drinkFilter.type] = CategoryDrinkFilter.NONE
+                    this[drinkFilter.type] = arrayListOf(CategoryDrinkFilter.NONE)
                 }
             }
             DrinkFilterType.ALCOHOL -> {
                 viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply {
-                    this[drinkFilter.type] = AlcoholDrinkFilter.NONE
+                    this[drinkFilter.type] = arrayListOf(AlcoholDrinkFilter.NONE)
                 }
             }
             DrinkFilterType.GLASS -> {
                 viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply {
-                    this[drinkFilter.type] = GlassDrinkFilter.NONE
+                    this[drinkFilter.type] = arrayListOf(GlassDrinkFilter.NONE)
                 }
             }
             DrinkFilterType.INGREDIENT -> {
                 viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply {
-                    this[drinkFilter.type] = IngredientDrinkFilter.NONE
+                    this[drinkFilter.type] = arrayListOf(IngredientDrinkFilter.NONE)
                 }
             }
         }

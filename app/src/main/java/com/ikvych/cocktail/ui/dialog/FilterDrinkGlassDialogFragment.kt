@@ -33,7 +33,7 @@ class FilterDrinkGlassDialogFragment :
         dialogBuilder = requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
         val glassOrdinal = requireArguments().getInt(EXTRA_KEY_SELECTED_GLASS)
         selectedGlassDrinkFilter = GlassDrinkFilter.values()[glassOrdinal]
-        listAdapter = DialogListAdapter(selectedGlassDrinkFilter)
+        listAdapter = DialogListAdapter(arrayListOf(selectedGlassDrinkFilter))
     }
 
     override var listData: List<GlassDrinkFilter?> = mutableListOf<GlassDrinkFilter?>().apply {

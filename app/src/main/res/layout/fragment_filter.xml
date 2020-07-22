@@ -54,19 +54,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:text="@string/filter_fragment_alcohol_filter_button"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
-
-                <TextView
-                    android:id="@+id/tv_alcohol_filter_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="4"
-                    android:text="Test"
-                    android:textAlignment="textEnd"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
 
@@ -75,6 +64,16 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_drink_alcohol_filter_arrow"
                     android:contentDescription="@string/all_content_description"/>
+
+                <TextView
+                    android:id="@+id/tv_alcohol_filter_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="5"
+                    android:text="Test"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             </LinearLayout>
 
@@ -91,19 +90,9 @@
                 <TextView
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:layout_gravity="center"
                     android:text="@string/filter_fragment_category_filter_button"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
-
-                <TextView
-                    android:id="@+id/tv_category_filter_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="4"
-                    android:textAlignment="textEnd"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
                 <ImageView
@@ -111,6 +100,17 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_drink_alcohol_filter_arrow"
                     android:contentDescription="@string/all_content_description"/>
+
+                <TextView
+                    android:id="@+id/tv_category_filter_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="5"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -127,26 +127,34 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:text="@string/filter_fragment_ingredient_filter_button"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
-
-                <TextView
-                    android:id="@+id/tv_ingredient_filter_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="4"
-                    android:textAlignment="textEnd"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
 
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_drink_alcohol_filter_arrow"
                     android:contentDescription="@string/all_content_description"/>
+
+                <HorizontalScrollView
+                    android:id="@+id/hsw_ingredient_filter2"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:padding="@dimen/offset_4"
+                    android:layout_weight="5">
+                    <TextView
+                        android:id="@+id/tv_ingredient_filter_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:visibility="visible"
+                        android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+                </HorizontalScrollView>
+
+
+
             </LinearLayout>
 
             <LinearLayout
@@ -163,18 +171,8 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:layout_weight="3"
+                    android:layout_weight="2"
                     android:text="@string/filter_fragment_glass_filter_button"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
-
-                <TextView
-                    android:id="@+id/tv_glass_filter_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="4"
-                    android:textAlignment="textEnd"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
                 <ImageView
@@ -182,6 +180,15 @@
                     android:layout_height="match_parent"
                     android:src="@drawable/ic_drink_alcohol_filter_arrow"
                     android:contentDescription="@string/all_content_description"/>
+
+                <TextView
+                    android:id="@+id/tv_glass_filter_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="5"
+                    android:textAlignment="textEnd"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             </LinearLayout>
         </LinearLayout>

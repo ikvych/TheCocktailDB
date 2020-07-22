@@ -28,6 +28,7 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
 
     override val contentLayoutResId = R.layout.layout_dialog_simple
     protected open val extraContentLayoutResId: Int = 0
+    protected open var extraContentView: View? = null
 
     protected open lateinit var dialogBuilder: Builder
     override var data: Data? = null
@@ -99,7 +100,7 @@ protected constructor() : BaseDialogFragment<Data, ButtonType, Type>() {
 
         if (extraContentLayoutResId != 0) {
             fl_dialog_extra_contents?.let {
-                layoutInflater.inflate(extraContentLayoutResId, fl_dialog_extra_contents)
+                extraContentView = layoutInflater.inflate(extraContentLayoutResId, fl_dialog_extra_contents)
                 configureExtraContent(fl_dialog_extra_contents, savedInstanceState)
             }
         }

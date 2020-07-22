@@ -19,6 +19,7 @@ import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.*
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainFragmentViewModel(application: Application) : BaseViewModel(application) {
 
@@ -33,9 +34,9 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
     val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getAllDrinksFromDbLiveData()
-    val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
+    val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
         MutableLiveData()
-    val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
+    val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
         MutableLiveData()
 
     init {
@@ -64,7 +65,7 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
                 val drinksCopy = drinks ?: arrayListOf()
 
                 val filteredData =
-                    filterData(drinksCopy, filtersLiveData.value!!.values.toList() as ArrayList)
+                    filterData(drinksCopy, filtersLiveData.value!!)
                 val filteredAndSortedData = sortData(filteredData, sortTypeLiveData.value!!)
                 value = filteredAndSortedData
             }
@@ -147,25 +148,25 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
 
 
     fun isFiltersPresent(): Boolean {
-        return filtersLiveData.value!![DrinkFilterType.ALCOHOL] != AlcoholDrinkFilter.NONE ||
-                filtersLiveData.value!![DrinkFilterType.CATEGORY] != CategoryDrinkFilter.NONE ||
-                filtersLiveData.value!![DrinkFilterType.INGREDIENT] != IngredientDrinkFilter.NONE ||
-                filtersLiveData.value!![DrinkFilterType.GLASS] != GlassDrinkFilter.NONE
+        return !filtersLiveData.value!![DrinkFilterType.ALCOHOL]!!.contains(AlcoholDrinkFilter.NONE) ||
+                !filtersLiveData.value!![DrinkFilterType.CATEGORY]!!.contains(CategoryDrinkFilter.NONE) ||
+                !filtersLiveData.value!![DrinkFilterType.INGREDIENT]!!.contains(IngredientDrinkFilter.NONE) ||
+                !filtersLiveData.value!![DrinkFilterType.GLASS]!!.contains(GlassDrinkFilter.NONE)
     }
 
     //обнуляє фільтри
     fun resetFilters() {
         filtersLiveData.value = hashMapOf(
-            Pair(DrinkFilterType.ALCOHOL, AlcoholDrinkFilter.NONE),
-            Pair(DrinkFilterType.CATEGORY, CategoryDrinkFilter.NONE),
-            Pair(DrinkFilterType.INGREDIENT, IngredientDrinkFilter.NONE),
-            Pair(DrinkFilterType.GLASS, GlassDrinkFilter.NONE)
+            Pair(DrinkFilterType.ALCOHOL, arrayListOf(AlcoholDrinkFilter.NONE)),
+            Pair(DrinkFilterType.CATEGORY, arrayListOf(CategoryDrinkFilter.NONE)),
+            Pair(DrinkFilterType.INGREDIENT, arrayListOf(IngredientDrinkFilter.NONE)),
+            Pair(DrinkFilterType.GLASS, arrayListOf(GlassDrinkFilter.NONE))
         )
         lastAppliedFiltersLiveData.value = hashMapOf(
-            Pair(DrinkFilterType.ALCOHOL, AlcoholDrinkFilter.NONE),
-            Pair(DrinkFilterType.CATEGORY, CategoryDrinkFilter.NONE),
-            Pair(DrinkFilterType.INGREDIENT, IngredientDrinkFilter.NONE),
-            Pair(DrinkFilterType.GLASS, GlassDrinkFilter.NONE)
+            Pair(DrinkFilterType.ALCOHOL, arrayListOf(AlcoholDrinkFilter.NONE)),
+            Pair(DrinkFilterType.CATEGORY, arrayListOf(CategoryDrinkFilter.NONE)),
+            Pair(DrinkFilterType.INGREDIENT, arrayListOf(IngredientDrinkFilter.NONE)),
+            Pair(DrinkFilterType.GLASS, arrayListOf(GlassDrinkFilter.NONE))
         )
     }
 
@@ -180,7 +181,7 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
         return false
     }
 
-    fun filterData(drinks: List<Drink>, drinkFilters: ArrayList<DrinkFilter>): List<Drink> {
+/*    fun filterData(drinks: List<Drink>, drinkFilters: ArrayList<DrinkFilter>): List<Drink> {
         var drinksCopy = drinks
         drinkFilters.forEach {
             when (it.type) {
@@ -216,6 +217,97 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
                     if (it != GlassDrinkFilter.NONE) {
                         drinksCopy = drinksCopy.filter { drink ->
                             drink.getStrGlass() == it.key
+                        }
+                    }
+                }
+            }
+        }
+        return drinksCopy
+    }*/
+
+    fun filterData(drinks: List<Drink>, drinkFilters: HashMap<DrinkFilterType, List<DrinkFilter>>): List<Drink> {
+        var drinksCopy = drinks
+        drinkFilters.forEach {
+            when (it.key) {
+                DrinkFilterType.ALCOHOL -> {
+                    if (!it.value.contains(AlcoholDrinkFilter.NONE)) {
+                        drinksCopy = drinksCopy.filter { drink ->
+                            var isValidDrink = false
+                            for (i in it.value.indices) {
+                                if (drink.getStrAlcoholic() == it.value[i].key) {
+                                    isValidDrink = true
+                                    break
+                                }
+                            }
+                            isValidDrink
+                        }
+                    }
+                }
+                DrinkFilterType.CATEGORY -> {
+                    if (!it.value.contains(CategoryDrinkFilter.NONE)) {
+                        drinksCopy = drinksCopy.filter { drink ->
+                            var isValidDrink = false
+                            for (i in it.value.indices) {
+                                if (drink.getStrCategory() == it.value[i].key) {
+                                    isValidDrink = true
+                                    break
+                                }
+                            }
+                            isValidDrink
+                        }
+                    }
+                }
+                //фільтрування ||
+/*                DrinkFilterType.INGREDIENT -> {
+                    if (!it.value.contains(IngredientDrinkFilter.NONE)) {
+                        drinksCopy = drinksCopy.filter { drink ->
+                            var isValidDrink = false
+                            for (i in it.value.indices) {
+                                for ((key, _) in drink.getIngredients()) {
+                                    if (key == it.value[i].key) {
+                                        isValidDrink = true
+                                        break
+                                    }
+                                }
+                                if (isValidDrink) break
+                            }
+                            isValidDrink
+                        }
+                    }
+                }*/
+                //фільтрування &&
+                DrinkFilterType.INGREDIENT -> {
+                    if (!it.value.contains(IngredientDrinkFilter.NONE)) {
+                        drinksCopy = drinksCopy.filter { drink ->
+                            var isValidDrink = true
+                            for (i in it.value.indices) {
+                                var isPresentCurrentIngredient = false
+                                for ((key, _) in drink.getIngredients()) {
+                                    if (key == it.value[i].key) {
+                                        isPresentCurrentIngredient = true
+                                        break
+                                    }
+                                }
+                                if (!isPresentCurrentIngredient) {
+                                    isValidDrink = false
+                                    break
+                                }
+                            }
+                            isValidDrink
+                        }
+                    }
+                }
+                DrinkFilterType.GLASS -> {
+                    if (!it.value.contains(GlassDrinkFilter.NONE)) {
+                        drinksCopy = drinksCopy.filter { drink ->
+                            var isValidDrink = false
+                            for (i in it.value.indices) {
+                                if (drink.getStrGlass() == it.value[i].key) {
+                                    isValidDrink = true
+                                    break
+                                }
+                            }
+                            isValidDrink
                         }
                     }
                 }

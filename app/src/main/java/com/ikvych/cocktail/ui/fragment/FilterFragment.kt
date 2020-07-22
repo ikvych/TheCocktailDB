@@ -10,10 +10,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.*
-import com.ikvych.cocktail.ui.dialog.FilterDrinkAlcoholDialogFragment
-import com.ikvych.cocktail.ui.dialog.FilterDrinkCategoryDialogFragment
-import com.ikvych.cocktail.ui.dialog.FilterDrinkGlassDialogFragment
-import com.ikvych.cocktail.ui.dialog.FilterDrinkIngredientDialogFragment
+import com.ikvych.cocktail.ui.dialog.*
 import com.ikvych.cocktail.ui.dialog.base.type.*
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
@@ -46,17 +43,12 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
 
         //Відслідковує обрані фільтри і показує на ui, який тип фільтру якому значенню відповідає
         parentViewModel.filtersLiveData.observe(this, Observer {
-            tv_alcohol_filter_value.text = it[DrinkFilterType.ALCOHOL]?.key
-            im_alcohol_filter_item.isPressed = it[DrinkFilterType.ALCOHOL] != AlcoholDrinkFilter.NONE
-
-            tv_category_filter_value.text = it[DrinkFilterType.CATEGORY]?.key
-            im_category_filter_item.isPressed = it[DrinkFilterType.CATEGORY] != CategoryDrinkFilter.NONE
-
-            tv_ingredient_filter_value.text = it[DrinkFilterType.INGREDIENT]?.key
-            im_ingredient_filter_item.isPressed = it[DrinkFilterType.INGREDIENT] != IngredientDrinkFilter.NONE
-
-            tv_glass_filter_value.text = it[DrinkFilterType.GLASS]?.key
-            im_glass_filter_item.isPressed = it[DrinkFilterType.GLASS] != GlassDrinkFilter.NONE
+            tv_alcohol_filter_value.text = it[DrinkFilterType.ALCOHOL]?.first()?.key
+            tv_category_filter_value.text = it[DrinkFilterType.CATEGORY]?.first()?.key
+            var text = String()
+            it[DrinkFilterType.INGREDIENT]?.forEach { text += "${it.key}, " }
+            tv_ingredient_filter_value.text = text
+            tv_glass_filter_value.text = it[DrinkFilterType.GLASS]?.first()?.key
         })
 
         //відслідковує і показує результати фільтрування в snackBar
@@ -79,30 +71,43 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
         when (v.id) {
             //стартує dialogFragment для визначення типу фільтрування по вмісту алкоголю
             R.id.im_alcohol_filter_item -> {
-                FilterDrinkAlcoholDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.ALCOHOL] as AlcoholDrinkFilter)
-                    .show(childFragmentManager, FilterDrinkAlcoholDialogFragment::class.java.simpleName)
+                FilterDrinkAlcoholDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.ALCOHOL]!!.first() as AlcoholDrinkFilter)
+                    .show(
+                        childFragmentManager,
+                        FilterDrinkAlcoholDialogFragment::class.java.simpleName
+                    )
             }
             //стартує dialogFragment для визначення типу фільтрування по категорії напою
             R.id.im_category_filter_item -> {
-                FilterDrinkCategoryDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.CATEGORY] as CategoryDrinkFilter)
+                FilterDrinkCategoryDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.CATEGORY]!!.first() as CategoryDrinkFilter)
                     .show(
                         childFragmentManager,
                         FilterDrinkCategoryDialogFragment::class.java.simpleName
-                    )}
+                    )
+            }
             //стартує dialogFragment для визначення типу фільтрування по інгредієнтах
             R.id.im_ingredient_filter_item -> {
-                FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.INGREDIENT] as IngredientDrinkFilter)
+                TestFilterDrinkIngredientDialogFragment.newInstance(
+                    parentViewModel.filtersLiveData.value!![DrinkFilterType.INGREDIENT] as List<IngredientDrinkFilter>
+                )
                     .show(
                         childFragmentManager,
                         FilterDrinkIngredientDialogFragment::class.java.simpleName
-                    )}
+                    )
+/*                FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.INGREDIENT]!!.first() as IngredientDrinkFilter)
+                    .show(
+                        childFragmentManager,
+                        FilterDrinkIngredientDialogFragment::class.java.simpleName
+                    )*/
+            }
             //стартує dialogFragment для визначення типу фільтрування по бокалу
             R.id.im_glass_filter_item -> {
-                FilterDrinkGlassDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.GLASS] as GlassDrinkFilter)
+                FilterDrinkGlassDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.GLASS]!!.first() as GlassDrinkFilter)
                     .show(
                         childFragmentManager,
                         FilterDrinkGlassDialogFragment::class.java.simpleName
-                    )}
+                    )
+            }
             //повертає на батьківський фрагмент
             R.id.acb_to_result -> {
                 parentFragmentManager.popBackStack()
@@ -125,44 +130,65 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
         type: DialogType<DialogButton>,
         data: Any?
     ) {
-        when (type) {
-            AlcoholDrinkDialogType -> {
-                val alcoholType = data as AlcoholDrinkFilter
-                parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.apply {
-                        this[alcoholType.type] = alcoholType
+        when (buttonType) {
+            ItemListDialogButton -> {
+                when (type) {
+                    AlcoholDrinkDialogType -> {
+                        val alcoholType = data as AlcoholDrinkFilter
+                        parentViewModel.lastAppliedFiltersLiveData.value =
+                            parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
+                        parentViewModel.filtersLiveData.value =
+                            parentViewModel.filtersLiveData.value!!.apply {
+                                this[alcoholType.type] = arrayListOf(alcoholType)
+                            }
                     }
+                    CategoryDrinkDialogType -> {
+                        val categoryType = data as CategoryDrinkFilter
+                        parentViewModel.lastAppliedFiltersLiveData.value =
+                            parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
+                        parentViewModel.filtersLiveData.value =
+                            parentViewModel.filtersLiveData.value!!.apply {
+                                this[categoryType.type] = arrayListOf(categoryType)
+                            }
+                    }
+/*                    IngredientDrinkDialogType -> {
+                        val ingredientType = data as IngredientDrinkFilter
+                        parentViewModel.lastAppliedFiltersLiveData.value =
+                            parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
+                        parentViewModel.filtersLiveData.value =
+                            parentViewModel.filtersLiveData.value!!.apply {
+                                this[ingredientType.type] = arrayListOf(ingredientType)
+                            }
+                    }*/
+                    GlassDrinkDialogType -> {
+                        val glassType = data as GlassDrinkFilter
+                        parentViewModel.lastAppliedFiltersLiveData.value =
+                            parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
+                        parentViewModel.filtersLiveData.value =
+                            parentViewModel.filtersLiveData.value!!.apply {
+                                this[glassType.type] = arrayListOf(glassType)
+                            }
+                    }
+                }
             }
-            CategoryDrinkDialogType -> {
-                val categoryType = data as CategoryDrinkFilter
-                parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.apply {
-                        this[categoryType.type] = categoryType
+            RightListDialogButton -> {
+                when (type) {
+                    IngredientDrinkDialogType -> {
+                        val ingredientTypes = data as List<IngredientDrinkFilter>
+                        parentViewModel.lastAppliedFiltersLiveData.value =
+                            parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
+                        parentViewModel.filtersLiveData.value =
+                            parentViewModel.filtersLiveData.value!!.apply {
+                                this[DrinkFilterType.INGREDIENT] = ingredientTypes
+                            }
                     }
+                }
             }
-            IngredientDrinkDialogType -> {
-                val ingredientType = data as IngredientDrinkFilter
-                parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.apply {
-                        this[ingredientType.type] = ingredientType
-                    }
-            }
-            GlassDrinkDialogType -> {
-                val glassType = data as GlassDrinkFilter
-                parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.apply {
-                        this[glassType.type] = glassType
-                    }
+            LeftListDialogButton -> {
+                dialog.dismiss()
             }
         }
+
     }
 
     companion object {

@@ -31,7 +31,7 @@ class FilterDrinkAlcoholDialogFragment :
         dialogBuilder = requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
         val alcoholOrdinal = requireArguments().getInt(EXTRA_KEY_SELECTED_ALCOHOL)
         selectedAlcoholDrinkFilter = AlcoholDrinkFilter.values()[alcoholOrdinal]
-        listAdapter = DialogListAdapter(arrayListOf(selectedAlcoholDrinkFilter))
+        listAdapter = DialogListAdapter(selectedAlcoholDrinkFilter)
     }
 
     override var listData: List<AlcoholDrinkFilter?> = mutableListOf<AlcoholDrinkFilter?>().apply {
@@ -61,8 +61,6 @@ class FilterDrinkAlcoholDialogFragment :
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
                         isCloseButtonVisible = true
-                        rightButtonText = "Accept"
-                        leftButtonText = "Cancel"
                     },
                     EXTRA_KEY_SELECTED_ALCOHOL to selectedAlcohol?.ordinal
                 )

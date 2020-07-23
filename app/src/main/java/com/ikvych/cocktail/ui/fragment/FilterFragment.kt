@@ -27,6 +27,7 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         parentViewModel =
             ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
+        parentViewModel.firstTime = true
     }
 
     @ExperimentalStdlibApi
@@ -43,17 +44,41 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
 
         //Відслідковує обрані фільтри і показує на ui, який тип фільтру якому значенню відповідає
         parentViewModel.filtersLiveData.observe(this, Observer {
-            tv_alcohol_filter_value.text = it[DrinkFilterType.ALCOHOL]?.first()?.key
-            tv_category_filter_value.text = it[DrinkFilterType.CATEGORY]?.first()?.key
+            val alcoholFilterText =
+                if (it[DrinkFilterType.ALCOHOL]?.first() == AlcoholDrinkFilter.NONE) {
+                    ""
+                } else {
+                    it[DrinkFilterType.ALCOHOL]?.first()?.key
+                }
+            tv_alcohol_filter_value.text = alcoholFilterText
+
+            val categoryFilterText =
+                if (it[DrinkFilterType.CATEGORY]?.first() == CategoryDrinkFilter.NONE) {
+                    ""
+                } else {
+                    it[DrinkFilterType.CATEGORY]?.first()?.key
+                }
+            tv_category_filter_value.text = categoryFilterText
+
             var text = String()
-            it[DrinkFilterType.INGREDIENT]?.forEach { text += "${it.key}, " }
+            if (it[DrinkFilterType.INGREDIENT]!!.contains(IngredientDrinkFilter.NONE)) {
+                text = ""
+            } else {
+                it[DrinkFilterType.INGREDIENT]?.forEach { text += "${it.key}, " }
+            }
             tv_ingredient_filter_value.text = text
-            tv_glass_filter_value.text = it[DrinkFilterType.GLASS]?.first()?.key
+
+            val glassFilterText = if (it[DrinkFilterType.GLASS]?.first() == GlassDrinkFilter.NONE) {
+                ""
+            } else {
+                it[DrinkFilterType.GLASS]?.first()?.key
+            }
+            tv_glass_filter_value.text = glassFilterText
         })
 
         //відслідковує і показує результати фільтрування в snackBar
         parentViewModel.filteredAndSortedResultDrinksLiveData.observe(this, Observer {
-            if (parentViewModel.isFiltersPresent()) {
+            if (!parentViewModel.firstTime) {
                 val snackBar = Snackbar.make(ll_btn_container, it, Snackbar.LENGTH_SHORT)
                 if (parentViewModel.isUndoEnabled()) {
                     snackBar.setAction(R.string.all_undo_button) {
@@ -62,6 +87,8 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
                     }
                 }
                 snackBar.show()
+            } else {
+                parentViewModel.firstTime = false
             }
         })
     }
@@ -87,7 +114,7 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
             }
             //стартує dialogFragment для визначення типу фільтрування по інгредієнтах
             R.id.im_ingredient_filter_item -> {
-                TestFilterDrinkIngredientDialogFragment.newInstance(
+                FilterDrinkIngredientDialogFragment.newInstance(
                     parentViewModel.filtersLiveData.value!![DrinkFilterType.INGREDIENT] as List<IngredientDrinkFilter>
                 )
                     .show(

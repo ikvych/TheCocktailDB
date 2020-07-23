@@ -28,6 +28,8 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
     val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
 
+    var firstTime: Boolean = true
+
     init {
         isBatteryLowLiveData.value = false
     }

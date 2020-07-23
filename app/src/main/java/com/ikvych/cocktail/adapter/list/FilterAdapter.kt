@@ -45,12 +45,6 @@ class FilterAdapter(
                         R.drawable.ic_item_drink_filter_favorite
                     )
                 )
-                holder.linearLayout.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.item_drink_filter_ingredient_bg
-                    )
-                )
                 holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
             }
             DrinkFilterType.ALCOHOL -> {
@@ -58,12 +52,6 @@ class FilterAdapter(
                     ContextCompat.getDrawable(
                         context,
                         R.drawable.ic_item_drink_filter_alcohol
-                    )
-                )
-                holder.linearLayout.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.item_drink_filter_ingredient_bg
                     )
                 )
                 holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
@@ -75,12 +63,6 @@ class FilterAdapter(
                         R.drawable.ic_item_drink_filter_ingredient
                     )
                 )
-                holder.linearLayout.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.item_drink_filter_ingredient_bg
-                    )
-                )
                 holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
             }
             DrinkFilterType.GLASS -> {
@@ -88,12 +70,6 @@ class FilterAdapter(
                     ContextCompat.getDrawable(
                         context,
                         R.drawable.ic_item_drink_filter_glass
-                    )
-                )
-                holder.linearLayout.setBackgroundColor(
-                    ContextCompat.getColor(
-                        context,
-                        R.color.item_drink_filter_ingredient_bg
                     )
                 )
                 holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }

@@ -78,8 +78,8 @@
                     android:layout_width="0dp"
                     android:layout_height="@dimen/btn_height"
                     android:layout_weight="1"
-                    android:textColor="@drawable/selector_app_button_text"
-                    android:background="@drawable/selector_app_button"/>
+                    android:textColor="@drawable/selector_app_button_text_reverse"
+                    android:background="@drawable/selector_app_button_reverse"/>
 
                 <Space
                     android:id="@+id/space_dialog_buttons"

@@ -48,7 +48,7 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
         RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         View.OnClickListener {
 
-        private val layoutId = R.layout.item_filter_type
+        private val layoutId = R.layout.item_multi_filter_type
 
         var newElements: List<Element> = arrayListOf()
             set(value) {

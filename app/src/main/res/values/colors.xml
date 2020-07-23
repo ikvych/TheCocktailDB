@@ -8,6 +8,7 @@
     <color name="color_background">#FFFFFF</color>
     <color name="color_on_secondary">#FFFFFF</color>
     <color name="color_on_surface">#000000</color>
+    <color name="color_on_surface_variant">#558B2F</color>
     <color name="color_normal">#FFFFFF</color>
 
     <color name="color_surface_variant">#558B2F</color>

@@ -4,6 +4,12 @@
         android:title="@string/open"/>
     <item android:id="@+id/menu_drink_pin_shortcut"
         android:title="@string/pin_shortcut"/>
+    <item android:id="@+id/menu_drink_remove_shortcut"
+        android:title="@string/remove_shortcut"/>
+    <item android:id="@+id/menu_drink_add_dynamic_shortcut"
+        android:title="@string/add_dynamic_shortcut"/>
+    <item android:id="@+id/menu_drink_remove_dynamic_shortcut"
+        android:title="@string/remove_dynamic_shortcut"/>
     <item android:id="@+id/menu_drink_quick_preview"
         android:title="@string/quick_preview"/>
     <item android:id="@+id/menu_drink_add_favorite"

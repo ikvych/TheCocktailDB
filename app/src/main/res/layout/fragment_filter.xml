@@ -40,6 +40,24 @@
             android:clipToPadding="false"
             android:layout_gravity="top">
 
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Виберіть тип фільтрування"
+                android:textSize="@dimen/headline_3"
+                android:padding="@dimen/offset_8"
+                android:layout_margin="@dimen/offset_4"
+                android:textColor="#4E4E4E"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Одиночні фільтри"
+                android:textSize="@dimen/headline_4"
+                android:padding="@dimen/offset_12"
+                android:background="@drawable/layer_list_backgound_title"
+                android:textColor="#555555"/>
+
             <LinearLayout
                 android:id="@+id/im_alcohol_filter_item"
                 android:layout_width="match_parent"
@@ -47,7 +65,7 @@
                 android:layout_marginTop="@dimen/offset_4"
                 android:layout_marginStart="@dimen/offset_8"
                 android:paddingHorizontal="@dimen/offset_8"
-                android:elevation="@dimen/elevation_2"
+                android:background="@drawable/layer_list_text_title"
                 android:orientation="horizontal">
 
                 <TextView
@@ -71,8 +89,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="5"
-                    android:text="Test"
-                    android:textAlignment="textEnd"
+                    android:textColor="@color/color_on_surface_variant"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             </LinearLayout>
@@ -84,7 +101,7 @@
                 android:layout_marginTop="@dimen/offset_4"
                 android:layout_marginStart="@dimen/offset_8"
                 android:paddingHorizontal="@dimen/offset_8"
-                android:elevation="@dimen/elevation_2"
+                android:background="@drawable/layer_list_text_title"
                 android:orientation="horizontal">
 
                 <TextView
@@ -107,11 +124,54 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:layout_weight="5"
-                    android:textAlignment="textEnd"
+                    android:textColor="@color/color_on_surface_variant"
                     android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/im_glass_filter_item"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height"
+                android:layout_marginTop="@dimen/offset_4"
+                android:layout_marginStart="@dimen/offset_8"
+                android:paddingHorizontal="@dimen/offset_8"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="2"
+                    android:text="@string/filter_fragment_glass_filter_button"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/ic_drink_alcohol_filter_arrow"
+                    android:contentDescription="@string/all_content_description"/>
+
+                <TextView
+                    android:id="@+id/tv_glass_filter_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="5"
+                    android:textColor="@color/color_on_surface_variant"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Множинні фільтри"
+                android:textSize="@dimen/headline_4"
+                android:padding="@dimen/offset_12"
+                android:background="@drawable/layer_list_backgound_title"
+                android:textColor="#555555"/>
 
             <LinearLayout
                 android:id="@+id/im_ingredient_filter_item"
@@ -120,7 +180,7 @@
                 android:layout_marginTop="@dimen/offset_4"
                 android:layout_marginStart="@dimen/offset_8"
                 android:paddingHorizontal="@dimen/offset_8"
-                android:elevation="@dimen/elevation_2"
+                android:background="@drawable/layer_list_text_title"
                 android:orientation="horizontal">
 
                 <TextView
@@ -149,46 +209,12 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:visibility="visible"
+                        android:textColor="@color/color_on_surface_variant"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
                 </HorizontalScrollView>
 
 
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/im_glass_filter_item"
-                android:layout_width="match_parent"
-                android:layout_height="@dimen/view_height"
-                android:layout_marginTop="@dimen/offset_4"
-                android:layout_marginStart="@dimen/offset_8"
-                android:paddingHorizontal="@dimen/offset_8"
-                android:elevation="@dimen/elevation_2"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="2"
-                    android:text="@string/filter_fragment_glass_filter_button"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/ic_drink_alcohol_filter_arrow"
-                    android:contentDescription="@string/all_content_description"/>
-
-                <TextView
-                    android:id="@+id/tv_glass_filter_value"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:layout_weight="5"
-                    android:textAlignment="textEnd"
-                    android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
 
             </LinearLayout>
         </LinearLayout>

@@ -261,8 +261,14 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
                 }
             }
             DrinkFilterType.INGREDIENT -> {
+                val currentFilter = IngredientDrinkFilter.values().filter { it.key == drinkFilter.key }.first()
                 viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply {
-                    this[drinkFilter.type] = arrayListOf(IngredientDrinkFilter.NONE)
+                    val filters: List<DrinkFilter> = this[drinkFilter.type]!!
+                    if (filters.size == 1) {
+                        this[drinkFilter.type] = arrayListOf(IngredientDrinkFilter.NONE)
+                    } else {
+                        this[drinkFilter.type] = this[drinkFilter.type]!!.filter { it != currentFilter}
+                    }
                 }
             }
         }

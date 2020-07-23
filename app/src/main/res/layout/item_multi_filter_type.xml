@@ -6,6 +6,7 @@
     android:layout_height="@dimen/btn_height"
     android:layout_marginBottom="@dimen/offset_4"
     android:textSize="@dimen/caption_1"
+    android:text="Text"
     android:stateListAnimator="@null"
-    android:textColor="@drawable/selector_app_button_text_reverse"
-    android:background="@drawable/selector_app_button_reverse"/>
+    android:textColor="@drawable/selector_app_button_text_reverse_multi"
+    android:background="@drawable/selector_app_button_reverse_multi"/>

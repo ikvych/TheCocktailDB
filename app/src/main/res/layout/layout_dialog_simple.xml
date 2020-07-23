@@ -14,7 +14,9 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:clipChildren="false"
+        android:clipToPadding="false">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -61,31 +63,35 @@
         <FrameLayout
             android:id="@+id/fl_dialog_extra_contents"
             android:layout_width="match_parent"
-            android:layout_height="400dp"/>
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
 
         <LinearLayout
             android:id="@+id/ll_dialog_buttons"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:paddingHorizontal="@dimen/offset_16">
+            android:gravity="end">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/b_dialog_left_button"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/btn_height"
-                android:layout_weight="1" />
-
+                android:textColor="@color/color_on_surface_variant"
+                android:background="@color/color_transparent"/>
             <Space
                 android:id="@+id/space_dialog_buttons"
-                android:layout_width="16dp"
-                android:layout_height="match_parent" />
+                android:layout_width="@dimen/offset_8"
+                android:layout_height="match_parent"
+                android:layout_gravity="end"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/b_dialog_right_button"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="@dimen/btn_height"
-                android:layout_weight="1" />
+                android:textColor="@color/color_on_surface_variant"
+                android:background="@color/color_transparent" />
+
 
         </LinearLayout>
 

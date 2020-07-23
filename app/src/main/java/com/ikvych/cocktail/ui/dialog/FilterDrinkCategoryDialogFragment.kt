@@ -31,7 +31,7 @@ class FilterDrinkCategoryDialogFragment :
         dialogBuilder = requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
         val categoryOrdinal = requireArguments().getInt(EXTRA_KEY_SELECTED_CATEGORY)
         selectedCategoryDrinkFilter = CategoryDrinkFilter.values()[categoryOrdinal]
-        listAdapter = DialogListAdapter(arrayListOf(selectedCategoryDrinkFilter))
+        listAdapter = DialogListAdapter(selectedCategoryDrinkFilter)
     }
 
     override var listData: List<CategoryDrinkFilter?> =
@@ -62,8 +62,6 @@ class FilterDrinkCategoryDialogFragment :
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
                         isCloseButtonVisible = true
-                        rightButtonText = "Accept"
-                        leftButtonText = "Cancel"
                     },
                     EXTRA_KEY_SELECTED_CATEGORY to selectedCategory?.ordinal
                 )

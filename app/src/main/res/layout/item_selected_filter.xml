@@ -3,9 +3,11 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/ll_selected_filter_container"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/view_height_min"
-    android:layout_margin="@dimen/offset_8"
-    android:padding="@dimen/offset_4"
+    android:layout_height="36dp"
+    android:layout_marginStart="@dimen/offset_8"
+    android:layout_marginBottom="@dimen/offset_4"
+    android:layout_marginTop="@dimen/offset_4"
+    android:paddingHorizontal="@dimen/offset_4"
     android:orientation="horizontal"
     android:background="@drawable/iten_drink_filter_shape">
 

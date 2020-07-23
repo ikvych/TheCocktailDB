@@ -67,6 +67,9 @@
     <string name="open">Open</string>
     <string name="remove_favorite">Remove favorite</string>
     <string name="pin_shortcut">Pin shortcut</string>
+    <string name="add_dynamic_shortcut">Add dynamic shortcut</string>
+    <string name="remove_dynamic_shortcut">Remove dynamic shortcut</string>
+    <string name="remove_shortcut">Remove shortcut</string>
     <!--#endregion-->
 
     <!--#region MainActivity BottomNavigationView-->

@@ -32,7 +32,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel>() {
     private lateinit var imageViewParams: LinearLayout.LayoutParams
 
     override fun configureView(savedInstanceState: Bundle?) {
-        //якщо присутній інтент SHOW_DRINK_OFFER_ON_DESTROY зупиняємо сервіс, для того щоб не спамились
+        //якщо присутній інтент SHOW_DRINK_OFFER_ON_DESTROY зупиняємо сервіс, для того щоб не настиковувались
         // пропозиції переглянути напій
         if (intent.hasExtra(SHOW_DRINK_OFFER_ON_DESTROY)) {
             stopService(Intent(this, ApplicationService::class.java))

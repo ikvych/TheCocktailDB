@@ -8,7 +8,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.view.View
 import android.widget.CheckBox
 import android.widget.ImageView
@@ -160,170 +159,172 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
     override fun onLongClick(v: View?): Boolean {
         if (v == null) return false
         //v is CardView якій я попередньо прописав tag як id напою
-        val drinkId = v.tag as Long
-        val drink = viewModel.findDrinkById(drinkId) ?: return false
+        return when (v.id) {
+            R.id.cv_item_drink -> {
+                val drinkId = v.tag as Long
+                val drink = viewModel.findDrinkById(drinkId) ?: return false
 
-        PopupMenu(this, v).apply {
-
-            menu.add(0, R.id.menu_drink_open, 0, getString(R.string.open))
-            menu.add(0, R.id.menu_drink_quick_preview, 0, getString(R.string.quick_preview))
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                if (shortcutAlreadyExist(shortLabel = drink.getStrDrink(), shortcutType = ShortcutType.PINNED_SHORTCUT)) {
-                    menu.removeItem(R.id.menu_drink_pin_shortcut)
-                    menu.add(0, R.id.menu_drink_remove_shortcut,0, getString(R.string.remove_shortcut))
-                } else {
-                    menu.removeItem(R.id.menu_drink_remove_shortcut)
-                    menu.add(0, R.id.menu_drink_pin_shortcut, 0, getString(R.string.pin_shortcut))
-                }
-                if (shortcutAlreadyExist(shortLabel = drink.getStrDrink(), shortcutType = ShortcutType.DYNAMIC_SHORTCUT)) {
-                    menu.removeItem(R.id.menu_drink_add_dynamic_shortcut)
-                    menu.add(0, R.id.menu_drink_remove_dynamic_shortcut,0, getString(R.string.remove_dynamic_shortcut))
-                } else {
-                    menu.removeItem(R.id.menu_drink_remove_dynamic_shortcut)
-                    menu.add(0, R.id.menu_drink_add_dynamic_shortcut, 0, getString(R.string.add_dynamic_shortcut))
-                }
-            }
-            if (drink.isFavorite()) {
-                menu.removeItem(R.id.menu_drink_add_favorite)
-                menu.add(0, R.id.menu_drink_remove_favorite, 0, getString(R.string.remove_favorite))
-            } else {
-                menu.removeItem(R.id.menu_drink_remove_favorite)
-                menu.add(0, R.id.menu_drink_add_favorite, 0, getString(R.string.add_favorite))
-            }
-            menu.add(0, R.id.menu_drink_remove, 0, getString(R.string.remove))
-
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    // відкриває деталізацію напою
-                    R.id.menu_drink_open -> {
-                        val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
-                        intent.putExtra(DRINK_ID, drink.getIdDrink())
-                        startActivity(intent)
-                        true
-                    }
-                    // додає напій до улюблених
-                    R.id.menu_drink_add_favorite -> {
-                        drink.setIsFavorite(true)
-                        viewModel.saveDrinkIntoDb(drink)
-                        Toast.makeText(
-                            this@MainActivity,
-                            "${drink.getStrDrink()} added to favorite",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        true
-                    }
-                    // видаляє напій з улюблених
-                    R.id.menu_drink_remove_favorite -> {
-                        drink.setIsFavorite(false)
-                        viewModel.saveDrinkIntoDb(drink)
-                        Toast.makeText(
-                            this@MainActivity,
-                            "${drink.getStrDrink()} removed from favorite",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        true
-                    }
-                    R.id.menu_drink_remove -> {
-                        viewModel.removeDrink(drink)
-                        Toast.makeText(
-                            this@MainActivity,
-                            "${drink.getStrDrink()} removed from history",
-                            Toast.LENGTH_SHORT
-                        )
-                            .show()
-                        true
-                    }
-                    // створює pinned shortcut
-                    R.id.menu_drink_pin_shortcut -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val shortcutManager =
-                                ContextCompat.getSystemService(
+                PopupMenu(this, v).apply {
+                    configurePopupMenu(this, drink)
+                    setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            // відкриває деталізацію напою
+                            R.id.menu_drink_open -> {
+                                val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
+                                intent.putExtra(DRINK_ID, drink.getIdDrink())
+                                startActivity(intent)
+                                true
+                            }
+                            // додає напій до улюблених
+                            R.id.menu_drink_add_favorite -> {
+                                drink.setIsFavorite(true)
+                                viewModel.saveDrinkIntoDb(drink)
+                                Toast.makeText(
                                     this@MainActivity,
-                                    ShortcutManager::class.java
-                                ) ?: return@setOnMenuItemClickListener false
-
-                            val shortcut = createDrinkShortcut(v, drink, ShortcutType.PINNED_SHORTCUT)
-
-                            shortcutManager.requestPinShortcut(shortcut, null)
-                            return@setOnMenuItemClickListener true
-                        }
-                        false
-                    }
-                    R.id.menu_drink_remove_shortcut -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val shortcutManager: ShortcutManager? =
-                                ContextCompat.getSystemService(
+                                    "${drink.getStrDrink()} ${getString(R.string.popup_menu_add_to_favorite)}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                true
+                            }
+                            // видаляє напій з улюблених
+                            R.id.menu_drink_remove_favorite -> {
+                                drink.setIsFavorite(false)
+                                viewModel.saveDrinkIntoDb(drink)
+                                Toast.makeText(
                                     this@MainActivity,
-                                    ShortcutManager::class.java
+                                    "${drink.getStrDrink()} ${getString(R.string.popup_menu_remove_from_favorite)}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                true
+                            }
+                            R.id.menu_drink_remove -> {
+                                viewModel.removeDrink(drink)
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "${drink.getStrDrink()} ${getString(R.string.popup_menu_remove_from_history)}",
+                                    Toast.LENGTH_SHORT
                                 )
-
-                            shortcutManager!!.pinnedShortcuts.forEach { shortcutInfo: ShortcutInfo ->
-                                if (shortcutInfo.shortLabel == drink.getStrDrink()) {
-                                    shortcutManager.disableShortcuts(arrayListOf(shortcutInfo.id))
-                                }
+                                    .show()
+                                true
                             }
-                            return@setOnMenuItemClickListener true
-                        }
-                        false
-                    }
-                    R.id.menu_drink_add_dynamic_shortcut -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val shortcutManager =
-                                ContextCompat.getSystemService(
-                                    this@MainActivity,
-                                    ShortcutManager::class.java
-                                ) ?: return@setOnMenuItemClickListener false
+                            // створює pinned shortcut
+                            R.id.menu_drink_pin_shortcut -> {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    val shortcutManager =
+                                        ContextCompat.getSystemService(
+                                            this@MainActivity,
+                                            ShortcutManager::class.java
+                                        ) ?: return@setOnMenuItemClickListener false
 
-                            val shortcut = createDrinkShortcut(v, drink, ShortcutType.DYNAMIC_SHORTCUT)
-
-                            val shorctcuts = shortcutManager.dynamicShortcuts
-                            shorctcuts.add(shortcut)
-                            shortcutManager.dynamicShortcuts = shorctcuts
-                        }
-                        true
-                    }
-                    R.id.menu_drink_remove_dynamic_shortcut -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val shortcutManager =
-                                ContextCompat.getSystemService(
-                                    this@MainActivity,
-                                    ShortcutManager::class.java
-                                ) ?: return@setOnMenuItemClickListener false
-
-                            shortcutManager.dynamicShortcuts.forEach { shortcutInfo: ShortcutInfo ->
-                                if (shortcutInfo.shortLabel == drink.getStrDrink()) {
-                                    shortcutManager.removeDynamicShortcuts(arrayListOf(shortcutInfo.id))
+                                    val shortcut =
+                                        createDrinkShortcut(v, drink, ShortcutType.PINNED_SHORTCUT)
+                                    shortcutManager.requestPinShortcut(shortcut, null)
+                                    return@setOnMenuItemClickListener true
                                 }
+                                false
                             }
+                            R.id.menu_drink_add_dynamic_shortcut -> {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    val shortcutManager =
+                                        ContextCompat.getSystemService(
+                                            this@MainActivity,
+                                            ShortcutManager::class.java
+                                        ) ?: return@setOnMenuItemClickListener false
+
+                                    val shortcut =
+                                        createDrinkShortcut(v, drink, ShortcutType.DYNAMIC_SHORTCUT)
+                                    shortcutManager.addDynamicShortcuts(mutableListOf(shortcut))
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        getString(R.string.popup_menu_add_dynamic_shortcut),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                true
+                            }
+                            R.id.menu_drink_remove_dynamic_shortcut -> {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    val shortcutManager =
+                                        ContextCompat.getSystemService(
+                                            this@MainActivity,
+                                            ShortcutManager::class.java
+                                        ) ?: return@setOnMenuItemClickListener false
+
+                                    shortcutManager.dynamicShortcuts.forEach { shortcutInfo: ShortcutInfo ->
+                                        if (shortcutInfo.shortLabel == drink.getStrDrink()) {
+                                            shortcutManager.removeDynamicShortcuts(arrayListOf(shortcutInfo.id))
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                getString(R.string.popup_menu_remove_dynamic_shortcut),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                                }
+                                true
+                            }
+                            else -> false
                         }
-                        true
                     }
-                    else -> false
+                    show()
                 }
+                return true
             }
-            show()
+            else -> false
         }
-        return true
     }
 
-    private fun shortcutAlreadyExist(shortCut: ShortcutInfo? = null, shortLabel: String? = null, shortcutType: ShortcutType): Boolean {
+    private fun configurePopupMenu(menu: PopupMenu, drink: Drink) {
+        menu.menu.add(0, R.id.menu_drink_open, 0, getString(R.string.open))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (shortcutAlreadyExist(drink.getIdDrink()!!, ShortcutType.PINNED_SHORTCUT)) {
+                menu.menu.removeItem(R.id.menu_drink_pin_shortcut)
+            } else {
+                menu.menu.add(0, R.id.menu_drink_pin_shortcut, 0, getString(R.string.pin_shortcut))
+            }
+            if (shortcutAlreadyExist(drink.getIdDrink()!!, ShortcutType.DYNAMIC_SHORTCUT)) {
+                menu.menu.removeItem(R.id.menu_drink_add_dynamic_shortcut)
+                menu.menu.add(
+                    0,
+                    R.id.menu_drink_remove_dynamic_shortcut,
+                    0,
+                    getString(R.string.remove_dynamic_shortcut)
+                )
+            } else {
+                menu.menu.removeItem(R.id.menu_drink_remove_dynamic_shortcut)
+                menu.menu.add(
+                    0,
+                    R.id.menu_drink_add_dynamic_shortcut,
+                    0,
+                    getString(R.string.add_dynamic_shortcut)
+                )
+            }
+        }
+        if (drink.isFavorite()) {
+            menu.menu.removeItem(R.id.menu_drink_add_favorite)
+            menu.menu.add(0, R.id.menu_drink_remove_favorite, 0, getString(R.string.remove_favorite))
+        } else {
+            menu.menu.removeItem(R.id.menu_drink_remove_favorite)
+            menu.menu.add(0, R.id.menu_drink_add_favorite, 0, getString(R.string.add_favorite))
+        }
+        menu.menu.add(0, R.id.menu_drink_remove, 0, getString(R.string.remove))
+    }
+
+    private fun shortcutAlreadyExist(drinkId: Long, shortcutType: ShortcutType): Boolean {
         var isExist = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val shortcutManager: ShortcutManager? =
                 ContextCompat.getSystemService(this, ShortcutManager::class.java)
 
-            var shortcuts: List<ShortcutInfo>
-            when (shortcutType) {
-                ShortcutType.PINNED_SHORTCUT -> shortcuts = shortcutManager!!.pinnedShortcuts
-                ShortcutType.DYNAMIC_SHORTCUT -> shortcuts = shortcutManager!!.dynamicShortcuts
+            val shortcuts: List<ShortcutInfo>
+            shortcuts = when (shortcutType) {
+                ShortcutType.PINNED_SHORTCUT -> shortcutManager!!.pinnedShortcuts
+                ShortcutType.DYNAMIC_SHORTCUT -> shortcutManager!!.dynamicShortcuts
             }
             shortcuts.forEach { shortcutInfo: ShortcutInfo? ->
-                val name = shortcutInfo!!.shortLabel
-                val ordi = shortcutInfo.extras?.getInt(shortcutType.name, -1)
-                if (
-                    shortCut?.shortLabel ?: shortLabel == shortcutInfo!!.shortLabel &&
-                    shortcutType.ordinal == shortcutInfo.extras?.getInt(shortcutType.name)
-                ) {
+                //id для shortcut виставлено як id самого напою + ShortcutType, для того щоб розрізняти
+                //динамічні і закріплені shortcut
+                if (shortcutInfo?.id == "${drinkId}${shortcutType.key}") {
                     isExist = true
                     return isExist
                 }
@@ -334,52 +335,49 @@ class MainActivity : BaseActivity<MainActivityViewModel>() {
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createDrinkShortcut(view: View, drink: Drink, type: ShortcutType): ShortcutInfo {
-        val drinkImageView = view.findViewById<ImageView>(R.id.iv_drink_image)
-        val returnedBitmap = Bitmap.createBitmap(
-            drinkImageView.getWidth(),
-            drinkImageView.getHeight(),
+        val drinkImageView = view.findViewById(R.id.iv_drink_image) as ImageView
+        val drinkImageBitmap: Bitmap = Bitmap.createBitmap(
+            drinkImageView.width,
+            drinkImageView.height,
             Bitmap.Config.ARGB_8888
         )
-        val canvas =
-            Canvas(returnedBitmap)
-        val bgDrawable = drinkImageView.getBackground()
+        val drinkImageCanvas =
+            Canvas(drinkImageBitmap)
+        val bgDrawable = drinkImageView.background
         if (bgDrawable != null) {
-            bgDrawable.draw(canvas)
+            bgDrawable.draw(drinkImageCanvas)
         } else {
-            canvas.drawColor(
+            drinkImageCanvas.drawColor(
                 Color.WHITE
             )
         }
-        drinkImageView.draw(canvas)
-        val drinkAdaptiveIcon = returnedBitmap.toAdaptiveIcon()
-        val shortcut =
-            ShortcutInfo.Builder(this@MainActivity, drink.getStrDrink())
-                .setExtras(PersistableBundle().apply {
-                    putInt(type.name, type.ordinal)
-                })
-                .setShortLabel(drink.getStrDrink()!!)
-                .setLongLabel("Launch ${drink.getStrDrink()}")
-                .setIcon(drinkAdaptiveIcon)
-                .setIntents(
-                    arrayOf(
-                        Intent(
-                            this@MainActivity,
-                            MainActivity::class.java
-                        ).apply {
-                            action = Intent.ACTION_CREATE_SHORTCUT
-                            flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                        },
-                        Intent(
-                            this@MainActivity,
-                            DrinkDetailActivity::class.java
-                        ).apply {
-                            putExtra(DRINK_ID, drink.getIdDrink())
-                            action = Intent.ACTION_CREATE_SHORTCUT
-                            flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                        })
-                )
-                .build()
-        return shortcut
+        drinkImageView.draw(drinkImageCanvas)
+        val drinkAdaptiveIcon = drinkImageBitmap.toAdaptiveIcon()
+        //id для shortcut виставлено як id самого напою + ShortcutType, для того щоб розрізняти
+        //динамічні і закріплені shortcut
+        return ShortcutInfo.Builder(this@MainActivity, "${drink.getIdDrink()}${type.key}")
+            .setShortLabel(drink.getStrDrink()!!)
+            .setLongLabel("${getString(R.string.popup_menu_long_label_prefix)} ${drink.getStrDrink()}")
+            .setIcon(drinkAdaptiveIcon)
+            .setIntents(
+                arrayOf(
+                    Intent(
+                        this@MainActivity,
+                        MainActivity::class.java
+                    ).apply {
+                        action = Intent.ACTION_CREATE_SHORTCUT
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    },
+                    Intent(
+                        this@MainActivity,
+                        DrinkDetailActivity::class.java
+                    ).apply {
+                        putExtra(DRINK_ID, drink.getIdDrink())
+                        action = Intent.ACTION_CREATE_SHORTCUT
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    })
+            )
+            .build()
     }
 
     override fun onBottomSheetDialogFragmentClick(

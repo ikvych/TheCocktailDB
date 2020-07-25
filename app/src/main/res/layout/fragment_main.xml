@@ -11,14 +11,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#FFFFFF"
+            android:background="@color/color_primary"
             android:orientation="vertical">
 
             <com.ikvych.cocktail.widget.custom.ApplicationToolBar
                 android:id="@+id/atb_fragment_main"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_height_max"
-                android:background="@drawable/app_bar_bg_shape"
+                android:background="@drawable/shape_app_bar_bg"
                 android:elevation="@dimen/elevation_16"
                 android:layout_gravity="top"
                 app:tl_disable_return_btn="true"
@@ -75,7 +75,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                                tools:listitem="@layout/item_selected_filter"
+                                tools:listitem="@layout/item_selected_filter_list"
                                 android:orientation="horizontal" />
 
                         </LinearLayout>
@@ -97,7 +97,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center"
                     android:layout_marginBottom="@dimen/offset_20"
-                    android:background="@drawable/search_view_shape"
+                    android:background="@drawable/shape_search_view"
                     android:visibility="gone"
                     android:orientation="horizontal">
 

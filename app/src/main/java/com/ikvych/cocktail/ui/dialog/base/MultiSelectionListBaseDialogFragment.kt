@@ -1,7 +1,5 @@
 package com.ikvych.cocktail.ui.dialog.base
 
-import android.content.res.ColorStateList
-import android.graphics.Color
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -48,7 +46,7 @@ protected constructor() : SimpleBaseDialogFragment<Data, ButtonType, Type, Simpl
         RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         View.OnClickListener {
 
-        private val layoutId = R.layout.item_multi_filter_type
+        private val layoutId = R.layout.item_multi_selection_button_list
 
         var newElements: List<Element> = arrayListOf()
             set(value) {

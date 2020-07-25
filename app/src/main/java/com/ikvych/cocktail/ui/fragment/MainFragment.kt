@@ -5,7 +5,6 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -14,8 +13,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
-import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
@@ -38,7 +35,7 @@ import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.widget_app_toolbar.*
 
 class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
-    FilterAdapter.OnClickItemFilterCloseListener, View.OnClickListener, View.OnLongClickListener {
+    FilterAdapter.OnClickRemoveItemFilterListener, View.OnClickListener, View.OnLongClickListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_main
     override val viewModel: MainFragmentViewModel by viewModels()
@@ -243,7 +240,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
         }
     }
 
-    override fun onDrinkFilterClick(drinkFilter: DrinkFilter) {
+    override fun removeDrinkFilter(drinkFilter: DrinkFilter) {
         when (drinkFilter.type) {
             DrinkFilterType.CATEGORY -> {
                 viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply {
@@ -261,7 +258,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel>(), BatteryListener,
                 }
             }
             DrinkFilterType.INGREDIENT -> {
-                val currentFilter = IngredientDrinkFilter.values().filter { it.key == drinkFilter.key }.first()
+                val currentFilter = IngredientDrinkFilter.values().first { it.key == drinkFilter.key }
                 viewModel.filtersLiveData.value = viewModel.filtersLiveData.value!!.apply {
                     val filters: List<DrinkFilter> = this[drinkFilter.type]!!
                     if (filters.size == 1) {

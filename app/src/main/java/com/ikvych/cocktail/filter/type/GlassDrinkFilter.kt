@@ -1,10 +1,11 @@
 package com.ikvych.cocktail.filter.type
 
+import com.ikvych.cocktail.constant.DRINK_FILTER_ABSENT
 import com.ikvych.cocktail.filter.DrinkFilter
 
 enum class GlassDrinkFilter(override val type: DrinkFilterType, override val key: String) :
     DrinkFilter {
-    NONE(DrinkFilterType.GLASS, "None"),
+    NONE(DrinkFilterType.GLASS, DRINK_FILTER_ABSENT),
     HIGHBALL_GLASS(DrinkFilterType.GLASS, "Highball glass"),
     COCKTAIL_GLASS(DrinkFilterType.GLASS, "Cocktail glass"),
     OLD_FASHIONED_GLASS(DrinkFilterType.GLASS, "Old-fashioned glass"),

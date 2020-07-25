@@ -20,7 +20,6 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
     private val apiService: DrinkApiService = RetrofitInstance.service
     val drinksApiLiveData: MutableLiveData<List<Drink>> = MutableLiveData()
 
-
     // Methods for work with Api
     override fun getDrinkApiLiveData(): MutableLiveData<List<Drink>> {
         return drinksApiLiveData

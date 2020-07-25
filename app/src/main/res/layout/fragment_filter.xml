@@ -16,7 +16,7 @@
         android:id="@+id/atb_fragment_filter"
         android:layout_width="match_parent"
         android:layout_height="@dimen/view_height_max"
-        android:background="@drawable/app_bar_bg_shape"
+        android:background="@drawable/shape_app_bar_bg"
         android:elevation="@dimen/elevation_16"/>
 
     <androidx.coordinatorlayout.widget.CoordinatorLayout
@@ -43,20 +43,20 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Виберіть тип фільтрування"
+                android:text="@string/filter_fragment_select_filter_type_title"
                 android:textSize="@dimen/headline_3"
                 android:padding="@dimen/offset_8"
                 android:layout_margin="@dimen/offset_4"
-                android:textColor="#4E4E4E"/>
+                android:textColor="@color/color_on_primary"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Одиночні фільтри"
+                android:text="@string/filter_fragment_single_filter_type_title"
                 android:textSize="@dimen/headline_4"
                 android:padding="@dimen/offset_12"
                 android:background="@drawable/layer_list_backgound_title"
-                android:textColor="#555555"/>
+                android:textColor="@color/color_on_surface_variant"/>
 
             <LinearLayout
                 android:id="@+id/im_alcohol_filter_item"
@@ -167,11 +167,11 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Множинні фільтри"
+                android:text="@string/filter_fragment_multi_filter_type_title"
                 android:textSize="@dimen/headline_4"
                 android:padding="@dimen/offset_12"
                 android:background="@drawable/layer_list_backgound_title"
-                android:textColor="#555555"/>
+                android:textColor="@color/color_on_surface_variant"/>
 
             <LinearLayout
                 android:id="@+id/im_ingredient_filter_item"
@@ -227,6 +227,7 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:layout_gravity="bottom"
+                android:paddingHorizontal="@dimen/offset_8"
                 android:background="#FFFFFF"
                 android:clipToPadding="false"
                 android:clipChildren="false"
@@ -239,7 +240,7 @@
                     android:layout_weight="1"
                     android:text="@string/all_reset_button"
                     android:textColor="@drawable/selector_app_button_text"
-                    android:background="@drawable/selector_app_button_left"
+                    android:background="@drawable/selector_app_button"
                     android:layout_marginVertical="@dimen/offset_8"/>
 
 
@@ -254,7 +255,7 @@
                     android:layout_weight="1"
                     android:text="@string/filter_fragment_result_button"
                     android:textColor="@drawable/selector_app_button_text"
-                    android:background="@drawable/selector_app_button_right"
+                    android:background="@drawable/selector_app_button"
                     android:layout_marginVertical="@dimen/offset_8" />
 
             </LinearLayout>

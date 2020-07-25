@@ -4,11 +4,12 @@
     <color name="color_primary_dark">#000000</color>
     <color name="color_on_primary">#000000</color>
     <color name="color_secondary">#00897B</color>
+    <color name="color_accent">#00897B</color>
     <color name="color_surface">#FFFFFF</color>
     <color name="color_background">#FFFFFF</color>
     <color name="color_on_secondary">#FFFFFF</color>
     <color name="color_on_surface">#000000</color>
-    <color name="color_on_surface_variant">#558B2F</color>
+    <color name="color_on_surface_variant">#CC555555</color>
     <color name="color_normal">#FFFFFF</color>
 
     <color name="color_surface_variant">#558B2F</color>

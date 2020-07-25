@@ -14,8 +14,6 @@ import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
 import com.ikvych.cocktail.ui.dialog.base.type.DialogType
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-const val FRAGMENT_ID = "com.ikvych.cocktail.ViewId"
-
 abstract class BaseFragment<ViewModel : BaseViewModel> : Fragment(),
     BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseDialogFragment.OnDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
@@ -30,13 +28,11 @@ abstract class BaseFragment<ViewModel : BaseViewModel> : Fragment(),
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("MyLog", "onCreateView - ${this.toString()}")
         return inflater.inflate(contentLayoutResId, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         configureView(view, savedInstanceState)
-        Log.d("MyLog", "onViewCreated - ${this.toString()}")
     }
 
     protected open fun configureView(view: View, savedInstanceState: Bundle?) {
@@ -75,50 +71,5 @@ abstract class BaseFragment<ViewModel : BaseViewModel> : Fragment(),
         data: Any?
     ) {
 
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d("MyLog", "onAttach - ${this.toString()}")
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("MyLog", "onCreate - ${this.toString()}")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("MyLog", "onStart - ${this.toString()}")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("MyLog", "onResume - ${this.toString()}")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("MyLog", "onPause - ${this.toString()}")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("MyLog", "onStop - ${this.toString()}")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("MyLog", "onDestroyView - ${this.toString()}")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("MyLog", "onDestroy - ${this.toString()}")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d("MyLog", "onDetach - ${this.toString()}")
     }
 }

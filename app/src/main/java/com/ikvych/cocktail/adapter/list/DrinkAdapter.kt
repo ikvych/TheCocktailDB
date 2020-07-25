@@ -37,6 +37,7 @@ class DrinkAdapter(
     override fun onBindViewHolder(holder: DrinkViewHolder, position: Int) {
         val drink: Drink = drinkList[position]
         holder.itemDrinkListBinding.drink = drink
+        holder.itemDrinkListBinding.executePendingBindings()
     }
 
     override fun getItemCount(): Int {

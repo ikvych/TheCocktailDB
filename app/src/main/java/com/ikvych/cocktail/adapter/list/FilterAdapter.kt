@@ -10,28 +10,30 @@ import android.widget.TextView
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.constant.DRINK_FILTER_ABSENT
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 
 
 class FilterAdapter(
     private val context: Context,
-    private val listener: OnClickItemFilterCloseListener
+    private val listener: OnClickRemoveItemFilterListener
 ) : RecyclerView.Adapter<FilterAdapter.FilterViewHolder>() {
 
-    interface OnClickItemFilterCloseListener {
-        fun onDrinkFilterClick(drinkFilter: DrinkFilter)
+    interface OnClickRemoveItemFilterListener {
+        fun removeDrinkFilter(drinkFilter: DrinkFilter)
     }
 
     var filterList: List<DrinkFilter> = arrayListOf()
         set(value) {
-            field = value.filter { it.key != "None" }
+            //видаляю усі фільтри типу - відсутній
+            field = value.filter { it.key != DRINK_FILTER_ABSENT }
             notifyDataSetChanged()
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): FilterViewHolder {
         val itemView: View = LayoutInflater.from(parent.context)
-            .inflate(R.layout.item_selected_filter, parent, false)
+            .inflate(R.layout.item_selected_filter_list, parent, false)
         return FilterViewHolder(itemView)
     }
 
@@ -45,7 +47,7 @@ class FilterAdapter(
                         R.drawable.ic_item_drink_filter_favorite
                     )
                 )
-                holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
+                holder.closeButton.setOnClickListener { listener.removeDrinkFilter(filter) }
             }
             DrinkFilterType.ALCOHOL -> {
                 holder.filterIcon.setImageDrawable(
@@ -54,7 +56,7 @@ class FilterAdapter(
                         R.drawable.ic_item_drink_filter_alcohol
                     )
                 )
-                holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
+                holder.closeButton.setOnClickListener { listener.removeDrinkFilter(filter) }
             }
             DrinkFilterType.INGREDIENT -> {
                 holder.filterIcon.setImageDrawable(
@@ -63,7 +65,7 @@ class FilterAdapter(
                         R.drawable.ic_item_drink_filter_ingredient
                     )
                 )
-                holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
+                holder.closeButton.setOnClickListener { listener.removeDrinkFilter(filter) }
             }
             DrinkFilterType.GLASS -> {
                 holder.filterIcon.setImageDrawable(
@@ -72,7 +74,7 @@ class FilterAdapter(
                         R.drawable.ic_item_drink_filter_glass
                     )
                 )
-                holder.closeButton.setOnClickListener { listener.onDrinkFilterClick(filter) }
+                holder.closeButton.setOnClickListener { listener.removeDrinkFilter(filter) }
             }
         }
         holder.textView.text = filter.key

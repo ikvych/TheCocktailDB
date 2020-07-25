@@ -35,6 +35,8 @@ abstract class BaseDialogFragment<Data, ButtonType : DialogButton, Type : Dialog
         this.setStyle(STYLE_NO_TITLE, R.style.FullScreenDialog)
     }
 
+
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?

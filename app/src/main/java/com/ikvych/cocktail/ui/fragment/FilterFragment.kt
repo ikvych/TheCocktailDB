@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.constant.EMPTY_STRING
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.*
 import com.ikvych.cocktail.ui.dialog.*
@@ -16,6 +17,7 @@ import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
+import java.lang.IllegalArgumentException
 
 class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
 
@@ -27,7 +29,7 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
         super.onCreate(savedInstanceState)
         parentViewModel =
             ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
-        parentViewModel.firstTime = true
+        parentViewModel.fragmentJustCreated = true
     }
 
     @ExperimentalStdlibApi
@@ -46,7 +48,7 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
         parentViewModel.filtersLiveData.observe(this, Observer {
             val alcoholFilterText =
                 if (it[DrinkFilterType.ALCOHOL]?.first() == AlcoholDrinkFilter.NONE) {
-                    ""
+                    EMPTY_STRING
                 } else {
                     it[DrinkFilterType.ALCOHOL]?.first()?.key
                 }
@@ -54,22 +56,22 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
 
             val categoryFilterText =
                 if (it[DrinkFilterType.CATEGORY]?.first() == CategoryDrinkFilter.NONE) {
-                    ""
+                    EMPTY_STRING
                 } else {
                     it[DrinkFilterType.CATEGORY]?.first()?.key
                 }
             tv_category_filter_value.text = categoryFilterText
 
-            var text = String()
+            val ingredientFilterText = StringBuilder()
             if (it[DrinkFilterType.INGREDIENT]!!.contains(IngredientDrinkFilter.NONE)) {
-                text = ""
+                ingredientFilterText.append(EMPTY_STRING)
             } else {
-                it[DrinkFilterType.INGREDIENT]?.forEach { text += "${it.key}, " }
+                it[DrinkFilterType.INGREDIENT]?.forEach { filter -> ingredientFilterText.append("${filter.key} ") }
             }
-            tv_ingredient_filter_value.text = text
+            tv_ingredient_filter_value.text = ingredientFilterText
 
             val glassFilterText = if (it[DrinkFilterType.GLASS]?.first() == GlassDrinkFilter.NONE) {
-                ""
+                EMPTY_STRING
             } else {
                 it[DrinkFilterType.GLASS]?.first()?.key
             }
@@ -78,8 +80,12 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
 
         //відслідковує і показує результати фільтрування в snackBar
         parentViewModel.filteredAndSortedResultDrinksLiveData.observe(this, Observer {
-            if (!parentViewModel.firstTime) {
+            //якщо fragmentJustCreated == true, отже фрагмент щойно був створений і при першому заході
+            //на нього, результати пошуку не потрбіно показувати
+            if (!parentViewModel.fragmentJustCreated) {
                 val snackBar = Snackbar.make(ll_btn_container, it, Snackbar.LENGTH_SHORT)
+                //показую кнопку відмінити останні обрані фільтри у тому випадку якщо поточні і
+                //попередні фільтри є різними
                 if (parentViewModel.isUndoEnabled()) {
                     snackBar.setAction(R.string.all_undo_button) {
                         parentViewModel.filtersLiveData.value =
@@ -88,7 +94,7 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
                 }
                 snackBar.show()
             } else {
-                parentViewModel.firstTime = false
+                parentViewModel.fragmentJustCreated = false
             }
         })
     }
@@ -121,11 +127,6 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
                         childFragmentManager,
                         FilterDrinkIngredientDialogFragment::class.java.simpleName
                     )
-/*                FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![DrinkFilterType.INGREDIENT]!!.first() as IngredientDrinkFilter)
-                    .show(
-                        childFragmentManager,
-                        FilterDrinkIngredientDialogFragment::class.java.simpleName
-                    )*/
             }
             //стартує dialogFragment для визначення типу фільтрування по бокалу
             R.id.im_glass_filter_item -> {
@@ -178,15 +179,6 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
                                 this[categoryType.type] = arrayListOf(categoryType)
                             }
                     }
-/*                    IngredientDrinkDialogType -> {
-                        val ingredientType = data as IngredientDrinkFilter
-                        parentViewModel.lastAppliedFiltersLiveData.value =
-                            parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
-                        parentViewModel.filtersLiveData.value =
-                            parentViewModel.filtersLiveData.value!!.apply {
-                                this[ingredientType.type] = arrayListOf(ingredientType)
-                            }
-                    }*/
                     GlassDrinkDialogType -> {
                         val glassType = data as GlassDrinkFilter
                         parentViewModel.lastAppliedFiltersLiveData.value =
@@ -196,6 +188,7 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
                                 this[glassType.type] = arrayListOf(glassType)
                             }
                     }
+                    else -> throw IllegalArgumentException("Unknown dialog type")
                 }
             }
             RightListDialogButton -> {
@@ -209,11 +202,13 @@ class FilterFragment : BaseFragment<BaseViewModel>(), View.OnClickListener {
                                 this[DrinkFilterType.INGREDIENT] = ingredientTypes
                             }
                     }
+                    else -> throw IllegalArgumentException("Unknown dialog type")
                 }
             }
             LeftListDialogButton -> {
                 dialog.dismiss()
             }
+            else -> throw IllegalArgumentException("Unknown button type")
         }
 
     }

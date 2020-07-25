@@ -45,6 +45,7 @@
     <!--#endregion-->
 
     <string name="dialog_sort_title">Sort By</string>
+    <string name="dialog_filter_title">Filter By</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--#region ProfileFragment-->
@@ -75,6 +76,12 @@
     <!--#region MainActivity BottomNavigationView-->
     <string name="menu_main_activity_title">Main</string>
     <string name="menu_profile_activity_title">Profile</string>
+    <string name="popup_menu_add_to_favorite">added to favorite</string>
+    <string name="popup_menu_remove_from_favorite">removed from favorite</string>
+    <string name="popup_menu_remove_from_history">removed from history</string>
+    <string name="popup_menu_add_dynamic_shortcut">Dynamic shortcut added</string>
+    <string name="popup_menu_remove_dynamic_shortcut">Dynamic shortcut removed</string>
+    <string name="popup_menu_long_label_prefix">Launch</string>
     <!--#endregion-->
 
    <!--#region FilterFragment-->
@@ -84,6 +91,9 @@
     <string name="filter_fragment_glass_filter_button">Glass</string>
     <string name="filter_fragment_result_button">To result</string>
     <string name="filter_fragment_search_result_text_pattern">Found: h @, f %</string>
+    <string name="filter_fragment_select_filter_type_title">Select a filter type</string>
+    <string name="filter_fragment_single_filter_type_title">Single filters</string>
+    <string name="filter_fragment_multi_filter_type_title">Multi filters</string>
     <!--#endregion-->
 
     <!--#region FilterFragment AlcoholFiltersType-->

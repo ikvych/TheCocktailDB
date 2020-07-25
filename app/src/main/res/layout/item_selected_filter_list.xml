@@ -9,7 +9,7 @@
     android:layout_marginTop="@dimen/offset_4"
     android:paddingHorizontal="@dimen/offset_4"
     android:orientation="horizontal"
-    android:background="@drawable/iten_drink_filter_shape">
+    android:background="@drawable/shape_item_drink_filter">
 
     <ImageButton
         android:id="@+id/ib_filter_icon"

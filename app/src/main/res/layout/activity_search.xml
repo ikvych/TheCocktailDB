@@ -15,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_height_max"
             android:elevation="@dimen/elevation_16"
-            android:background="@drawable/app_bar_bg_shape"
+            android:background="@drawable/shape_app_bar_bg"
             app:tl_is_for_search="true"
             android:layout_gravity="top"/>
 

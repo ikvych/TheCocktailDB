@@ -20,8 +20,8 @@
         app:itemBackground="?selectableItemBackgroundBorderless"
         app:itemHorizontalTranslationEnabled="true"
         app:menu="@menu/menu_activity_main_bottom_navigation"
-        app:itemTextColor="@drawable/selector_nav_item_color_state"
-        app:itemIconTint="@drawable/selector_nav_item_color_state"/>
+        app:itemTextColor="@drawable/selector_nav_bar_item_color_state"
+        app:itemIconTint="@drawable/selector_nav_bar_item_color_state"/>
 
 </LinearLayout>
 

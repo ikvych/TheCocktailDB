@@ -56,31 +56,6 @@ class FilterDrinkIngredientDialogFragment :
         }
     }*/
 
-    companion object {
-        fun newInstance(
-            selectedIngredients: List<IngredientDrinkFilter?> = arrayListOf()
-        ): FilterDrinkIngredientDialogFragment {
-            val ordinals = selectedIngredients.map { it?.ordinal }
-            val ordinalsArray = IntArray(ordinals.size)
-            ordinals.forEachIndexed { index, element  -> ordinalsArray[index] = element!! }
-            return FilterDrinkIngredientDialogFragment()
-                .apply {
-                    arguments = bundleOf(
-                        EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
-                            titleTextResId = R.string.dialog_sort_title
-                            isCancelable = true
-                            isCloseButtonVisible = true
-                            rightButtonText = "Ok"
-                            leftButtonText = "Cancel"
-                        },
-                        EXTRA_KEY_SELECTED_INGREDIENTS to ordinalsArray
-                    )
-                }
-        }
-
-        private const val EXTRA_KEY_BUILDER = "EXTRA_KEY_BUILDER"
-        private const val EXTRA_KEY_SELECTED_INGREDIENTS = "EXTRA_KEY_SELECTED_INGREDIENTS"
-    }
 
     override val onClickListener: OnMultiSelectionListClick = this
 
@@ -114,5 +89,32 @@ class FilterDrinkIngredientDialogFragment :
             val noneElement: AppCompatButton? = extraContentView?.findViewWithTag(IngredientDrinkFilter.NONE)
             noneElement?.isSelected = true
         }
+    }
+
+
+    companion object {
+        fun newInstance(
+            selectedIngredients: List<IngredientDrinkFilter?> = arrayListOf()
+        ): FilterDrinkIngredientDialogFragment {
+            val ordinals = selectedIngredients.map { it?.ordinal }
+            val ordinalsArray = IntArray(ordinals.size)
+            ordinals.forEachIndexed { index, element  -> ordinalsArray[index] = element!! }
+            return FilterDrinkIngredientDialogFragment()
+                .apply {
+                    arguments = bundleOf(
+                        EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
+                            titleTextResId = R.string.dialog_filter_title
+                            isCancelable = true
+                            isCloseButtonVisible = true
+                            rightButtonText = "Ok"
+                            leftButtonText = "Cancel"
+                        },
+                        EXTRA_KEY_SELECTED_INGREDIENTS to ordinalsArray
+                    )
+                }
+        }
+
+        private const val EXTRA_KEY_BUILDER = "EXTRA_KEY_BUILDER"
+        private const val EXTRA_KEY_SELECTED_INGREDIENTS = "EXTRA_KEY_SELECTED_INGREDIENTS"
     }
 }

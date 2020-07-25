@@ -3,7 +3,6 @@
     <item android:color="@color/color_normal"
         android:state_selected="true"/>
 
-    <item android:color="@color/color_on_surface"
+    <item android:color="@color/color_on_surface_variant"
         android:state_selected="false"/>
-
 </selector>

@@ -3,6 +3,7 @@ package com.ikvych.cocktail.viewmodel
 import android.app.Application
 import android.content.Context
 import android.content.SharedPreferences
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.ikvych.cocktail.data.entity.Drink
@@ -40,10 +41,6 @@ class MainActivityViewModel(
 
     override fun shouldShowDrinkOfTheDay() {
         setDrinkOfTheDay()
-    }
-
-    fun findDrinkByName(drinkName: String): Drink? {
-        return drinkRepository.findDrinkByName(drinkName)
     }
 
     fun findDrinkById(drinkId: Long): Drink? {

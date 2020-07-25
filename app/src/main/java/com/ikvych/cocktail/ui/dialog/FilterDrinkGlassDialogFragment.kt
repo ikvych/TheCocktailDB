@@ -60,7 +60,7 @@ class FilterDrinkGlassDialogFragment :
             return FilterDrinkGlassDialogFragment().apply {
                 arguments = bundleOf(
                     EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
-                        titleTextResId = R.string.dialog_sort_title
+                        titleTextResId = R.string.dialog_filter_title
                         isCancelable = true
                         isCloseButtonVisible = true
                     },

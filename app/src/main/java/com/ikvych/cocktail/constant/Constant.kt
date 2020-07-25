@@ -1,5 +1,7 @@
 package com.ikvych.cocktail.constant
 
+const val DRINK_FILTER_ABSENT = "NONE"
+const val EMPTY_STRING = ""
 const val VIEW_MODEL_TYPE = "viewModelType"
 const val SHOULD_SAVE_DRINK = "SHOULD_SAVE_DRINK"
 const val SHOW_DRINK_OFFER_ON_DESTROY = "SHOW_DRINK_OFFER_ON_DESTROY"

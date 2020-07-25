@@ -28,7 +28,7 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
     val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData()
     val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
 
-    var firstTime: Boolean = true
+    var fragmentJustCreated: Boolean = true
 
     init {
         isBatteryLowLiveData.value = false
@@ -182,50 +182,6 @@ class MainFragmentViewModel(application: Application) : BaseViewModel(applicatio
         }
         return false
     }
-
-/*    fun filterData(drinks: List<Drink>, drinkFilters: ArrayList<DrinkFilter>): List<Drink> {
-        var drinksCopy = drinks
-        drinkFilters.forEach {
-            when (it.type) {
-                DrinkFilterType.ALCOHOL -> {
-                    if (it != AlcoholDrinkFilter.NONE) {
-                        drinksCopy = drinksCopy.filter { drink ->
-                            drink.getStrAlcoholic() == it.key
-                        }
-                    }
-                }
-                DrinkFilterType.CATEGORY -> {
-                    if (it != CategoryDrinkFilter.NONE) {
-                        drinksCopy = drinksCopy.filter { drink ->
-                            drink.getStrCategory() == it.key
-                        }
-                    }
-                }
-                DrinkFilterType.INGREDIENT -> {
-                    if (it != IngredientDrinkFilter.NONE) {
-                        drinksCopy = drinksCopy.filter { drink ->
-                            var isValid = false
-                            for ((key, _) in drink.getIngredients()) {
-                                if (key.equals(it.key)) {
-                                    isValid = true
-                                    break
-                                }
-                            }
-                            isValid
-                        }
-                    }
-                }
-                DrinkFilterType.GLASS -> {
-                    if (it != GlassDrinkFilter.NONE) {
-                        drinksCopy = drinksCopy.filter { drink ->
-                            drink.getStrGlass() == it.key
-                        }
-                    }
-                }
-            }
-        }
-        return drinksCopy
-    }*/
 
     fun filterData(drinks: List<Drink>, drinkFilters: HashMap<DrinkFilterType, List<DrinkFilter>>): List<Drink> {
         var drinksCopy = drinks

@@ -14,63 +14,29 @@ import com.ikvych.cocktail.databinding.FragmentFavoriteBinding
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
+import com.ikvych.cocktail.viewmodel.DrinkViewModel
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-class FavoriteFragment : RecyclerViewFragment<BaseViewModel, FragmentFavoriteBinding>() {
+class FavoriteFragment : RecyclerViewFragment<DrinkViewModel, FragmentFavoriteBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_favorite
-    override val viewModel: BaseViewModel by viewModels()
+    override val viewModel: DrinkViewModel by viewModels()
+    override val recyclerViewId: Int = R.id.rv_search_result
+
+    override fun initLiveDataObserver() {
+        parentViewModel.filteredAndSortedFavoriteDrinksLiveData.observe(this, Observer { drinks ->
+            drinkAdapter.listData = drinks
+        })
+    }
+
+    override fun configureDataBinding(binding: FragmentFavoriteBinding) {
+        super.configureDataBinding(binding)
+        binding.viewModel = parentViewModel
+    }
 
     companion object {
         @JvmStatic
         fun newInstance() = FavoriteFragment()
     }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initViewModel()
-    }
-
-    override fun configureView(view: View, savedInstanceState: Bundle?) {
-        super.configureView(view, savedInstanceState)
-
-        initRecyclerView(
-            view,
-            parentViewModel.filteredFavoriteDrinksLiveData.value ?: emptyList(),
-            R.id.rv_search_result
-        )
-        initLiveDataObserver()
-    }
-
-    override fun initLiveDataObserver() {
-        parentViewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { drinks ->
-            drinkAdapter.listData = drinks
-            determineVisibleLayerOnUpdateData(drinks)
-        })
-        viewModel.startDrinkDetailsLiveData.observe(this, Observer {
-            if (it != null) {
-                val intent = Intent(requireActivity(), DrinkDetailActivity::class.java)
-                intent.putExtra(DRINK, it)
-                startActivity(intent)
-            }
-        })
-    }
-
-    override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(requireView())
-        } else {
-            setDbRecyclerViewVisible(requireView())
-        }
-    }
-
-    override fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(requireView())
-        } else {
-            setDbRecyclerViewVisible(requireView())
-        }
-    }
-
 }

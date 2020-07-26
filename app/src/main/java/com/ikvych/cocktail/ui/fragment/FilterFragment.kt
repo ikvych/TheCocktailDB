@@ -2,10 +2,6 @@ package com.ikvych.cocktail.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Button
-import android.widget.ImageButton
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
@@ -14,85 +10,47 @@ import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.FragmentFilterBinding
 import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
-import com.ikvych.cocktail.ui.dialog.FilterDrinkAlcoholDialogFragment
-import com.ikvych.cocktail.ui.dialog.FilterDrinkCategoryDialogFragment
-import com.ikvych.cocktail.ui.dialog.FilterDrinkIngredientDialogFragment
+import com.ikvych.cocktail.filter.type.*
+import com.ikvych.cocktail.ui.dialog.*
 import com.ikvych.cocktail.ui.dialog.base.type.*
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
+import java.lang.IllegalArgumentException
 
-class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
+class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>(), View.OnClickListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_filter
     override val viewModel: BaseViewModel by viewModels()
-
-    private lateinit var returnBtn: ImageButton
-    private lateinit var parentViewModel: MainFragmentViewModel
+    lateinit var parentViewModel: MainFragmentViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         parentViewModel =
             ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
-    }
-
-    override fun configureDataBinding(binding: FragmentFilterBinding) {
-        super.configureDataBinding(binding)
-        binding.viewModel = parentViewModel
+        parentViewModel.fragmentJustCreated = true
     }
 
     @ExperimentalStdlibApi
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
 
-        parentViewModel.showFilterLiveData.observe(this, Observer {
-            when (it) {
-                DrinkFilterType.ALCOHOL -> {
-                    FilterDrinkAlcoholDialogFragment.newInstance(parentViewModel.alcoholFilterLiveData.value)
-                        .show(
-                            childFragmentManager,
-                            FilterDrinkAlcoholDialogFragment::class.java.simpleName
-                        )
-                }
-                DrinkFilterType.CATEGORY -> {
-                    FilterDrinkCategoryDialogFragment.newInstance(parentViewModel.categoryFilterLiveData.value)
-                        .show(
-                            childFragmentManager,
-                            FilterDrinkCategoryDialogFragment::class.java.simpleName
-                        )
-                }
-                DrinkFilterType.INGREDIENT -> {
-                    FilterDrinkIngredientDialogFragment.newInstance(parentViewModel.ingredientFilterLiveData.value)
-                        .show(
-                            childFragmentManager,
-                            FilterDrinkIngredientDialogFragment::class.java.simpleName
-                        )
-                }
-                DrinkFilterType.GLASS -> {
-                }
-            }
-        })
+        im_alcohol_filter_item.setOnClickListener(this)
+        im_category_filter_item.setOnClickListener(this)
+        im_ingredient_filter_item.setOnClickListener(this)
+        im_glass_filter_item.setOnClickListener(this)
+        acb_to_result.setOnClickListener(this)
+        atb_fragment_filter.returnBtn.setOnClickListener(this)
 
-        parentViewModel.popBackStackLiveData.observe(this, Observer {
-            if (it) {
-                parentFragmentManager.popBackStack()
-                parentViewModel.popBackStackLiveData.value = false
-            }
-        })
-
-        returnBtn = atb_fragment_filter.returnBtn
-        returnBtn.setOnClickListener {
-            parentFragmentManager.popBackStack()
-        }
-
-        parentViewModel.allFilteredLiveData.observe(this, Observer {
-            if (parentViewModel.isFiltersPresent()) {
-                val snackBar = Snackbar.make(coordinator_fragment_filter, it, Snackbar.LENGTH_LONG)
+        //відслідковує і показує результати фільтрування в snackBar
+        parentViewModel.filteredAndSortedResultDrinksLiveData.observe(this, Observer {
+            //якщо fragmentJustCreated == true, отже фрагмент щойно був створений і при першому заході
+            //на нього, результати пошуку не потрбіно показувати
+            if (!parentViewModel.fragmentJustCreated) {
+                val snackBar = Snackbar.make(ll_btn_container, it, Snackbar.LENGTH_SHORT)
+                //показую кнопку відмінити останні обрані фільтри у тому випадку якщо поточні і
+                //попередні фільтри є різними
                 if (parentViewModel.isUndoEnabled()) {
                     snackBar.setAction(R.string.all_undo_button) {
                         parentViewModel.filtersLiveData.value =
@@ -100,45 +58,95 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>() {
                     }
                 }
                 snackBar.show()
+            } else {
+                parentViewModel.fragmentJustCreated = false
             }
         })
     }
 
+    override fun configureDataBinding(binding: FragmentFilterBinding) {
+        super.configureDataBinding(binding)
+        binding.viewModel = parentViewModel
+    }
+
+    override fun onClick(v: View?) {
+        if (v == null) return
+        when (v.id) {
+            R.id.im_alcohol_filter_item -> {
+                startFilterDialog(DrinkFilterType.ALCOHOL)
+            }
+            R.id.im_category_filter_item -> {
+                startFilterDialog(DrinkFilterType.CATEGORY)
+            }
+            R.id.im_glass_filter_item -> {
+                startFilterDialog(DrinkFilterType.GLASS)
+            }
+            R.id.im_ingredient_filter_item -> {
+                startFilterDialogWithMultiSelection(DrinkFilterType.INGREDIENT)
+            }
+            //повертає на батьківський фрагмент
+            R.id.acb_to_result -> {
+                parentFragmentManager.popBackStack()
+            }
+            //кастомна кнопка return - повертає на батьківський фрагмент
+            R.id.ib_return_button -> {
+                parentFragmentManager.popBackStack()
+            }
+        }
+    }
+
+    private fun startFilterDialog(filterType: DrinkFilterType) {
+        FilterDrinkDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![filterType]!!.first())
+            .show(
+                childFragmentManager,
+                FilterDrinkDialogFragment::class.java.simpleName
+            )
+    }
+
+    //наразі цей тип діалогу заточений під інгредієнти
+    @Suppress("UNCHECKED_CAST")
+    private fun startFilterDialogWithMultiSelection(filterType: DrinkFilterType) {
+        FilterDrinkIngredientDialogFragment.newInstance(
+            parentViewModel.filtersLiveData.value!![filterType] as List<IngredientDrinkFilter>
+        )
+            .show(
+                childFragmentManager,
+                FilterDrinkIngredientDialogFragment::class.java.simpleName
+            )
+    }
+
+    @Suppress("UNCHECKED_CAST")
     override fun onDialogFragmentClick(
         dialog: DialogFragment,
         buttonType: DialogButton,
         type: DialogType<DialogButton>,
         data: Any?
     ) {
-        when (type) {
-            AlcoholDrinkDialogType -> {
-                val alcoholType = data as AlcoholDrinkFilter
-                parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.apply {
-                        this[alcoholType.type] = alcoholType
+        when (buttonType) {
+            ItemListDialogButton -> {
+                when (type) {
+                    FilterDrinkDialogType -> {
+                        val filter = data as DrinkFilter
+                        parentViewModel.updateFilter(filter)
                     }
+                    else -> throw IllegalArgumentException("Unknown dialog type")
+                }
             }
-            CategoryDrinkDialogType -> {
-                val categoryType = data as CategoryDrinkFilter
-                parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.apply {
-                        this[categoryType.type] = categoryType
+            RightListDialogButton -> {
+                when (type) {
+                    FilterListDrinkDialogType -> {
+                        val filterTypes = data as List<DrinkFilter>
+                        parentViewModel.updateFilterList(filterTypes)
                     }
+                    else -> throw IllegalArgumentException("Unknown dialog type")
+                }
             }
-            IngredientDrinkDialogType -> {
-                val ingredientType = data as IngredientDrinkFilter
-                parentViewModel.lastAppliedFiltersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, DrinkFilter>
-                parentViewModel.filtersLiveData.value =
-                    parentViewModel.filtersLiveData.value!!.apply {
-                        this[ingredientType.type] = ingredientType
-                    }
+            LeftListDialogButton -> {
+                dialog.dismiss()
             }
+            else -> throw IllegalArgumentException("Unknown button type")
         }
+
     }
 
     companion object {

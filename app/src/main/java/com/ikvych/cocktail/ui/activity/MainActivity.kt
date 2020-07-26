@@ -3,11 +3,15 @@ package com.ikvych.cocktail.ui.activity
 import android.content.Intent
 import android.content.pm.ShortcutInfo
 import android.content.pm.ShortcutManager
+import android.graphics.Bitmap
+import android.graphics.Canvas
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.*
 import androidx.activity.viewModels
+import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
 import androidx.core.view.drawToBitmap
@@ -21,54 +25,25 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.DRINK
 import com.ikvych.cocktail.constant.DRINK_ID
+import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.ui.dialog.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.type.*
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
+import com.ikvych.cocktail.util.ShortcutType
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
+class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() {
 
     override var contentLayoutResId: Int = R.layout.activity_main
     override val viewModel: MainActivityViewModel by viewModels()
 
-    private lateinit var bottomNavigationView: BottomNavigationView
     private var mainFragment: MainFragment? = null
     private var profileFragment: ProfileFragment? = null
-
-    override fun onBackPressed() {
-        super.onBackPressed()
-        // Відстежує активний елементи BottomNavigationView і переключає на відповідний таб
-
-        // Отримує останній номер транзакції в бекстеку
-        val lastIndex = supportFragmentManager.backStackEntryCount
-        val lastEntry: FragmentManager.BackStackEntry?
-        //Якщо lastIndex != 0 отже у стеку ще є елементи
-        if (lastIndex != 0) {
-            //Отримуємо останню транзакцію у стеку
-            lastEntry = supportFragmentManager.getBackStackEntryAt(lastIndex - 1)
-            //Взалежності від імені яке ми давали транзакції при переключенні на іншу вкладку
-            //визначаємо яка таба повинна стати активною
-            when (lastEntry.name) {
-                MainFragment::class.java.simpleName -> {
-                    val mainMenu = bottomNavigationView.menu[0]
-                    mainMenu.isChecked = true
-                }
-                ProfileFragment::class.java.simpleName -> {
-                    val profileMenu = bottomNavigationView.menu[1]
-                    profileMenu.isChecked = true
-                }
-            }
-            //Якщо lastIndex == 0 отже у стеку більше немає елементів а отже ми повернулися на той
-            // з якого починали, в даному випадку MainFragment
-        } else {
-            val mainMenu = bottomNavigationView.menu[0]
-            mainMenu.isChecked = true
-        }
-    }
 
     override fun configureView(savedInstanceState: Bundle?) {
         //Відслідковуємо напій дня, якщо він не дорівнює null значить потрібно показати діалог
@@ -98,61 +73,22 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
         viewModel.navBarTitleVisibilityLiveData.observe(this,
             Observer<Boolean> { t ->
                 if (t!!) {
-                    bottomNavigationView.labelVisibilityMode =
+                    bnv_main.labelVisibilityMode =
                         LabelVisibilityMode.LABEL_VISIBILITY_LABELED
                 } else {
-                    bottomNavigationView.labelVisibilityMode =
+                    bnv_main.labelVisibilityMode =
                         LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
                 }
             })
 
-        bottomNavigationView = findViewById(R.id.bnv_main)
-        bottomNavigationView.setOnNavigationItemSelectedListener { item ->
-            // знаходить останню транзацію і порівнює з поточною, щоб не зберігалися до BackStack
-            // виклики однієї і тієї самої таби підряд
-            val lastIndex = supportFragmentManager.backStackEntryCount
-            var lastEntry: FragmentManager.BackStackEntry? = null
-            if (lastIndex != 0) {
-                lastEntry = supportFragmentManager.getBackStackEntryAt(lastIndex - 1)
-            }
-            when (item.itemId) {
-                R.id.menu_main_fragment -> {
-                    if (lastEntry != null && lastEntry.name != MainFragment::class.java.simpleName) {
-                        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                        ft.hide(profileFragment!!)
-                        ft.show(mainFragment!!)
-                        ft.setPrimaryNavigationFragment(mainFragment)
-                        ft.addToBackStack(MainFragment::class.java.simpleName)
-                        ft.commit()
-                        true
-                    } else {
-                        false
-                    }
-                }
-
-                R.id.menu_profile_fragment -> {
-                    if (lastEntry == null || lastEntry.name != ProfileFragment::class.java.simpleName) {
-                        val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-                        ft.hide(mainFragment!!)
-                        ft.show(profileFragment!!)
-                        ft.setPrimaryNavigationFragment(profileFragment)
-                        ft.addToBackStack(ProfileFragment::class.java.simpleName)
-                        ft.commit()
-                        true
-                    } else {
-                        false
-                    }
-                }
-                else -> false
-            }
-        }
-
-        profileFragment = supportFragmentManager.findFragmentByTag(ProfileFragment::class.java.simpleName)
-                as? ProfileFragment
+        profileFragment =
+            supportFragmentManager.findFragmentByTag(ProfileFragment::class.java.simpleName)
+                    as? ProfileFragment
         mainFragment = supportFragmentManager.findFragmentByTag(MainFragment::class.java.simpleName)
                 as? MainFragment
-        val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-        if (profileFragment == null) {
+
+        if (profileFragment == null && mainFragment == null) {
+            val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
             profileFragment = ProfileFragment.newInstance()
             fragmentTransaction.add(
                 R.id.fcv_container,
@@ -160,8 +96,6 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
                 ProfileFragment::class.java.simpleName
             )
             fragmentTransaction.hide(profileFragment!!)
-        }
-        if (mainFragment == null) {
             mainFragment = MainFragment.newInstance()
             fragmentTransaction.add(
                 R.id.fcv_container,
@@ -172,109 +106,272 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>(){
             fragmentTransaction.commit()
         }
 
-        viewModel.shouldShowOnLongClickLiveData.observe(this, Observer {
-
-        })
+        bnv_main.setOnNavigationItemSelectedListener { item ->
+            when (item.itemId) {
+                R.id.menu_main_fragment -> {
+                    val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+                    ft.hide(profileFragment!!)
+                    ft.show(mainFragment!!)
+                    ft.setPrimaryNavigationFragment(mainFragment)
+                    ft.commit()
+                    true
+                }
+                R.id.menu_profile_fragment -> {
+                    val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+                    ft.hide(mainFragment!!)
+                    ft.show(profileFragment!!)
+                    ft.setPrimaryNavigationFragment(profileFragment)
+                    ft.commit()
+                    true
+                }
+                else -> false
+            }
+        }
     }
 
-    // Залишив реалізацію цього метода, бо поки не знаю як за допомогою viewModel зробити
-    // виклик у view onLongClick
-    fun onLongClick(v: View?): Boolean {
-        PopupMenu(this, v).apply {
-            setOnMenuItemClickListener {
-                when (it.itemId) {
-                    // відкриває деталізацію напою
-                    R.id.menu_drink_open -> {
-                        val view = v?.findViewById<TextView>(R.id.tv_drink_name)
-                        val drinkName = view?.text ?: ""
-                        val drink = viewModel.findDrinkByName(drinkName.toString())
-
-                        val intent = Intent(this@MainActivity, DrinkDetailActivity::class.java)
-                        intent.putExtra(DRINK, drink)
-                        startActivity(intent)
-                        true
-                    }
-                    // створює pinned shortcut
-                    R.id.menu_drink_pin_shortcut -> {
-                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                            val textViewDrinkName =
-                                v?.findViewById<TextView>(R.id.tv_drink_name)
-                            val drinkName = textViewDrinkName?.text ?: ""
-                            val drink = viewModel.findDrinkByName(drinkName.toString())
-                                ?: return@setOnMenuItemClickListener false
-                            val shortcutManager: ShortcutManager? =
-                                ContextCompat.getSystemService(
-                                    this@MainActivity,
-                                    ShortcutManager::class.java
-                                )
-                            val drinkImageView =
-                                v!!.findViewById<ImageView>(R.id.iv_drink_image)
-                            val drinkBitmapIcon =
-                                drinkImageView.drawToBitmap()
-                            val drinkAdaptiveIcon = drinkBitmapIcon.toAdaptiveIcon()
-                            val shortcut =
-                                ShortcutInfo.Builder(this@MainActivity, drink.getStrDrink())
-                                    .setShortLabel(drink.getStrDrink()!!)
-                                    .setLongLabel("Launch ${drink.getStrDrink()}")
-                                    .setIcon(drinkAdaptiveIcon)
-                                    .setIntents(
-                                        arrayOf(
-                                            Intent(
-                                                this@MainActivity,
-                                                MainActivity::class.java
-                                            ).apply {
-                                                action = Intent.ACTION_CREATE_SHORTCUT
-                                                flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                            },
-                                            Intent(
-                                                this@MainActivity,
-                                                DrinkDetailActivity::class.java
-                                            ).apply {
-                                                putExtra(DRINK_ID, drink.getIdDrink())
-                                                action = Intent.ACTION_CREATE_SHORTCUT
-                                                flags = Intent.FLAG_ACTIVITY_NEW_TASK
-                                            })
-                                    )
-                                    .build()
-
-                            shortcutManager!!.dynamicShortcuts = listOf(shortcut)
-
-                            if (alreadyExist(shortcut)) {
-                                Toast.makeText(
-                                    this@MainActivity,
-                                    "Shortcut already exist",
-                                    Toast.LENGTH_SHORT
-                                ).show()
-                            } else {
-                                shortcutManager.requestPinShortcut(shortcut, null)
-                            }
-
-                        } else {
-                            Toast.makeText(
-                                this@MainActivity,
-                                "Your Device don't supports current action",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        true
-                    }
-                    else -> false
+    override fun onClick(v: View?) {
+        if (v == null) {
+            return
+        } else {
+            when (v.id) {
+                // відкриває деталізацію коктейлю
+                R.id.cv_item_drink -> {
+                    val drinkId = v.tag as Long
+                    val intent = Intent(this, DrinkDetailActivity::class.java)
+                    intent.putExtra(DRINK_ID, drinkId)
+                    startActivity(intent)
                 }
             }
-            inflate(R.menu.menu_drink_item_shortcut)
-            show()
         }
-        return true
     }
 
-    private fun alreadyExist(shortCut: ShortcutInfo): Boolean {
+    override fun onLongClick(v: View?): Boolean {
+        if (v == null) return false
+        //v is CardView якій я попередньо прописав tag як id напою
+        return when (v.id) {
+            R.id.cv_item_drink -> {
+                val drinkId = v.tag as Long
+                val drink = viewModel.findDrinkById(drinkId) ?: return false
+
+                PopupMenu(this, v).apply {
+                    configurePopupMenu(this, drink)
+                    setOnMenuItemClickListener {
+                        when (it.itemId) {
+                            // відкриває деталізацію напою
+                            R.id.menu_drink_open -> {
+                                val intent =
+                                    Intent(this@MainActivity, DrinkDetailActivity::class.java)
+                                intent.putExtra(DRINK_ID, drink.getIdDrink())
+                                startActivity(intent)
+                                true
+                            }
+                            // додає напій до улюблених
+                            R.id.menu_drink_add_favorite -> {
+                                drink.setIsFavorite(true)
+                                viewModel.saveDrinkIntoDb(drink)
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "${drink.getStrDrink()} ${getString(R.string.popup_menu_add_to_favorite)}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                true
+                            }
+                            // видаляє напій з улюблених
+                            R.id.menu_drink_remove_favorite -> {
+                                drink.setIsFavorite(false)
+                                viewModel.saveDrinkIntoDb(drink)
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "${drink.getStrDrink()} ${getString(R.string.popup_menu_remove_from_favorite)}",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                                true
+                            }
+                            R.id.menu_drink_remove -> {
+                                viewModel.removeDrink(drink)
+                                Toast.makeText(
+                                    this@MainActivity,
+                                    "${drink.getStrDrink()} ${getString(R.string.popup_menu_remove_from_history)}",
+                                    Toast.LENGTH_SHORT
+                                )
+                                    .show()
+                                true
+                            }
+                            // створює pinned shortcut
+                            R.id.menu_drink_pin_shortcut -> {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    val shortcutManager =
+                                        ContextCompat.getSystemService(
+                                            this@MainActivity,
+                                            ShortcutManager::class.java
+                                        ) ?: return@setOnMenuItemClickListener false
+
+                                    val shortcut =
+                                        createDrinkShortcut(v, drink, ShortcutType.PINNED_SHORTCUT)
+                                    shortcutManager.requestPinShortcut(shortcut, null)
+                                    return@setOnMenuItemClickListener true
+                                }
+                                false
+                            }
+                            R.id.menu_drink_add_dynamic_shortcut -> {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    val shortcutManager =
+                                        ContextCompat.getSystemService(
+                                            this@MainActivity,
+                                            ShortcutManager::class.java
+                                        ) ?: return@setOnMenuItemClickListener false
+
+                                    val shortcut =
+                                        createDrinkShortcut(v, drink, ShortcutType.DYNAMIC_SHORTCUT)
+                                    shortcutManager.addDynamicShortcuts(mutableListOf(shortcut))
+                                    Toast.makeText(
+                                        this@MainActivity,
+                                        getString(R.string.popup_menu_add_dynamic_shortcut),
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                                true
+                            }
+                            R.id.menu_drink_remove_dynamic_shortcut -> {
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    val shortcutManager =
+                                        ContextCompat.getSystemService(
+                                            this@MainActivity,
+                                            ShortcutManager::class.java
+                                        ) ?: return@setOnMenuItemClickListener false
+
+                                    shortcutManager.dynamicShortcuts.forEach { shortcutInfo: ShortcutInfo ->
+                                        if (shortcutInfo.shortLabel == drink.getStrDrink()) {
+                                            shortcutManager.removeDynamicShortcuts(
+                                                arrayListOf(
+                                                    shortcutInfo.id
+                                                )
+                                            )
+                                            Toast.makeText(
+                                                this@MainActivity,
+                                                getString(R.string.popup_menu_remove_dynamic_shortcut),
+                                                Toast.LENGTH_SHORT
+                                            ).show()
+                                        }
+                                    }
+                                }
+                                true
+                            }
+                            else -> false
+                        }
+                    }
+                    show()
+                }
+                return true
+            }
+            else -> false
+        }
+    }
+
+    private fun configurePopupMenu(menu: PopupMenu, drink: Drink) {
+        menu.menu.add(0, R.id.menu_drink_open, 0, getString(R.string.open))
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (shortcutAlreadyExist(drink.getIdDrink()!!, ShortcutType.PINNED_SHORTCUT)) {
+                menu.menu.removeItem(R.id.menu_drink_pin_shortcut)
+            } else {
+                menu.menu.add(0, R.id.menu_drink_pin_shortcut, 0, getString(R.string.pin_shortcut))
+            }
+            if (shortcutAlreadyExist(drink.getIdDrink()!!, ShortcutType.DYNAMIC_SHORTCUT)) {
+                menu.menu.removeItem(R.id.menu_drink_add_dynamic_shortcut)
+                menu.menu.add(
+                    0,
+                    R.id.menu_drink_remove_dynamic_shortcut,
+                    0,
+                    getString(R.string.remove_dynamic_shortcut)
+                )
+            } else {
+                menu.menu.removeItem(R.id.menu_drink_remove_dynamic_shortcut)
+                menu.menu.add(
+                    0,
+                    R.id.menu_drink_add_dynamic_shortcut,
+                    0,
+                    getString(R.string.add_dynamic_shortcut)
+                )
+            }
+        }
+        if (drink.isFavorite()) {
+            menu.menu.removeItem(R.id.menu_drink_add_favorite)
+            menu.menu.add(
+                0,
+                R.id.menu_drink_remove_favorite,
+                0,
+                getString(R.string.remove_favorite)
+            )
+        } else {
+            menu.menu.removeItem(R.id.menu_drink_remove_favorite)
+            menu.menu.add(0, R.id.menu_drink_add_favorite, 0, getString(R.string.add_favorite))
+        }
+        menu.menu.add(0, R.id.menu_drink_remove, 0, getString(R.string.remove))
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createDrinkShortcut(view: View, drink: Drink, type: ShortcutType): ShortcutInfo {
+        val drinkImageView = view.findViewById(R.id.iv_drink_image) as ImageView
+        val drinkImageBitmap: Bitmap = Bitmap.createBitmap(
+            drinkImageView.width,
+            drinkImageView.height,
+            Bitmap.Config.ARGB_8888
+        )
+        val drinkImageCanvas =
+            Canvas(drinkImageBitmap)
+        val bgDrawable = drinkImageView.background
+        if (bgDrawable != null) {
+            bgDrawable.draw(drinkImageCanvas)
+        } else {
+            drinkImageCanvas.drawColor(
+                Color.WHITE
+            )
+        }
+        drinkImageView.draw(drinkImageCanvas)
+        val drinkAdaptiveIcon = drinkImageBitmap.toAdaptiveIcon()
+        //id для shortcut виставлено як id самого напою + ShortcutType, для того щоб розрізняти
+        //динамічні і закріплені shortcut
+        return ShortcutInfo.Builder(this@MainActivity, "${drink.getIdDrink()}${type.key}")
+            .setShortLabel(drink.getStrDrink()!!)
+            .setLongLabel("${getString(R.string.popup_menu_long_label_prefix)} ${drink.getStrDrink()}")
+            .setIcon(drinkAdaptiveIcon)
+            .setIntents(
+                arrayOf(
+                    Intent(
+                        this@MainActivity,
+                        MainActivity::class.java
+                    ).apply {
+                        action = Intent.ACTION_CREATE_SHORTCUT
+                        flags = Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    },
+                    Intent(
+                        this@MainActivity,
+                        DrinkDetailActivity::class.java
+                    ).apply {
+                        putExtra(DRINK_ID, drink.getIdDrink())
+                        action = Intent.ACTION_CREATE_SHORTCUT
+                        flags = Intent.FLAG_ACTIVITY_NEW_TASK
+                    })
+            )
+            .build()
+    }
+
+
+    private fun shortcutAlreadyExist(drinkId: Long, shortcutType: ShortcutType): Boolean {
         var isExist = false
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val shortcutManager: ShortcutManager? =
                 ContextCompat.getSystemService(this, ShortcutManager::class.java)
 
-            shortcutManager!!.pinnedShortcuts.forEach { shortcutInfo: ShortcutInfo? ->
-                if (shortCut.id == shortcutInfo!!.id) {
+            val shortcuts: List<ShortcutInfo>
+            shortcuts = when (shortcutType) {
+                ShortcutType.PINNED_SHORTCUT -> shortcutManager!!.pinnedShortcuts
+                ShortcutType.DYNAMIC_SHORTCUT -> shortcutManager!!.dynamicShortcuts
+            }
+            shortcuts.forEach { shortcutInfo: ShortcutInfo? ->
+                //id для shortcut виставлено як id самого напою + ShortcutType, для того щоб розрізняти
+                //динамічні і закріплені shortcut
+                if (shortcutInfo?.id == "${drinkId}${shortcutType.key}") {
                     isExist = true
                     return isExist
                 }

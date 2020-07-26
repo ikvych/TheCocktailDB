@@ -28,7 +28,7 @@
                 android:id="@+id/atb_fragment_main"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_height_max"
-                android:background="@drawable/app_bar_bg_shape"
+                android:background="@drawable/shape_app_bar_bg"
                 android:elevation="@dimen/elevation_16"
                 android:layout_gravity="top"
                 app:tl_disable_return_btn="true"
@@ -52,7 +52,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:backgroundTint="@color/color_primary"
-                        app:tabSelectedTextColor="@color/battery_charging">
+                        app:tabIndicatorColor="@color/color_surface_variant"
+                        app:tabSelectedTextColor="@color/color_surface_variant">
 
                     </com.google.android.material.tabs.TabLayout>
 
@@ -82,8 +83,7 @@
 
                             <androidx.recyclerview.widget.RecyclerView
                                 android:id="@+id/rv_filter_list"
-                                style="@style/RecyclerView"
-                                android:layout_width="wrap_content"
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                                 android:orientation="horizontal" />
@@ -107,7 +107,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center"
                     android:layout_marginBottom="@dimen/offset_20"
-                    android:background="@drawable/search_view_shape"
+                    android:background="@drawable/shape_search_view"
                     android:orientation="horizontal">
 
                     <ImageView

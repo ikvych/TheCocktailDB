@@ -31,7 +31,6 @@ abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBind
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("MyLog", "onCreateView - ${this.toString()}")
         dataBinding = DataBindingUtil.inflate(inflater, contentLayoutResId, container, false)
         dataBinding.lifecycleOwner = this@BaseFragment
         configureDataBinding(dataBinding)
@@ -40,7 +39,6 @@ abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         configureView(view, savedInstanceState)
-        Log.d("MyLog", "onViewCreated - ${this.toString()}")
     }
 
     protected open fun configureDataBinding(binding: DataBinding) {
@@ -83,50 +81,5 @@ abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBind
         data: Any?
     ) {
 
-    }
-
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
-        Log.d("MyLog", "onAttach - ${this.toString()}")
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        Log.d("MyLog", "onCreate - ${this.toString()}")
-    }
-
-    override fun onStart() {
-        super.onStart()
-        Log.d("MyLog", "onStart - ${this.toString()}")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Log.d("MyLog", "onResume - ${this.toString()}")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Log.d("MyLog", "onPause - ${this.toString()}")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Log.d("MyLog", "onStop - ${this.toString()}")
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        Log.d("MyLog", "onDestroyView - ${this.toString()}")
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        Log.d("MyLog", "onDestroy - ${this.toString()}")
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        Log.d("MyLog", "onDetach - ${this.toString()}")
     }
 }

@@ -2,6 +2,7 @@ package com.ikvych.cocktail.ui.fragment
 
 import android.content.Intent
 import android.content.res.Configuration
+import android.os.Bundle
 import android.view.View
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
@@ -19,79 +20,48 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.ui.activity.DrinkDetailActivity
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment
+import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
+import com.ikvych.cocktail.util.setDbRecyclerViewVisible
+import com.ikvych.cocktail.viewmodel.DrinkViewModel
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-abstract class RecyclerViewFragment<ViewModel : BaseViewModel, DataBinding : ViewDataBinding> : BaseFragment<ViewModel, DataBinding>() {
+abstract class RecyclerViewFragment<ViewModel : DrinkViewModel, DataBinding : ViewDataBinding> :
+    BaseFragment<ViewModel, DataBinding>() {
+
     protected lateinit var drinkAdapter: DrinkAdapter
+    val parentViewModel: MainFragmentViewModel
+        get() {
+            return ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
+        }
+    abstract val recyclerViewId: Int
 
-    lateinit var parentViewModel: MainFragmentViewModel
-    protected var sortDrinkType: SortDrinkType = SortDrinkType.RECENT
-
-    private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
-
-    fun initViewModel() {
-        parentViewModel = ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
+    override fun configureView(view: View, savedInstanceState: Bundle?) {
+        super.configureView(view, savedInstanceState)
+        drinkAdapter = DrinkAdapter(viewModel, requireContext())
+        initLiveDataObserver()
+        initRecyclerView()
     }
 
     open fun initLiveDataObserver() {
-        parentViewModel.filteredDrinksLiveData.observe(this, Observer { drinks ->
+        parentViewModel.filteredAndSortedDrinksLiveData.observe(this, Observer { drinks ->
             drinkAdapter.listData = drinks
-            determineVisibleLayerOnUpdateData(drinks)
-        })
-        viewModel.startDrinkDetailsLiveData.observe(this, Observer {
-            if (it != null) {
-                val intent = Intent(requireActivity(), DrinkDetailActivity::class.java)
-                intent.putExtra(DRINK, it)
-                startActivity(intent)
-            }
         })
     }
 
-    fun initRecyclerView(view: View, drinks: List<Drink>, recyclerViewId: Int) {
-        val recyclerView: RecyclerView = view.findViewById(recyclerViewId)
-        drinkAdapter = DrinkAdapter(viewModel, requireContext())
-
+    fun initRecyclerView() {
+        val recyclerView: RecyclerView = requireView().findViewById(recyclerViewId)
         if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 2)
         } else {
             recyclerView.layoutManager = GridLayoutManager(requireContext(), 4)
         }
-
-        recyclerView.itemAnimator = DefaultItemAnimator()
         recyclerView.adapter = drinkAdapter
-
-        determineVisibleLayerOnCreate(drinks)
-
-        drinkAdapter.listData = drinks
+        drinkAdapter.listData = parentViewModel.getAllDrinksFromDb()
     }
 
     override fun onDestroy() {
         super.onDestroy()
         drinkAdapter.setLifecycleDestroyed()
     }
-    /**
-     * If drinks is empty, hide recyclerView and show appropriate textView,
-     * else make recyclerView visible.
-     *
-     * To do this, use methods from ActivityUtil in util package
-     *
-     * @param drinks data list to check for items
-     */
-    open fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
-        //TO DO
-    }
-
-    /**
-     * If drinks is empty, hide recyclerView and show appropriate textView,
-     * else make recyclerView visible
-     *
-     * To do this, use methods from ActivityUtil in util package
-     *
-     * @param drinks data list to check for items
-     */
-    open fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
-        //TO DO
-    }
-
 }

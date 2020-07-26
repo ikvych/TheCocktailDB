@@ -17,6 +17,8 @@
         android:focusable="true"
         android:focusableInTouchMode="true"
         android:descendantFocusability="beforeDescendants"
+        android:clipChildren="false"
+        android:clipToPadding="false"
         android:padding="@dimen/offset_16">
 
         <ImageView
@@ -37,19 +39,18 @@
             android:id="@+id/til_auth_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:errorEnabled="true"
-            app:hintTextColor="@color/color_on_surface_variant">
+            app:hintTextColor="@drawable/selector_login_label_color_state"
+            app:errorEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tiet_auth_login"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/color_primary"
                 android:hint="@string/auth_login_hint"
+                android:backgroundTint="@color/color_primary"
                 android:text="@={viewModel.loginInputLiveData}"
                 android:saveEnabled="false"
-                android:inputType="textPersonName"
-                android:textCursorDrawable="@drawable/cursor_shape" />
+                android:inputType="textPersonName"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -58,18 +59,17 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:errorEnabled="true"
-            app:hintTextColor="@color/color_on_surface_variant"
+            app:hintTextColor="@drawable/selector_login_label_color_state"
             app:passwordToggleEnabled="true">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/tiet_auth_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:backgroundTint="@color/color_primary"
                 android:hint="@string/auth_password_tint"
+                android:backgroundTint="@color/color_primary"
                 android:text="@={viewModel.passwordInputLiveData}"
-                android:inputType="textPassword"
-                android:textCursorDrawable="@drawable/cursor_shape" />
+                android:inputType="textPassword" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,16 +78,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1" />
 
-        <Button
+        <androidx.appcompat.widget.AppCompatButton
             android:id="@+id/b_auth_login"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/btn_width_max"
+            android:layout_height="@dimen/btn_width"
             android:layout_marginVertical="@dimen/offset_16"
             android:text="@string/auth_login_button"
             android:onClick="@{() -> viewModel.onSubmit()}"
-            android:textColor="#FFFFFF"
-            app:backgroundTint="@color/design_default_color_primary_dark"
-            android:background="@drawable/login_button_shape"/>
+            android:textColor="@drawable/selector_app_button_text"
+            android:background="@drawable/selector_app_button"/>
 
     </com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener>
 </layout>

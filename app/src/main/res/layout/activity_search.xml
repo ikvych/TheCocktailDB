@@ -3,6 +3,15 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.SearchActivityViewModel" />
+    </data>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -13,10 +22,10 @@
             android:id="@+id/atb_search_activity"
             android:layout_width="match_parent"
             android:layout_height="@dimen/view_height_max"
+            android:layout_gravity="top"
+            android:background="@drawable/shape_app_bar_bg"
             android:elevation="@dimen/elevation_16"
-            android:background="@drawable/app_bar_bg_shape"
-            app:tl_is_for_search="true"
-            android:layout_gravity="top"/>
+            app:tl_is_for_search="true" />
 
 
         <LinearLayout
@@ -26,19 +35,21 @@
             android:layout_weight="1"
             android:orientation="vertical">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_search_result"
-                android:layout_marginHorizontal="@dimen/offset_8"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
             <!--Shown at the start of activity-->
             <TextView
                 android:id="@+id/tv_begin_search"
                 style="@style/TextOnEmptyRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/all_begin_search" />
+                android:text="@string/all_begin_search"
+                android:visibility="@{viewModel.isDrinkLiveDataInitialized ? View.GONE : View.VISIBLE}" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_search_result"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="@dimen/offset_8"
+                android:visibility="@{viewModel.drinkLiveData.empty ? View.GONE : View.VISIBLE}" />
 
             <!--Shown when the search is empty-->
             <TextView
@@ -46,7 +57,9 @@
                 style="@style/TextOnEmptyRecyclerView"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="@string/drink_empty_search_result" />
+                android:text="@string/drink_empty_search_result"
+                android:visibility="@{viewModel.drinkLiveData.empty ? View.VISIBLE : View.GONE}" />
+
 
         </LinearLayout>
     </LinearLayout>

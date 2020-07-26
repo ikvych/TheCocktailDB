@@ -136,9 +136,11 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
         ) {
             shouldLogInLiveData.value = true
         } else {
+            //переводжу фокус на поле вводу для паролю оскільки в ньому є помилка
             if (!isLoginDataMatchPatternLiveData.value!!.second) {
                 requestFocusOnPasswordLiveData.value = requestFocusOnPasswordLiveData.value
             }
+            //переводжу фокус на поле вводу для логіну оскільки в ньому є помилка
             if (!isLoginDataMatchPatternLiveData.value!!.first) {
                 requestFocusOnLoginLiveData.value = requestFocusOnLoginLiveData.value
             }

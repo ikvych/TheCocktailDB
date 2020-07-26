@@ -62,6 +62,7 @@ class SortDrinkDialogFragment :
                     EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
                         titleTextResId = R.string.dialog_sort_title
                         isCancelable = true
+                        isCloseButtonVisible = true
                     },
                     EXTRA_KEY_SORT_TYPE to sortType?.ordinal
                 )

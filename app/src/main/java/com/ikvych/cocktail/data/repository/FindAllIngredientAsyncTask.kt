@@ -46,3 +46,12 @@ class SaveDrinkAsyncTask(private val drinkDao: DrinkDao) :
         params.forEach { drink ->  drinkDao.insert(drink)}
     }
 }
+
+class RemoveDrinkAsyncTask(private val drinkDao: DrinkDao) :
+    AsyncTask<Drink, Unit, Unit>() {
+
+    override fun doInBackground(vararg params: Drink?) {
+        return drinkDao.delete(params[0]!!)
+    }
+
+}

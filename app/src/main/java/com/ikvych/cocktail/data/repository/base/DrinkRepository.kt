@@ -25,4 +25,6 @@ interface DrinkRepository {
     fun findDrinkByName(drinkName: String): Drink?
 
     fun findDrinkOfTheDay(stringDate: String): Drink?
+
+    fun removeDrink(drink: Drink)
 }

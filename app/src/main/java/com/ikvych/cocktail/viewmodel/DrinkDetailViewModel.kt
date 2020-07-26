@@ -6,18 +6,21 @@ import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.repository.DrinkRepositoryImpl
+import com.ikvych.cocktail.data.repository.base.DrinkRepository
 import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class DrinkDetailViewModel(application: Application) : BaseViewModel(application){
 
+    private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
     private val triggerObserver: Observer<in Drink?> = Observer { }
     val drinkIdLiveData: MutableLiveData<Long> = MutableLiveData()
     val drinkLiveData: MutableLiveData<Drink?> = object : MediatorLiveData<Drink?>() {
         init {
             addSource(drinkIdLiveData) {
-                value = findDrinkInDbById(it)
+                value = drinkRepository.findDrinkById(it)
             }
         }
     }
@@ -29,10 +32,6 @@ class DrinkDetailViewModel(application: Application) : BaseViewModel(application
     override fun onCleared() {
         drinkLiveData.removeObserver(triggerObserver)
         super.onCleared()
-    }
-
-    fun findDrinkInDbById(drinkId: Long): Drink? {
-        return drinkRepository.findDrinkById(drinkId)
     }
 
     fun saveDrinkIntoDb() {

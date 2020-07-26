@@ -16,11 +16,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
+import com.google.android.material.tabs.TabLayoutMediator
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
 import com.ikvych.cocktail.comparator.type.SortDrinkType
 import com.ikvych.cocktail.databinding.FragmentMainBinding
+import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
@@ -33,29 +35,16 @@ import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
+import kotlinx.android.synthetic.main.widget_app_toolbar.*
 
-class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(), BatteryListener {
+class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(), BatteryListener,
+    View.OnClickListener, View.OnLongClickListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_main
     override val viewModel: MainFragmentViewModel by viewModels()
 
     private lateinit var batteryReceiver: BatteryReceiver
-
-    private lateinit var filterBtn: ImageButton
-    private lateinit var filterIndicator: TextView
-
-    private lateinit var sortBtn: ImageButton
-    private lateinit var sortIndicator: TextView
-
-    private lateinit var filterFragment: FilterFragment
     private lateinit var filterAdapter: FilterAdapter
-
-    private lateinit var viewPager: ViewPager2
-    private lateinit var drinkPagerAdapter: DrinkPagerAdapter
-    private lateinit var tabLayout: TabLayout
-
-    private lateinit var historyFragment: HistoryFragment
-    private lateinit var favoriteFragment: FavoriteFragment
 
     private lateinit var batteryPercent: TextView
     private lateinit var batteryIcon: ImageView
@@ -68,121 +57,96 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        historyFragment = HistoryFragment.newInstance()
-        favoriteFragment = FavoriteFragment.newInstance()
-
         batteryReceiver = BatteryReceiver(this@MainFragment)
-        viewModel.filteredFavoriteDrinksLiveData.observe(this, Observer { _ ->
+        viewModel.filteredAndSortedFavoriteDrinksLiveData.observe(this, Observer { _ ->
             //trigger to init filteredFavoriteLiveData
         })
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
+        val drinkPagerAdapter = DrinkPagerAdapter(this)
+        vp2_main_fragment.adapter = drinkPagerAdapter
 
-        drinkPagerAdapter = DrinkPagerAdapter(
-            arrayListOf(historyFragment, favoriteFragment),
-            this
-        )
-
-        viewPager = dataBinding.vp2MainFragment
-        viewPager.adapter = drinkPagerAdapter
-
-        tabLayout = dataBinding.tlMainFragment
+        //ініціалізую таби для viewPager2
         Page.values().forEach {
-            tabLayout.addTab(tabLayout.newTab().setText(it.name))
+            tl_main_fragment.addTab(tl_main_fragment.newTab().setText(it.name))
         }
-        //відслідковує кліки по табам і передає значення у відповідну liveData
-        tabLayout.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener{
-
-            override fun onTabReselected(tab: TabLayout.Tab?) {
-
-            }
-
-            override fun onTabUnselected(tab: TabLayout.Tab?) {
-
-            }
-
+        //відслідковує кліки по табам і передаю значення у відповідну liveData
+        tl_main_fragment.addOnTabSelectedListener(object : TabLayout.OnTabSelectedListener {
+            override fun onTabReselected(tab: TabLayout.Tab?) {}
+            override fun onTabUnselected(tab: TabLayout.Tab?) {}
             override fun onTabSelected(tab: TabLayout.Tab?) {
                 viewModel.viewPager2LiveData.value = Page.values()[tab!!.position]
             }
         })
-        viewModel.viewPager2LiveData.value = Page.values()[viewPager.currentItem]
-        //відслідковує скрол по viewPager2 і передає відповідне значення в liveData щоб
+        //відслідковує скрол по viewPager2 і передаю відповідне значення в tl_main_fragment щоб
         //забезпечити переключення таб
         viewModel.viewPager2LiveData.observe(this, Observer {
-            tabLayout.selectTab(tabLayout.getTabAt(it.ordinal))
+            tl_main_fragment.selectTab(tl_main_fragment.getTabAt(it.ordinal))
         })
 
-        val filterRecyclerView: RecyclerView = dataBinding.rvFilterList
+        val filterRecyclerView: RecyclerView = rv_filter_list
         filterAdapter = FilterAdapter(viewModel)
-        filterRecyclerView.layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        filterRecyclerView.layoutManager =
+            LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         filterRecyclerView.setHasFixedSize(true)
         filterRecyclerView.adapter = filterAdapter
 
-        filterIndicator = atb_fragment_main.indicatorView
-
-        filterBtn = atb_fragment_main.customBtn
-        filterBtn.setImageDrawable(
-            ContextCompat.getDrawable(
-                requireContext(),
-                R.drawable.ic_app_tool_bar_filter
-            )
-        )
-
-        filterFragment = FilterFragment.newInstance()
-        filterBtn.setOnClickListener {
-            val fragmentTransaction = childFragmentManager.beginTransaction()
-            fragmentTransaction.add(R.id.fcv_main_fragment, filterFragment, FilterFragment::class.java.simpleName)
-            fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
-            fragmentTransaction.commit()
-        }
-
-        filterBtn.setOnLongClickListener {
-            viewModel.resetFilters()
-            filterAdapter.setData(arrayListOf())
-            true
-        }
-
-        sortBtn = atb_fragment_main.sortBtn
-        sortBtn.setOnClickListener {
-            SortDrinkDialogFragment.newInstance(viewModel.sortLiveData.value)
-                .show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
-        }
-        sortIndicator = atb_fragment_main.sortIndicatorView
-        sortBtn.setOnLongClickListener {
-            if (viewModel.sortLiveData.value != SortDrinkType.RECENT) {
-                viewModel.sortLiveData.value = SortDrinkType.RECENT
-                return@setOnLongClickListener true
-            }
-            false
-        }
-
-        fab_main_fragment.setOnClickListener {
-            startActivity(Intent(requireContext(), SearchActivity::class.java))
-        }
+        ib_filter_btn.setOnClickListener(this)
+        ib_filter_btn.setOnLongClickListener(this)
+        ib_sort_btn.setOnClickListener(this)
+        ib_sort_btn.setOnLongClickListener(this)
+        fab_main_fragment.setOnClickListener(this)
 
         batteryPercent = tv_battery_percent
         batteryIcon = iv_battery_icon
         powerConnected = iv_power_connected
 
-        viewModel.sortLiveData.observe(this, Observer{
-            if (it == SortDrinkType.RECENT) {
-                sortIndicator.visibility = View.GONE
-            } else {
-                sortIndicator.visibility = View.VISIBLE
-            }
-        })
-
-        viewModel.filtersLiveData.observe(this, Observer {
-            filterAdapter.setData(it.values.toList() as ArrayList)
-            if (viewModel.isFiltersPresent()) {
-                filterIndicator.visibility = View.VISIBLE
-            } else {
-                filterIndicator.visibility = View.GONE
-            }
-        })
         initLiveDataObserver()
+    }
+
+    override fun onClick(v: View?) {
+        if (v == null) return
+        when (v.id) {
+            R.id.ib_filter_btn -> {
+                val fragmentTransaction = childFragmentManager.beginTransaction()
+                fragmentTransaction.add(
+                    R.id.fcv_main_fragment,
+                    FilterFragment.newInstance(),
+                    FilterFragment::class.java.simpleName
+                )
+                fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
+                fragmentTransaction.commit()
+            }
+            R.id.ib_sort_btn -> {
+                SortDrinkDialogFragment.newInstance(viewModel.sortTypeLiveData.value)
+                    .show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
+            }
+            R.id.fab_main_fragment -> {
+                startActivity(Intent(requireContext(), SearchActivity::class.java))
+            }
+        }
+    }
+
+    override fun onLongClick(v: View?): Boolean {
+        if (v == null) {
+            return false
+        }
+        return when (v.id) {
+            R.id.ib_filter_btn -> {
+                viewModel.resetFilters()
+                filterAdapter.setData(arrayListOf())
+                true
+            }
+            R.id.ib_sort_btn -> {
+                if (viewModel.sortTypeLiveData.value != SortDrinkType.RECENT) {
+                    viewModel.sortTypeLiveData.value = SortDrinkType.RECENT
+                    return true
+                }
+                false
+            }
+            else -> false
+        }
     }
 
     override fun configureDataBinding(binding: FragmentMainBinding) {
@@ -199,7 +163,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             SortDrinkDrinkDialogType -> {
                 when (buttonType) {
                     ItemListDialogButton -> {
-                        viewModel.sortLiveData.value = data as SortDrinkType
+                        viewModel.sortTypeLiveData.value = data as SortDrinkType
                     }
                 }
             }
@@ -234,8 +198,9 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             Intent.ACTION_BATTERY_OKAY -> viewModel.isBatteryLowLiveData.value = false
             Intent.ACTION_BATTERY_CHANGED -> {
                 val status: Int = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1)
-                viewModel.isBatteryChargingLiveData.value = status == BatteryManager.BATTERY_STATUS_CHARGING
-                        || status == BatteryManager.BATTERY_STATUS_FULL
+                viewModel.isBatteryChargingLiveData.value =
+                    status == BatteryManager.BATTERY_STATUS_CHARGING
+                            || status == BatteryManager.BATTERY_STATUS_FULL
                 viewModel.batteryPercentLiveData.value = intent.let {
                     val level: Int = intent.getIntExtra(BatteryManager.EXTRA_LEVEL, -1)
                     val scale: Int = intent.getIntExtra(BatteryManager.EXTRA_SCALE, -1)
@@ -246,6 +211,28 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
     }
 
     private fun initLiveDataObserver() {
+        viewModel.sortTypeLiveData.observe(this, Observer {
+            if (it == SortDrinkType.RECENT) {
+                atb_fragment_main.sortIndicatorView.visibility = View.GONE
+            } else {
+                atb_fragment_main.sortIndicatorView.visibility = View.VISIBLE
+            }
+        })
+
+        viewModel.filtersLiveData.observe(this, Observer {
+            val filterList: ArrayList<DrinkFilter> = arrayListOf()
+            it.values.forEach { list ->
+                list.forEach {
+                    filterList.add(it)
+                }
+            }
+            filterAdapter.setData(filterList)
+            if (viewModel.isFiltersPresent()) {
+                tv_filter_indicator.visibility = View.VISIBLE
+            } else {
+                tv_filter_indicator.visibility = View.GONE
+            }
+        })
 
         viewModel.batteryPercentLiveData.observe(this, Observer {
             val textPercent = "${it!!}%"

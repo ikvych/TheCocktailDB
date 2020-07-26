@@ -6,9 +6,6 @@
 
     <data>
         <variable
-            name="viewModel"
-            type="com.ikvych.cocktail.viewmodel.ProfileFragmentViewModel" />
-        <variable
             name="parentViewModel"
             type="com.ikvych.cocktail.viewmodel.MainActivityViewModel" />
     </data>
@@ -29,27 +26,25 @@
                 android:layout_height="0dp"
                 android:layout_weight="1" />
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/b_log_out"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_height_max"
+                android:layout_height="@dimen/btn_height"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/offset_8"
                 android:text="@string/profile_log_out_button"
-                android:onClick="@{() -> viewModel.onLogOut()}"
-                android:textColor="#FFFFFF"
-                app:backgroundTint="@color/design_default_color_primary_dark" />
+                android:textColor="@drawable/selector_app_button_text"
+                android:background="@drawable/selector_app_button"/>
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/b_start_test_fragment"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/btn_height_max"
+                android:layout_height="@dimen/btn_height"
                 android:layout_gravity="center"
                 android:layout_margin="@dimen/offset_8"
                 android:text="@string/profile_start_test_fragment_button"
-                android:onClick="@{() -> viewModel.onStartFragment()}"
-                android:textColor="#FFFFFF"
-                app:backgroundTint="@color/design_default_color_primary_dark" />
+                android:textColor="@drawable/selector_app_button_text"
+                android:background="@drawable/selector_app_button"/>
 
             <CheckBox
                 android:id="@+id/cb_main_nav_bar_title_visibility"
@@ -57,6 +52,7 @@
                 android:layout_height="@dimen/view_height"
                 android:layout_margin="@dimen/offset_8"
                 bind:cb_checked="@={parentViewModel.navBarTitleVisibilityLiveData}"
+                android:buttonTint="@color/color_on_surface_variant"
                 android:text="@string/profile_show_hide_main_navigation_bar_titles" />
 
 

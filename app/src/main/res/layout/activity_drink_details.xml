@@ -34,13 +34,14 @@
                         android:id="@+id/ll_basic_info_title_container"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:padding="@dimen/offset_4"
+                        android:background="@drawable/layer_list_backgound_title"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_basic_info_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/details_section_background"
                             android:gravity="center_horizontal"
                             android:text="@string/drink_detail_basic_drink_info"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
@@ -125,13 +126,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/offset_16"
+                        android:padding="@dimen/offset_4"
+                        android:background="@drawable/layer_list_backgound_title"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_drink_ingredients_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/details_section_background"
                             android:gravity="center_horizontal"
                             android:text="@string/drink_detail_drink_ingredients"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>
@@ -150,13 +152,14 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:layout_marginTop="@dimen/offset_16"
+                        android:padding="@dimen/offset_4"
+                        android:background="@drawable/layer_list_backgound_title"
                         android:orientation="vertical">
 
                         <TextView
                             android:id="@+id/tv_drink_instruction_title"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/details_section_background"
                             android:gravity="center_horizontal"
                             android:text="@string/drink_detail_drink_instruction"
                             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline6"/>

@@ -28,8 +28,11 @@ import kotlin.collections.HashMap
 @BindingAdapter("ingredients")
 fun getIngredients(
     tableLayout: TableLayout,
-    ingredients: Map<String?, String?>
+    ingredients: Map<String?, String?>?
 ) {
+    if (ingredients == null) {
+        return
+    }
     var count = 1
     for ((key, value) in ingredients) {
         if (key == null) {

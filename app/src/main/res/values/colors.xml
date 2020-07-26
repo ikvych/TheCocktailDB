@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="color_primary">#FFFFFF</color>
-    <color name="color_accent">#000000</color>
-    <color name="color_primary_variant">#000000</color>
-    <color name="color_secondary">#018786</color>
-    <color name="color_background">#FFFFFF</color>
-    <color name="color_surface">#f5f5f5</color>
-    <color name="color_surface_variant">#e7e7e7</color>
+    <color name="color_primary_dark">#000000</color>
     <color name="color_on_primary">#000000</color>
+    <color name="color_secondary">#00897B</color>
+    <color name="color_accent">#00897B</color>
+    <color name="color_surface">#FFFFFF</color>
+    <color name="color_background">#FFFFFF</color>
     <color name="color_on_secondary">#FFFFFF</color>
-    <color name="color_on_background">#000000</color>
     <color name="color_on_surface">#000000</color>
-    <color name="color_on_surface_variant">#727272</color>
+    <color name="color_on_surface_variant">#CC555555</color>
+    <color name="color_normal">#FFFFFF</color>
+
+    <color name="color_surface_variant">#558B2F</color>
 
     <color name="battery_charging">#558B2F</color>
-
     <color name="battery_low">#D32F2F</color>
 
     <color name="text_invalid">#B00020</color>

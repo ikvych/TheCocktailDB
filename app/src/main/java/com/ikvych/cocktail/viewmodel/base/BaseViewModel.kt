@@ -10,29 +10,4 @@ import com.ikvych.cocktail.data.repository.DrinkRepositoryImpl
 import com.ikvych.cocktail.data.repository.base.DrinkRepository
 
 
-open class BaseViewModel(application: Application): AndroidViewModel(application) {
-
-    protected val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
-
-    val startDrinkDetailsLiveData: MutableLiveData<Drink?> = MutableLiveData()
-    val shouldShowOnLongClickLiveData: MutableLiveData<Unit?> = MutableLiveData()
-
-    fun startNewDrinkDetails(drink: Drink) {
-        startDrinkDetailsLiveData.value = drink
-    }
-
-/*    fun onLongClick(view: View?): Boolean {
-        shouldShowOnLongClickLiveData.value = view
-        return true
-    }*/
-
-    fun saveFavoriteDrink(drink: Drink) {
-        if (drink.isFavorite()) {
-            drink.setIsFavorite(false)
-        } else {
-            drink.setIsFavorite(true)
-        }
-        drinkRepository.saveDrinkIntoDb(drink)
-    }
-
-}
+open class BaseViewModel(application: Application): AndroidViewModel(application)

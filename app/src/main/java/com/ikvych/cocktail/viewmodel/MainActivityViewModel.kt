@@ -6,6 +6,8 @@ import android.content.SharedPreferences
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ProcessLifecycleOwner
 import com.ikvych.cocktail.data.entity.Drink
+import com.ikvych.cocktail.data.repository.DrinkRepositoryImpl
+import com.ikvych.cocktail.data.repository.base.DrinkRepository
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.text.SimpleDateFormat
@@ -17,6 +19,7 @@ class MainActivityViewModel(
     application: Application
 ) : BaseViewModel(application), ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
+    private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
     val drinkOfTheDayLiveData: MutableLiveData<Drink?> = MutableLiveData()
     private var lifecycleObserver: ApplicationLifeCycleObserver
     private var sharedPreferences: SharedPreferences = application.getSharedPreferences(
@@ -30,6 +33,15 @@ class MainActivityViewModel(
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
     }
 
+    fun removeDrink(drink: Drink) {
+        drinkRepository.removeDrink(drink)
+    }
+
+
+    fun findDrinkById(drinkId: Long): Drink? {
+        return drinkRepository.findDrinkById(drinkId)
+    }
+
     override fun onCleared() {
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         super.onCleared()
@@ -37,10 +49,6 @@ class MainActivityViewModel(
 
     override fun shouldShowDrinkOfTheDay() {
         setDrinkOfTheDay()
-    }
-
-    fun findDrinkByName(drinkName: String): Drink? {
-        return drinkRepository.findDrinkByName(drinkName)
     }
 
     fun saveDrinkIntoDb(drink: Drink) {

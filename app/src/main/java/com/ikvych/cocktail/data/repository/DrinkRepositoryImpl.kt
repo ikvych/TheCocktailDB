@@ -79,4 +79,8 @@ class DrinkRepositoryImpl (application: Application) : DrinkRepository {
     override fun findDrinkOfTheDay(stringDate: String): Drink? {
         return FindDrinkOfTheDayAsyncTask(drinkDao).execute(stringDate).get()
     }
+
+    override fun removeDrink(drink: Drink) {
+        RemoveDrinkAsyncTask(drinkDao).execute(drink)
+    }
 }

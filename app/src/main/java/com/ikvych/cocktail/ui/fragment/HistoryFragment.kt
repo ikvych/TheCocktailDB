@@ -8,41 +8,18 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.FragmentHistoryBinding
 import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
 import com.ikvych.cocktail.util.setDbRecyclerViewVisible
+import com.ikvych.cocktail.viewmodel.DrinkViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-class HistoryFragment : RecyclerViewFragment<BaseViewModel, FragmentHistoryBinding>() {
+class HistoryFragment : RecyclerViewFragment<DrinkViewModel, FragmentHistoryBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_history
-    override val viewModel: BaseViewModel by viewModels()
+    override val viewModel: DrinkViewModel by viewModels()
+    override val recyclerViewId: Int = R.id.rv_search_result
 
-    private lateinit var fragmentView: View
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        initViewModel()
-    }
-
-    override fun configureView(view: View, savedInstanceState: Bundle?) {
-        super.configureView(view, savedInstanceState)
-        fragmentView = view
-        initRecyclerView(view, parentViewModel.getAllDrinksFromDb(), R.id.rv_search_result)
-        initLiveDataObserver()
-    }
-
-    override fun determineVisibleLayerOnCreate(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(fragmentView)
-        } else {
-            setDbRecyclerViewVisible(fragmentView)
-        }
-    }
-
-    override fun determineVisibleLayerOnUpdateData(drinks: List<Drink?>?) {
-        if (drinks!!.isEmpty()) {
-            setDbEmptyHistoryVisible(fragmentView)
-        } else {
-            setDbRecyclerViewVisible(fragmentView)
-        }
+    override fun configureDataBinding(binding: FragmentHistoryBinding) {
+        super.configureDataBinding(binding)
+        binding.viewModel = parentViewModel
     }
 
     companion object {

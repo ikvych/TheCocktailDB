@@ -25,8 +25,8 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBind
     BaseDialogFragment.OnDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseDialogFragment.OnDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
-    BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>
-     {
+    BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
+    View.OnClickListener, View.OnLongClickListener {
 
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()
     protected abstract var contentLayoutResId: Int
@@ -36,19 +36,6 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBind
     @CallSuper
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val locale = Locale("uk")
-        Locale.setDefault(locale)
-        val resources = resources
-        val configuration = resources.configuration
-        configuration.setLocale(locale)
-        configuration.setLayoutDirection(locale)
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.N /*24*/) {
-            with(LocaleList(locale)) {
-                LocaleList.setDefault(this)
-                configuration.setLocales(this)
-            }
-        }
-        resources.updateConfiguration(configuration, resources.displayMetrics)
         dataBinding = DataBindingUtil.setContentView(this, contentLayoutResId)
         dataBinding.lifecycleOwner = this@BaseActivity
         configureDataBinding(dataBinding)
@@ -128,5 +115,14 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding: ViewDataBind
     override fun onStop() {
         super.onStop()
         unregisterReceiver(flyModeReceiver)
+    }
+
+    override fun onClick(v: View?) {
+        //stub
+    }
+
+    override fun onLongClick(v: View?): Boolean {
+        //stub
+        return false
     }
 }

@@ -11,21 +11,17 @@ import androidx.activity.viewModels
 import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.*
-import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
 import com.ikvych.cocktail.service.ApplicationService
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
+import kotlinx.android.synthetic.main.activity_drink_details.*
 
 
 class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDetailsBinding>() {
 
     override val viewModel: DrinkDetailViewModel by viewModels()
     override var contentLayoutResId: Int = R.layout.activity_drink_details
-
-    private lateinit var appBarLayout: AppBarLayout
-    private lateinit var imageView: ImageView
-    private lateinit var imageViewContainer: LinearLayout
 
     private var maxImageWidth: Int? = null
     private var minImageWidth: Int? = null
@@ -36,6 +32,13 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
     private lateinit var imageViewParams: LinearLayout.LayoutParams
 
     override fun configureView(savedInstanceState: Bundle?) {
+        //якщо присутній інтент SHOW_DRINK_OFFER_ON_DESTROY зупиняємо сервіс, для того щоб не настиковувались
+        // пропозиції переглянути напій
+        if (intent.hasExtra(SHOW_DRINK_OFFER_ON_DESTROY)) {
+            stopService(Intent(this, ApplicationService::class.java))
+        }
+        //в залажності від того чи було передано id напою чи сам напій, вибирається спосіб як ініціалізувати
+        //drinkLiveData з поточним напоєм. Якщо немає ніодого з варіантів, завершуємо актівіті
         when {
             intent.hasExtra(DRINK) -> {
                 viewModel.drinkLiveData.value = intent.getParcelableExtra(DRINK)
@@ -47,14 +50,12 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
                 finish()
             }
         }
+        //Якщо присутній інтен SHOULD_SAVE_DRINK, тоді зберігаємо його в базу даних
         if (intent.hasExtra(SHOULD_SAVE_DRINK)) {
             viewModel.saveDrinkIntoDb()
         }
 
-        appBarLayout = findViewById(R.id.abl_drink_detail)
-        imageView = findViewById(R.id.iv_drink_image)
-        imageViewContainer = findViewById(R.id.ll_drink_image_container)
-
+        //ініціалізуємо слухач, для зміни розмірів і позиції зображення напою
         initAppBarLayoutListener()
     }
 
@@ -64,10 +65,10 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
     }
 
     private fun initAppBarLayoutListener() {
-        appBarLayout.addOnOffsetChangedListener(
+        abl_drink_detail.addOnOffsetChangedListener(
             AppBarLayout.OnOffsetChangedListener { appBarLayout, verticalOffset ->
 
-                //init image parameters
+                //якщо maxImageWidth == null значить загальні параметри зображення потрібно ініціалізувати
                 if (maxImageWidth == null) {
                     initImageParameters()
                 }
@@ -84,7 +85,7 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
 
                 if (imageViewParams.width != cachedImageWidth) {
                     cachedImageWidth = currentImageWidth.toInt()
-                    imageView.layoutParams = imageViewParams
+                    iv_drink_image.layoutParams = imageViewParams
                 }
 
                 //change transparency of background
@@ -111,18 +112,19 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
     }
 
     private fun initImageParameters() {
-        maxImageWidth = imageView.width
-        imageViewContainer.layoutParams.height = imageView.height
-        imageViewContainer.requestLayout()
+        maxImageWidth = iv_drink_image.width
+        ll_drink_image_container.layoutParams.height = iv_drink_image.height
+        ll_drink_image_container.requestLayout()
         cachedImageWidth = maxImageWidth
 
         imageMarginStart = (resources.getDimension(R.dimen.offset_64)).toInt()
         imageMarginTop = (resources.getDimension(R.dimen.offset_16)).toInt()
         minImageWidth = (resources.getDimension(R.dimen.offset_32)).toInt()
 
-        imageViewParams = imageView.layoutParams as LinearLayout.LayoutParams
+        imageViewParams = iv_drink_image.layoutParams as LinearLayout.LayoutParams
     }
 
+    @Suppress("UNUSED_PARAMETER")
     fun resumePreviousActivity(view: View?) {
         finish()
     }
@@ -130,8 +132,6 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
     override fun onDestroy() {
         if (intent.hasExtra(SHOW_DRINK_OFFER_ON_DESTROY)) {
             val intent = Intent(this, ApplicationService::class.java)
-            //зупиняю сервіс якщо він був запущений для того щоб не спамити повідомленнями
-            stopService(intent)
             intent.putExtra(DRINK_ID, viewModel.drinkLiveData.value?.getIdDrink())
             intent.action = ACTION_SHOW_DRINK_OFFER
             startService(intent)

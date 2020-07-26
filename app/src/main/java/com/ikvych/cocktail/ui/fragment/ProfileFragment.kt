@@ -7,6 +7,7 @@ import android.widget.Button
 import android.widget.CheckBox
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -21,45 +22,39 @@ import com.ikvych.cocktail.viewmodel.ProfileFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_profile.*
 
-class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
+class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>(),
+    View.OnClickListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_profile
     override val viewModel: ProfileFragmentViewModel by viewModels()
-
-    private lateinit var mainViewModel: MainActivityViewModel
-    private lateinit var bottomSheetDialogFragment: RegularBottomSheetDialogFragment
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        bottomSheetDialogFragment = RegularBottomSheetDialogFragment.newInstance{
-            titleText = getString(R.string.profile_log_out_dialog_title)
-            descriptionText = getString(R.string.profile_log_out_dialog_message)
-            leftButtonText = getString(R.string.all_cancel_button)
-            rightButtonText = getString(R.string.all_accept_button)
-        }
-        mainViewModel = ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
-    }
+    private val mainViewModel: MainActivityViewModel by activityViewModels()
 
     override fun configureDataBinding(binding: FragmentProfileBinding) {
         super.configureDataBinding(binding)
-        binding.viewModel = viewModel
         binding.parentViewModel = mainViewModel
     }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
-        viewModel.logOutLiveData.observe(this, Observer {
-            if (it) {
-                bottomSheetDialogFragment.show(
+        b_log_out.setOnClickListener(this)
+        b_start_test_fragment.setOnClickListener(this)
+    }
+
+    override fun onClick(v: View?) {
+        if (v == null) return
+        when (v.id) {
+            R.id.b_log_out -> {
+                RegularBottomSheetDialogFragment.newInstance {
+                    titleText = getString(R.string.profile_log_out_dialog_title)
+                    descriptionText = getString(R.string.profile_log_out_dialog_message)
+                    leftButtonText = getString(R.string.all_cancel_button)
+                    rightButtonText = getString(R.string.all_accept_button)
+                }.show(
                     childFragmentManager,
                     RegularBottomSheetDialogFragment::class.java.simpleName
                 )
-                viewModel.logOutLiveData.value = false
             }
-        })
-
-        viewModel.startTestFragmentLiveData.observe(this, Observer {
-            if (it) {
+            R.id.b_start_test_fragment -> {
                 val fragmentTransaction: FragmentTransaction =
                     childFragmentManager.beginTransaction()
                 fragmentTransaction.add(
@@ -69,9 +64,8 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>() {
                 )
                 fragmentTransaction.addToBackStack(TestFragment::class.java.name)
                 fragmentTransaction.commit()
-                viewModel.startTestFragmentLiveData.value = false
             }
-        })
+        }
     }
 
     override fun onBottomSheetDialogFragmentClick(

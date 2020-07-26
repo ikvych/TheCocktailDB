@@ -2,73 +2,110 @@ package com.ikvych.cocktail.ui.dialog
 
 import android.os.Bundle
 import android.view.View
+import androidx.appcompat.widget.AppCompatButton
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
-import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.type.IngredientDrinkDialogType
-import com.ikvych.cocktail.ui.dialog.base.type.ItemListDialogButton
-import com.ikvych.cocktail.ui.dialog.base.type.ListDialogButton
+import com.ikvych.cocktail.ui.dialog.base.MultiSelectionListBaseDialogFragment
+import com.ikvych.cocktail.ui.dialog.base.type.*
 
 
 class FilterDrinkIngredientDialogFragment :
-    ListBaseDialogFragment<IngredientDrinkFilter?, ListDialogButton, IngredientDrinkDialogType>() {
+    MultiSelectionListBaseDialogFragment<List<IngredientDrinkFilter>, IngredientDrinkFilter, ListDialogButton, FilterListDrinkDialogType>(),
+    MultiSelectionListBaseDialogFragment.OnMultiSelectionListClick {
 
-    override val dialogType: IngredientDrinkDialogType = IngredientDrinkDialogType
-    override var data: IngredientDrinkFilter? = IngredientDrinkFilter.NONE
-    private var selectedIngredientDrinkFilter: IngredientDrinkFilter? = IngredientDrinkFilter.NONE
+    override val dialogType: FilterListDrinkDialogType = FilterListDrinkDialogType
+    override var data: List<IngredientDrinkFilter>? = arrayListOf(IngredientDrinkFilter.NONE)
+    override var selectedElements: ArrayList<IngredientDrinkFilter> = arrayListOf(IngredientDrinkFilter.NONE)
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
+    override val onClickListener: OnMultiSelectionListClick = this
 
-    override val dialogListDataAdapter: DialogListDataAdapter<IngredientDrinkFilter?> =
-        object : DialogListDataAdapter<IngredientDrinkFilter?> {
-            override fun getName(data: IngredientDrinkFilter?): CharSequence {
-                return data?.key ?: ""
+    override val dialogListDataAdapter: DialogListDataAdapter<IngredientDrinkFilter> =
+        object : DialogListDataAdapter<IngredientDrinkFilter> {
+            override fun getName(data: IngredientDrinkFilter): CharSequence {
+                return data.key
             }
         }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dialogBuilder = requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
-        val ingredientOrdinal = requireArguments().getInt(EXTRA_KEY_SELECTED_INGREDIENT)
-        selectedIngredientDrinkFilter = IngredientDrinkFilter.values()[ingredientOrdinal]
-        listAdapter = DialogListAdapter(selectedIngredientDrinkFilter)
+        val ingredientOrdinals = requireArguments().getIntArray(EXTRA_KEY_SELECTED_INGREDIENTS)
+        selectedElements = ingredientOrdinals?.map { IngredientDrinkFilter.values()[it] } as? ArrayList<IngredientDrinkFilter> ?: arrayListOf(IngredientDrinkFilter.NONE)
+        listAdapter = DialogListAdapter()
     }
 
-    override var listData: List<IngredientDrinkFilter?> = mutableListOf<IngredientDrinkFilter?>().apply {
+    override var listElement: List<IngredientDrinkFilter> = mutableListOf<IngredientDrinkFilter>().apply {
         addAll(IngredientDrinkFilter.values())
     }.toList()
 
     override fun getButtonType(view: View): ListDialogButton {
         return when (view.id) {
-            R.id.tv_filter_type_element -> ItemListDialogButton
+            R.id.b_dialog_left_button -> LeftListDialogButton
+            R.id.b_dialog_right_button -> {
+                data = selectedElements
+                RightListDialogButton
+            }
             else -> throw NotImplementedError("handle another dialog button types")
         }
     }
 
-
-    override fun obtainDataForView(view: View): IngredientDrinkFilter? {
-        return when (getButtonType(view)) {
-            is ItemListDialogButton -> view.tag as? IngredientDrinkFilter?
-            else -> super.obtainDataForView(view)
+    override fun onListItemClick(v: View?) {
+        if (v == null) return
+        val currentElement = v.tag as IngredientDrinkFilter
+        if (currentElement == IngredientDrinkFilter.NONE) {
+            selectedElements.forEach {
+                val noneElement: AppCompatButton? = extraContentView?.findViewWithTag(it)
+                noneElement?.isSelected = false
+            }
+            selectedElements.clear()
+            selectedElements.add(currentElement)
+            (v as AppCompatButton).isSelected = true
+            return
+        }
+        if (selectedElements.contains(currentElement)) {
+            selectedElements.remove(currentElement)
+            (v as AppCompatButton).isSelected = false
+        } else {
+            selectedElements.add(currentElement)
+            (v as AppCompatButton).isSelected = true
+        }
+        if (selectedElements.contains(IngredientDrinkFilter.NONE) && selectedElements.size > 1) {
+            selectedElements.remove(IngredientDrinkFilter.NONE)
+            val noneElement: AppCompatButton? = extraContentView?.findViewWithTag(IngredientDrinkFilter.NONE)
+            noneElement?.isSelected = false
+        }
+        if (selectedElements.isEmpty()) {
+            selectedElements.add(IngredientDrinkFilter.NONE)
+            val noneElement: AppCompatButton? = extraContentView?.findViewWithTag(IngredientDrinkFilter.NONE)
+            noneElement?.isSelected = true
         }
     }
 
+
     companion object {
         fun newInstance(
-            selectedIngredient: IngredientDrinkFilter? = null
+            selectedIngredients: List<IngredientDrinkFilter?> = arrayListOf()
         ): FilterDrinkIngredientDialogFragment {
-            return FilterDrinkIngredientDialogFragment().apply {
-                arguments = bundleOf(
-                    EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
-                        titleTextResId = R.string.dialog_sort_title
-                        isCancelable = true
-                    },
-                    EXTRA_KEY_SELECTED_INGREDIENT to selectedIngredient?.ordinal
-                )
-            }
+            val ordinals = selectedIngredients.map { it?.ordinal }
+            val ordinalsArray = IntArray(ordinals.size)
+            ordinals.forEachIndexed { index, element  -> ordinalsArray[index] = element!! }
+            return FilterDrinkIngredientDialogFragment()
+                .apply {
+                    arguments = bundleOf(
+                        EXTRA_KEY_BUILDER to SimpleDialogBuilder().apply {
+                            titleTextResId = R.string.dialog_filter_title
+                            isCancelable = true
+                            isCloseButtonVisible = true
+                            rightButtonText = "Ok"
+                            leftButtonText = "Cancel"
+                        },
+                        EXTRA_KEY_SELECTED_INGREDIENTS to ordinalsArray
+                    )
+                }
         }
 
         private const val EXTRA_KEY_BUILDER = "EXTRA_KEY_BUILDER"
-        private const val EXTRA_KEY_SELECTED_INGREDIENT = "EXTRA_KEY_SELECTED_INGREDIENT"
+        private const val EXTRA_KEY_SELECTED_INGREDIENTS = "EXTRA_KEY_SELECTED_INGREDIENTS"
     }
 }

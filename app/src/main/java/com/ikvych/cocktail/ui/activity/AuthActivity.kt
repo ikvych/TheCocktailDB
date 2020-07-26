@@ -43,6 +43,8 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
         viewModel.requestFocusOnPasswordLiveData.observe(this, Observer { tiet_auth_password.requestFocus() })
         viewModel.shouldLogInLiveData.observe(this, Observer {
             closeKeyboard()
+            //якщо it==true значить помилок в введених даних немає, і тоді стартую MainActivity
+            //у іншому випадку показує діалог з причиною помилки
             if (it) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)

@@ -6,10 +6,10 @@ import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.*
-import com.ikvych.cocktail.ui.dialog.base.type.ItemListDialogButton
-import com.ikvych.cocktail.ui.dialog.base.type.ListDialogButton
+import com.ikvych.cocktail.ui.dialog.type.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.type.ListDialogButton
 import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.type.FilterDrinkDialogType
+import com.ikvych.cocktail.ui.dialog.type.FilterDrinkDialogType
 import java.lang.IllegalArgumentException
 
 

@@ -42,6 +42,10 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
         when {
             intent.hasExtra(DRINK) -> {
                 viewModel.drinkLiveData.value = intent.getParcelableExtra(DRINK)
+                //Якщо присутній інтен SHOULD_SAVE_DRINK, тоді зберігаємо напій в базу даних
+                if (intent.hasExtra(SHOULD_SAVE_DRINK)) {
+                    viewModel.saveDrinkIntoDb()
+                }
             }
             intent.hasExtra(DRINK_ID) -> {
                 viewModel.drinkIdLiveData.value = intent.getLongExtra(DRINK_ID, -1L)
@@ -49,10 +53,6 @@ class DrinkDetailActivity : BaseActivity<DrinkDetailViewModel, ActivityDrinkDeta
             else -> {
                 finish()
             }
-        }
-        //Якщо присутній інтен SHOULD_SAVE_DRINK, тоді зберігаємо його в базу даних
-        if (intent.hasExtra(SHOULD_SAVE_DRINK)) {
-            viewModel.saveDrinkIntoDb()
         }
 
         //ініціалізуємо слухач, для зміни розмірів і позиції зображення напою

@@ -14,10 +14,10 @@ import com.ikvych.cocktail.databinding.ActivityAuthBinding
 import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.ui.dialog.ErrorAuthDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.type.ActionSingleDialogButton
-import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
-import com.ikvych.cocktail.ui.dialog.base.type.DialogType
-import com.ikvych.cocktail.ui.dialog.base.type.NotificationDialogType
+import com.ikvych.cocktail.ui.dialog.type.ActionSingleDialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
+import com.ikvych.cocktail.ui.dialog.type.NotificationDialogType
 import com.ikvych.cocktail.viewmodel.AuthViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import kotlinx.android.synthetic.main.activity_auth.*
@@ -39,8 +39,18 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
         tiet_auth_login.filters = arrayOf(inputFilter)
         tiet_auth_password.filters = arrayOf(inputFilter)
 
-        viewModel.requestFocusOnLoginLiveData.observe(this, Observer { tiet_auth_login.requestFocus() })
-        viewModel.requestFocusOnPasswordLiveData.observe(this, Observer { tiet_auth_password.requestFocus() })
+        viewModel.requestFocusOnLoginLiveData.observe(this, Observer {
+            if (it != null) {
+                tiet_auth_login.requestFocus()
+                viewModel.requestFocusOnLoginLiveData.value = null
+            }
+        })
+        viewModel.requestFocusOnPasswordLiveData.observe(this, Observer {
+            if (it != null) {
+                tiet_auth_password.requestFocus()
+                viewModel.requestFocusOnPasswordLiveData.value = null
+            }
+        })
         viewModel.shouldLogInLiveData.observe(this, Observer {
             closeKeyboard()
             //якщо it==true значить помилок в введених даних немає, і тоді стартую MainActivity

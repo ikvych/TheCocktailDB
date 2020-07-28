@@ -5,7 +5,6 @@ import android.content.IntentFilter
 import android.os.BatteryManager
 import android.os.Bundle
 import android.view.View
-import android.widget.ImageButton
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.core.content.ContextCompat
@@ -14,9 +13,7 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
-import com.google.android.material.tabs.TabLayoutMediator
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.adapter.list.FilterAdapter
 import com.ikvych.cocktail.adapter.pager.DrinkPagerAdapter
@@ -27,10 +24,10 @@ import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
 import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
-import com.ikvych.cocktail.ui.dialog.base.type.DialogType
-import com.ikvych.cocktail.ui.dialog.base.type.ItemListDialogButton
-import com.ikvych.cocktail.ui.dialog.base.type.SortDrinkDrinkDialogType
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
+import com.ikvych.cocktail.ui.dialog.type.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.type.SortDrinkDrinkDialogType
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
@@ -85,6 +82,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             tl_main_fragment.selectTab(tl_main_fragment.getTabAt(it.ordinal))
         })
 
+        //RecyclerView для обраних фільтрів
         val filterRecyclerView: RecyclerView = rv_filter_list
         filterAdapter = FilterAdapter(viewModel)
         filterRecyclerView.layoutManager =
@@ -138,6 +136,8 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
                 filterAdapter.setData(arrayListOf())
                 true
             }
+            //можна винести клік по цій кнопці у viewModel через dataBinding, але оскільки вона належить кастомному тулбару
+            //то поки не брався це реалізовувати, і взагалі сумніваюся чи так потрібно робити
             R.id.ib_sort_btn -> {
                 if (viewModel.sortTypeLiveData.value != SortDrinkType.RECENT) {
                     viewModel.sortTypeLiveData.value = SortDrinkType.RECENT

@@ -7,6 +7,7 @@ import androidx.lifecycle.OnLifecycleEvent
 
 
 const val CURRENT_TIME_MILLIS = "CURRENT_TIME_MILLIS"
+const val AWAITING_TIME = 5000L
 
 class ApplicationLifeCycleObserver(
     val listener: OnLifecycleObserverListener,
@@ -22,7 +23,7 @@ class ApplicationLifeCycleObserver(
         if (sharedPreferences.contains(CURRENT_TIME_MILLIS)) {
             val savedTime = sharedPreferences.getLong(CURRENT_TIME_MILLIS, -1)
             val currentTime = System.currentTimeMillis()
-            if ((currentTime - savedTime) >= 5000L) {
+            if ((currentTime - savedTime) >= AWAITING_TIME) {
                 listener.shouldShowDrinkOfTheDay()
             }
         }

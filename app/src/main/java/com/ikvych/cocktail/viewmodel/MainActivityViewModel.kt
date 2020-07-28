@@ -20,26 +20,19 @@ class MainActivityViewModel(
 ) : BaseViewModel(application), ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
     private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
+
     val drinkOfTheDayLiveData: MutableLiveData<Drink?> = MutableLiveData()
+    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData(true)
+
     private var lifecycleObserver: ApplicationLifeCycleObserver
     private var sharedPreferences: SharedPreferences = application.getSharedPreferences(
         MAIN_ACTIVITY_SHARED_PREFERENCE,
         Context.MODE_PRIVATE
     )
-    val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData(true)
 
     init {
         lifecycleObserver = ApplicationLifeCycleObserver(this, sharedPreferences)
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
-    }
-
-    fun removeDrink(drink: Drink) {
-        drinkRepository.removeDrink(drink)
-    }
-
-
-    fun findDrinkById(drinkId: Long): Drink? {
-        return drinkRepository.findDrinkById(drinkId)
     }
 
     override fun onCleared() {
@@ -47,15 +40,23 @@ class MainActivityViewModel(
         super.onCleared()
     }
 
-    override fun shouldShowDrinkOfTheDay() {
-        setDrinkOfTheDay()
+    fun removeDrink(drink: Drink) {
+        drinkRepository.removeDrink(drink)
+    }
+
+    fun findDrinkById(drinkId: Long): Drink? {
+        return drinkRepository.findDrinkById(drinkId)
     }
 
     fun saveDrinkIntoDb(drink: Drink) {
         drinkRepository.saveDrinkIntoDb(drink)
     }
 
-    private fun setDrinkOfTheDay() {
+    override fun shouldShowDrinkOfTheDay() {
+        showDrinkOfTheDay()
+    }
+
+    private fun showDrinkOfTheDay() {
         //Оскільки lifecycle, до якого привязана робота цього метода, належить MainActivity, яка по своїй природні працює тільки з базою даних, то
         //даний метод не працює при повному перевстановленні додатку, оскільки разом з додатком видаляється сама база даних
         //в якій ми шукаємо напій дня

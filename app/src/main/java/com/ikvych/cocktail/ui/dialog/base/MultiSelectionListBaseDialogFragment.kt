@@ -8,8 +8,8 @@ import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
-import com.ikvych.cocktail.ui.dialog.base.type.DialogType
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
 import kotlinx.android.synthetic.main.layout_dialog_filter_list_component.*
 
 abstract class MultiSelectionListBaseDialogFragment<

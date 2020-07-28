@@ -19,7 +19,7 @@ class FilterAdapter(
     private val layoutId = R.layout.item_selected_filter_list
 
     fun setData(list: List<DrinkFilter>) {
-        //видаляю усі фільтри типу - відсутній
+        //видаляю усі фільтри у яких ключ = DRINK_FILTER_ABSENT
         listData = list.filter { it.key != DRINK_FILTER_ABSENT }
     }
 

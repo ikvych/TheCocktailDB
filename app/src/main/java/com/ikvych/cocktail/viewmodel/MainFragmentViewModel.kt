@@ -9,6 +9,7 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MediatorLiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.map
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
 import com.ikvych.cocktail.comparator.type.SortDrinkType
@@ -24,19 +25,14 @@ import java.util.*
 class MainFragmentViewModel(application: Application) : DrinkViewModel(application) {
 
     private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
+    private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
     val viewPager2LiveData: MutableLiveData<Page> = MutableLiveData(Page.HISTORY)
-
-    val isBatteryChargingLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
-
     var fragmentJustCreated: Boolean = true
 
-    init {
-        isBatteryLowLiveData.value = false
-    }
+    val isBatteryChargingLiveData: MutableLiveData<Boolean> = MutableLiveData()
+    val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
+    val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
 
-    private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
     val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getAllDrinksFromDbLiveData()
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
         MutableLiveData()
@@ -44,12 +40,12 @@ class MainFragmentViewModel(application: Application) : DrinkViewModel(applicati
         MutableLiveData()
 
     init {
+        //ініціалізую фільтри NONE значеннями
         resetFilters()
     }
 
     val sortTypeLiveData: MutableLiveData<SortDrinkType> =
         MutableLiveData(SortDrinkType.RECENT)
-
 
     val filteredAndSortedDrinksLiveData: MutableLiveData<List<Drink>> =
         object : MediatorLiveData<List<Drink>>() {
@@ -75,19 +71,15 @@ class MainFragmentViewModel(application: Application) : DrinkViewModel(applicati
                 value = filteredAndSortedData
             }
         }
-    val filteredAndSortedFavoriteDrinksLiveData: MutableLiveData<ArrayList<Drink>> =
-        object : MediatorLiveData<ArrayList<Drink>>() {
-            init {
-                value = arrayListOf()
-                addSource(filteredAndSortedDrinksLiveData) {
-                    value = filterFavorite(it)
-                }
-            }
 
-            fun filterFavorite(drinks: List<Drink>): ArrayList<Drink> {
-                return drinks.filter { it.isFavorite() } as ArrayList<Drink>
-            }
+    val filteredAndSortedFavoriteDrinksLiveData: LiveData<ArrayList<Drink>> =
+        filteredAndSortedDrinksLiveData.map {
+            filterFavorite(it)
         }
+
+    private fun filterFavorite(drinks: List<Drink>): ArrayList<Drink> {
+        return drinks.filter { it.isFavorite() } as ArrayList<Drink>
+    }
 
     val filteredAndSortedResultDrinksLiveData: LiveData<SpannableString> =
         object : MediatorLiveData<SpannableString>() {
@@ -150,76 +142,70 @@ class MainFragmentViewModel(application: Application) : DrinkViewModel(applicati
             }
         }
 
-    val alcoholFilterLiveData: LiveData<String> = object : MediatorLiveData<String>() {
-        init {
-            addSource(filtersLiveData) {
-                value = if (it[DrinkFilterType.ALCOHOL]?.first() == AlcoholDrinkFilter.NONE) {
-                    EMPTY_STRING
-                } else {
-                    it[DrinkFilterType.ALCOHOL]?.first()?.key
-                }
-            }
+    val alcoholFilterLiveData: LiveData<String> = filtersLiveData.map {
+        if (it[DrinkFilterType.ALCOHOL]!!.first() == AlcoholDrinkFilter.NONE) {
+            EMPTY_STRING
+        } else {
+            it[DrinkFilterType.ALCOHOL]!!.first().key
         }
     }
 
-    val categoryFilterLiveData: LiveData<String> = object : MediatorLiveData<String>() {
-        init {
-            addSource(filtersLiveData) {
-                value = if (it[DrinkFilterType.CATEGORY]?.first() == CategoryDrinkFilter.NONE) {
-                    EMPTY_STRING
-                } else {
-                    it[DrinkFilterType.CATEGORY]?.first()?.key
-                }
-            }
+    val categoryFilterLiveData: LiveData<String> = filtersLiveData.map {
+        if (it[DrinkFilterType.CATEGORY]!!.first() == CategoryDrinkFilter.NONE) {
+            EMPTY_STRING
+        } else {
+            it[DrinkFilterType.CATEGORY]!!.first().key
         }
     }
 
-    val glassFilterLiveData: LiveData<String> = object : MediatorLiveData<String>() {
-        init {
-            addSource(filtersLiveData) {
-                value = if (it[DrinkFilterType.GLASS]?.first() == GlassDrinkFilter.NONE) {
-                    EMPTY_STRING
-                } else {
-                    it[DrinkFilterType.GLASS]?.first()?.key
-                }
-            }
+    val glassFilterLiveData: LiveData<String> = filtersLiveData.map {
+        if (it[DrinkFilterType.GLASS]!!.first() == GlassDrinkFilter.NONE) {
+            EMPTY_STRING
+        } else {
+            it[DrinkFilterType.GLASS]!!.first().key
         }
     }
 
-    val ingredientFilterLiveData: LiveData<String> = object : MediatorLiveData<String>() {
-        init {
-            addSource(filtersLiveData) {
-                val ingredientFilterText = StringBuilder()
-                if (it[DrinkFilterType.INGREDIENT]!!.contains(IngredientDrinkFilter.NONE)) {
-                    ingredientFilterText.append(EMPTY_STRING)
-                } else {
-                    it[DrinkFilterType.INGREDIENT]?.forEach { filter -> ingredientFilterText.append("${filter.key} ") }
-                }
-                value = ingredientFilterText.toString()
+    val ingredientFilterLiveData: LiveData<String> = filtersLiveData.map {
+        val ingredientFilterText = StringBuilder()
+        if (it[DrinkFilterType.INGREDIENT]!!.contains(IngredientDrinkFilter.NONE)) {
+            ingredientFilterText.append(EMPTY_STRING)
+        } else {
+            it[DrinkFilterType.INGREDIENT]?.forEach { filter ->
+                ingredientFilterText.append(
+                    "${filter.key}  "
+                )
             }
         }
+        ingredientFilterText.toString()
     }
 
     @Suppress("UNCHECKED_CAST")
     fun updateFilter(filter: DrinkFilter) {
-        lastAppliedFiltersLiveData.value = filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
+        lastAppliedFiltersLiveData.value =
+            filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
         filtersLiveData.value = filtersLiveData.value!!.apply {
-                this[filter.type] = arrayListOf(filter)
-            }
+            this[filter.type] = arrayListOf(filter)
+        }
     }
 
+    //наразі цей метод заточений під інгредієнти, в подальшому при необхідності можливо переробити
+    //на DrinkFilterType
     @Suppress("UNCHECKED_CAST")
     fun updateFilterList(filters: List<DrinkFilter>) {
-        lastAppliedFiltersLiveData.value = filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
+        lastAppliedFiltersLiveData.value =
+            filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
         filtersLiveData.value = filtersLiveData.value!!.apply {
-                this[DrinkFilterType.INGREDIENT] = filters
-            }
+            this[DrinkFilterType.INGREDIENT] = filters
+        }
     }
 
     fun isFiltersPresent(): Boolean {
         return !filtersLiveData.value!![DrinkFilterType.ALCOHOL]!!.contains(AlcoholDrinkFilter.NONE) ||
                 !filtersLiveData.value!![DrinkFilterType.CATEGORY]!!.contains(CategoryDrinkFilter.NONE) ||
-                !filtersLiveData.value!![DrinkFilterType.INGREDIENT]!!.contains(IngredientDrinkFilter.NONE) ||
+                !filtersLiveData.value!![DrinkFilterType.INGREDIENT]!!.contains(
+                    IngredientDrinkFilter.NONE
+                ) ||
                 !filtersLiveData.value!![DrinkFilterType.GLASS]!!.contains(GlassDrinkFilter.NONE)
     }
 
@@ -250,6 +236,7 @@ class MainFragmentViewModel(application: Application) : DrinkViewModel(applicati
         return false
     }
 
+    //обнуляє певний тип фільтру
     fun resetFilter(filter: DrinkFilter) {
         when (filter.type) {
             DrinkFilterType.CATEGORY -> {
@@ -274,7 +261,7 @@ class MainFragmentViewModel(application: Application) : DrinkViewModel(applicati
                     if (filters.size == 1) {
                         this[filter.type] = arrayListOf(IngredientDrinkFilter.NONE)
                     } else {
-                        this[filter.type] = this[filter.type]!!.filter { it != currentFilter}
+                        this[filter.type] = this[filter.type]!!.filter { it != currentFilter }
                     }
                 }
             }
@@ -285,7 +272,10 @@ class MainFragmentViewModel(application: Application) : DrinkViewModel(applicati
         return drinksLiveData.value ?: emptyList()
     }
 
-    fun filterData(drinks: List<Drink>, drinkFilters: HashMap<DrinkFilterType, List<DrinkFilter>>): List<Drink> {
+    fun filterData(
+        drinks: List<Drink>,
+        drinkFilters: HashMap<DrinkFilterType, List<DrinkFilter>>
+    ): List<Drink> {
         var drinksCopy = drinks
         drinkFilters.forEach {
             when (it.key) {

@@ -14,22 +14,16 @@ import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
-import androidx.core.view.drawToBitmap
-import androidx.core.view.get
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
-import com.google.android.material.bottomnavigation.BottomNavigationView
-import com.google.android.material.bottomnavigation.LabelVisibilityMode
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.constant.DRINK
 import com.ikvych.cocktail.constant.DRINK_ID
 import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
 import com.ikvych.cocktail.ui.dialog.ResumeAppBottomSheetDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.type.*
+import com.ikvych.cocktail.ui.dialog.type.*
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.util.ShortcutType
@@ -49,7 +43,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
         //Відслідковуємо напій дня, якщо він не дорівнює null значить потрібно показати діалог
         viewModel.drinkOfTheDayLiveData.observe(this, Observer {
             if (it != null) {
-                //Якщо діалог фрагмент не дорівнює null значить попердній фрагмент ще не закрили і показувати новий не потрібно
+                //Якщо діалог фрагмент являється ResumeAppBottomSheetDialogFragment значить попердній фрагмент ще не закрили і показувати новий не потрібно
                 val dialogFragment =
                     supportFragmentManager.findFragmentByTag(ResumeAppBottomSheetDialogFragment::class.java.simpleName)
                 if (dialogFragment !is ResumeAppBottomSheetDialogFragment) {
@@ -63,23 +57,12 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                         supportFragmentManager,
                         ResumeAppBottomSheetDialogFragment::class.java.simpleName
                     )
-                    //обнуляю liveData для того щоб на перестворенні актівіті не спамилось
+                    //обнуляю value у liveData. Це означатиме, що діалог уже був показаний і до наступного виходу з додатку
+                    //його поки не потрбіно показувати
                     viewModel.drinkOfTheDayLiveData.value = null
                 }
             }
         })
-
-        //ховає і показує title у NavigationBottomView
-        viewModel.navBarTitleVisibilityLiveData.observe(this,
-            Observer<Boolean> { t ->
-                if (t!!) {
-                    bnv_main.labelVisibilityMode =
-                        LabelVisibilityMode.LABEL_VISIBILITY_LABELED
-                } else {
-                    bnv_main.labelVisibilityMode =
-                        LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
-                }
-            })
 
         profileFragment =
             supportFragmentManager.findFragmentByTag(ProfileFragment::class.java.simpleName)
@@ -129,12 +112,18 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
         }
     }
 
+    override fun configureDataBinding(binding: ActivityMainBinding) {
+        super.configureDataBinding(binding)
+        binding.viewModel = viewModel
+    }
+
     override fun onClick(v: View?) {
         if (v == null) {
             return
         } else {
             when (v.id) {
                 // відкриває деталізацію коктейлю
+                //v is CardView якій я попередньо прописав tag як id напою
                 R.id.cv_item_drink -> {
                     val drinkId = v.tag as Long
                     val intent = Intent(this, DrinkDetailActivity::class.java)
@@ -189,6 +178,15 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                             }
                             R.id.menu_drink_remove -> {
                                 viewModel.removeDrink(drink)
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                                    val shortcutManager =
+                                        ContextCompat.getSystemService(
+                                            this@MainActivity,
+                                            ShortcutManager::class.java
+                                        )
+                                    shortcutManager?.removeDynamicShortcuts(arrayListOf("${drinkId}${ShortcutType.DYNAMIC_SHORTCUT}"))
+                                    shortcutManager?.disableShortcuts(arrayListOf("${drinkId}${ShortcutType.PINNED_SHORTCUT}"))
+                                }
                                 Toast.makeText(
                                     this@MainActivity,
                                     "${drink.getStrDrink()} ${getString(R.string.popup_menu_remove_from_history)}",

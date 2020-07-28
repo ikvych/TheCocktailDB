@@ -12,7 +12,7 @@ import com.ikvych.cocktail.databinding.FragmentFilterBinding
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.*
 import com.ikvych.cocktail.ui.dialog.*
-import com.ikvych.cocktail.ui.dialog.base.type.*
+import com.ikvych.cocktail.ui.dialog.type.*
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
@@ -103,7 +103,8 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>(), Vie
             )
     }
 
-    //наразі цей тип діалогу заточений під інгредієнти
+    //наразі цей тип діалогу заточений під інгредієнти, в подальшому при необхідності можливо переробити
+    //на DrinkFilterType
     @Suppress("UNCHECKED_CAST")
     private fun startFilterDialogWithMultiSelection(filterType: DrinkFilterType) {
         FilterDrinkIngredientDialogFragment.newInstance(

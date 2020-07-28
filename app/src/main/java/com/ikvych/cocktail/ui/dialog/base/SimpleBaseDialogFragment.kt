@@ -13,8 +13,8 @@ import androidx.annotation.StringRes
 import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.dialog.base.type.DialogButton
-import com.ikvych.cocktail.ui.dialog.base.type.DialogType
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
 import kotlinx.android.synthetic.main.layout_dialog_simple.*
 
 

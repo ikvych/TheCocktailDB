@@ -7,7 +7,7 @@ import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.ui.dialog.base.MultiSelectionListBaseDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.type.*
+import com.ikvych.cocktail.ui.dialog.type.*
 
 
 class FilterDrinkIngredientDialogFragment :

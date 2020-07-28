@@ -5,26 +5,26 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.ui.dialog.base.SimpleBottomSheetBaseDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.type.LeftDialogButton
-import com.ikvych.cocktail.ui.dialog.base.type.RegularDialogButton
-import com.ikvych.cocktail.ui.dialog.base.type.ResumeApplicationDialogType
-import com.ikvych.cocktail.ui.dialog.base.type.RightDialogButton
+import com.ikvych.cocktail.ui.dialog.type.LeftDialogButton
+import com.ikvych.cocktail.ui.dialog.type.RegularDialogButton
+import com.ikvych.cocktail.ui.dialog.type.ResumeApplicationDialogType
+import com.ikvych.cocktail.ui.dialog.type.RightDialogButton
 
 
 class ResumeAppBottomSheetDialogFragment :
-    SimpleBottomSheetBaseDialogFragment<Long, RegularDialogButton, ResumeApplicationDialogType, SimpleBottomSheetBaseDialogFragment.SimpleBottomSheetDialogBuilder>() {
+    SimpleBottomSheetBaseDialogFragment<Any, RegularDialogButton, ResumeApplicationDialogType, SimpleBottomSheetBaseDialogFragment.SimpleBottomSheetDialogBuilder>() {
 
     override val dialogType: ResumeApplicationDialogType = ResumeApplicationDialogType
     override var dialogBuilder: SimpleBottomSheetDialogBuilder = SimpleBottomSheetDialogBuilder()
-    override var data: Long? = null
+    override var data: Any? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dialogBuilder = requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
-        data = requireArguments().getLong(EXTRA_KEY_DRINK_ID)
+        data = requireArguments().get(EXTRA_KEY_DATA)
     }
 
-    override fun obtainDataForView(view: View): Long? {
+    override fun obtainDataForView(view: View): Any? {
         return data
     }
 
@@ -38,10 +38,10 @@ class ResumeAppBottomSheetDialogFragment :
 
     companion object {
         fun newInstance(
-            drinkId: Long,
+            data: Any? = null,
             builder: SimpleBottomSheetDialogBuilder.() -> Unit
         ): ResumeAppBottomSheetDialogFragment {
-            return getInstance(drinkId, builder)
+            return getInstance(data, builder)
         }
 
         /**
@@ -49,18 +49,18 @@ class ResumeAppBottomSheetDialogFragment :
          * if multiple instances exists within one context (activity/fragment)
          */
         fun getInstance(
-            drinkId: Long,
+            data: Any? = null,
             builder: SimpleBottomSheetDialogBuilder.() -> Unit
         ): ResumeAppBottomSheetDialogFragment {
             val fragment = ResumeAppBottomSheetDialogFragment()
             fragment.arguments = bundleOf(
                 EXTRA_KEY_BUILDER to (SimpleBottomSheetDialogBuilder().apply(builder)),
-                EXTRA_KEY_DRINK_ID to drinkId
+                EXTRA_KEY_DATA to data
             )
             return fragment
         }
 
         private const val EXTRA_KEY_BUILDER = "EXTRA_KEY_BUILDER"
-        private const val EXTRA_KEY_DRINK_ID = "EXTRA_KEY_DRINK_ID"
+        private const val EXTRA_KEY_DATA = "EXTRA_KEY_DATA"
     }
 }

@@ -25,11 +25,11 @@ import com.ikvych.cocktail.databinding.FragmentMainBinding
 import com.ikvych.cocktail.listener.BatteryListener
 import com.ikvych.cocktail.receiver.BatteryReceiver
 import com.ikvych.cocktail.ui.activity.SearchActivity
-import com.ikvych.cocktail.ui.dialog.base.DialogButton
-import com.ikvych.cocktail.ui.dialog.base.DialogType
-import com.ikvych.cocktail.ui.dialog.base.ItemListDialogButton
-import com.ikvych.cocktail.ui.dialog.base.SortDrinkDrinkDialogType
-import com.ikvych.cocktail.ui.dialog.regular.SortDrinkDialogFragment
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
+import com.ikvych.cocktail.ui.dialog.type.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.type.SortDrinkDrinkDialogType
+import com.ikvych.cocktail.ui.dialog.SortDrinkDialogFragment
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel

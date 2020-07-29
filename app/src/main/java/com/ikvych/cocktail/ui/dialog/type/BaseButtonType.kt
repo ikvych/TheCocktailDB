@@ -1,4 +1,4 @@
-package com.ikvych.cocktail.ui.dialog.base
+package com.ikvych.cocktail.ui.dialog.type
 
 sealed class DialogButton
 

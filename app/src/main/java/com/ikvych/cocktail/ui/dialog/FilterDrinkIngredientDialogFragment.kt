@@ -1,14 +1,14 @@
-package com.ikvych.cocktail.ui.dialog.regular
+package com.ikvych.cocktail.ui.dialog
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
-import com.ikvych.cocktail.ui.dialog.base.IngredientDrinkDialogType
-import com.ikvych.cocktail.ui.dialog.base.ItemListDialogButton
+import com.ikvych.cocktail.ui.dialog.type.IngredientDrinkDialogType
+import com.ikvych.cocktail.ui.dialog.type.ItemListDialogButton
 import com.ikvych.cocktail.ui.dialog.base.ListBaseDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.ListDialogButton
+import com.ikvych.cocktail.ui.dialog.type.ListDialogButton
 
 
 class FilterDrinkIngredientDialogFragment :

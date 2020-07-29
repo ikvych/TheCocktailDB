@@ -1,10 +1,14 @@
-package com.ikvych.cocktail.ui.dialog.bottom
+package com.ikvych.cocktail.ui.dialog
 
 import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.ui.dialog.base.*
+import com.ikvych.cocktail.ui.dialog.type.LeftDialogButton
+import com.ikvych.cocktail.ui.dialog.type.RegularDialogButton
+import com.ikvych.cocktail.ui.dialog.type.RegularDialogType
+import com.ikvych.cocktail.ui.dialog.type.RightDialogButton
 
 
 open class RegularBottomSheetDialogFragment :

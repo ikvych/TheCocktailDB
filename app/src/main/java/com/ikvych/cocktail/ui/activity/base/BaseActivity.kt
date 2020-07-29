@@ -15,8 +15,8 @@ import com.ikvych.cocktail.receiver.FlyModeReceiver
 import com.ikvych.cocktail.ui.fragment.base.BaseFragment
 import com.ikvych.cocktail.ui.dialog.base.BaseBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.BaseDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.DialogButton
-import com.ikvych.cocktail.ui.dialog.base.DialogType
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
 import com.ikvych.cocktail.util.Language
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*

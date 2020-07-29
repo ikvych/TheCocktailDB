@@ -12,8 +12,8 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import com.ikvych.cocktail.ui.dialog.base.BaseBottomSheetDialogFragment
 import com.ikvych.cocktail.ui.dialog.base.BaseDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.DialogButton
-import com.ikvych.cocktail.ui.dialog.base.DialogType
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBinding> : Fragment(),

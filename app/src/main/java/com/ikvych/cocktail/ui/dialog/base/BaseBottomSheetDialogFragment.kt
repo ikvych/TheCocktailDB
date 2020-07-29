@@ -12,6 +12,8 @@ import androidx.annotation.CallSuper
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
 
 abstract class BaseBottomSheetDialogFragment<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> protected constructor() :
     BottomSheetDialogFragment(),

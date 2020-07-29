@@ -8,6 +8,8 @@ import android.widget.FrameLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
 import kotlinx.android.synthetic.main.layout_dialog_filter_list_component.*
 
 abstract class ListBaseDialogFragment<

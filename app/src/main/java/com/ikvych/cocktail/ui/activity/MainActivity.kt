@@ -24,8 +24,8 @@ import com.ikvych.cocktail.constant.DRINK
 import com.ikvych.cocktail.constant.DRINK_ID
 import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
-import com.ikvych.cocktail.ui.dialog.base.*
-import com.ikvych.cocktail.ui.dialog.bottom.ResumeAppBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.ResumeAppBottomSheetDialogFragment
+import com.ikvych.cocktail.ui.dialog.type.*
 import com.ikvych.cocktail.ui.fragment.MainFragment
 import com.ikvych.cocktail.ui.fragment.ProfileFragment
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel

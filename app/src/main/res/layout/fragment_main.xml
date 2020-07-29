@@ -7,6 +7,7 @@
     <data>
         <import type="com.ikvych.cocktail.databinding.adapter.DataBindingAdapter.DataBindingConverter"/>
         <import type="com.ikvych.cocktail.util.Page"/>
+        <import type="android.view.View" />
 
         <variable
             name="viewModel"
@@ -117,8 +118,9 @@
                         android:layout_margin="@dimen/offset_8"
                         android:contentDescription="@string/info"
                         android:scaleType="fitXY"
+
                         android:src="@drawable/ic_power_connected"
-                        android:visibility="gone" />
+                        android:visibility="@{viewModel.cachedBatteryStateLiveData.charging ? View.VISIBLE : View.GONE}" />
 
 
                     <TextView
@@ -126,6 +128,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_margin="@dimen/offset_8"
+                        android:text="@{viewModel.cachedBatteryStateLiveData.getPercentAsString()}"
                         android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5" />
 
                     <ImageView

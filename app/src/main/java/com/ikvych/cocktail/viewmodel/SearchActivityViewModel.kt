@@ -13,7 +13,6 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class SearchActivityViewModel(application: Application) : DrinkViewModel(application) {
 
-    private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
     val drinkLiveData: MutableLiveData<List<Drink>> = drinkRepository.getDrinkApiLiveData()
     //відслідковує чи було ініціалізоване value у drinkLiveData
     //Цю лайв дату відслідковує textView який повинний пропасти після того як було здійснено перший

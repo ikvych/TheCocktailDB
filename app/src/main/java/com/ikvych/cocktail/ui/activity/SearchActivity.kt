@@ -8,7 +8,6 @@ import android.view.View
 import android.widget.SearchView
 import androidx.activity.viewModels
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.DefaultItemAnimator
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
@@ -20,11 +19,7 @@ import com.ikvych.cocktail.databinding.ActivitySearchBinding
 import com.ikvych.cocktail.listener.DrinkOfferListener
 import com.ikvych.cocktail.receiver.DrinkOfferReceiver
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
-import com.ikvych.cocktail.util.setEmptySearchVisible
-import com.ikvych.cocktail.util.setSearchEmptyListVisible
-import com.ikvych.cocktail.util.setSearchRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
-import com.ikvych.cocktail.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.activity_search.*
 
 

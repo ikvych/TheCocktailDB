@@ -9,7 +9,23 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 open class DrinkViewModel(application: Application) : BaseViewModel(application) {
 
-    private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
+    protected val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
+
+    fun removeDrink(drink: Drink) {
+        drinkRepository.removeDrink(drink)
+    }
+
+    fun findDrinkById(drinkId: Long): Drink? {
+        return drinkRepository.findDrinkById(drinkId)
+    }
+
+    fun saveDrinkIntoDb(drink: Drink) {
+        drinkRepository.saveDrinkIntoDb(drink)
+    }
+
+    fun getAllDrinksFromDb(): List<Drink> {
+        return drinkRepository.getAllDrinksFromDb()
+    }
 
     fun saveFavoriteDrink(drink: Drink) {
         if (drink.isFavorite()) {

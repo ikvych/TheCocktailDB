@@ -18,13 +18,6 @@ fun setImageViewResource(imageButton: ImageButton, resource: Int) {
     imageButton.setImageResource(resource)
 }
 
-@BindingAdapter("bind:bg_color")
-fun setBackgroundTint(view: View, resource: String) {
-    val stateList =
-        ColorStateList.valueOf(Color.parseColor(resource))
-    view.backgroundTintList = stateList
-}
-
 class DataBindingAdapter {
 
     object ViewVisibilityBindingAdapter {

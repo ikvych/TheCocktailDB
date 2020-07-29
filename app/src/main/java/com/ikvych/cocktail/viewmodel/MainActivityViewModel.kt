@@ -17,9 +17,7 @@ const val MAIN_ACTIVITY_SHARED_PREFERENCE = "MAIN_ACTIVITY_SHARED_PREFERENCE"
 
 class MainActivityViewModel(
     application: Application
-) : BaseViewModel(application), ApplicationLifeCycleObserver.OnLifecycleObserverListener {
-
-    private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
+) : DrinkViewModel(application), ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
     val drinkOfTheDayLiveData: MutableLiveData<Drink?> = MutableLiveData()
     val navBarTitleVisibilityLiveData: MutableLiveData<Boolean> = MutableLiveData(true)
@@ -38,18 +36,6 @@ class MainActivityViewModel(
     override fun onCleared() {
         ProcessLifecycleOwner.get().lifecycle.removeObserver(lifecycleObserver)
         super.onCleared()
-    }
-
-    fun removeDrink(drink: Drink) {
-        drinkRepository.removeDrink(drink)
-    }
-
-    fun findDrinkById(drinkId: Long): Drink? {
-        return drinkRepository.findDrinkById(drinkId)
-    }
-
-    fun saveDrinkIntoDb(drink: Drink) {
-        drinkRepository.saveDrinkIntoDb(drink)
     }
 
     override fun shouldShowDrinkOfTheDay() {

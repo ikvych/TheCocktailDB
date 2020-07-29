@@ -1,15 +1,9 @@
 package com.ikvych.cocktail.ui.fragment
 
-import android.os.Bundle
-import android.view.View
 import androidx.fragment.app.viewModels
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.databinding.FragmentHistoryBinding
-import com.ikvych.cocktail.util.setDbEmptyHistoryVisible
-import com.ikvych.cocktail.util.setDbRecyclerViewVisible
 import com.ikvych.cocktail.viewmodel.DrinkViewModel
-import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class HistoryFragment : RecyclerViewFragment<DrinkViewModel, FragmentHistoryBinding>() {
 

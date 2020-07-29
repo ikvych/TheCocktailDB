@@ -19,20 +19,18 @@ import com.ikvych.cocktail.data.repository.DrinkRepositoryImpl
 import com.ikvych.cocktail.data.repository.base.DrinkRepository
 import com.ikvych.cocktail.filter.DrinkFilter
 import com.ikvych.cocktail.filter.type.*
+import com.ikvych.cocktail.util.BatteryStateLiveData
+import com.ikvych.cocktail.util.CachedBatteryState
 import com.ikvych.cocktail.util.Page
 import java.util.*
 
 class MainFragmentViewModel(application: Application) : DrinkViewModel(application) {
 
-    private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
     private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
     val viewPager2LiveData: MutableLiveData<Page> = MutableLiveData(Page.HISTORY)
     var fragmentJustCreated: Boolean = true
 
-    val isBatteryChargingLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
-    val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
-
+    val cachedBatteryStateLiveData: BatteryStateLiveData = BatteryStateLiveData(application)
     val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getAllDrinksFromDbLiveData()
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
         MutableLiveData()
@@ -266,10 +264,6 @@ class MainFragmentViewModel(application: Application) : DrinkViewModel(applicati
                 }
             }
         }
-    }
-
-    fun getAllDrinksFromDb(): List<Drink> {
-        return drinksLiveData.value ?: emptyList()
     }
 
     fun filterData(

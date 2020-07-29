@@ -12,9 +12,8 @@ import com.ikvych.cocktail.filter.type.DrinkFilterType
 import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
-class DrinkDetailViewModel(application: Application) : BaseViewModel(application){
+class DrinkDetailViewModel(application: Application) : DrinkViewModel(application){
 
-    private val drinkRepository: DrinkRepository = DrinkRepositoryImpl(application)
     private val triggerObserver: Observer<in Drink?> = Observer { }
     val drinkIdLiveData: MutableLiveData<Long> = MutableLiveData()
     val drinkLiveData: MutableLiveData<Drink?> = object : MediatorLiveData<Drink?>() {

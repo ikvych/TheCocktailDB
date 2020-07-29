@@ -9,5 +9,4 @@ import com.ikvych.cocktail.data.entity.Drink
 import com.ikvych.cocktail.data.repository.DrinkRepositoryImpl
 import com.ikvych.cocktail.data.repository.base.DrinkRepository
 
-
 open class BaseViewModel(application: Application): AndroidViewModel(application)

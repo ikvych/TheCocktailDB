@@ -4,10 +4,10 @@ import android.os.Bundle
 import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.ui.dialog.base.ActionSingleDialogButton
-import com.ikvych.cocktail.ui.dialog.base.NotificationDialogType
+import com.ikvych.cocktail.ui.dialog.type.ActionSingleDialogButton
+import com.ikvych.cocktail.ui.dialog.type.NotificationDialogType
 import com.ikvych.cocktail.ui.dialog.base.SimpleBaseDialogFragment
-import com.ikvych.cocktail.ui.dialog.base.SingleDialogButton
+import com.ikvych.cocktail.ui.dialog.type.SingleDialogButton
 
 
 class ErrorAuthDialogFragment :

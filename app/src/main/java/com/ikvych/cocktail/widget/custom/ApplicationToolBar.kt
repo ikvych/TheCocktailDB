@@ -23,18 +23,18 @@ class ApplicationToolBar(
     private var textView: TextView
 
     var isForSearch: Boolean = false
-    set(value) {
-        field = value
-        if (isForSearch) {
-            searchView.visibility = View.VISIBLE
-            textView.visibility = View.GONE
-        } else {
-            searchView.visibility = View.GONE
-            textView.visibility = View.VISIBLE
+        set(value) {
+            field = value
+            if (isForSearch) {
+                searchView.visibility = View.VISIBLE
+                textView.visibility = View.GONE
+            } else {
+                searchView.visibility = View.GONE
+                textView.visibility = View.VISIBLE
+            }
+            invalidate()
+            requestLayout()
         }
-        invalidate()
-        requestLayout()
-    }
 
     var mainTitle: String? = null
         set(value) {
@@ -45,18 +45,18 @@ class ApplicationToolBar(
         }
 
     var isCustomBtnEnabled: Boolean = false
-    set(value) {
-        field = value
-        if (field) {
-            customBtn.visibility = View.VISIBLE
-            relativeLayoutCustomBtn.visibility = View.VISIBLE
-        } else {
-            customBtn.visibility = View.GONE
-            relativeLayoutCustomBtn.visibility = View.GONE
+        set(value) {
+            field = value
+            if (field) {
+                customBtn.visibility = View.VISIBLE
+                relativeLayoutCustomBtn.visibility = View.VISIBLE
+            } else {
+                customBtn.visibility = View.GONE
+                relativeLayoutCustomBtn.visibility = View.GONE
+            }
+            invalidate()
+            requestLayout()
         }
-        invalidate()
-        requestLayout()
-    }
 
     var isReturnBtnDisabled: Boolean = false
         set(value) {
@@ -88,7 +88,7 @@ class ApplicationToolBar(
     init {
         View.inflate(context, R.layout.widget_app_toolbar, this)
         this.returnBtn = findViewById(R.id.ib_return_button)
-        this.customBtn = findViewById(R.id.ib_filer_btn)
+        this.customBtn = findViewById(R.id.ib_filter_btn)
         this.indicatorView = findViewById(R.id.tv_filter_indicator)
         this.frameLayout = findViewById(R.id.fl_toolbar)
         this.searchView = findViewById(R.id.sv_toolbar)

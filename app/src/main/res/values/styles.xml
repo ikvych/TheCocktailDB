@@ -4,22 +4,15 @@
     <style name="Theme.App.Main" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/color_primary</item>
-        <item name="colorAccent">@color/color_accent</item>
-        <item name="colorPrimaryDark">@color/color_primary_variant</item>
+        <item name="android:colorControlActivated">@color/color_accent</item>
+        <item name="colorPrimaryDark">@color/color_primary_dark</item>
         <item name="colorSecondary">@color/color_secondary</item>
-        <item name="android:colorBackground">@color/color_background</item>
-        <item name="colorSurface">@color/color_surface</item>
         <item name="colorOnSecondary">@color/color_on_secondary</item>
         <item name="colorOnPrimary">@color/color_on_primary</item>
-        <item name="colorOnBackground">@color/color_on_background</item>
         <item name="colorOnSurface">@color/color_on_surface</item>
-
-        <item name="textAppearanceBody2">@style/AppTextAppearanceBody2</item>
-        <item name="textAppearanceSubtitle2">@style/AppTextAppearanceSubtitle2</item>
-        <item name="textAppearanceSubtitle1">@style/AppTextAppearanceSubtitle1</item>
-        <item name="textAppearanceHeadline6">@style/AppTextAppearanceHeadline6</item>
+        <item name="colorSurface">@color/color_surface</item>
+        <item name="android:colorBackground">@color/color_background</item>
         <item name="textAppearanceHeadline4">@style/AppTextAppearanceHeadline4</item>
-
         <item name="android:popupMenuStyle">@style/Widget.PopupMenu</item>
         <item name="popupMenuStyle">@style/Widget.PopupMenu</item>
         <item name="bottomNavigationStyle">@style/Widget.BottomNavigationView</item>
@@ -114,7 +107,7 @@
     <!--SearchView Style-->
     <style name="AppSearchView">
         <item name="android:layout_margin">@dimen/offset_8</item>
-        <item name="android:background">@drawable/search_view_shape</item>
+        <item name="android:background">@drawable/shape_search_view</item>
         <item name="android:elevation">@dimen/elevation_4</item>
         <item name="android:inputType">text</item>
         <item name="android:queryBackground">@android:color/transparent</item>
@@ -144,6 +137,10 @@
         <item name="android:backgroundDimEnabled">true</item>
         <item name="android:windowIsTranslucent">true</item>
         <item name="android:layout_gravity">bottom</item>>
+    </style>
+
+    <style name="FullScreenDialog" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:windowBackground">@drawable/inset_regular_dialog_fragment</item>
     </style>
 
 </resources>

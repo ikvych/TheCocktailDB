@@ -13,9 +13,7 @@ import kotlin.coroutines.CoroutineContext
 
 open class BaseViewModel(
     application: Application,
-    val savedStateHandle: SavedStateHandle,
-    private val cocktailRepository: CocktailRepository? = null,
-    private val mapper: CocktailModelMapper? = null
+    val savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
 
     protected val appSettingRepository: AppSettingRepository =
@@ -44,18 +42,6 @@ open class BaseViewModel(
         (this as? MutableLiveData)?.postValue(value)
     }
 
-    val startCocktailDetailsLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
     val selectedLanguageLiveData: MutableLiveData<Int> =
         appSettingRepository.selectedLanguageLiveData
-
-    fun startNewDrinkDetails(cocktail: CocktailModel) {
-        startCocktailDetailsLiveData.value = cocktail
-    }
-
-    fun saveFavoriteDrink(cocktail: CocktailModel) {
-        cocktail.isFavorite = !cocktail.isFavorite
-        launchRequest {
-            cocktailRepository?.addOrReplaceCocktail(mapper!!.mapFrom(cocktail))
-        }
-    }
 }

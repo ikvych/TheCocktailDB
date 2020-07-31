@@ -1,5 +1,7 @@
 package com.xtreeivi.cocktailsapp.data.repository.model
 
+import com.ikvych.cocktail.data.repository.model.IngredientRepoModel
+
 data class CocktailRepoModel(
     val id: Long = -1L,
     val names: LocalizedStringRepoModel = LocalizedStringRepoModel(),
@@ -8,7 +10,7 @@ data class CocktailRepoModel(
     val glass: String = "",
     val image: String = "",
     val instructions: LocalizedStringRepoModel = LocalizedStringRepoModel(),
-    val ingredients: List<String> = emptyList(),
+    val ingredients: List<IngredientRepoModel> = emptyList(),
     val measures: List<String> = emptyList(),
     var isFavorite: Boolean = false,
     var cocktailOfTheDay: String = ""/*,

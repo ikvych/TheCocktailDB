@@ -10,18 +10,15 @@ import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
 import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
-import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.text.SimpleDateFormat
 import java.util.*
-
-const val MAIN_ACTIVITY_SHARED_PREFERENCE = "MAIN_ACTIVITY_SHARED_PREFERENCE"
 
 class MainActivityViewModel(
     private val cocktailRepository: CocktailRepository,
     private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel(application, savedStateHandle),
+) : DrinkViewModel(application, savedStateHandle, cocktailRepository, mapper),
     ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
     val cocktailOfTheDayLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
@@ -46,24 +43,10 @@ class MainActivityViewModel(
     }
 
     override fun shouldShowDrinkOfTheDay() {
-        setCocktailOfTheDay()
+        showDrinkOfTheDay()
     }
 
-    fun removeCocktail(cocktail: CocktailModel) {
-        launchRequest {
-            cocktailRepository.removeCocktail(mapper.mapFrom(cocktail))
-        }
-    }
-
-    fun findCocktailByName(cocktailName: String): MutableLiveData<CocktailModel?> {
-        val cocktailLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
-        launchRequest(cocktailLiveData) {
-            mapper.mapTo(cocktailRepository.findCocktailByDefaultName(cocktailName)!!)
-        }
-        return cocktailLiveData
-    }
-
-    private fun setCocktailOfTheDay() {
+    private fun showDrinkOfTheDay() {
 
         val currentDate = Date()
         val pattern = "MM-dd-yyyy"
@@ -86,5 +69,9 @@ class MainActivityViewModel(
                 mapper.mapTo(cocktailOfTheDay)
             }
         }
+    }
+
+    companion object {
+        const val MAIN_ACTIVITY_SHARED_PREFERENCE = "MAIN_ACTIVITY_SHARED_PREFERENCE"
     }
 }

@@ -10,18 +10,18 @@ import com.ikvych.cocktail.data.db.model.entity.*
 @Dao
 interface CocktailDao : BaseDao {
 
+    @get:Query("SELECT * FROM ${Table.INGREDIENT}")
+    val ingredientsListLiveData: LiveData<List<IngredientDbModel>>
+
     @Transaction
     fun addOrReplaceLocalizedCocktail(cocktail: LocalizedCocktailDbModel) {
         addOrReplaceCocktail(cocktail = cocktail.cocktailDbModel)
         addOrReplaceCocktailName(name = cocktail.localizedNameDbModel)
         addOrReplaceCocktailInstruction(instruction = cocktail.localizedInstructionDbModel)
-        cocktail.ingredients.forEach {
-            addOrReplaceCocktailIngredient(it)
-            addOrReplaceCocktailIngredientCrossRef(CocktailIngredientCrossRef(cocktail.cocktailDbModel.id, it.ingredient))
-        }
-        cocktail.measures.forEach {
-            addOrReplaceCocktailMeasure(it)
-            addOrReplaceCocktailMeasureCrossRef(CocktailMeasureCrossRef(cocktail.cocktailDbModel.id, it.measure))
+        cocktail.ingredientsWithMeasures.forEach {
+            addOrReplaceCocktailIngredient(IngredientDbModel(it.ingredient))
+            addOrReplaceCocktailMeasure(MeasureDbModel(it.measure))
+            addOrReplaceIngredientsWithMeasures(it)
         }
     }
 
@@ -41,10 +41,7 @@ interface CocktailDao : BaseDao {
     fun addOrReplaceCocktailMeasure(measure: MeasureDbModel)
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addOrReplaceCocktailIngredientCrossRef(crossRef: CocktailIngredientCrossRef)
-
-    @Insert(onConflict = OnConflictStrategy.REPLACE)
-    fun addOrReplaceCocktailMeasureCrossRef(crossRef: CocktailMeasureCrossRef)
+    fun addOrReplaceIngredientsWithMeasures(ingredientsWithMeasures: IngredientMeasureDbModel)
 
     @Delete
     fun removeCocktail(cocktail: CocktailDbModel)
@@ -58,6 +55,8 @@ interface CocktailDao : BaseDao {
     @Query("SELECT * FROM ${Table.NAME} WHERE defaults_name = :name")
     fun findLocalizedName(name: String): LocalizedNameDbModel
 
+    @Query("SELECT * FROM ${Table.INGREDIENT} WHERE ingredient = :ingredient")
+    fun findIngredient(ingredient: String): IngredientDbModel
 
     @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE cocktail_of_day = :stringDate")
@@ -70,10 +69,6 @@ interface CocktailDao : BaseDao {
     @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL} WHERE id = :cocktailId")
     fun findCocktailById(cocktailId: Long) : LocalizedCocktailDbModel?
-
-/*    @Transaction
-    @Query("SELECT * FROM ${Table.COCKTAIL}")
-    fun findCocktailByDefaultName(*//*defaultCocktailName: String*//*) : LocalizedCocktailDbModel?*/
 
     @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL}")

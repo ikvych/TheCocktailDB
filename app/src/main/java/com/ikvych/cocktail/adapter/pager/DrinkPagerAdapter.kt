@@ -4,16 +4,21 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.ui.fragment.FavoriteFragment
 import com.ikvych.cocktail.ui.fragment.HistoryFragment
+import com.ikvych.cocktail.util.Page
 
 class DrinkPagerAdapter(
-    private val fragments: ArrayList<Fragment> = arrayListOf(),
     fragment: Fragment
 ) : FragmentStateAdapter(fragment) {
 
-    override fun getItemCount(): Int = fragments.size
+    override fun getItemCount(): Int = 2
 
     override fun createFragment(position: Int): Fragment {
-        return fragments[position]
+        return when (position) {
+            Page.HISTORY.ordinal -> HistoryFragment.newInstance()
+            Page.FAVORITE.ordinal -> FavoriteFragment.newInstance()
+            else -> throw IllegalStateException("Unknown page")
+        }
     }
 }

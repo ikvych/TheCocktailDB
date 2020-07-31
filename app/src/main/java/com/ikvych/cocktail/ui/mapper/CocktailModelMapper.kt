@@ -1,11 +1,10 @@
 package com.ikvych.cocktail.ui.mapper
 
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.filter.type.GlassDrinkFilter
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
+import com.ikvych.cocktail.data.repository.model.IngredientRepoModel
+import com.ikvych.cocktail.filter.type.*
 import com.ikvych.cocktail.ui.mapper.base.BaseModelMapper
 import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
+import com.ikvych.cocktail.ui.model.cocktail.IngredientModel
 import com.xtreeivi.cocktailsapp.data.repository.model.CocktailRepoModel
 
 class CocktailModelMapper(
@@ -20,7 +19,7 @@ class CocktailModelMapper(
             glass = glass.key,
             image = image,
             instructions = instructions.run(localizedStringModelMapper::mapFrom),
-            ingredients = ingredients.map { it.key },
+            ingredients = ingredients.map { IngredientRepoModel(it.key) },
             measures = measures,
             isFavorite = isFavorite,
             cocktailOfTheDay = cocktailOfTheDay
@@ -39,10 +38,11 @@ class CocktailModelMapper(
                 ?: GlassDrinkFilter.NONE,
             image = image,
             instructions = instructions.run(localizedStringModelMapper::mapTo),
-            ingredients = ingredients.map { ingredient ->
+            ingredients = ingredients.map { IngredientModel(DrinkFilterType.INGREDIENT, it.ingredient) },
+/*            ingredients = ingredients.map { ingredient ->
                 IngredientDrinkFilter.values().firstOrNull { it.key == ingredient }
                     ?: IngredientDrinkFilter.NONE
-            },
+            },*/
             measures = measures,
             isFavorite = isFavorite,
             cocktailOfTheDay = cocktailOfTheDay

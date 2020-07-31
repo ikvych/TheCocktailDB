@@ -24,7 +24,7 @@ class DrinkOfferReceiver(
 
         override fun doInBackground(vararg intent: Intent) {
             intent.forEach {
-                listener.update(intent = it)
+                listener.makeOfferOfDrink(intent = it)
             }
         }
 

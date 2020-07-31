@@ -1,5 +1,7 @@
 package com.ikvych.cocktail.constant
 
+const val DRINK_FILTER_ABSENT = "None"
+const val EMPTY_STRING = ""
 const val SHOULD_SAVE_COCKTAIL = "SHOULD_SAVE_COCKTAIL"
 const val SHOW_COCKTAIL_OFFER_ON_DESTROY = "SHOW_COCKTAIL_OFFER_ON_DESTROY"
 const val COCKTAIL_ID = "cocktailId"

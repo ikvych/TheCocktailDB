@@ -1,11 +1,9 @@
 package com.ikvych.cocktail.ui.model.cocktail
 
+import android.content.res.TypedArray
 import android.os.Parcel
 import android.os.Parcelable
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.filter.type.GlassDrinkFilter
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
+import com.ikvych.cocktail.filter.type.*
 
 data class CocktailModel(
     val id: Long = -1L,
@@ -15,7 +13,7 @@ data class CocktailModel(
     val glass: GlassDrinkFilter = GlassDrinkFilter.NONE,
     val image: String = "",
     val instructions: LocalizedStringModel = LocalizedStringModel(),
-    val ingredients: List<IngredientDrinkFilter> = emptyList(),
+    val ingredients: List<IngredientModel> = emptyList(),
     val measures: List<String> = emptyList(),
     val cocktailOfTheDay: String = "",
     var isFavorite: Boolean = false/*,
@@ -45,7 +43,7 @@ data class CocktailModel(
             parcel.readString(),
             parcel.readString()
         ),
-        parcel.createIntArray()!!.map { IngredientDrinkFilter.values()[it] },
+        parcel.createStringArray()!!.map { IngredientModel(DrinkFilterType.INGREDIENT, it) },
         parcel.createStringArrayList()!!.toList(),
         parcel.readString()!!,
         parcel.readByte() != 0.toByte()
@@ -72,7 +70,10 @@ data class CocktailModel(
         parcel.writeString(instructions.fr)
         parcel.writeString(instructions.zhHans)
         parcel.writeString(instructions.zhHant)
-        parcel.writeIntArray(ingredients.map { it.ordinal }.toIntArray())
+        val stringArray: Array<String> = Array(ingredients.size) {
+            ingredients[it].key
+        }
+        parcel.writeStringArray(stringArray)
         parcel.writeStringList(measures)
         parcel.writeString(cocktailOfTheDay)
         parcel.writeByte(if (isFavorite) 1 else 0)

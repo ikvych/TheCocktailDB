@@ -12,12 +12,11 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ActivityAuthBinding
 import com.ikvych.cocktail.filter.TextInputFilter
 import com.ikvych.cocktail.ui.activity.base.BaseActivity
-import com.ikvych.cocktail.ui.dialog.base.ActionSingleDialogButton
-import com.ikvych.cocktail.ui.dialog.base.DialogButton
-import com.ikvych.cocktail.ui.dialog.base.DialogType
-import com.ikvych.cocktail.ui.dialog.base.NotificationDialogType
+import com.ikvych.cocktail.ui.dialog.type.ActionSingleDialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
+import com.ikvych.cocktail.ui.dialog.type.NotificationDialogType
 import com.ikvych.cocktail.ui.dialog.regular.ErrorAuthDialogFragment
-import com.ikvych.cocktail.ui.extension.viewModels
 import com.ikvych.cocktail.viewmodel.AuthViewModel
 import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
 import kotlinx.android.synthetic.main.activity_auth.*
@@ -41,35 +40,34 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
         tiet_auth_login.filters = arrayOf(inputFilter)
         tiet_auth_password.filters = arrayOf(inputFilter)
 
-        b_auth_login.setOnClickListener {
+        viewModel.requestFocusOnLoginLiveData.observe(this, Observer {
+            if (it != null) {
+                tiet_auth_login.requestFocus()
+                viewModel.requestFocusOnLoginLiveData.value = null
+            }
+        })
+        viewModel.requestFocusOnPasswordLiveData.observe(this, Observer {
+            if (it != null) {
+                tiet_auth_password.requestFocus()
+                viewModel.requestFocusOnPasswordLiveData.value = null
+            }
+        })
+        viewModel.shouldLogInLiveData.observe(this, Observer {
             closeKeyboard()
-
-            if (viewModel.isLoginDataMatchPatternLiveData.value!!.first &&
-                viewModel.isLoginDataMatchPatternLiveData.value!!.second &&
-                viewModel.isLoginDataValidLiveData.value!!
-            ) {
+            //якщо it==true значить помилок в введених даних немає, і тоді стартую MainActivity
+            //у іншому випадку показує діалог з причиною помилки
+            if (it) {
                 val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
                 finishAffinity()
             } else {
-                if (!viewModel.isLoginDataMatchPatternLiveData.value!!.second) {
-                    tiet_auth_password.requestFocus()
-                }
-                if (!viewModel.isLoginDataMatchPatternLiveData.value!!.first) {
-                    tiet_auth_login.requestFocus()
-                }
                 ErrorAuthDialogFragment.newInstance {
                     titleText = getString(R.string.auth_invalid_title)
                     leftButtonText = getString(R.string.all_ok_button)
-                    descriptionText = viewModel.errorMessageViewModel.value!!
+                    descriptionText = viewModel.errorMessageLiveData.value!!
                 }.show(supportFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
-                b_auth_login.background
             }
-        }
-
-        viewModel.isLoginDataMatchPatternLiveData.observe(this, Observer { })
-        viewModel.errorMessageViewModel.observe(this, Observer { })
-        viewModel.isLoginDataValidLiveData.observe(this, Observer { })
+        })
 
         tiet_auth_login.requestFocus()
     }
@@ -89,7 +87,7 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
             NotificationDialogType -> {
                 when (buttonType) {
                     ActionSingleDialogButton -> {
-                        if (!viewModel.isKeyboardShown.value!!) {
+                        if (!viewModel.isKeyboardShownLiveData.value!!) {
                             inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
                         }
                     }
@@ -104,7 +102,7 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>(),
     }
 
     override fun onSoftKeyboardShown(isShowing: Boolean) {
-        viewModel.isKeyboardShown.value = isShowing
+        viewModel.isKeyboardShownLiveData.value = isShowing
     }
 
 

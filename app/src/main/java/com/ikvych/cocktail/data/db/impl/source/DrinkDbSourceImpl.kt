@@ -5,10 +5,13 @@ import com.ikvych.cocktail.data.db.impl.dao.CocktailDao
 import com.ikvych.cocktail.data.db.model.LocalizedCocktailDbModel
 import com.ikvych.cocktail.data.db.source.DrinkDbSource
 import com.ikvych.cocktail.data.db.model.entity.CocktailDbModel
+import com.ikvych.cocktail.data.db.model.entity.IngredientDbModel
 
 class DrinkDbSourceImpl(
     private val drinkDao: CocktailDao
 ) : DrinkDbSource {
+
+    override val ingredientsListLiveData: LiveData<List<IngredientDbModel>> = drinkDao.ingredientsListLiveData
 
     override suspend fun addOrReplaceCocktail(cocktail: LocalizedCocktailDbModel) {
         drinkDao.addOrReplaceLocalizedCocktail(cocktail)
@@ -23,7 +26,12 @@ class DrinkDbSourceImpl(
     }
 
     override suspend fun findCocktailById(cocktailId: Long) : LocalizedCocktailDbModel? {
-        return drinkDao.findCocktailById(cocktailId)
+        val result = drinkDao.findCocktailById(cocktailId)
+        return result
+    }
+
+    override suspend fun findIngredient(ingredient: String): IngredientDbModel {
+        return drinkDao.findIngredient(ingredient)
     }
 
     override suspend fun findCocktailByDefaultName(cocktailDefaultName: String) : LocalizedCocktailDbModel? {

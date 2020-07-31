@@ -8,11 +8,11 @@ import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class DrinkDetailViewModel(
-    private val drinkRepository: CocktailRepository,
+    private val cocktailRepository: CocktailRepository,
     private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel(application, savedStateHandle) {
+) : DrinkViewModel(application, savedStateHandle, cocktailRepository, mapper) {
 
     private val triggerObserver: Observer<in Any?> = Observer { }
     val cocktailLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
@@ -28,14 +28,15 @@ class DrinkDetailViewModel(
 
     fun findCocktailDbById(cocktailId: Long) {
         launchRequest(cocktailLiveData)  {
-            mapper.mapTo(drinkRepository.findCocktailById(cocktailId)!!)
+            val result = cocktailRepository.findCocktailById(cocktailId)!!
+            mapper.mapTo(result)
         }
     }
 
     fun saveCocktailIntoDb() {
         val currentCocktail = cocktailLiveData.value ?: return
         launchRequest {
-            drinkRepository.addOrReplaceCocktail(mapper.mapFrom(currentCocktail))
+            cocktailRepository.addOrReplaceCocktail(mapper.mapFrom(currentCocktail))
         }
     }
 }

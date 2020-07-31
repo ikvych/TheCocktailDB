@@ -21,15 +21,8 @@ data class LocalizedCocktailDbModel(
 
     @Relation(
         parentColumn = "id",
-        entityColumn = "ingredient",
-        associateBy = Junction(CocktailIngredientCrossRef::class)
+        entityColumn = "cocktail"
     )
-    val ingredients: List<IngredientDbModel>,
+    val ingredientsWithMeasures: List<IngredientMeasureDbModel>
 
-    @Relation(
-        parentColumn = "id",
-        entityColumn = "measure",
-        associateBy = Junction(CocktailMeasureCrossRef::class)
-    )
-    val measures: List<MeasureDbModel>
 )

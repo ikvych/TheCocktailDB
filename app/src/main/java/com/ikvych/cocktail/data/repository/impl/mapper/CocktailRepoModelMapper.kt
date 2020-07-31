@@ -4,6 +4,7 @@ import com.ikvych.cocktail.data.db.model.LocalizedCocktailDbModel
 import com.ikvych.cocktail.data.db.model.entity.*
 import com.ikvych.cocktail.data.network.model.CocktailNetModel
 import com.ikvych.cocktail.data.repository.impl.mapper.base.BaseRepoModelMapper
+import com.ikvych.cocktail.data.repository.model.IngredientRepoModel
 import com.xtreeivi.cocktailsapp.data.repository.model.CocktailRepoModel
 import com.xtreeivi.cocktailsapp.data.repository.model.LocalizedStringRepoModel
 
@@ -35,8 +36,8 @@ class CocktailRepoModelMapper(
                 es = localizedInstructionDbModel.es,
                 de = localizedInstructionDbModel.de
             ),
-            ingredients = ingredients.map{it.ingredient},
-            measures = measures.map{it.measure},
+            ingredients = ingredientsWithMeasures.map { IngredientRepoModel(it.ingredient) },
+            measures = ingredientsWithMeasures.map { it.measure },
             cocktailOfTheDay = cocktailDbModel.cocktailOfDay,
             isFavorite = cocktailDbModel.isFavorite
         )
@@ -73,8 +74,13 @@ class CocktailRepoModelMapper(
                 zhHans = names.zhHans,
                 zhHant = names.zhHant
             ),
-            ingredients = ingredients.map{IngredientDbModel(it)},
-            measures = measures.map{MeasureDbModel(it)}
+            ingredientsWithMeasures = ingredients.mapIndexed { index, ingredientRepoModel ->
+                IngredientMeasureDbModel(
+                    this.id,
+                    ingredientRepoModel.ingredient,
+                    measures[index]
+                )
+            }
         )
     }
 
@@ -103,7 +109,7 @@ class CocktailRepoModelMapper(
                 strInstructionsZHHANS,
                 strInstructionsZHHANT
             ),
-            ingredients = getAllIngredients().keys.toList(),
+            ingredients = getAllIngredients().map { IngredientRepoModel(it.key) },
             measures = getAllIngredients().values.toList()
         )
     }

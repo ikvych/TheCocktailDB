@@ -5,12 +5,17 @@ import android.view.View
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.ui.dialog.base.*
+import com.ikvych.cocktail.ui.dialog.type.LeftDialogButton
+import com.ikvych.cocktail.ui.dialog.type.RegularDialogButton
+import com.ikvych.cocktail.ui.dialog.type.ResumeApplicationDialogType
+import com.ikvych.cocktail.ui.dialog.type.RightDialogButton
 
 
 class ResumeAppBottomSheetDialogFragment :
     SimpleBottomSheetBaseDialogFragment<Long, RegularDialogButton, ResumeApplicationDialogType, SimpleBottomSheetBaseDialogFragment.SimpleBottomSheetDialogBuilder>() {
 
-    override val dialogType: ResumeApplicationDialogType = ResumeApplicationDialogType
+    override val dialogType: ResumeApplicationDialogType =
+        ResumeApplicationDialogType
     override var dialogBuilder: SimpleBottomSheetDialogBuilder = SimpleBottomSheetDialogBuilder()
     override var data: Long? = null
 

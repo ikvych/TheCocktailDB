@@ -11,6 +11,8 @@ import android.view.Window
 import androidx.annotation.CallSuper
 import androidx.fragment.app.DialogFragment
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
 
 abstract class BaseDialogFragment<Data, ButtonType : DialogButton, Type : DialogType<ButtonType>> protected constructor() :
     DialogFragment(),
@@ -30,7 +32,7 @@ abstract class BaseDialogFragment<Data, ButtonType : DialogButton, Type : Dialog
     private val clickableViews = mutableListOf<View>()
 
     init {
-        this.setStyle(STYLE_NO_TITLE, R.style.DialogFragment)
+        this.setStyle(STYLE_NO_TITLE, R.style.FullScreenDialog)
     }
 
     override fun onCreateView(

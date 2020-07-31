@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
+import androidx.appcompat.widget.AppCompatButton
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.ui.dialog.type.DialogButton
+import com.ikvych.cocktail.ui.dialog.type.DialogType
 import kotlinx.android.synthetic.main.layout_dialog_filter_list_component.*
 
 abstract class ListBaseBottomSheetDialogFragment<
@@ -37,7 +40,7 @@ protected constructor() : SimpleBottomSheetBaseDialogFragment<Data, ButtonType, 
         RecyclerView.Adapter<RecyclerView.ViewHolder>(),
         View.OnClickListener {
 
-        private val layoutId = R.layout.item_filter_type
+        private val layoutId = R.layout.item_button_list
 
         var newData: List<Data> = arrayListOf()
             set(value) {
@@ -56,7 +59,7 @@ protected constructor() : SimpleBottomSheetBaseDialogFragment<Data, ButtonType, 
         }
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-            with(holder.itemView as MaterialButton) {
+            with(holder.itemView as AppCompatButton) {
                 text = dialogListDataAdapter.getName(newData[position])
                 tag = newData[position]
                 isEnabled = (tag != selectedButton)

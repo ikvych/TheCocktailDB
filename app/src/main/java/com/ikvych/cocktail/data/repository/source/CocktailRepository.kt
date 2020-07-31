@@ -2,16 +2,19 @@ package com.ikvych.cocktail.data.repository.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.ikvych.cocktail.data.db.model.entity.IngredientDbModel
 import com.ikvych.cocktail.data.network.model.CocktailNetResponse
 import com.ikvych.cocktail.data.network.model.DrinkApiResponse
+import com.ikvych.cocktail.data.repository.model.IngredientRepoModel
 import com.ikvych.cocktail.data.repository.source.base.BaseRepository
 import com.xtreeivi.cocktailsapp.data.repository.model.CocktailRepoModel
 import retrofit2.Call
 
 interface CocktailRepository : BaseRepository{
 
+    val ingredientsListLiveData: LiveData<List<IngredientRepoModel>>
     val cocktailNetResponseLiveData: MutableLiveData<List<CocktailRepoModel>>
-    fun getCocktailsByName(cocktailName: String)
+    fun updateCocktailsLiveData(cocktailName: String)
 
     fun findAllCocktailsLiveData(): LiveData<List<CocktailRepoModel>?>
     fun findCocktailByIdLiveData(cocktailId: Long): LiveData<CocktailRepoModel?>
@@ -21,4 +24,5 @@ interface CocktailRepository : BaseRepository{
     suspend fun findCocktailByDefaultName(defaultDrinkName: String): CocktailRepoModel?
     suspend fun findCocktailOfTheDay(stringDate: String): CocktailRepoModel?
     suspend fun removeCocktail(cocktail: CocktailRepoModel)
+    suspend fun findIngredient(ingredient: String): IngredientRepoModel
 }

@@ -11,18 +11,23 @@ data class LocalizedCocktailDbModel(
         parentColumn = "id",
         entityColumn = "cocktailOwnerId"
     )
-    val localizedInstructionDbModel: LocalizedInstructionDbModel,
+    val localizedInstructionDbModel: LocalizedInstructionDbModel = LocalizedInstructionDbModel(
+        cocktailOwnerId = cocktailDbModel.id
+    ),
 
     @Relation(
         parentColumn = "id",
         entityColumn = "cocktailOwnerId"
     )
-    val localizedNameDbModel: LocalizedNameDbModel,
+    val localizedNameDbModel: LocalizedNameDbModel = LocalizedNameDbModel(
+        cocktailOwnerId = cocktailDbModel.id
+    ),
+
 
     @Relation(
         parentColumn = "id",
         entityColumn = "cocktail"
     )
-    val ingredientsWithMeasures: List<IngredientMeasureDbModel>
+    val ingredientsWithMeasures: List<IngredientMeasureDbModel> = arrayListOf()
 
 )

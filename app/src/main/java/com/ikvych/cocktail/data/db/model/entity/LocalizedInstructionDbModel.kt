@@ -14,13 +14,12 @@ import com.ikvych.cocktail.data.db.Table
             onUpdate = ForeignKey.CASCADE
         )
     ],
-    indices = [Index(value = ["cocktailOwnerId"], unique = true)]
+    primaryKeys = ["defaultsName", "cocktailOwnerId"]
 )
 data class LocalizedInstructionDbModel(
 
-    @PrimaryKey
-    @ColumnInfo(name = "default_instruction")
-    var defaultsName: String,
+    @ColumnInfo(name = "defaultsName")
+    var defaultsName: String = "",
 
     val cocktailOwnerId: Long,
 

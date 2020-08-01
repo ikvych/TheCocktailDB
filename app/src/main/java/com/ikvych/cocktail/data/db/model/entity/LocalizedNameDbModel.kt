@@ -13,14 +13,13 @@ import com.ikvych.cocktail.data.db.Table
             onDelete = ForeignKey.CASCADE,
             onUpdate = ForeignKey.CASCADE
         )
-    ],
-    indices = [Index(value = ["cocktailOwnerId"], unique = true)]
+    ]
 )
 data class LocalizedNameDbModel(
 
     @PrimaryKey
     @ColumnInfo(name = "defaults_name")
-    var defaultName: String,
+    var defaultName: String = "",
 
     val cocktailOwnerId: Long,
 

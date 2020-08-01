@@ -409,7 +409,7 @@ class MainFragmentViewModel(
                         DrinkFilterType.INGREDIENT,
                         cocktailRepository.findIngredient(filter.key).ingredient
                     )
-                    filtersLiveData.value = filtersLiveData.value!!.apply {
+                    filtersLiveData.postValue(filtersLiveData.value!!.apply {
                         val filters: List<DrinkFilter> = this[filter.type]!!
                         if (filters.size == 1) {
                             this[filter.type] = arrayListOf(
@@ -420,7 +420,7 @@ class MainFragmentViewModel(
                         } else {
                             this[filter.type] = this[filter.type]!!.filter { it != currentFilter }
                         }
-                    }
+                    })
                 }
             }
         }

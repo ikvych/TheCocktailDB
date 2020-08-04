@@ -174,10 +174,6 @@ class MainFragmentViewModel(
     val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
         MutableLiveData()
 
-    init {
-        resetFilters()
-    }
-
     val sortTypeLiveData: MutableLiveData<SortDrinkType> =
         object : MutableLiveData<SortDrinkType>() {
             init {

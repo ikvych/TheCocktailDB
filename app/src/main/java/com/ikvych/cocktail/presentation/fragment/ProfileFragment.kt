@@ -15,6 +15,7 @@ import com.ikvych.cocktail.presentation.activity.SplashActivity
 import com.ikvych.cocktail.presentation.dialog.bottom.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.presentation.dialog.bottom.SelectLanguageBottomSheetDialogFragment
 import com.ikvych.cocktail.presentation.dialog.type.*
+import com.ikvych.cocktail.presentation.extension.viewModels
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
 import com.ikvych.cocktail.util.Language
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel

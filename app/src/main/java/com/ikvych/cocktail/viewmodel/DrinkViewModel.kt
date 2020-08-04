@@ -4,8 +4,8 @@ import android.app.Application
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
-import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
-import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
+import com.ikvych.cocktail.presentation.mapper.CocktailModelMapper
+import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 open class DrinkViewModel(

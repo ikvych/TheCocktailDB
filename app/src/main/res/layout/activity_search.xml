@@ -15,7 +15,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        tools:context=".ui.activity.SearchActivity">
+        tools:context=".presentation.activity.SearchActivity">
 
         <com.ikvych.cocktail.widget.custom.ApplicationToolBar
             android:id="@+id/atb_search_activity"

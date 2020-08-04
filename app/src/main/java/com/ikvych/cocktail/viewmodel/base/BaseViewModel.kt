@@ -2,11 +2,8 @@ package com.ikvych.cocktail.viewmodel.base
 
 import android.app.Application
 import androidx.lifecycle.*
-import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.data.repository.source.AppSettingRepository
 import com.ikvych.cocktail.data.repository.impl.source.AppSettingRepositoryImpl
-import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
-import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 

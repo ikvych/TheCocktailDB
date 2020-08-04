@@ -3,15 +3,13 @@ package com.ikvych.cocktail.data.db.impl
 import android.content.ContentValues
 import android.content.Context
 import android.database.sqlite.SQLiteDatabase
-import android.graphics.Movie
-import android.os.AsyncTask
 import androidx.annotation.NonNull
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.ikvych.cocktail.constant.DRINK_FILTER_ABSENT
+import com.ikvych.cocktail.util.DRINK_FILTER_ABSENT
 import com.ikvych.cocktail.data.db.Table
 import com.ikvych.cocktail.data.db.impl.dao.CocktailDao
 import com.ikvych.cocktail.data.db.impl.typeconverter.DateConverter
@@ -27,7 +25,7 @@ import com.ikvych.cocktail.data.db.model.entity.*
         MeasureDbModel::class,
         IngredientDbModel::class,
         IngredientMeasureDbModel::class
-    ], version = 2, exportSchema = false
+    ], version = 1, exportSchema = false
 )
 @TypeConverters(DateConverter::class, StringListToStringConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {
@@ -50,7 +48,9 @@ abstract class DrinkDataBase : RoomDatabase() {
                         override fun onCreate(@NonNull db: SupportSQLiteDatabase) {
                             super.onCreate(db)
                             val values = ContentValues()
-                            values.put("ingredient", DRINK_FILTER_ABSENT)
+                            values.put("ingredient",
+                                DRINK_FILTER_ABSENT
+                            )
                             db.insert(Table.INGREDIENT,
                                 SQLiteDatabase.CONFLICT_IGNORE,
                                 values

@@ -65,8 +65,7 @@ class CocktailRepositoryImpl(
     }
 
     override suspend fun addOrReplaceCocktail(cocktail: CocktailRepoModel) {
-        val result = mapper.mapRepoToDb(cocktail)
-        dbSource.addOrReplaceCocktail(result)
+        dbSource.addOrReplaceCocktail(mapper.mapRepoToDb(cocktail))
     }
 
     override suspend fun findAllCocktails(): List<CocktailRepoModel>? {
@@ -74,16 +73,18 @@ class CocktailRepositoryImpl(
     }
 
     override suspend fun findCocktailById(cocktailId: Long): CocktailRepoModel? {
-        val result = dbSource.findCocktailById(cocktailId)!!
-        return mapper.mapDbToRepo(result)
+        val localizedCocktailDbModel = dbSource.findCocktailById(cocktailId) ?: return null
+        return mapper.mapDbToRepo(localizedCocktailDbModel)
     }
 
     override suspend fun findCocktailByDefaultName(defaultDrinkName: String): CocktailRepoModel? {
-        return mapper.mapDbToRepo(dbSource.findCocktailByDefaultName(defaultDrinkName)!!)
+        val localizedCocktailDbModel = dbSource.findCocktailByDefaultName(defaultDrinkName) ?: return null
+        return mapper.mapDbToRepo(localizedCocktailDbModel)
     }
 
     override suspend fun findCocktailOfTheDay(stringDate: String): CocktailRepoModel? {
-        return mapper.mapDbToRepo(dbSource.findCocktailOfTheDay(stringDate)!!)
+        val cocktail = dbSource.findCocktailOfTheDay(stringDate) ?: return null
+        return mapper.mapDbToRepo(cocktail)
     }
 
     override suspend fun removeCocktail(cocktail: CocktailRepoModel) {
@@ -91,9 +92,9 @@ class CocktailRepositoryImpl(
     }
 
     override suspend fun findIngredient(ingredient: String): IngredientRepoModel {
-        val result = dbSource.findIngredient(ingredient)
+        val ingredientDbModel = dbSource.findIngredient(ingredient)
         return IngredientRepoModel(
-            result.ingredient
+            ingredientDbModel.ingredient
         )
     }
 }

@@ -6,7 +6,7 @@
     <data>
         <variable
             name="obj"
-            type="com.ikvych.cocktail.ui.model.cocktail.CocktailModel" />
+            type="com.ikvych.cocktail.presentation.model.cocktail.CocktailModel" />
 
         <variable
             name="viewModel"

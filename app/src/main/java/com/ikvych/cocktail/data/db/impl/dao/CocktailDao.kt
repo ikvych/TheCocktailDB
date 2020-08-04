@@ -72,10 +72,6 @@ interface CocktailDao : BaseDao {
 
     @Transaction
     @Query("SELECT * FROM ${Table.COCKTAIL}")
-    fun findAllLocalizedCocktail(): LiveData<List<LocalizedCocktailDbModel>>
-
-    @Transaction
-    @Query("SELECT * FROM ${Table.COCKTAIL}")
     fun findAllCocktails() : List<LocalizedCocktailDbModel>?
 
     @Transaction

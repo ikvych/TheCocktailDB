@@ -27,9 +27,9 @@ import com.ikvych.cocktail.data.repository.impl.mapper.base.BaseRepoModelMapper
 import com.ikvych.cocktail.data.repository.impl.source.CocktailRepositoryImpl
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.data.repository.source.base.BaseRepository
-import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
-import com.ikvych.cocktail.ui.mapper.LocalizedStringModelMapper
-import com.ikvych.cocktail.ui.mapper.base.BaseModelMapper
+import com.ikvych.cocktail.presentation.mapper.CocktailModelMapper
+import com.ikvych.cocktail.presentation.mapper.LocalizedStringModelMapper
+import com.ikvych.cocktail.presentation.mapper.base.BaseModelMapper
 import com.ikvych.cocktail.viewmodel.*
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 

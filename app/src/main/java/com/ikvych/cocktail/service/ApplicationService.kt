@@ -6,10 +6,10 @@ import android.util.Log
 import android.widget.Toast
 import androidx.core.app.JobIntentService
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.constant.ACTION_SHOW_COCKTAIL_OFFER
-import com.ikvych.cocktail.constant.BOOT_COMPLETED
-import com.ikvych.cocktail.constant.COCKTAIL_ID
-import com.ikvych.cocktail.ui.activity.SplashActivity
+import com.ikvych.cocktail.util.ACTION_SHOW_COCKTAIL_OFFER
+import com.ikvych.cocktail.util.BOOT_COMPLETED
+import com.ikvych.cocktail.util.COCKTAIL_ID
+import com.ikvych.cocktail.presentation.activity.SplashActivity
 
 
 class ApplicationService : JobIntentService() {

@@ -17,7 +17,7 @@
         android:clickable="true"
         android:focusable="true"
         android:orientation="vertical"
-        tools:context=".ui.fragment.FilterFragment">
+        tools:context=".presentation.fragment.FilterFragment">
 
         <com.ikvych.cocktail.widget.custom.ApplicationToolBar
             android:id="@+id/atb_fragment_filter"

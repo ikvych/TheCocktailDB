@@ -2,13 +2,9 @@ package com.ikvych.cocktail.data.repository.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ikvych.cocktail.data.db.model.entity.IngredientDbModel
-import com.ikvych.cocktail.data.network.model.CocktailNetResponse
-import com.ikvych.cocktail.data.network.model.DrinkApiResponse
 import com.ikvych.cocktail.data.repository.model.IngredientRepoModel
 import com.ikvych.cocktail.data.repository.source.base.BaseRepository
 import com.xtreeivi.cocktailsapp.data.repository.model.CocktailRepoModel
-import retrofit2.Call
 
 interface CocktailRepository : BaseRepository{
 

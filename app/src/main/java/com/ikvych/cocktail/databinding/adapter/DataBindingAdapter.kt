@@ -2,18 +2,19 @@ package com.ikvych.cocktail.databinding.adapter
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.*
-import androidx.core.content.ContextCompat
+import android.widget.ImageButton
+import android.widget.ImageView
+import android.widget.Switch
+import android.widget.TableLayout
 import androidx.core.view.isVisible
 import androidx.databinding.*
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.databinding.ItemDrinkIngredientBinding
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
-import com.ikvych.cocktail.ui.model.cocktail.IngredientModel
+import com.ikvych.cocktail.databinding.ItemDrinkIngredientListBinding
+import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
 import com.ikvych.cocktail.util.Page
 
 
@@ -41,9 +42,9 @@ fun getIngredients(
         return
     }
     ingredients.forEachIndexed { index, ingredient ->
-        val binding: ItemDrinkIngredientBinding = DataBindingUtil.inflate(
+        val binding: ItemDrinkIngredientListBinding = DataBindingUtil.inflate(
             LayoutInflater.from(tableLayout.context),
-            R.layout.item_drink_ingredient,
+            R.layout.item_drink_ingredient_list,
             tableLayout,
             false
         )
@@ -65,42 +66,13 @@ fun getIngredients(
     }
 }
 
-/*Using getIngredients() method fills the tableLayout in activity_drink_details with ingredients and measure*//*
-@BindingAdapter("ingredients", "measures")
-fun getIngredients(
-    tableLayout: TableLayout,
-    ingredients: List<IngredientDrinkFilter>?,
-    measures: List<String>?
-) {
-    var count = 1
-    if (ingredients == null || measures == null) {
-        return
-    }
-    ingredients.forEachIndexed { index, ingredientDrinkFilter ->
-        val binding: ItemDrinkIngredientBinding = DataBindingUtil.inflate(
-            LayoutInflater.from(tableLayout.context),
-            R.layout.item_drink_ingredient,
-            tableLayout,
-            false
-        )
-        val numberedIngredient = "$count. ${ingredientDrinkFilter.key}"
-        binding.tvIngredient.text = numberedIngredient
-        if (measures.size - 1 >= index) {
-            binding.tvMeasure.text = measures[index]
-        } else {
-            binding.tvMeasure.text = ""
-        }
-        tableLayout.addView(
-            binding.root,
-            TableLayout.LayoutParams(
-                TableLayout.LayoutParams.MATCH_PARENT,
-                TableLayout.LayoutParams.WRAP_CONTENT
-            )
-        )
-        count++
-    }
-}*/
-
+@BindingAdapter("strDrinkThumb")
+fun loadImage(imageView: ImageView, imageUrl: String?) {
+    Glide.with(imageView.context)
+        .load(imageUrl)
+        .placeholder(R.drawable.default_icon)
+        .into(imageView)
+}
 
 class DataBindingAdapter {
 

@@ -1,15 +1,7 @@
 package com.ikvych.cocktail.util.delegate
 
-import android.os.Bundle
 import androidx.lifecycle.MutableLiveData
-import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
-import java.util.ArrayList
-import java.util.HashMap
 import kotlin.properties.ReadOnlyProperty
 import kotlin.properties.ReadWriteProperty
 import kotlin.reflect.KProperty

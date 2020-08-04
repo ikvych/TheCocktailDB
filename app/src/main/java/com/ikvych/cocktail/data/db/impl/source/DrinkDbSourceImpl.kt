@@ -26,8 +26,7 @@ class DrinkDbSourceImpl(
     }
 
     override suspend fun findCocktailById(cocktailId: Long) : LocalizedCocktailDbModel? {
-        val result = drinkDao.findCocktailById(cocktailId)
-        return result
+        return drinkDao.findCocktailById(cocktailId)
     }
 
     override suspend fun findIngredient(ingredient: String): IngredientDbModel {
@@ -35,8 +34,6 @@ class DrinkDbSourceImpl(
     }
 
     override suspend fun findCocktailByDefaultName(cocktailDefaultName: String) : LocalizedCocktailDbModel? {
-/*        val localizedName = drinkDao.findLocalizedName(cocktailDefaultName)
-        drinkDao.findCocktailById(localizedName.cocktailOwnerId)*/
         return drinkDao.findCocktailByDefaultName(cocktailDefaultName)
     }
 

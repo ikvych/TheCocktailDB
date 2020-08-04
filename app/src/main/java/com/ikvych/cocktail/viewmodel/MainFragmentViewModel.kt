@@ -2,28 +2,29 @@ package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
 import android.content.res.Resources
+import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.comparator.AlcoholCocktailComparator
-import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.constant.DRINK_FILTER_ABSENT
-import com.ikvych.cocktail.constant.EMPTY_STRING
-import com.ikvych.cocktail.data.db.model.entity.IngredientDbModel
-import com.ikvych.cocktail.data.repository.model.IngredientRepoModel
+import com.ikvych.cocktail.util.AlcoholCocktailComparator
+import com.ikvych.cocktail.presentation.filter.type.SortDrinkType
+import com.ikvych.cocktail.util.DRINK_FILTER_ABSENT
+import com.ikvych.cocktail.util.EMPTY_STRING
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
-import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.*
-import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
-import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
-import com.ikvych.cocktail.ui.model.cocktail.IngredientModel
+import com.ikvych.cocktail.presentation.filter.DrinkFilter
+import com.ikvych.cocktail.presentation.filter.type.*
+import com.ikvych.cocktail.presentation.mapper.CocktailModelMapper
+import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
+import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
 import com.ikvych.cocktail.util.BatteryStateLiveData
 import com.ikvych.cocktail.util.Page
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainFragmentViewModel(
     private val cocktailRepository: CocktailRepository,
@@ -41,8 +42,8 @@ class MainFragmentViewModel(
 
     val ingredientsListLiveData: LiveData<List<IngredientModel>> =
         cocktailRepository.ingredientsListLiveData
-            .map {
-                    list -> list.map { IngredientModel(DrinkFilterType.INGREDIENT, it.ingredient) }
+            .map { list ->
+                list.map { IngredientModel(DrinkFilterType.INGREDIENT, it.ingredient) }
             }
 
     private val triggerObserver: Observer<in Any?> = Observer { }
@@ -56,7 +57,8 @@ class MainFragmentViewModel(
         super.onCleared()
     }
 
-    private val alcoholComparator: AlcoholCocktailComparator = AlcoholCocktailComparator()
+    private val alcoholComparator: AlcoholCocktailComparator =
+        AlcoholCocktailComparator()
     val viewPager2LiveData: MutableLiveData<Page> = object : MutableLiveData<Page>() {
         init {
             value = value
@@ -80,9 +82,9 @@ class MainFragmentViewModel(
         cocktailRepository.findAllCocktailsLiveData().map { mapper.mapTo(it!!) }
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
+/*    val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
+        MutableLiveData()*/
     val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
-        MutableLiveData()
-    /*val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
         object : MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>>() {
 
             init {
@@ -90,56 +92,83 @@ class MainFragmentViewModel(
             }
 
             override fun setValue(value: HashMap<DrinkFilterType, List<DrinkFilter>>?) {
-                val keys = value?.keys
-                val values = value?.values
+                value?.forEach { entry ->
+                    val filterTypeOrdinal = entry.key.ordinal
+                    val drinkFilterKeyArray: Array<String> =
+                        entry.value.map { it.key }.toTypedArray()
 
-                val keysArray: IntArray? = keys?.map { it.ordinal }?.toIntArray()
-                val filters: MutableCollection<IntArray> = mutableListOf()
-                values?.forEach { list ->
-                    filters.addAll(list.map { it.key })
-                }
-                val valuesArray: ArrayList<String>? = values?.map { it.key } as? ArrayList<String>
-                if (keysArray != null && valuesArray != null) {
-                    savedStateHandle.set(EXTRA_KEY_FILTER_TYPE, keysArray)
-                    savedStateHandle.set(EXTRA_KEY_FILTER, valuesArray)
+                    savedStateHandle.set(
+                        "${EXTRA_KEY_FILTER_TYPE}${entry.key.key}",
+                        filterTypeOrdinal
+                    )
+                    savedStateHandle.set("${EXTRA_KEY_FILTER}${entry.key.key}", drinkFilterKeyArray)
                 }
                 super.setValue(value)
             }
 
             override fun getValue(): HashMap<DrinkFilterType, List<DrinkFilter>>? {
-                val keysArray: IntArray? = savedStateHandle.get(EXTRA_KEY_FILTER_TYPE)
-                val valuesArray: ArrayList<String>? = savedStateHandle.get(EXTRA_KEY_FILTER)
-                var map = HashMap<DrinkFilterType, DrinkFilter>()
+                var map = HashMap<DrinkFilterType, List<DrinkFilter>>()
 
-                valuesArray?.forEachIndexed { index, value ->
-                    val drinkFilterType = DrinkFilterType.values()[keysArray!![index]]
-                    val drinkFilter = when (drinkFilterType) {
+                DrinkFilterType.values().forEach { filterType ->
+                    val filterTypeOrdinal: Int =
+                        savedStateHandle.get("${EXTRA_KEY_FILTER_TYPE}${filterType.key}")
+                            ?: return@forEach
+                    val currentFilterType = DrinkFilterType.values()[filterTypeOrdinal]
+
+                    val drinkFilterKeyArray: Array<String>? =
+                        savedStateHandle.get("${EXTRA_KEY_FILTER}${filterType.key}")
+                    val drinkFilters: ArrayList<DrinkFilter> = arrayListOf()
+                    when (currentFilterType) {
                         DrinkFilterType.ALCOHOL -> {
-                            AlcoholDrinkFilter.values().first { it.key == value }
+                            drinkFilterKeyArray?.forEach { key ->
+                                drinkFilters.add(
+                                    AlcoholDrinkFilter.values().first { it.key == key })
+                            }
                         }
                         DrinkFilterType.CATEGORY -> {
-                            CategoryDrinkFilter.values().first { it.key == value }
-                        }
-                        DrinkFilterType.INGREDIENT -> {
-                            IngredientDrinkFilter.values().first { it.key == value }
+                            drinkFilterKeyArray?.forEach { key ->
+                                drinkFilters.add(
+                                    CategoryDrinkFilter.values().first { it.key == key })
+                            }
                         }
                         DrinkFilterType.GLASS -> {
-                            GlassDrinkFilter.values().first { it.key == value }
+                            drinkFilterKeyArray?.forEach { key ->
+                                drinkFilters.add(GlassDrinkFilter.values().first { it.key == key })
+                            }
                         }
-                    } as DrinkFilter
-                    map[drinkFilterType] = drinkFilter
+                        DrinkFilterType.INGREDIENT -> {
+                            drinkFilterKeyArray?.forEach { key ->
+                                drinkFilters.add(
+                                    ingredientsListLiveData.value?.first { it.key == key } ?: IngredientModel(
+                                        DrinkFilterType.INGREDIENT,
+                                        DRINK_FILTER_ABSENT
+                                    )
+                                )
+                            }
+                        }
+                    }
+                    map[currentFilterType] = drinkFilters
                 }
+
                 if (map.isNullOrEmpty()) {
                     map = hashMapOf(
-                        Pair(DrinkFilterType.ALCOHOL, AlcoholDrinkFilter.NONE),
-                        Pair(DrinkFilterType.CATEGORY, CategoryDrinkFilter.NONE),
-                        Pair(DrinkFilterType.INGREDIENT, IngredientDrinkFilter.NONE),
-                        Pair(DrinkFilterType.GLASS, GlassDrinkFilter.NONE)
+                        Pair(DrinkFilterType.ALCOHOL, arrayListOf(AlcoholDrinkFilter.NONE)),
+                        Pair(DrinkFilterType.CATEGORY, arrayListOf(CategoryDrinkFilter.NONE)),
+                        Pair(
+                            DrinkFilterType.INGREDIENT,
+                            arrayListOf(
+                                IngredientModel(
+                                    DrinkFilterType.INGREDIENT,
+                                    DRINK_FILTER_ABSENT
+                                )
+                            )
+                        ),
+                        Pair(DrinkFilterType.GLASS, arrayListOf(GlassDrinkFilter.NONE))
                     )
                 }
                 return map
             }
-        }*/
+        }
 
 
     val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
@@ -305,24 +334,6 @@ class MainFragmentViewModel(
         ingredientFilterText.toString()
     }
 
-/*    fun findAllIngredient(): LiveData<List<IngredientModel>> {
-        return cocktailRepository.findAllIngredients().map { list -> list.map { IngredientModel(
-            DrinkFilterType.INGREDIENT,
-            it.ingredient
-        ) } }
-    }*/
-
-/*    private val triggerObserver: Observer<in Any?> = Observer { }
-
-    init {
-        findAllIngredient().observeForever(triggerObserver)
-    }
-
-    override fun onCleared() {
-        findAllIngredient().removeObserver(triggerObserver)
-        super.onCleared()
-    }*/
-
     @Suppress("UNCHECKED_CAST")
     fun updateFilter(filter: DrinkFilter) {
         lastAppliedFiltersLiveData.value =
@@ -359,7 +370,12 @@ class MainFragmentViewModel(
             Pair(DrinkFilterType.CATEGORY, arrayListOf(CategoryDrinkFilter.NONE)),
             Pair(
                 DrinkFilterType.INGREDIENT,
-                arrayListOf(IngredientModel(DrinkFilterType.INGREDIENT, DRINK_FILTER_ABSENT))
+                arrayListOf(
+                    IngredientModel(
+                        DrinkFilterType.INGREDIENT,
+                        DRINK_FILTER_ABSENT
+                    )
+                )
             ),
             Pair(DrinkFilterType.GLASS, arrayListOf(GlassDrinkFilter.NONE))
         )
@@ -368,7 +384,12 @@ class MainFragmentViewModel(
             Pair(DrinkFilterType.CATEGORY, arrayListOf(CategoryDrinkFilter.NONE)),
             Pair(
                 DrinkFilterType.INGREDIENT,
-                arrayListOf(IngredientModel(DrinkFilterType.INGREDIENT, DRINK_FILTER_ABSENT))
+                arrayListOf(
+                    IngredientModel(
+                        DrinkFilterType.INGREDIENT,
+                        DRINK_FILTER_ABSENT
+                    )
+                )
             ),
             Pair(DrinkFilterType.GLASS, arrayListOf(GlassDrinkFilter.NONE))
         )
@@ -414,7 +435,8 @@ class MainFragmentViewModel(
                         if (filters.size == 1) {
                             this[filter.type] = arrayListOf(
                                 IngredientModel(
-                                    DrinkFilterType.INGREDIENT, DRINK_FILTER_ABSENT
+                                    DrinkFilterType.INGREDIENT,
+                                    DRINK_FILTER_ABSENT
                                 )
                             )
                         } else {

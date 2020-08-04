@@ -6,7 +6,7 @@
         <import type="com.ikvych.cocktail.databinding.adapter.DataBindingAdapter.DataBindingConverter"/>
         <variable
             name="obj"
-            type="com.ikvych.cocktail.filter.DrinkFilter" />
+            type="com.ikvych.cocktail.presentation.filter.DrinkFilter" />
 
         <variable
             name="viewModel"

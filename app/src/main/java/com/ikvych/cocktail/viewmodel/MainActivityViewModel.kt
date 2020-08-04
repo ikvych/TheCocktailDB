@@ -8,8 +8,8 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.SavedStateHandle
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
-import com.ikvych.cocktail.ui.mapper.CocktailModelMapper
-import com.ikvych.cocktail.ui.model.cocktail.CocktailModel
+import com.ikvych.cocktail.presentation.mapper.CocktailModelMapper
+import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -54,7 +54,8 @@ class MainActivityViewModel(
         val stringDate: String = simpleDateFormat.format(currentDate)
 
         launchRequest(cocktailOfTheDayLiveData) {
-            val cocktailOfTheDay = cocktailRepository.findCocktailOfTheDay(stringDate)
+            val repo = cocktailRepository
+            val cocktailOfTheDay = repo.findCocktailOfTheDay(stringDate)
             if (cocktailOfTheDay == null) {
                 val allDrinks = cocktailRepository.findAllCocktails()
                 if (allDrinks.isNullOrEmpty()) {

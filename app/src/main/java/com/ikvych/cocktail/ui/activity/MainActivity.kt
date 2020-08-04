@@ -18,6 +18,7 @@ import androidx.core.graphics.drawable.toAdaptiveIcon
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
+import com.facebook.stetho.Stetho
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.constant.COCKTAIL_ID
@@ -44,6 +45,11 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
     private lateinit var bottomNavigationView: BottomNavigationView
     private var mainFragment: MainFragment? = null
     private var profileFragment: ProfileFragment? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Stetho.initializeWithDefaults(this)
+        super.onCreate(savedInstanceState)
+    }
 
     override fun configureView(savedInstanceState: Bundle?) {
         //Відслідковуємо напій дня, якщо він не дорівнює null значить потрібно показати діалог

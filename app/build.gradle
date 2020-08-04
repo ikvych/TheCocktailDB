@@ -112,4 +112,7 @@ dependencies {
     debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
 
     implementation project(':localization')
+
+    implementation 'com.facebook.stetho:stetho:1.5.0'
+    implementation 'com.facebook.stetho:stetho-js-rhino:1.4.2'
 }

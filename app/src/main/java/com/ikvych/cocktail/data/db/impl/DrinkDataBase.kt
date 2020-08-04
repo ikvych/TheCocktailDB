@@ -43,7 +43,7 @@ abstract class DrinkDataBase : RoomDatabase() {
             if (instance == null) {
                 instance = Room.databaseBuilder(
                     context.applicationContext,
-                    DrinkDataBase::class.java, "IvanKvych"
+                    DrinkDataBase::class.java, "CocktailDb"
                 )
                     .fallbackToDestructiveMigration()
                     .addCallback(object : Callback() {

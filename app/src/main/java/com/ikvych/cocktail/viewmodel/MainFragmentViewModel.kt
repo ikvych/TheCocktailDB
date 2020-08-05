@@ -2,31 +2,36 @@ package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
 import android.content.res.Resources
+import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
+import androidx.core.os.bundleOf
+import androidx.lifecycle.*
+import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.comparator.AlcoholDrinkComparator
-import com.ikvych.cocktail.comparator.type.SortDrinkType
-import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.filter.DrinkFilter
-import com.ikvych.cocktail.filter.type.AlcoholDrinkFilter
-import com.ikvych.cocktail.filter.type.CategoryDrinkFilter
-import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
+import com.ikvych.cocktail.util.AlcoholCocktailComparator
+import com.ikvych.cocktail.presentation.filter.type.SortDrinkType
+import com.ikvych.cocktail.util.DRINK_FILTER_ABSENT
+import com.ikvych.cocktail.util.EMPTY_STRING
+import com.ikvych.cocktail.data.repository.source.CocktailRepository
+import com.ikvych.cocktail.presentation.filter.DrinkFilter
+import com.ikvych.cocktail.presentation.filter.type.*
+import com.ikvych.cocktail.presentation.mapper.CocktailModelMapper
+import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
+import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
+import com.ikvych.cocktail.util.BatteryStateLiveData
 import com.ikvych.cocktail.util.Page
-import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.util.*
+import kotlin.collections.ArrayList
 
 class MainFragmentViewModel(
+    private val cocktailRepository: CocktailRepository,
+    private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel(application, savedStateHandle) {
+) : DrinkViewModel(application, savedStateHandle, cocktailRepository, mapper) {
 
     companion object {
         const val EXTRA_KEY_FILTER_TYPE = "EXTRA_KEY_FILTER_TYPE"
@@ -35,12 +40,30 @@ class MainFragmentViewModel(
         const val EXTRA_KEY_SORT_ORDER = "EXTRA_KEY_SORT_ORDER"
     }
 
-    val drinksLiveData: LiveData<List<Drink>> = drinkRepository.getAllDrinksFromDbLiveData()
-    private val alcoholComparator: AlcoholDrinkComparator = AlcoholDrinkComparator()
+    val ingredientsListLiveData: LiveData<List<IngredientModel>> =
+        cocktailRepository.ingredientsListLiveData
+            .map { list ->
+                list.map { IngredientModel(DrinkFilterType.INGREDIENT, it.ingredient) }
+            }
+
+    private val triggerObserver: Observer<in Any?> = Observer { }
+
+    init {
+        ingredientsListLiveData.observeForever(triggerObserver)
+    }
+
+    override fun onCleared() {
+        ingredientsListLiveData.removeObserver(triggerObserver)
+        super.onCleared()
+    }
+
+    private val alcoholComparator: AlcoholCocktailComparator =
+        AlcoholCocktailComparator()
     val viewPager2LiveData: MutableLiveData<Page> = object : MutableLiveData<Page>() {
         init {
             value = value
         }
+
         override fun setValue(value: Page?) {
             savedStateHandle.set(EXTRA_KEY_PAGE_NUMBER, value?.ordinal)
             super.setValue(value)
@@ -52,78 +75,100 @@ class MainFragmentViewModel(
         }
 
     }
-    val isBatteryChargingLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val isBatteryLowLiveData: MutableLiveData<Boolean> = MutableLiveData()
-    val batteryPercentLiveData: MutableLiveData<Int> = MutableLiveData()
+    var fragmentJustCreated: Boolean = true
 
-    val sortLiveData: MutableLiveData<SortDrinkType> = object : MutableLiveData<SortDrinkType>() {
-
-        init {
-            value = value
-        }
-
-        override fun setValue(value: SortDrinkType?) {
-            savedStateHandle.set(EXTRA_KEY_SORT_ORDER, value?.ordinal)
-            super.setValue(value)
-        }
-
-        override fun getValue(): SortDrinkType? {
-            val sortOrderOrdinal = savedStateHandle.get<Int>(EXTRA_KEY_SORT_ORDER) ?: 0
-            return SortDrinkType.values()[sortOrderOrdinal]
-        }
-    }
-
-    init {
-        isBatteryLowLiveData.value = false
-    }
+    val cachedBatteryStateLiveData: BatteryStateLiveData = BatteryStateLiveData(application)
+    val cocktailsLiveData: LiveData<List<CocktailModel>> =
+        cocktailRepository.findAllCocktailsLiveData().map { mapper.mapTo(it!!) }
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
-    val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
-        object : MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>() {
+/*    val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
+        MutableLiveData()*/
+    val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
+        object : MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>>() {
 
             init {
                 value = value
             }
 
-            override fun setValue(value: HashMap<DrinkFilterType, DrinkFilter>?) {
-                val keys = value?.keys
-                val values = value?.values
+            override fun setValue(value: HashMap<DrinkFilterType, List<DrinkFilter>>?) {
+                value?.forEach { entry ->
+                    val filterTypeOrdinal = entry.key.ordinal
+                    val drinkFilterKeyArray: Array<String> =
+                        entry.value.map { it.key }.toTypedArray()
 
-                val keysArray: IntArray? = keys?.map { it.ordinal }?.toIntArray()
-                val valuesArray: ArrayList<String>? = values?.map { it.key } as? ArrayList<String>
-                if (keysArray != null && valuesArray != null) {
-                    savedStateHandle.set(EXTRA_KEY_FILTER_TYPE, keysArray)
-                    savedStateHandle.set(EXTRA_KEY_FILTER, valuesArray)
+                    savedStateHandle.set(
+                        "${EXTRA_KEY_FILTER_TYPE}${entry.key.key}",
+                        filterTypeOrdinal
+                    )
+                    savedStateHandle.set("${EXTRA_KEY_FILTER}${entry.key.key}", drinkFilterKeyArray)
                 }
                 super.setValue(value)
             }
 
-            override fun getValue(): HashMap<DrinkFilterType, DrinkFilter>? {
-                val keysArray: IntArray? = savedStateHandle.get(EXTRA_KEY_FILTER_TYPE)
-                val valuesArray: ArrayList<String>? = savedStateHandle.get(EXTRA_KEY_FILTER)
-                var map = HashMap<DrinkFilterType, DrinkFilter>()
+            override fun getValue(): HashMap<DrinkFilterType, List<DrinkFilter>>? {
+                var map = HashMap<DrinkFilterType, List<DrinkFilter>>()
 
-                valuesArray?.forEachIndexed { index, value ->
-                    val drinkFilterType = DrinkFilterType.values()[keysArray!![index]]
-                    val drinkFilter = when (drinkFilterType) {
+                DrinkFilterType.values().forEach { filterType ->
+                    val filterTypeOrdinal: Int =
+                        savedStateHandle.get("${EXTRA_KEY_FILTER_TYPE}${filterType.key}")
+                            ?: return@forEach
+                    val currentFilterType = DrinkFilterType.values()[filterTypeOrdinal]
+
+                    val drinkFilterKeyArray: Array<String>? =
+                        savedStateHandle.get("${EXTRA_KEY_FILTER}${filterType.key}")
+                    val drinkFilters: ArrayList<DrinkFilter> = arrayListOf()
+                    when (currentFilterType) {
                         DrinkFilterType.ALCOHOL -> {
-                            AlcoholDrinkFilter.values().first { it.key == value }
+                            drinkFilterKeyArray?.forEach { key ->
+                                drinkFilters.add(
+                                    AlcoholDrinkFilter.values().first { it.key == key })
+                            }
                         }
                         DrinkFilterType.CATEGORY -> {
-                            CategoryDrinkFilter.values().first { it.key == value }
+                            drinkFilterKeyArray?.forEach { key ->
+                                drinkFilters.add(
+                                    CategoryDrinkFilter.values().first { it.key == key })
+                            }
+                        }
+                        DrinkFilterType.GLASS -> {
+                            drinkFilterKeyArray?.forEach { key ->
+                                drinkFilters.add(GlassDrinkFilter.values().first { it.key == key })
+                            }
                         }
                         DrinkFilterType.INGREDIENT -> {
-                            IngredientDrinkFilter.values().first { it.key == value }
+                            val list = ingredientsListLiveData.value
+                            drinkFilterKeyArray?.forEach { key ->
+                                drinkFilters.add(
+                                    if (!list.isNullOrEmpty()) {
+                                        list.first { it.key == key }
+                                    } else {
+                                        IngredientModel(
+                                            DrinkFilterType.INGREDIENT,
+                                            key
+                                        )
+                                    }
+                                )
+                            }
                         }
-                        DrinkFilterType.GLASS -> {}
-                    } as DrinkFilter
-                    map[drinkFilterType] = drinkFilter
+                    }
+                    map[currentFilterType] = drinkFilters
                 }
+
                 if (map.isNullOrEmpty()) {
                     map = hashMapOf(
-                        Pair(DrinkFilterType.ALCOHOL, AlcoholDrinkFilter.NONE),
-                        Pair(DrinkFilterType.CATEGORY, CategoryDrinkFilter.NONE),
-                        Pair(DrinkFilterType.INGREDIENT, IngredientDrinkFilter.NONE)
+                        Pair(DrinkFilterType.ALCOHOL, arrayListOf(AlcoholDrinkFilter.NONE)),
+                        Pair(DrinkFilterType.CATEGORY, arrayListOf(CategoryDrinkFilter.NONE)),
+                        Pair(
+                            DrinkFilterType.INGREDIENT,
+                            arrayListOf(
+                                IngredientModel(
+                                    DrinkFilterType.INGREDIENT,
+                                    DRINK_FILTER_ABSENT
+                                )
+                            )
+                        ),
+                        Pair(DrinkFilterType.GLASS, arrayListOf(GlassDrinkFilter.NONE))
                     )
                 }
                 return map
@@ -131,91 +176,71 @@ class MainFragmentViewModel(
         }
 
 
-    val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>> =
-        MutableLiveData<HashMap<DrinkFilterType, DrinkFilter>>()
+    val lastAppliedFiltersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
+        MutableLiveData()
 
-    val alcoholFilterLiveData: MutableLiveData<AlcoholDrinkFilter> =
-        object : MediatorLiveData<AlcoholDrinkFilter>() {
+    val sortTypeLiveData: MutableLiveData<SortDrinkType> =
+        object : MutableLiveData<SortDrinkType>() {
             init {
-                value = AlcoholDrinkFilter.NONE
-                addSource(filtersLiveData) {
-                    value = it[DrinkFilterType.ALCOHOL] as AlcoholDrinkFilter
-                }
+                value = value
+            }
+
+            override fun setValue(value: SortDrinkType?) {
+                savedStateHandle.set(EXTRA_KEY_SORT_ORDER, value?.ordinal)
+                super.setValue(value)
+            }
+
+            override fun getValue(): SortDrinkType? {
+                val sortOrderOrdinal = savedStateHandle.get<Int>(EXTRA_KEY_SORT_ORDER) ?: 0
+                return SortDrinkType.values()[sortOrderOrdinal]
             }
         }
 
-    val categoryFilterLiveData: MutableLiveData<CategoryDrinkFilter> =
-        object : MediatorLiveData<CategoryDrinkFilter>() {
-            init {
-                value = CategoryDrinkFilter.NONE
-                addSource(filtersLiveData) {
-                    value = it[DrinkFilterType.CATEGORY] as CategoryDrinkFilter
-                }
-            }
-        }
-    val ingredientFilterLiveData: MutableLiveData<IngredientDrinkFilter> =
-        object : MediatorLiveData<IngredientDrinkFilter>() {
-            init {
-                value = IngredientDrinkFilter.NONE
-                addSource(filtersLiveData) {
-                    value = it[DrinkFilterType.INGREDIENT] as IngredientDrinkFilter
-                }
-            }
-        }
-
-
-    val filteredDrinksLiveData: MutableLiveData<List<Drink>> =
-        object : MediatorLiveData<List<Drink>>() {
+    val filteredAndSortedDrinksLiveData: MutableLiveData<List<CocktailModel>> =
+        object : MediatorLiveData<List<CocktailModel>>() {
             init {
                 value = arrayListOf()
-                addSource(drinksLiveData) {
-                    filterAndSortData(drinksLiveData.value)
+                addSource(cocktailsLiveData) {
+                    filterAndSortData(cocktailsLiveData.value)
                 }
                 addSource(filtersLiveData) {
-                    filterAndSortData(drinksLiveData.value)
+                    filterAndSortData(cocktailsLiveData.value)
                 }
-                addSource(sortLiveData) {
-                    filterAndSortData(drinksLiveData.value)
+                addSource(sortTypeLiveData) {
+                    filterAndSortData(cocktailsLiveData.value)
                 }
             }
 
-            private fun filterAndSortData(drinks: List<Drink>?) {
-                val drinksCopy = drinks ?: arrayListOf()
+            private fun filterAndSortData(cocktails: List<CocktailModel>?) {
+                val cocktailsCopy = cocktails ?: arrayListOf()
 
                 val filteredData =
-                    filterData(drinksCopy, filtersLiveData.value!!.values.toList() as ArrayList)
-                val sortedData = sortData(filteredData, sortLiveData.value!!)
+                    filterData(cocktailsCopy, filtersLiveData.value!!)
+                val sortedData = sortData(filteredData, sortTypeLiveData.value!!)
                 value = sortedData
             }
         }
 
-    val filteredFavoriteDrinksLiveData: MutableLiveData<ArrayList<Drink>> =
-        object : MediatorLiveData<ArrayList<Drink>>() {
-            init {
-                if (value == null) {
-                    value = arrayListOf()
-                }
-                addSource(filteredDrinksLiveData) {
-                    val resultList = favoriteFilter(it)
-                    value = resultList
-                }
-            }
-
-            fun favoriteFilter(drinks: List<Drink>): ArrayList<Drink> {
-                var drinksCopy = drinks
-                drinksCopy = drinksCopy.filter {
-                    it.isFavorite()
-                }
-                return drinksCopy as ArrayList<Drink>
-            }
+    val filteredAndSortedFavoriteDrinksLiveData: LiveData<ArrayList<CocktailModel>> =
+        filteredAndSortedDrinksLiveData.map {
+            favoriteFilter(it)
         }
 
-    val allFilteredLiveData: LiveData<SpannableString> =
+    private fun favoriteFilter(cocktails: List<CocktailModel>): ArrayList<CocktailModel> {
+        var cocktailsCopy = cocktails
+        cocktailsCopy = cocktailsCopy.filter {
+            it.isFavorite
+        }
+        return cocktailsCopy as ArrayList<CocktailModel>
+    }
+
+    val filteredAndSortedResultDrinksLiveData: LiveData<SpannableString> =
         object : MediatorLiveData<SpannableString>() {
             init {
                 //Петтерн містить "Found: h @, f %" - де 'h' і ʼfʼ символи які заміюються на кількість знайдених коктейлів
                 //у історії і улюблених, відповідно, а ʼ@ʼ і ʼ%ʼ символи які замінюються на іконки історії та улюблені відповідно
-                val src = application.resources.getString(R.string.filter_fragment_search_result_text_pattern)
+                val src =
+                    application.resources.getString(R.string.filter_fragment_search_result_text_pattern)
 
                 val historyDrawable = ContextCompat.getDrawable(
                     application,
@@ -237,14 +262,14 @@ class MainFragmentViewModel(
 
                 val emptySearch = application.resources.getString(R.string.all_empty_search)
 
-                addSource(filteredDrinksLiveData) {
-                    if (isFiltersPresent() && it.isEmpty() && filteredFavoriteDrinksLiveData.value!!.isEmpty()) {
+                addSource(filteredAndSortedDrinksLiveData) {
+                    if (isFiltersPresent() && it.isEmpty() && filteredAndSortedFavoriteDrinksLiveData.value!!.isEmpty()) {
                         value = SpannableString(emptySearch)
                     } else {
                         var currentResult = src.replace("h", it.size.toString())
                         currentResult = currentResult.replace(
                             "f",
-                            filteredFavoriteDrinksLiveData.value!!.size.toString()
+                            filteredAndSortedFavoriteDrinksLiveData.value!!.size.toString()
                         )
                         val historyIndexDrw = currentResult.indexOf("@")
                         val favoriteIndexDrw = currentResult.indexOf("%")
@@ -267,58 +292,114 @@ class MainFragmentViewModel(
             }
         }
 
-
-    fun getAllDrinksFromDb(): List<Drink> {
-        return drinksLiveData.value ?: emptyList()
+    val alcoholFilterLiveData: LiveData<String> = filtersLiveData.map {
+        if (it[DrinkFilterType.ALCOHOL]!!.first() == AlcoholDrinkFilter.NONE) {
+            EMPTY_STRING
+        } else {
+            it[DrinkFilterType.ALCOHOL]!!.first().key
+        }
     }
 
-    fun resetFilter(filter: DrinkFilter) {
-        when (filter.type) {
-            DrinkFilterType.CATEGORY -> {
-                filtersLiveData.value =
-                    filtersLiveData.value!!.apply { this[filter.type] = CategoryDrinkFilter.NONE }
-            }
-            DrinkFilterType.ALCOHOL -> {
-                filtersLiveData.value =
-                    filtersLiveData.value!!.apply { this[filter.type] = AlcoholDrinkFilter.NONE }
-            }
-            DrinkFilterType.GLASS -> {
+    val categoryFilterLiveData: LiveData<String> = filtersLiveData.map {
+        if (it[DrinkFilterType.CATEGORY]!!.first() == CategoryDrinkFilter.NONE) {
+            EMPTY_STRING
+        } else {
+            it[DrinkFilterType.CATEGORY]!!.first().key
+        }
+    }
 
+    val glassFilterLiveData: LiveData<String> = filtersLiveData.map {
+        if (it[DrinkFilterType.GLASS]!!.first() == GlassDrinkFilter.NONE) {
+            EMPTY_STRING
+        } else {
+            it[DrinkFilterType.GLASS]!!.first().key
+        }
+    }
+
+    val ingredientFilterLiveData: LiveData<String> = filtersLiveData.map {
+        val ingredientFilterText = StringBuilder()
+        if (it[DrinkFilterType.INGREDIENT]!!.contains(
+                it[DrinkFilterType.INGREDIENT]!!.find { cocktail ->
+                    cocktail.key == DRINK_FILTER_ABSENT
+                }
+            )
+        ) {
+            ingredientFilterText.append(EMPTY_STRING)
+        } else {
+            it[DrinkFilterType.INGREDIENT]?.forEach { filter ->
+                ingredientFilterText.append(
+                    "${filter.key}  "
+                )
             }
-            DrinkFilterType.INGREDIENT -> {
-                filtersLiveData.value =
-                    filtersLiveData.value!!.apply { this[filter.type] = IngredientDrinkFilter.NONE }
-            }
+        }
+        ingredientFilterText.toString()
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun updateFilter(filter: DrinkFilter) {
+        lastAppliedFiltersLiveData.value =
+            filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
+        filtersLiveData.value = filtersLiveData.value!!.apply {
+            this[filter.type] = arrayListOf(filter)
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun updateFilterList(filters: List<DrinkFilter>) {
+        lastAppliedFiltersLiveData.value =
+            filtersLiveData.value!!.clone() as HashMap<DrinkFilterType, List<DrinkFilter>>
+        filtersLiveData.value = filtersLiveData.value!!.apply {
+            this[DrinkFilterType.INGREDIENT] = filters
         }
     }
 
     fun isFiltersPresent(): Boolean {
-        filtersLiveData.value?.forEach {
-            //загальне енам значення для фільтрів яке означає відстуність як такого
-            //в стрінгові ресурси не виношу бо наразі немає в цьому сенсу()
-            if (it.value.key != "None") {
-                return true
-            }
-        }
-        return false
+        return !filtersLiveData.value!![DrinkFilterType.ALCOHOL]!!.contains(AlcoholDrinkFilter.NONE) ||
+                !filtersLiveData.value!![DrinkFilterType.CATEGORY]!!.contains(CategoryDrinkFilter.NONE) ||
+                !filtersLiveData.value!![DrinkFilterType.INGREDIENT]!!.contains(
+                    filtersLiveData.value!![DrinkFilterType.INGREDIENT]!!.find { cocktail ->
+                        cocktail.key == DRINK_FILTER_ABSENT
+                    }
+                ) ||
+                !filtersLiveData.value!![DrinkFilterType.GLASS]!!.contains(GlassDrinkFilter.NONE)
     }
 
-
+    //обнуляє фільтри
     fun resetFilters() {
         filtersLiveData.value = hashMapOf(
-            Pair(DrinkFilterType.ALCOHOL, AlcoholDrinkFilter.NONE),
-            Pair(DrinkFilterType.CATEGORY, CategoryDrinkFilter.NONE),
-            Pair(DrinkFilterType.INGREDIENT, IngredientDrinkFilter.NONE)
+            Pair(DrinkFilterType.ALCOHOL, arrayListOf(AlcoholDrinkFilter.NONE)),
+            Pair(DrinkFilterType.CATEGORY, arrayListOf(CategoryDrinkFilter.NONE)),
+            Pair(
+                DrinkFilterType.INGREDIENT,
+                arrayListOf(
+                    IngredientModel(
+                        DrinkFilterType.INGREDIENT,
+                        DRINK_FILTER_ABSENT
+                    )
+                )
+            ),
+            Pair(DrinkFilterType.GLASS, arrayListOf(GlassDrinkFilter.NONE))
         )
         lastAppliedFiltersLiveData.value = hashMapOf(
-            Pair(DrinkFilterType.ALCOHOL, AlcoholDrinkFilter.NONE),
-            Pair(DrinkFilterType.CATEGORY, CategoryDrinkFilter.NONE),
-            Pair(DrinkFilterType.INGREDIENT, IngredientDrinkFilter.NONE)
+            Pair(DrinkFilterType.ALCOHOL, arrayListOf(AlcoholDrinkFilter.NONE)),
+            Pair(DrinkFilterType.CATEGORY, arrayListOf(CategoryDrinkFilter.NONE)),
+            Pair(
+                DrinkFilterType.INGREDIENT,
+                arrayListOf(
+                    IngredientModel(
+                        DrinkFilterType.INGREDIENT,
+                        DRINK_FILTER_ABSENT
+                    )
+                )
+            ),
+            Pair(DrinkFilterType.GLASS, arrayListOf(GlassDrinkFilter.NONE))
         )
     }
 
+    //Метод визначає чи відрізняються поточні фільтри від попередньо обраних.
+    //Якщо відрізняються то повертає true і в такому випадку можна показувати Undo button
     fun isUndoEnabled(): Boolean {
-        lastAppliedFiltersLiveData.value?.forEach {
+        lastAppliedFiltersLiveData.value!!.forEach {
             if (it.value != filtersLiveData.value!![it.key]) {
                 return true
             }
@@ -326,56 +407,158 @@ class MainFragmentViewModel(
         return false
     }
 
-    fun filterData(drinks: List<Drink>, drinkFilters: ArrayList<DrinkFilter>): List<Drink> {
-        var drinksCopy = drinks
+    //обнуляє певний тип фільтру
+    fun resetFilter(filter: DrinkFilter) {
+        when (filter.type) {
+            DrinkFilterType.CATEGORY -> {
+                filtersLiveData.value = filtersLiveData.value!!.apply {
+                    this[filter.type] = arrayListOf(CategoryDrinkFilter.NONE)
+                }
+            }
+            DrinkFilterType.ALCOHOL -> {
+                filtersLiveData.value = filtersLiveData.value!!.apply {
+                    this[filter.type] = arrayListOf(AlcoholDrinkFilter.NONE)
+                }
+            }
+            DrinkFilterType.GLASS -> {
+                filtersLiveData.value = filtersLiveData.value!!.apply {
+                    this[filter.type] = arrayListOf(GlassDrinkFilter.NONE)
+                }
+            }
+            DrinkFilterType.INGREDIENT -> {
+                launchRequest {
+                    val currentFilter = IngredientModel(
+                        DrinkFilterType.INGREDIENT,
+                        cocktailRepository.findIngredient(filter.key).ingredient
+                    )
+                    filtersLiveData.postValue(filtersLiveData.value!!.apply {
+                        val filters: List<DrinkFilter> = this[filter.type]!!
+                        if (filters.size == 1) {
+                            this[filter.type] = arrayListOf(
+                                IngredientModel(
+                                    DrinkFilterType.INGREDIENT,
+                                    DRINK_FILTER_ABSENT
+                                )
+                            )
+                        } else {
+                            this[filter.type] = this[filter.type]!!.filter { it != currentFilter }
+                        }
+                    })
+                }
+            }
+        }
+    }
+
+    fun filterData(
+        cocktails: List<CocktailModel>,
+        drinkFilters: HashMap<DrinkFilterType, List<DrinkFilter>>
+    ): List<CocktailModel> {
+        var cocktailsCopy = cocktails
         drinkFilters.forEach {
-            when (it.type) {
+            when (it.key) {
                 DrinkFilterType.ALCOHOL -> {
-                    if (it != AlcoholDrinkFilter.NONE) {
-                        drinksCopy = drinksCopy.filter { drink ->
-                            drink.getStrAlcoholic() == it.key
+                    if (!it.value.contains(AlcoholDrinkFilter.NONE)) {
+                        cocktailsCopy = cocktailsCopy.filter { cocktail ->
+                            var isValidDrink = false
+                            for (i in it.value.indices) {
+                                if (cocktail.alcoholType == it.value[i]) {
+                                    isValidDrink = true
+                                    break
+                                }
+                            }
+                            isValidDrink
                         }
                     }
                 }
                 DrinkFilterType.CATEGORY -> {
-                    if (it != CategoryDrinkFilter.NONE) {
-                        drinksCopy = drinksCopy.filter { drink ->
-                            drink.getStrCategory() == it.key
-                        }
-                    }
-                }
-                DrinkFilterType.INGREDIENT -> {
-                    if (it != IngredientDrinkFilter.NONE) {
-                        drinksCopy = drinksCopy.filter { drink ->
-                            var isValid = false
-                            for ((key, _) in drink.getIngredients()) {
-                                if (key.equals(it.key)) {
-                                    isValid = true
+                    if (!it.value.contains(CategoryDrinkFilter.NONE)) {
+                        cocktailsCopy = cocktailsCopy.filter { drink ->
+                            var isValidDrink = false
+                            for (i in it.value.indices) {
+                                if (drink.category == it.value[i]) {
+                                    isValidDrink = true
                                     break
                                 }
                             }
-                            isValid
+                            isValidDrink
+                        }
+                    }
+                }
+                //фільтрування ||
+/*                DrinkFilterType.INGREDIENT -> {
+                    if (!it.value.contains(IngredientDrinkFilter.NONE)) {
+                        drinksCopy = drinksCopy.filter { drink ->
+                            var isValidDrink = false
+                            for (i in it.value.indices) {
+                                for ((key, _) in drink.getIngredients()) {
+                                    if (key == it.value[i].key) {
+                                        isValidDrink = true
+                                        break
+                                    }
+                                }
+                                if (isValidDrink) break
+                            }
+                            isValidDrink
+                        }
+                    }
+                }*/
+                //фільтрування &&
+                DrinkFilterType.INGREDIENT -> {
+                    if (!it.value.contains(it.value.find { cocktail ->
+                            cocktail.key == DRINK_FILTER_ABSENT
+                        })) {
+                        cocktailsCopy = cocktailsCopy.filter { drink ->
+                            var isValidDrink = true
+                            for (i in it.value.indices) {
+                                var isPresentCurrentIngredient = false
+                                for (y in drink.ingredients.indices) {
+                                    if (drink.ingredients[y] == it.value[i]) {
+                                        isPresentCurrentIngredient = true
+                                        break
+                                    }
+                                }
+                                if (!isPresentCurrentIngredient) {
+                                    isValidDrink = false
+                                    break
+                                }
+                            }
+                            isValidDrink
                         }
                     }
                 }
                 DrinkFilterType.GLASS -> {
+                    if (!it.value.contains(GlassDrinkFilter.NONE)) {
+                        cocktailsCopy = cocktailsCopy.filter { drink ->
+                            var isValidDrink = false
+                            for (i in it.value.indices) {
+                                if (drink.glass == it.value[i]) {
+                                    isValidDrink = true
+                                    break
+                                }
+                            }
+                            isValidDrink
+                        }
+                    }
                 }
             }
         }
-        return drinksCopy
+        return cocktailsCopy
     }
 
-    fun sortData(drinks: List<Drink>, sortDrinkType: SortDrinkType): List<Drink> {
-        var drinksCopy = drinks
-        drinksCopy = when (sortDrinkType) {
-            SortDrinkType.RECENT -> drinksCopy.sortedByDescending { drink -> drink.getCreated() }
-            SortDrinkType.NAME_ASC -> drinksCopy.sortedBy { drink -> drink.getStrDrink() }
-            SortDrinkType.NAME_DESC -> drinksCopy.sortedByDescending { drink -> drink.getStrDrink() }
-            SortDrinkType.ALCOHOL_ASC -> drinksCopy.sortedWith(alcoholComparator)
-            SortDrinkType.ALCOHOL_DESC -> drinksCopy.sortedWith(alcoholComparator).asReversed()
-            SortDrinkType.INGREDIENT_COUNT_ASC -> drinksCopy.sortedBy { drink -> drink.getIngredients().size }
-            SortDrinkType.INGREDIENT_COUNT_DESC -> drinksCopy.sortedByDescending { drink -> drink.getIngredients().size }
+    fun sortData(
+        cocktails: List<CocktailModel>,
+        sortDrinkType: SortDrinkType
+    ): List<CocktailModel> {
+        var cocktailCopy = cocktails
+        cocktailCopy = when (sortDrinkType) {
+            SortDrinkType.RECENT -> cocktailCopy.sortedByDescending { cocktail -> cocktail.dateSaved }
+            SortDrinkType.NAME_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.names.defaults }
+            SortDrinkType.NAME_DESC -> cocktailCopy.sortedByDescending { cocktail -> cocktail.names.defaults }
+            SortDrinkType.ALCOHOL_ASC -> cocktailCopy.sortedWith(alcoholComparator)
+            SortDrinkType.ALCOHOL_DESC -> cocktailCopy.sortedWith(alcoholComparator).asReversed()
+            SortDrinkType.INGREDIENT_COUNT_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.ingredients.size }
+            SortDrinkType.INGREDIENT_COUNT_DESC -> cocktailCopy.sortedByDescending { cocktail -> cocktail.ingredients.size }
         }
-        return drinksCopy
+        return cocktailCopy
     }
 }

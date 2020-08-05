@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.AppCompatButton
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/tv_button_item"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/btn_height"
+    android:layout_marginBottom="@dimen/offset_4"
+    android:textSize="@dimen/caption_1"
+    android:stateListAnimator="@null"
+    android:textColor="@drawable/selector_app_button_multi_selection_text"
+    android:background="@drawable/selector_app_button_multi_selection"/>

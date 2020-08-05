@@ -20,6 +20,7 @@
 
     <!--#region SearchActivity-->
     <string name="drink_empty_search_result">Коктейлів не знайдено</string>
+    <string name="search_activity_drink_offer_title">How about </string>
     <!--#endregion-->
 
     <!--#region DrinkDetailActivity-->
@@ -43,7 +44,8 @@
     <string name="auth_invalid_login">Логін повинний містити більше 6 символів!</string>
     <!--#endregion-->
 
-    <string name="dialog_sort_title">Сортування</string>
+    <string name="dialog_sort_title">Сортувати за</string>
+    <string name="dialog_filter_title">Фільтрувати за</string>
     <string name="hello_blank_fragment">Привіт пустий фрагмент</string>
 
     <!--#region ProfileFragment-->
@@ -72,20 +74,32 @@
     <string name="add_favorite">Додати до улюблених</string>
     <string name="open">Відкрити</string>
     <string name="remove_favorite">Видалити з улюблених</string>
-    <string name="pin_shortcut">Закріпити</string>
+    <string name="pin_shortcut">Закріпити ярлик</string>
+    <string name="add_dynamic_shortcut">Додати динамічний ярлик</string>
+    <string name="remove_dynamic_shortcut">Видалити динамічний ярлик</string>
+    <string name="popup_menu_add_to_favorite">Додано до улюблених</string>
+    <string name="popup_menu_remove_from_favorite">Видалено з улюблених</string>
+    <string name="popup_menu_remove_from_history">Видалено з історії</string>
+    <string name="popup_menu_add_dynamic_shortcut">Динамічний ярлик додано</string>
+    <string name="popup_menu_remove_dynamic_shortcut">Динамічний ярлик видалено</string>
+    <string name="popup_menu_long_label_prefix">Запустити </string>
     <!--#endregion-->
 
     <!--#region MainActivity BottomNavigationView-->
-    <string name="menu_main_activity_title">Main</string>
-    <string name="menu_profile_activity_title">Profile</string>
+    <string name="menu_main_activity_title">Головна</string>
+    <string name="menu_profile_activity_title">Профіль</string>
     <!--#endregion-->
 
     <!--#region FilterFragment-->
-    <string name="filter_fragment_alcohol_filter_button">Вміст алкоголю</string>
-    <string name="filter_fragment_category_filter_button">Категорія напою</string>
-    <string name="filter_fragment_ingredient_filter_button">Містить інгредієнт</string>
+    <string name="filter_fragment_alcohol_filter_button">Алкоголь</string>
+    <string name="filter_fragment_category_filter_button">Категорія</string>
+    <string name="filter_fragment_ingredient_filter_button">Інгредієнт</string>
+    <string name="filter_fragment_glass_filter_button">Стакан</string>
     <string name="filter_fragment_result_button">До результатів</string>
     <string name="filter_fragment_search_result_text_pattern">Знайдено: h @, f %</string>
+    <string name="filter_fragment_select_filter_type_title">Виберіть тип фільтрування</string>
+    <string name="filter_fragment_single_filter_type_title">Одиночні  фільтри</string>
+    <string name="filter_fragment_multi_filter_type_title">Множинні фільтри</string>
     <!--#endregion-->
 
     <!--#region FilterFragment AlcoholFiltersType-->

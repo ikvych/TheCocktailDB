@@ -28,7 +28,7 @@
             android:layout_gravity="center_vertical"
             android:layout_margin="@dimen/offset_8"
             android:iconifiedByDefault="false"
-            android:background="@drawable/search_view_shape"
+            android:background="@drawable/shape_search_view"
             android:queryBackground="@android:color/transparent"
             android:elevation="@dimen/elevation_2"/>
 
@@ -66,7 +66,7 @@
             android:visibility="gone"
             android:layout_alignEnd="@+id/ib_sort_btn"
             android:layout_alignTop="@+id/ib_sort_btn"
-            android:background="@drawable/indicator_filter_button"
+            android:background="@drawable/shape_indicator_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -79,11 +79,13 @@
         android:layout_weight="1">
 
         <ImageButton
-            android:id="@+id/ib_filer_btn"
+            android:id="@+id/ib_filter_btn"
             android:layout_width="@dimen/btn_width_min"
             android:layout_height="@dimen/btn_width_min"
             android:layout_centerInParent="true"
             android:background="@android:color/transparent"
+            android:visibility="gone"
+            android:src="@drawable/ic_app_tool_bar_filter"
             android:padding="@dimen/offset_12"
             android:contentDescription="@string/all_content_description"/>
 
@@ -92,9 +94,9 @@
             android:height="@dimen/indicator_height"
             android:width="@dimen/indicator_width"
             android:visibility="gone"
-            android:layout_alignEnd="@+id/ib_filer_btn"
-            android:layout_alignTop="@+id/ib_filer_btn"
-            android:background="@drawable/indicator_filter_button"
+            android:layout_alignEnd="@+id/ib_filter_btn"
+            android:layout_alignTop="@+id/ib_filter_btn"
+            android:background="@drawable/shape_indicator_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 

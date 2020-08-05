@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="com.google.android.material.bottomnavigation.LabelVisibilityMode"/>
+
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.MainActivityViewModel" />
+    </data>
+
 <LinearLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -19,9 +28,10 @@
         android:layout_gravity="bottom"
         app:itemBackground="?selectableItemBackgroundBorderless"
         app:itemHorizontalTranslationEnabled="true"
+        app:labelVisibilityMode="@{viewModel.navBarTitleVisibilityLiveData ? LabelVisibilityMode.LABEL_VISIBILITY_LABELED : LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED}"
         app:menu="@menu/menu_activity_main_bottom_navigation"
-        app:itemTextColor="@drawable/nav_item_color_state"
-        app:itemIconTint="@drawable/nav_item_color_state"/>
+        app:itemTextColor="@drawable/selector_nav_bar_item_color_state"
+        app:itemIconTint="@drawable/selector_nav_bar_item_color_state"/>
 
 </LinearLayout>
 

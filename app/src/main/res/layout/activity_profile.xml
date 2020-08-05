@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.ProfileActivityViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.ProfileActivity">
+
+        <FrameLayout
+            android:id="@+id/fl_image_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/all_content_description"
+                android:maxHeight="@dimen/offset_256"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_icon"
+                bind:bg_avatar="@{viewModel.userLiveData.avatar}" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_transparent"
+                android:orientation="horizontal"
+                android:padding="@dimen/offset_8">
+
+                <ImageButton
+                    android:layout_width="@dimen/btn_width"
+                    android:layout_height="@dimen/btn_width"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/all_content_description"
+                    android:padding="@dimen/offset_12"
+                    android:src="@drawable/ic_arrow_back" />
+
+                <Space
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1" />
+
+                <ImageButton
+                    android:layout_width="@dimen/btn_width"
+                    android:layout_height="@dimen/btn_width"
+                    android:background="@android:color/transparent"
+                    android:contentDescription="@string/all_content_description"
+                    android:padding="@dimen/offset_12"
+                    android:src="@drawable/ic_log_out" />
+
+            </LinearLayout>
+
+        </FrameLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-100dp"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_upload_image"
+                android:layout_width="@dimen/offset_160"
+                android:layout_height="@dimen/offset_160"
+                android:contentDescription="@string/all_content_description"
+                android:src="@drawable/default_icon"
+                bind:avatar="@{viewModel.userLiveData.avatar}" />
+
+            <ImageButton
+                android:id="@+id/b_upload_photo"
+                android:layout_width="@dimen/btn_width"
+                android:layout_height="@dimen/btn_width"
+                android:layout_alignEnd="@+id/iv_upload_image"
+                android:layout_alignBottom="@+id/iv_upload_image"
+                android:src="@drawable/ic_upload_user_avatar"
+                android:background="@color/color_transparent"
+                android:contentDescription="@string/all_content_description"/>
+
+        </RelativeLayout>
+
+
+        <!--        <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/headline_3"
+                    android:text="@{viewModel.userFullNameLiveData}"/>-->
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@{viewModel.userFullNameLiveData}"
+            android:textColor="@color/color_on_primary"
+            android:textSize="@dimen/headline_2"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/offset_8"
+            android:gravity="center"
+            android:text="@{viewModel.userEmailLiveData}"
+            android:textColor="@color/color_on_primary"
+            android:textSize="@dimen/headline_4" />
+
+
+    </LinearLayout>
+
+</layout>

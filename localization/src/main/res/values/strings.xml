@@ -54,6 +54,7 @@
     <string name="profile_log_out_dialog_message">Are you Really want to exit?</string>
     <string name="profile_start_test_fragment_button">Start test fragment</string>
     <string name="profile_change_language_button">Change Language</string>
+    <string name="profile_start_profile_button">Profile</string>
     <string name="profile_show_hide_main_navigation_bar_titles">Show/Hide Main Navigation Bar Titles</string>
     <string name="profile_battery_state_visibility">Show/Hide Battery State</string>
     <string name="profile_fragment_battery_state_shown">Battery state shown</string>

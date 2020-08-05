@@ -1,16 +1,20 @@
 package com.ikvych.cocktail.data.network.impl.source
 
-import com.ikvych.cocktail.data.network.impl.service.CocktailNetService
-import com.ikvych.cocktail.data.network.model.CocktailNetResponse
+import com.ikvych.cocktail.data.network.impl.service.CocktailApiService
+import com.ikvych.cocktail.data.network.impl.source.base.BaseNetSourceImpl
+import com.ikvych.cocktail.data.network.model.cocktail.CocktailNetModel
+import com.ikvych.cocktail.data.network.model.cocktail.CocktailNetResponse
 import com.ikvych.cocktail.data.network.source.CocktailNetSource
 import retrofit2.Call
 
 class CocktailNetSourceImpl(
-    private val netService: CocktailNetService
-) : CocktailNetSource {
+    cocktailApiService: CocktailApiService
+) : BaseNetSourceImpl<CocktailApiService>(cocktailApiService), CocktailNetSource {
 
-    override fun getCocktailsByName(cocktailName: String): Call<CocktailNetResponse?> {
-        return netService.findCocktailsByName(cocktailName)
+    override suspend fun getCocktailsByName(cocktailName: String): List<CocktailNetModel> {
+        return performRequest {
+            findCocktailsByName(cocktailName).cocktails
+        }
     }
 
 }

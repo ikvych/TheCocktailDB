@@ -2,12 +2,10 @@ package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
 import android.content.res.Resources
-import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
@@ -18,7 +16,7 @@ import com.ikvych.cocktail.util.EMPTY_STRING
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.presentation.filter.DrinkFilter
 import com.ikvych.cocktail.presentation.filter.type.*
-import com.ikvych.cocktail.presentation.mapper.CocktailModelMapper
+import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
 import com.ikvych.cocktail.util.BatteryStateLiveData
@@ -140,7 +138,7 @@ class MainFragmentViewModel(
                             val list = ingredientsListLiveData.value
                             drinkFilterKeyArray?.forEach { key ->
                                 drinkFilters.add(
-                                    if (!list.isNullOrEmpty()) {
+                                    if (!list.isNullOrEmpty() && list.size > 0) {
                                         list.first { it.key == key }
                                     } else {
                                         IngredientModel(

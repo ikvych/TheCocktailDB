@@ -3,18 +3,13 @@ package com.ikvych.cocktail.data.repository.impl.source
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.map
-import com.ikvych.cocktail.data.db.model.entity.IngredientDbModel
 import com.ikvych.cocktail.data.db.source.DrinkDbSource
-import com.ikvych.cocktail.data.network.model.CocktailNetResponse
 import com.ikvych.cocktail.data.network.source.CocktailNetSource
-import com.ikvych.cocktail.data.repository.impl.mapper.CocktailRepoModelMapper
+import com.ikvych.cocktail.data.repository.impl.mapper.cocktail.CocktailRepoModelMapper
 import com.ikvych.cocktail.data.repository.impl.source.base.BaseRepositoryImpl
-import com.ikvych.cocktail.data.repository.model.IngredientRepoModel
+import com.ikvych.cocktail.data.repository.model.cocktail.IngredientRepoModel
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.xtreeivi.cocktailsapp.data.repository.model.CocktailRepoModel
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 class CocktailRepositoryImpl(
     private val dbSource: DrinkDbSource,
@@ -24,35 +19,22 @@ class CocktailRepositoryImpl(
 
     override val ingredientsListLiveData: LiveData<List<IngredientRepoModel>> =
         dbSource.ingredientsListLiveData
-            .map {
-                list -> list.map { IngredientRepoModel(it.ingredient) }
-            }
-
-    override val cocktailNetResponseLiveData: MutableLiveData<List<CocktailRepoModel>> =
-        MutableLiveData()
-
-    override fun updateCocktailsLiveData(cocktailName: String) {
-        val call: Call<CocktailNetResponse?> = netSource.getCocktailsByName(cocktailName)
-
-        call.enqueue(object : Callback<CocktailNetResponse?> {
-
-            override fun onFailure(call: Call<CocktailNetResponse?>, t: Throwable) {
-                println("Can't get drinks list from Api")
-            }
-
-            override fun onResponse(
-                call: Call<CocktailNetResponse?>,
-                response: Response<CocktailNetResponse?>
-            ) {
-                val cocktailNetResponse = response.body()
-                if (cocktailNetResponse?.cocktails != null) {
-                    cocktailNetResponseLiveData.setValue(mapper.mapNetToRepoList(cocktailNetResponse.cocktails))
-                } else {
-                    cocktailNetResponseLiveData.setValue(emptyList())
+            .map { list ->
+                list.map {
+                    IngredientRepoModel(
+                        it.ingredient
+                    )
                 }
             }
 
-        })
+    override val cocktailsNetListLiveData: MutableLiveData<List<CocktailRepoModel>> =
+        MutableLiveData()
+
+    override suspend fun updateCocktailsLiveData(cocktailName: String) {
+        cocktailsNetListLiveData.postValue(netSource.getCocktailsByName(cocktailName)
+            .run {
+                mapper.mapNetToRepoList(this)
+            })
     }
 
     override fun findAllCocktailsLiveData(): LiveData<List<CocktailRepoModel>?> {
@@ -78,7 +60,8 @@ class CocktailRepositoryImpl(
     }
 
     override suspend fun findCocktailByDefaultName(defaultDrinkName: String): CocktailRepoModel? {
-        val localizedCocktailDbModel = dbSource.findCocktailByDefaultName(defaultDrinkName) ?: return null
+        val localizedCocktailDbModel =
+            dbSource.findCocktailByDefaultName(defaultDrinkName) ?: return null
         return mapper.mapDbToRepo(localizedCocktailDbModel)
     }
 

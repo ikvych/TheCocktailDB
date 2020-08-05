@@ -2,15 +2,15 @@ package com.ikvych.cocktail.data.repository.source
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.ikvych.cocktail.data.repository.model.IngredientRepoModel
+import com.ikvych.cocktail.data.repository.model.cocktail.IngredientRepoModel
 import com.ikvych.cocktail.data.repository.source.base.BaseRepository
 import com.xtreeivi.cocktailsapp.data.repository.model.CocktailRepoModel
 
 interface CocktailRepository : BaseRepository{
 
     val ingredientsListLiveData: LiveData<List<IngredientRepoModel>>
-    val cocktailNetResponseLiveData: MutableLiveData<List<CocktailRepoModel>>
-    fun updateCocktailsLiveData(cocktailName: String)
+    val cocktailsNetListLiveData: MutableLiveData<List<CocktailRepoModel>>
+    suspend fun updateCocktailsLiveData(cocktailName: String)
 
     fun findAllCocktailsLiveData(): LiveData<List<CocktailRepoModel>?>
     fun findCocktailByIdLiveData(cocktailId: Long): LiveData<CocktailRepoModel?>

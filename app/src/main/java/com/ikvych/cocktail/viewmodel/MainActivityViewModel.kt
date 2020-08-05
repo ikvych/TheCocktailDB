@@ -8,7 +8,7 @@ import androidx.lifecycle.ProcessLifecycleOwner
 import androidx.lifecycle.SavedStateHandle
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
-import com.ikvych.cocktail.presentation.mapper.CocktailModelMapper
+import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import java.text.SimpleDateFormat
 import java.util.*

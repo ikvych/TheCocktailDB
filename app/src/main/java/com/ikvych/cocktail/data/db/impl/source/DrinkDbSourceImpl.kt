@@ -2,10 +2,9 @@ package com.ikvych.cocktail.data.db.impl.source
 
 import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.data.db.impl.dao.CocktailDao
-import com.ikvych.cocktail.data.db.model.LocalizedCocktailDbModel
+import com.ikvych.cocktail.data.db.model.cocktail.LocalizedCocktailDbModel
 import com.ikvych.cocktail.data.db.source.DrinkDbSource
-import com.ikvych.cocktail.data.db.model.entity.CocktailDbModel
-import com.ikvych.cocktail.data.db.model.entity.IngredientDbModel
+import com.ikvych.cocktail.data.db.model.cocktail.entity.IngredientDbModel
 
 class DrinkDbSourceImpl(
     private val drinkDao: CocktailDao

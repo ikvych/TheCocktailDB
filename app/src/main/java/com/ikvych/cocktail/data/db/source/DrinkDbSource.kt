@@ -1,11 +1,11 @@
 package com.ikvych.cocktail.data.db.source
 
 import androidx.lifecycle.LiveData
-import com.ikvych.cocktail.data.db.model.LocalizedCocktailDbModel
-import com.ikvych.cocktail.data.db.model.entity.CocktailDbModel
-import com.ikvych.cocktail.data.db.model.entity.IngredientDbModel
+import com.ikvych.cocktail.data.db.model.cocktail.LocalizedCocktailDbModel
+import com.ikvych.cocktail.data.db.model.cocktail.entity.IngredientDbModel
+import com.ikvych.cocktail.data.db.source.base.BaseDbSource
 
-interface DrinkDbSource : BaseDbSource{
+interface DrinkDbSource : BaseDbSource {
 
     val ingredientsListLiveData: LiveData<List<IngredientDbModel>>
     suspend fun addOrReplaceCocktail(cocktail: LocalizedCocktailDbModel)

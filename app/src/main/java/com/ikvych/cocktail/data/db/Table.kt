@@ -7,4 +7,5 @@ object Table {
     const val INSTRUCTION = "instruction"
     const val INGREDIENT = "ingredient"
     const val MEASURE = "measure"
+    const val USER = "user"
 }

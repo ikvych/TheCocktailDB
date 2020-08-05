@@ -4,8 +4,8 @@ import androidx.lifecycle.LiveData
 import androidx.room.*
 import com.ikvych.cocktail.data.db.Table
 import com.ikvych.cocktail.data.db.impl.dao.base.BaseDao
-import com.ikvych.cocktail.data.db.model.LocalizedCocktailDbModel
-import com.ikvych.cocktail.data.db.model.entity.*
+import com.ikvych.cocktail.data.db.model.cocktail.LocalizedCocktailDbModel
+import com.ikvych.cocktail.data.db.model.cocktail.entity.*
 
 @Dao
 interface CocktailDao : BaseDao {

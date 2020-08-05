@@ -3,6 +3,7 @@ package com.ikvych.cocktail.data.local.impl.source
 import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import com.ikvych.cocktail.data.local.impl.SharedPrefsHelper
+import com.ikvych.cocktail.data.local.impl.source.base.BaseLocalSourceImpl
 import com.ikvych.cocktail.data.local.source.AppSettingLocalSource
 import com.ikvych.cocktail.util.SingletonHolder
 
@@ -11,8 +12,8 @@ const val EXTRA_KEY_SHOW_BATTERY_STATE = "EXTRA_KEY_SHOW_BATTERY_STATE"
 const val EXTRA_KEY_SELECTED_SYSTEM_LANGUAGE = "EXTRA_KEY_SELECTED_SYSTEM_LANGUAGE"
 
 class AppSettingLocalSourceImpl(
-    private val sharedPrefsHelper: SharedPrefsHelper
-) : AppSettingLocalSource{
+    sharedPrefsHelper: SharedPrefsHelper
+) : BaseLocalSourceImpl(sharedPrefsHelper), AppSettingLocalSource{
 
     override val showNavigationTitleLiveData: MutableLiveData<Boolean> = object : MutableLiveData<Boolean>() {
 

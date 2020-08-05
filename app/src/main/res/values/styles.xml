@@ -18,8 +18,6 @@
         <item name="bottomNavigationStyle">@style/Widget.BottomNavigationView</item>
     </style>
 
-
-
     <style name="Widget.PopupMenu" parent="">
         <item name="android:popupBackground" tools:ignore="PrivateResource">@drawable/mtrl_popupmenu_background</item>
         <item name="android:popupElevation">8dp</item>

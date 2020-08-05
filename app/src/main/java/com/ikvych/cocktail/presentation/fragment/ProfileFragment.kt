@@ -36,14 +36,6 @@ class ProfileFragment : BaseFragment<BaseViewModel, FragmentProfileBinding>(),
         b_log_out.setOnClickListener(this)
         b_start_test_fragment.setOnClickListener(this)
         b_change_language.setOnClickListener(this)
-
-        mainViewModel.showBatteryStateLiveData.observe(this, Observer {isChecked ->
-            if (isChecked) {
-                Toast.makeText(requireContext(), R.string.profile_fragment_battery_state_shown, Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(requireContext(), R.string.profile_fragment_battery_state_hidden, Toast.LENGTH_SHORT).show()
-            }
-        })
     }
 
     override fun configureDataBinding(binding: FragmentProfileBinding) {

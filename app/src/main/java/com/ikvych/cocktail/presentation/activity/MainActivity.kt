@@ -42,11 +42,11 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
     override val viewModelClass: KClass<MainActivityViewModel>
         get() = MainActivityViewModel::class
 
-    private lateinit var bottomNavigationView: BottomNavigationView
     private var mainFragment: MainFragment? = null
     private var profileFragment: ProfileFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        //бібліотека яка дозволяє відслідковувати базу даних через веб браузер у реальному часі
         Stetho.initializeWithDefaults(this)
         super.onCreate(savedInstanceState)
     }

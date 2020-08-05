@@ -72,6 +72,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/view_height"
                         android:layout_margin="@dimen/offset_8"
+                        android:thumbTint="@color/color_surface_variant"
                         bind:cb_checked="@={parentViewModel.navBarTitleVisibilityLiveData}"
                         android:text="@string/profile_show_hide_main_navigation_bar_titles" />
 
@@ -80,6 +81,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/view_height"
                         android:layout_margin="@dimen/offset_8"
+                        android:thumbTint="@color/color_surface_variant"
                         bind:cb_checked="@={parentViewModel.showBatteryStateLiveData}"
                         android:text="@string/profile_battery_state_visibility" />
 

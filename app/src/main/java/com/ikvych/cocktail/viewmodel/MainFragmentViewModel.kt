@@ -137,11 +137,12 @@ class MainFragmentViewModel(
                             }
                         }
                         DrinkFilterType.INGREDIENT -> {
+                            val list = ingredientsListLiveData.value
                             drinkFilterKeyArray?.forEach { key ->
                                 drinkFilters.add(
-                                    ingredientsListLiveData.value?.first { it.key == key } ?: IngredientModel(
+                                    list?.first { it.key == key } ?: IngredientModel(
                                         DrinkFilterType.INGREDIENT,
-                                        DRINK_FILTER_ABSENT
+                                        key
                                     )
                                 )
                             }

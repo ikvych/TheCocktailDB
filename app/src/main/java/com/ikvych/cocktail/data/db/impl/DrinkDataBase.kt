@@ -44,6 +44,7 @@ abstract class DrinkDataBase : RoomDatabase() {
                     DrinkDataBase::class.java, "CocktailDb"
                 )
                     .fallbackToDestructiveMigration()
+                        //вставля в базу даних значення None для інгредієнтів
                     .addCallback(object : Callback() {
                         override fun onCreate(@NonNull db: SupportSQLiteDatabase) {
                             super.onCreate(db)

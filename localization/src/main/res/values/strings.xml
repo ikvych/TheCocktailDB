@@ -76,10 +76,9 @@
     <string name="pin_shortcut">Pin shortcut</string>
     <string name="add_dynamic_shortcut">Add dynamic shortcut</string>
     <string name="remove_dynamic_shortcut">Remove dynamic shortcut</string>
-    <string name="remove_shortcut">Remove shortcut</string>
-    <string name="popup_menu_add_to_favorite">added to favorite</string>
-    <string name="popup_menu_remove_from_favorite">removed from favorite</string>
-    <string name="popup_menu_remove_from_history">removed from history</string>
+    <string name="popup_menu_add_to_favorite">Added to favorite</string>
+    <string name="popup_menu_remove_from_favorite">Removed from favorite</string>
+    <string name="popup_menu_remove_from_history">Removed from history</string>
     <string name="popup_menu_add_dynamic_shortcut">Dynamic shortcut added</string>
     <string name="popup_menu_remove_dynamic_shortcut">Dynamic shortcut removed</string>
     <string name="popup_menu_long_label_prefix">Launch</string>

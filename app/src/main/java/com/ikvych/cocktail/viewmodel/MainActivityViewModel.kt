@@ -32,6 +32,7 @@ class MainActivityViewModel(
     val showBatteryStateLiveData: MutableLiveData<Boolean> =
         appSettingRepository.showBatteryStateLiveData
 
+
     init {
         lifecycleObserver = ApplicationLifeCycleObserver(this, sharedPreferences)
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)

@@ -547,7 +547,7 @@ class MainFragmentViewModel(
     ): List<CocktailModel> {
         var cocktailCopy = cocktails
         cocktailCopy = when (sortDrinkType) {
-            SortDrinkType.RECENT -> cocktailCopy.sortedByDescending { cocktail -> cocktail.id }
+            SortDrinkType.RECENT -> cocktailCopy.sortedByDescending { cocktail -> cocktail.dateSaved }
             SortDrinkType.NAME_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.names.defaults }
             SortDrinkType.NAME_DESC -> cocktailCopy.sortedByDescending { cocktail -> cocktail.names.defaults }
             SortDrinkType.ALCOHOL_ASC -> cocktailCopy.sortedWith(alcoholComparator)

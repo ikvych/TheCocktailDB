@@ -1,6 +1,7 @@
 package com.xtreeivi.cocktailsapp.data.repository.model
 
 import com.ikvych.cocktail.data.repository.model.IngredientRepoModel
+import java.util.*
 
 data class CocktailRepoModel(
     val id: Long = -1L,
@@ -13,6 +14,7 @@ data class CocktailRepoModel(
     val ingredients: List<IngredientRepoModel> = emptyList(),
     val measures: List<String> = emptyList(),
     var isFavorite: Boolean = false,
-    var cocktailOfTheDay: String = ""/*,
-    val date: Date = Date()*/
+    var cocktailOfTheDay: String = "",
+    val dateModified: Date = Date(),
+    val dateSaved: Date = Date()
 )

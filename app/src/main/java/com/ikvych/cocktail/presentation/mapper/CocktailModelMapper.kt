@@ -22,7 +22,9 @@ class CocktailModelMapper(
             ingredients = ingredients.map { IngredientRepoModel(it.key) },
             measures = measures,
             isFavorite = isFavorite,
-            cocktailOfTheDay = cocktailOfTheDay
+            cocktailOfTheDay = cocktailOfTheDay,
+            dateModified = dateModified,
+            dateSaved = dateSaved
         )
     }
 
@@ -39,13 +41,11 @@ class CocktailModelMapper(
             image = image,
             instructions = instructions.run(localizedStringModelMapper::mapTo),
             ingredients = ingredients.map { IngredientModel(DrinkFilterType.INGREDIENT, it.ingredient) },
-/*            ingredients = ingredients.map { ingredient ->
-                IngredientDrinkFilter.values().firstOrNull { it.key == ingredient }
-                    ?: IngredientDrinkFilter.NONE
-            },*/
             measures = measures,
             isFavorite = isFavorite,
-            cocktailOfTheDay = cocktailOfTheDay
+            cocktailOfTheDay = cocktailOfTheDay,
+            dateModified = dateModified,
+            dateSaved = dateSaved
         )
     }
 }

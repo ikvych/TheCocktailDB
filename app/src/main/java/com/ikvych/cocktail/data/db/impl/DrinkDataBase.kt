@@ -8,6 +8,7 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.ikvych.cocktail.util.DRINK_FILTER_ABSENT
 import com.ikvych.cocktail.data.db.Table
@@ -25,7 +26,7 @@ import com.ikvych.cocktail.data.db.model.entity.*
         MeasureDbModel::class,
         IngredientDbModel::class,
         IngredientMeasureDbModel::class
-    ], version = 1, exportSchema = false
+    ], version = 2, exportSchema = false
 )
 @TypeConverters(DateConverter::class, StringListToStringConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {
@@ -39,11 +40,19 @@ abstract class DrinkDataBase : RoomDatabase() {
         @Synchronized
         fun getInstance(context: Context): DrinkDataBase? {
             if (instance == null) {
+
+                val MIGRATION_1_2 = object : Migration(1, 2) {
+                    override fun migrate(database: SupportSQLiteDatabase) {
+                        database.execSQL("ALTER TABLE ${Table.COCKTAIL} ADD COLUMN date_modified INTEGER")
+                        database.execSQL("ALTER TABLE ${Table.COCKTAIL} ADD COLUMN date_saved INTEGER")
+                    }
+                }
+
                 instance = Room.databaseBuilder(
                     context.applicationContext,
                     DrinkDataBase::class.java, "CocktailDb"
                 )
-                    .fallbackToDestructiveMigration()
+/*                    .fallbackToDestructiveMigration()*/
                         //вставля в базу даних значення None для інгредієнтів
                     .addCallback(object : Callback() {
                         override fun onCreate(@NonNull db: SupportSQLiteDatabase) {
@@ -58,6 +67,7 @@ abstract class DrinkDataBase : RoomDatabase() {
                             )
                         }
                     })
+                    .addMigrations(MIGRATION_1_2)
                     .build()
                     .also {instance = it}
             }

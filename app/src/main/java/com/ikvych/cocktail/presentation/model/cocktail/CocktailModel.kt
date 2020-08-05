@@ -3,6 +3,7 @@ package com.ikvych.cocktail.presentation.model.cocktail
 import android.os.Parcel
 import android.os.Parcelable
 import com.ikvych.cocktail.presentation.filter.type.*
+import java.util.*
 
 data class CocktailModel(
     val id: Long = -1L,
@@ -15,8 +16,9 @@ data class CocktailModel(
     val ingredients: List<IngredientModel> = emptyList(),
     val measures: List<String> = emptyList(),
     val cocktailOfTheDay: String = "",
-    var isFavorite: Boolean = false/*,
-    val date: Date = Date()*/
+    var isFavorite: Boolean = false,
+    val dateModified: Date = Date(),
+    val dateSaved: Date = Date()
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -45,7 +47,9 @@ data class CocktailModel(
         parcel.createStringArray()!!.map { IngredientModel(DrinkFilterType.INGREDIENT, it) },
         parcel.createStringArrayList()!!.toList(),
         parcel.readString()!!,
-        parcel.readByte() != 0.toByte()
+        parcel.readByte() != 0.toByte(),
+        Date(parcel.readLong()),
+        Date(parcel.readLong())
     ) {
     }
 
@@ -76,6 +80,8 @@ data class CocktailModel(
         parcel.writeStringList(measures)
         parcel.writeString(cocktailOfTheDay)
         parcel.writeByte(if (isFavorite) 1 else 0)
+        parcel.writeLong(dateModified.time)
+        parcel.writeLong(dateModified.time)
     }
 
     override fun describeContents(): Int {

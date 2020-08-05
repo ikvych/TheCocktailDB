@@ -2,22 +2,25 @@ package com.ikvych.cocktail.databinding.adapter
 
 import android.content.res.ColorStateList
 import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
+import android.view.LayoutInflater
 import android.view.View
 import android.widget.ImageButton
 import android.widget.ImageView
-import android.widget.LinearLayout
-import androidx.core.content.ContextCompat
+import android.widget.Switch
+import android.widget.TableLayout
 import androidx.core.view.isVisible
 import androidx.databinding.*
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.databinding.ItemDrinkIngredientListBinding
+import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
 import com.ikvych.cocktail.util.Page
 
 
 @BindingAdapter("bind:src")
 fun setImageViewResource(imageButton: ImageButton, resource: Int) {
-    imageButton.setImageResource(resource)
+    imageButton.setImageResource(Math.abs(resource))
 }
 
 @BindingAdapter("bind:bg_color")
@@ -27,8 +30,78 @@ fun setBackgroundTint(view: View, resource: String) {
     view.backgroundTintList = stateList
 }
 
+/*Using getIngredients() method fills the tableLayout in activity_drink_details with ingredients and measure*/
+@BindingAdapter("ingredients", "measures")
+fun getIngredients(
+    tableLayout: TableLayout,
+    ingredients: List<IngredientModel>?,
+    measures: List<String>?
+) {
+    var count = 1
+    if (ingredients == null || measures == null) {
+        return
+    }
+    ingredients.forEachIndexed { index, ingredient ->
+        val binding: ItemDrinkIngredientListBinding = DataBindingUtil.inflate(
+            LayoutInflater.from(tableLayout.context),
+            R.layout.item_drink_ingredient_list,
+            tableLayout,
+            false
+        )
+        val numberedIngredient = "$count. ${ingredient.key}"
+        binding.tvIngredient.text = numberedIngredient
+        if (measures.size - 1 >= index) {
+            binding.tvMeasure.text = measures[index]
+        } else {
+            binding.tvMeasure.text = ""
+        }
+        tableLayout.addView(
+            binding.root,
+            TableLayout.LayoutParams(
+                TableLayout.LayoutParams.MATCH_PARENT,
+                TableLayout.LayoutParams.WRAP_CONTENT
+            )
+        )
+        count++
+    }
+}
+
+@BindingAdapter("strDrinkThumb")
+fun loadImage(imageView: ImageView, imageUrl: String?) {
+    Glide.with(imageView.context)
+        .load(imageUrl)
+        .placeholder(R.drawable.default_icon)
+        .into(imageView)
+}
 
 class DataBindingAdapter {
+
+    object SwitchBindingAdapter {
+
+        @BindingAdapter("bind:cb_checked")
+        @JvmStatic
+        fun Switch.setIsChecked(newValue: Boolean) {
+            if (isChecked != newValue) {
+                isChecked = newValue
+            }
+        }
+
+        @InverseBindingAdapter(attribute = "bind:cb_checked", event = "bind:cb_checkedAttrChanged")
+        @JvmStatic
+        fun Switch.getIsChecked(): Boolean? {
+            return isChecked
+        }
+
+        @BindingAdapter("bind:cb_checkedAttrChanged")
+        @JvmStatic
+        fun Switch.setListener(
+            attrChange: InverseBindingListener?
+        ) {
+            if (attrChange != null) {
+                setOnCheckedChangeListener { _, _ -> attrChange.onChange() }
+            }
+        }
+    }
 
     object ViewVisibilityBindingAdapter {
         @BindingAdapter("bind:v_isVisible")

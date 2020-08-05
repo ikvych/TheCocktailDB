@@ -6,22 +6,22 @@
     <data>
         <variable
             name="obj"
-            type="com.ikvych.cocktail.data.entity.Drink" />
+            type="com.ikvych.cocktail.presentation.model.cocktail.CocktailModel" />
 
         <variable
             name="viewModel"
-            type="com.ikvych.cocktail.viewmodel.base.BaseViewModel" />
+            type="com.ikvych.cocktail.viewmodel.DrinkViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/cv_item_list_container"
+        android:id="@+id/cv_item_drink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/offset_4"
         card_view:cardCornerRadius="@dimen/corner_8"
         card_view:cardElevation="@dimen/elevation_4"
         android:longClickable="true"
-        android:onClick="@{() -> viewModel.startNewDrinkDetails(obj)}"
+        android:tag="@{obj.id}"
         card_view:cardUseCompatPadding="true">
 
         <RelativeLayout
@@ -35,18 +35,18 @@
                 android:adjustViewBounds="true"
                 android:scaleType="fitXY"
                 android:contentDescription="@string/all_content_description"
-                bind:strDrinkThumb="@{obj.strDrinkThumb}" />
+                bind:strDrinkThumb="@{obj.image}" />
 
             <CheckBox
                 android:id="@+id/cb_is_favorite"
                 android:layout_margin="@dimen/offset_4"
-                android:buttonTint="@drawable/favorite_checkbox_tint"
-                android:button="@drawable/favorite_checkbox"
+                android:buttonTint="@drawable/selector_favorite_checkbox_tint"
+                android:button="@drawable/selector_favorite_checkbox"
                 android:layout_alignStart="@+id/iv_drink_image"
                 android:layout_alignTop="@+id/iv_drink_image"
                 android:layout_width="wrap_content"
                 android:checked="@{obj.favorite}"
-                android:tag="@{obj.strDrink}"
+                android:tag="@{obj.id}"
                 android:onClick="@{() -> viewModel.saveFavoriteDrink(obj)}"
                 android:layout_height="wrap_content" />
 
@@ -54,7 +54,7 @@
                 android:id="@+id/tv_drink_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{obj.strDrink}"
+                android:text="@{obj.names.defaults}"
                 android:layout_below="@id/iv_drink_image"
                 android:layout_margin="@dimen/offset_8"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />

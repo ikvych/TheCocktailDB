@@ -1,34 +1,41 @@
 package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.filter.type.DrinkFilterType
-import com.ikvych.cocktail.filter.type.IngredientDrinkFilter
-import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import androidx.lifecycle.*
+import com.ikvych.cocktail.data.repository.source.CocktailRepository
+import com.ikvych.cocktail.presentation.mapper.CocktailModelMapper
+import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 
 class DrinkDetailViewModel(
+    private val cocktailRepository: CocktailRepository,
+    private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel(application, savedStateHandle) {
+) : DrinkViewModel(application, savedStateHandle, cocktailRepository, mapper) {
 
-    val drinkIdLiveData: MutableLiveData<Long?> = MutableLiveData()
-    val drinkLiveData: LiveData<Drink?> = object : MediatorLiveData<Drink?>() {
-        init {
-            addSource(drinkIdLiveData) {
-                value = drinkRepository.findDrinkById(drinkIdLiveData.value!!)
-            }
+    private val triggerObserver: Observer<in Any?> = Observer { }
+    val cocktailLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
+
+    init {
+        cocktailLiveData.observeForever(triggerObserver)
+    }
+
+    override fun onCleared() {
+        cocktailLiveData.removeObserver(triggerObserver)
+        super.onCleared()
+    }
+
+    fun findCocktailDbById(cocktailId: Long) {
+        launchRequest(cocktailLiveData)  {
+            val result = cocktailRepository.findCocktailById(cocktailId)!!
+            mapper.mapTo(result)
         }
     }
 
-    fun findDrinkInDbById(drinkId: Long): Drink? {
-        return drinkRepository.findDrinkById(drinkId)
-    }
-
-    fun saveDrinkIntoDb(drink: Drink) {
-        drinkRepository.saveDrinkIntoDb(drink)
+    fun saveCocktailIntoDb() {
+        val currentCocktail = cocktailLiveData.value ?: return
+        launchRequest {
+            cocktailRepository.addOrReplaceCocktail(mapper.mapFrom(currentCocktail))
+        }
     }
 }

@@ -1,28 +1,28 @@
 package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
-import androidx.lifecycle.MediatorLiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.SavedStateHandle
-import com.ikvych.cocktail.data.entity.Drink
-import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import androidx.lifecycle.*
+import com.ikvych.cocktail.data.repository.source.CocktailRepository
+import com.ikvych.cocktail.presentation.mapper.CocktailModelMapper
+import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 
 
 class SearchActivityViewModel(
+    private val cocktailRepository: CocktailRepository,
+    private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle
-) : BaseViewModel(application, savedStateHandle) {
+) : DrinkViewModel(application, savedStateHandle, cocktailRepository, mapper) {
 
-    val drinkLiveData: MutableLiveData<List<Drink>> =
-        object : MediatorLiveData<List<Drink>>() {
-            init {
-                addSource(drinkRepository.getDrinkApiLiveData()) {
-                    value = drinkRepository.getDrinkApiLiveData().value
-                }
-            }
-        }
+    val cocktailLiveData: LiveData<List<CocktailModel>> =
+        cocktailRepository.cocktailNetResponseLiveData.map{mapper.mapTo(it)}
 
-    fun updateDrinksLiveData(query: String) {
-        drinkRepository.updateDrinkApiLiveData(query)
+    //відслідковує чи було ініціалізоване value у drinkLiveData
+    //Цю лайв дату відслідковує textView який повинний пропасти після того як було здійснено перший
+    //запит на пошук дрінків
+    val isCocktailLiveDataInitialized: LiveData<Boolean> = cocktailLiveData.map { true }
+
+    fun updateCocktailsLiveData(query: String) {
+        cocktailRepository.updateCocktailsLiveData(query)
     }
 }

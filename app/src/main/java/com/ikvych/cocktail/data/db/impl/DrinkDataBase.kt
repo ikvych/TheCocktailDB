@@ -52,8 +52,10 @@ abstract class DrinkDataBase : RoomDatabase() {
                     context.applicationContext,
                     DrinkDataBase::class.java, "CocktailDb"
                 )
-/*                    .fallbackToDestructiveMigration()*/
+                    .fallbackToDestructiveMigration()
                         //вставля в базу даних значення None для інгредієнтів
+
+                    .addMigrations(MIGRATION_1_2)
                     .addCallback(object : Callback() {
                         override fun onCreate(@NonNull db: SupportSQLiteDatabase) {
                             super.onCreate(db)
@@ -62,12 +64,11 @@ abstract class DrinkDataBase : RoomDatabase() {
                                 DRINK_FILTER_ABSENT
                             )
                             db.insert(Table.INGREDIENT,
-                                SQLiteDatabase.CONFLICT_IGNORE,
+                                SQLiteDatabase.CONFLICT_REPLACE,
                                 values
                             )
                         }
                     })
-                    .addMigrations(MIGRATION_1_2)
                     .build()
                     .also {instance = it}
             }

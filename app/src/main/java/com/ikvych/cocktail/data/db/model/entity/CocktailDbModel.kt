@@ -91,5 +91,5 @@ data class CocktailDbModel(
     val dateModified: Date? = Date(),
 
     @ColumnInfo(name = "date_saved")
-    val dateSaved: Date = Date()
+    val dateSaved: Date? = Date()
 )

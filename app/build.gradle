@@ -115,4 +115,7 @@ dependencies {
 
     implementation 'com.facebook.stetho:stetho:1.5.0'
     implementation 'com.facebook.stetho:stetho-js-rhino:1.4.2'
+
+    //blur for glide
+    implementation 'jp.wasabeef:glide-transformations:4.0.0'
 }

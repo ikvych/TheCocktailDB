@@ -1,8 +1,6 @@
 package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
-import android.graphics.Bitmap
-import androidx.core.app.ActivityCompat
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle

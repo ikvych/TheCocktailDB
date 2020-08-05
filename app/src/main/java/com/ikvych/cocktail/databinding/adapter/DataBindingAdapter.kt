@@ -12,15 +12,35 @@ import androidx.core.view.isVisible
 import androidx.databinding.*
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ItemDrinkIngredientListBinding
 import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
 import com.ikvych.cocktail.util.Page
+import jp.wasabeef.glide.transformations.BlurTransformation
 
 
 @BindingAdapter("bind:src")
 fun setImageViewResource(imageButton: ImageButton, resource: Int) {
     imageButton.setImageResource(Math.abs(resource))
+}
+
+@BindingAdapter("bind:avatar")
+fun loadAvatar(imageView: ImageView, imageUrl: String?) {
+    Glide.with(imageView.context)
+        .load(imageUrl)
+        .placeholder(R.drawable.default_icon)
+        .circleCrop()
+        .into(imageView)
+}
+
+@BindingAdapter("bind:bg_avatar")
+fun loadBgAvatar(imageView: ImageView, imageUrl: String?) {
+    Glide.with(imageView.context)
+        .load(imageUrl)
+        .placeholder(R.drawable.default_icon)
+        .apply(RequestOptions.bitmapTransform(BlurTransformation(10, 2)))
+        .into(imageView)
 }
 
 @BindingAdapter("bind:bg_color")

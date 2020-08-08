@@ -84,7 +84,10 @@ object Injector {
         get() = GsonBuilder()
             .registerTypeAdapter(deserializeType<Boolean>(), BooleanDeserializer(false))
             .registerTypeAdapter(deserializeType<Date>(), Iso8601DateDeserializer())
-            .registerTypeAdapter(deserializeType<CocktailNetResponse>(), CocktailNetModelDeserializer())
+            .registerTypeAdapter(
+                deserializeType<CocktailNetResponse>(),
+                CocktailNetModelDeserializer()
+            )
             .setPrettyPrinting()
             .serializeNulls()
 
@@ -103,7 +106,7 @@ object Injector {
 
     val devSchoolRetrofit by lazy {
 
-        val provideRepository = provideRepository<TokenRepository>(appContext)
+        val provideRepository = provideRepository(appContext, TokenRepository::class.java)
 
         provideRetrofit(
             appContext,
@@ -148,46 +151,67 @@ object Injector {
             return when (modelClass) {
                 AuthViewModel::class.java -> AuthViewModel(application, handle) as T
                 DrinkDetailViewModel::class.java -> DrinkDetailViewModel(
-                    provideRepository(appContext), provideModelMapper(
+                    provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
                         appContext
                     ), application, handle
                 ) as T
                 MainActivityViewModel::class.java -> MainActivityViewModel(
-                    provideRepository(appContext), provideModelMapper(
+                    provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
                         appContext
                     ), application, handle
                 ) as T
                 SearchActivityViewModel::class.java -> SearchActivityViewModel(
-                    provideRepository(appContext), provideModelMapper(
+                    provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
                         appContext
                     ), application, handle
                 ) as T
                 ProfileActivityViewModel::class.java -> ProfileActivityViewModel(
                     application,
                     handle,
-                    provideRepository(appContext),
-                    provideRepository(appContext),
-                    provideModelMapper(appContext)
+                    provideRepository(appContext, AuthRepository::class.java),
+                    provideRepository(appContext, UserRepository::class.java),
+                    provideModelMapper(appContext),
+                    provideRepository(appContext, TokenRepository::class.java)
                 ) as T
                 MainFragmentViewModel::class.java -> MainFragmentViewModel(
-                    provideRepository(appContext), provideModelMapper(
+                    provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
                         appContext
                     ), application, handle
                 ) as T
                 DrinkViewModel::class.java -> DrinkViewModel(
-                        application, handle, provideRepository(appContext), provideModelMapper(
-                        appContext)
-                    ) as T
+                    application, handle, provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
+                        appContext
+                    )
+                ) as T
                 BaseViewModel::class.java -> BaseViewModel(
                     application, handle
+                ) as T
+                SignInViewModel::class.java -> SignInViewModel(
+                    application,
+                    handle,
+                    provideRepository(appContext, AuthRepository::class.java),
+                    provideRepository(appContext, UserRepository::class.java),
+                    provideRepository(
+                        appContext, TokenRepository::class.java
+                    )
+                ) as T
+                SignUpViewModel::class.java -> SignUpViewModel(
+                    application,
+                    handle,
+                    provideRepository(appContext, AuthRepository::class.java),
+                    provideRepository(appContext, UserRepository::class.java),
+                    provideRepository(
+                        appContext, TokenRepository::class.java
+                    )
                 ) as T
                 else -> throw NotImplementedError("Must provide repository for class ${modelClass.simpleName}")
             }
         }
     }
 
-    inline fun <reified T : BaseRepository> provideRepository(context: Context): T {
-        return when (T::class.java) {
+    @Suppress("UNCHECKED_CAST")
+    fun <T : BaseRepository> provideRepository(context: Context, clazz: Class<T>): T {
+        return when (clazz) {
             CocktailRepository::class.java -> CocktailRepositoryImpl(
                 provideDbDataSource(context),
                 provideNetDataSource(context),
@@ -208,14 +232,21 @@ object Injector {
             TokenRepository::class.java -> TokenRepositoryImpl(
                 provideLocalDataSource(context)
             ) as T
-            else -> throw IllegalStateException("Must provide repository for class ${T::class.java.simpleName}")
+            else -> throw IllegalStateException("Must provide repository for class ${clazz.simpleName}")
         }
     }
 
     inline fun <reified T> provideLocalDataSource(context: Context): T {
         "LOG provideLocalDataSource class = ${T::class.java.simpleName}"
         return when (T::class.java) {
-            TokenLocalSource::class.java -> TokenLocalSourceImpl(SharedPrefsHelper(context.getSharedPreferences("sp", Context.MODE_PRIVATE))) as T
+            TokenLocalSource::class.java -> TokenLocalSourceImpl(
+                SharedPrefsHelper(
+                    context.getSharedPreferences(
+                        "sp",
+                        Context.MODE_PRIVATE
+                    )
+                )
+            ) as T
             else -> throw IllegalStateException("Must provide LocalDataSource for class ${T::class.java.simpleName}")
         }
     }
@@ -343,7 +374,10 @@ object Injector {
 //        )
     }
 
-    private fun provideOkHttpClientBuilder(readTimeoutSeconds: Long = 120, writeTimeoutSeconds: Long = 120): OkHttpClient.Builder {
+    private fun provideOkHttpClientBuilder(
+        readTimeoutSeconds: Long = 120,
+        writeTimeoutSeconds: Long = 120
+    ): OkHttpClient.Builder {
         val builder = OkHttpClient.Builder()
         try {
             val trustAllCerts = arrayOf(

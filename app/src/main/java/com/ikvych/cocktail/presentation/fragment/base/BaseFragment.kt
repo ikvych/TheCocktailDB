@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
@@ -13,7 +14,11 @@ import com.ikvych.cocktail.presentation.dialog.base.BaseDialogFragment
 import com.ikvych.cocktail.presentation.dialog.type.DialogButton
 import com.ikvych.cocktail.presentation.dialog.type.DialogType
 import com.ikvych.cocktail.presentation.extension.baseViewModels
+import com.ikvych.cocktail.presentation.extension.observeNotNull
+import com.ikvych.cocktail.util.delegate.ErrorHandler
+import com.ikvych.cocktail.util.delegate.ErrorHandlerProvider
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import java.lang.Exception
 import kotlin.reflect.KClass
 
 abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBinding> : Fragment(),
@@ -26,6 +31,7 @@ abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBind
     protected val viewModel: ViewModel by baseViewModels()
     protected lateinit var dataBinding: DataBinding
     abstract val viewModelClass: KClass<ViewModel>
+    protected lateinit var errorHandler: ErrorHandler
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,6 +46,14 @@ abstract class BaseFragment<ViewModel : BaseViewModel, DataBinding: ViewDataBind
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         configureView(view, savedInstanceState)
+        errorHandler = ErrorHandlerProvider(childFragmentManager) {}
+        viewModel.errorLiveData.observeNotNull(requireActivity()) {
+            toProcessError(it)
+        }
+    }
+
+    protected open fun toProcessError(exception: Exception) {
+        errorHandler.handleError(exception)
     }
 
     protected open fun configureDataBinding(binding: DataBinding) {

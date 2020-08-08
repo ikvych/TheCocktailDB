@@ -22,12 +22,14 @@ import com.ikvych.cocktail.presentation.dialog.type.DialogType
 import com.ikvych.cocktail.presentation.dialog.type.ItemListDialogButton
 import com.ikvych.cocktail.presentation.dialog.type.SortDrinkDrinkDialogType
 import com.ikvych.cocktail.presentation.dialog.regular.SortDrinkDialogFragment
+import com.ikvych.cocktail.presentation.extension.baseViewModels
 import com.ikvych.cocktail.presentation.extension.viewModels
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
 import com.ikvych.cocktail.util.CachedBatteryState
 import com.ikvych.cocktail.util.Page
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
 import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
+import com.ikvych.cocktail.viewmodel.ProfileActivityViewModel
 import kotlinx.android.synthetic.main.fragment_main.*
 import kotlinx.android.synthetic.main.widget_app_toolbar.*
 import kotlin.reflect.KClass

@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.viewmodel.base
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.ikvych.cocktail.data.repository.source.AppSettingRepository
 import com.ikvych.cocktail.data.repository.impl.source.AppSettingRepositoryImpl
@@ -13,6 +14,8 @@ open class BaseViewModel(
     val savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
 
+    val errorLiveData: MutableLiveData<java.lang.Exception> = MutableLiveData()
+
     protected val appSettingRepository: AppSettingRepository =
         AppSettingRepositoryImpl.instance(application)
 
@@ -21,12 +24,15 @@ open class BaseViewModel(
         context: CoroutineContext = Dispatchers.IO,
         request: suspend CoroutineScope.() -> T
     ): Job {
-        return viewModelScope.async {
+        return viewModelScope.launch {
             try {
                 withContext(context) { request() }.apply { liveData?.setValue(this) }
             } catch (e: Exception) {
                 e.printStackTrace()
-                throw e
+                withContext(Dispatchers.Main) {
+                    errorLiveData.value = e
+                    errorLiveData.value = null
+                }
             }
         }
     }

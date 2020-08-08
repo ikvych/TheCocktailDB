@@ -33,8 +33,8 @@
     <!--#endregion-->
 
     <!--#region AuthActivity-->
-    <string name="auth_correct_login">123qweasd</string>
-    <string name="auth_correct_password">123qweasd</string>
+    <string name="auth_correct_login">ikvuch@gmail.com</string>
+    <string name="auth_correct_password">123456</string>
     <string name="auth_login_button">Login</string>
     <string name="auth_password_tint">Password</string>
     <string name="auth_login_hint">Login</string>
@@ -42,6 +42,22 @@
     <string name="auth_invalid_data">Invalid login or password!</string>
     <string name="auth_invalid_password">The password must contain more than 6 characters, one letter and one number!</string>
     <string name="auth_invalid_login">Login must contain more than 6 characters!</string>
+    <string name="auth_have_no_account_title">You have no account?</string>
+    <string name="auth_sign_up_button_title">Sign Up</string>
+    <string name="auth_sign_in_button_title">Sign In</string>
+    <string name="auth_first_name_hint">First Name</string>
+    <string name="auth_last_name_hint">Last Name</string>
+    <string name="auth_email_hint">Email</string>
+    <string name="auth_password_hint">Password</string>
+    <string name="auth_password_confirm_hint">Repeat Password</string>
+    <string name="auth_minimal_symbol_count">$ more characters are required</string>
+    <string name="auth_email_format">Example - something@someserver.com</string>
+    <string name="auth_password_minimun_require">At least - </string>
+    <string name="auth_password_one_number">one number </string>
+    <string name="auth_password_one_letter">one letter</string>
+    <string name="auth_passwords_do_not_mutch">Passwords do not matches</string>
+    <string name="auth_user_already_exist">User with email address - $ already exist!</string>
+    <string name="auth_user_do_not_exist">User with current data don\'t exist!</string>
     <!--#endregion-->
 
     <string name="dialog_sort_title">Sort By</string>
@@ -113,6 +129,10 @@
     <string name="resume_app_dialog_description">We suggest you watch the drink of the day:</string>
     <string name="resume_app_dialog_right_button">Review</string>
     <string name="resume_app_dialog_left_button">No, thanks</string>
+    <!--#endregion-->
+
+    <!--#region Exception Dialog Title-->
+    <string name="app_error_request_error">Network error</string>
     <!--#endregion-->
 
 </resources>

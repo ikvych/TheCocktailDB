@@ -38,10 +38,11 @@ class ProfileActivity : BaseActivity<ProfileActivityViewModel, ActivityProfileBi
 
     override fun onClick(v: View?) {
         if (v == null) return
+        viewModel.removeUser()
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
-        != PackageManager.PERMISSION_GRANTED) {
+            != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
-            100)
+                100)
             return
         }
         val intent = Intent(Intent.ACTION_GET_CONTENT)

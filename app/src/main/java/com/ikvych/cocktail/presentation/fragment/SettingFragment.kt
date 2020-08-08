@@ -14,20 +14,25 @@ import com.ikvych.cocktail.presentation.activity.SplashActivity
 import com.ikvych.cocktail.presentation.dialog.bottom.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.presentation.dialog.bottom.SelectLanguageBottomSheetDialogFragment
 import com.ikvych.cocktail.presentation.dialog.type.*
+import com.ikvych.cocktail.presentation.extension.baseViewModels
+import com.ikvych.cocktail.presentation.extension.observeOnce
+import com.ikvych.cocktail.presentation.extension.viewModels
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
 import com.ikvych.cocktail.util.Language
 import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.viewmodel.ProfileActivityViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_setting.*
 import kotlin.reflect.KClass
 
-class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>(),
+class SettingFragment : BaseFragment<ProfileActivityViewModel, FragmentSettingBinding>(),
     View.OnClickListener {
 
     override var contentLayoutResId: Int = R.layout.fragment_setting
-    override val viewModelClass: KClass<BaseViewModel>
-    get() = BaseViewModel::class
+    override val viewModelClass: KClass<ProfileActivityViewModel>
+        get() = ProfileActivityViewModel::class
     private val mainViewModel: MainActivityViewModel by activityViewModels()
+    private val profileViewModel: ProfileActivityViewModel by baseViewModels()
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
@@ -69,8 +74,12 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>(),
             }
             R.id.b_change_language -> {
                 SelectLanguageBottomSheetDialogFragment.newInstance(
-                    Language.values()[viewModel.selectedLanguageLiveData.value!!])
-                    .show(childFragmentManager, SelectLanguageBottomSheetDialogFragment::class.java.simpleName)
+                    Language.values()[viewModel.selectedLanguageLiveData.value!!]
+                )
+                    .show(
+                        childFragmentManager,
+                        SelectLanguageBottomSheetDialogFragment::class.java.simpleName
+                    )
             }
             R.id.b_start_profile -> {
                 startActivity(Intent(requireContext(), ProfileActivity::class.java))
@@ -89,6 +98,7 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>(),
             RegularDialogType -> {
                 when (buttonType) {
                     RightDialogButton -> {
+                        profileViewModel.removeUser()
                         val intent = Intent(requireContext(), AuthActivity::class.java)
                         requireContext().startActivity(intent)
                         requireActivity().finish()
@@ -105,8 +115,10 @@ class SettingFragment : BaseFragment<BaseViewModel, FragmentSettingBinding>(),
                         viewModel.selectedLanguageLiveData.value = selectedLanguage.ordinal
                         val intent = Intent(requireContext(), SplashActivity::class.java)
                         intent.addFlags(
-                            Intent.FLAG_ACTIVITY_CLEAR_TASK).addFlags(
-                            Intent.FLAG_ACTIVITY_NEW_TASK)
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK
+                        ).addFlags(
+                            Intent.FLAG_ACTIVITY_NEW_TASK
+                        )
                         requireActivity().startActivity(intent)
                     }
                 }

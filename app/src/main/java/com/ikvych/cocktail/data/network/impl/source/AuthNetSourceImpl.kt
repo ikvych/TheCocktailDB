@@ -23,7 +23,7 @@ class AuthNetSourceImpl(
         }
     }
 
-    override suspend fun logIn(firstName: String, lastName: String, email: String, password: String): String {
+    override suspend fun signUp(firstName: String, lastName: String, email: String, password: String): String {
         return performRequest {
             val result = logIn(
                 JsonObject().apply {

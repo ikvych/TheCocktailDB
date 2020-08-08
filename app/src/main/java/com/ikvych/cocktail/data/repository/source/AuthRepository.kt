@@ -9,5 +9,5 @@ interface AuthRepository : BaseRepository {
      * Otherwise user must fill profile data
      */
     suspend fun signIn(email: String, password: String): Boolean
-    suspend fun logIn(firstName: String, lastName: String, email: String, password: String): Boolean
+    suspend fun signUp(firstName: String, lastName: String, email: String, password: String): Boolean
 }

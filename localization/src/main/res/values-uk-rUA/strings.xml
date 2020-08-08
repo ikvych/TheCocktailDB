@@ -33,8 +33,8 @@
     <!--#endregion-->
 
     <!--#region AuthActivity-->
-    <string name="auth_correct_login">123qweasd</string>
-    <string name="auth_correct_password">123qweasd</string>
+    <string name="auth_correct_login">ikvuch@gmail.com</string>
+    <string name="auth_correct_password">123456</string>
     <string name="auth_login_button">Увійти</string>
     <string name="auth_password_tint">Пароль</string>
     <string name="auth_login_hint">Логін</string>
@@ -42,6 +42,22 @@
     <string name="auth_invalid_data">Невірні логін або пароль!</string>
     <string name="auth_invalid_password">Пароль повинний містити більше 6 символів, одну літеру і одну цифру!</string>
     <string name="auth_invalid_login">Логін повинний містити більше 6 символів!</string>
+    <string name="auth_have_no_account_title">У вас немає акаунта?</string>
+    <string name="auth_sign_up_button_title">Зареєструватись</string>
+    <string name="auth_sign_in_button_title">Увійти</string>
+    <string name="auth_first_name_hint">Ім\'я</string>
+    <string name="auth_last_name_hint">Прізвище</string>
+    <string name="auth_email_hint">Електронна адреса</string>
+    <string name="auth_password_hint">Пароль</string>
+    <string name="auth_password_confirm_hint">Повторіть пароль</string>
+    <string name="auth_minimal_symbol_count">Потрібно ще $ символів</string>
+    <string name="auth_email_format">Приклад - something@someserver.com</string>
+    <string name="auth_password_minimun_require">Хоча б - </string>
+    <string name="auth_password_one_number">одна цифра </string>
+    <string name="auth_password_one_letter">одна літера</string>
+    <string name="auth_passwords_do_not_mutch">Паролі не співпадають</string>
+    <string name="auth_user_already_exist">Користувач з електронною поштою - $ уже зареєстрований!</string>
+    <string name="auth_user_do_not_exist">Коричтувача з поточними даними не існує!</string>
     <!--#endregion-->
 
     <string name="dialog_sort_title">Сортувати за</string>
@@ -114,6 +130,10 @@
     <string name="resume_app_dialog_description">Пропонуємо переглянути напій дня: </string>
     <string name="resume_app_dialog_right_button">Переглянути</string>
     <string name="resume_app_dialog_left_button">Ні, дякую</string>
+    <!--#endregion-->
+
+    <!--#region Exception Dialog Title-->
+    <string name="app_error_request_error">Введені невірні дані</string>
     <!--#endregion-->
 
 </resources>

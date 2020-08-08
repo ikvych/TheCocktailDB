@@ -6,11 +6,14 @@ import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
 import android.view.View
+import android.widget.Toast
 import androidx.annotation.CallSuper
+import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.receiver.FlyModeReceiver
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
 import com.ikvych.cocktail.presentation.dialog.base.BaseBottomSheetDialogFragment
@@ -18,8 +21,12 @@ import com.ikvych.cocktail.presentation.dialog.base.BaseDialogFragment
 import com.ikvych.cocktail.presentation.dialog.type.DialogButton
 import com.ikvych.cocktail.presentation.dialog.type.DialogType
 import com.ikvych.cocktail.presentation.extension.baseViewModels
+import com.ikvych.cocktail.presentation.extension.observeNotNull
 import com.ikvych.cocktail.util.Language
+import com.ikvych.cocktail.util.delegate.ErrorHandler
+import com.ikvych.cocktail.util.delegate.ErrorHandlerProvider
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import java.lang.Exception
 import java.util.*
 import kotlin.reflect.KClass
 
@@ -33,6 +40,7 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
     View.OnClickListener, View.OnLongClickListener {
 
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()
+    private lateinit var errorHandler: ErrorHandler
     protected abstract var contentLayoutResId: Int
     protected val viewModel: ViewModel by baseViewModels()
     protected lateinit var dataBinding: DataBinding
@@ -67,6 +75,18 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
 
     protected open fun configureView(savedInstanceState: Bundle?) {
         //stub
+    }
+
+    override fun onPostCreate(savedInstanceState: Bundle?) {
+        super.onPostCreate(savedInstanceState)
+        errorHandler = ErrorHandlerProvider(supportFragmentManager) {}
+        viewModel.errorLiveData.observeNotNull(this) {
+            toProcessErrors(it)
+        }
+    }
+
+    protected open fun toProcessErrors(exception: Exception) {
+        errorHandler.handleError(exception)
     }
 
     @CallSuper
@@ -144,4 +164,31 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
         //stub
         return false
     }
+
+/*    //region Convenient Observe Methods
+    @MainThread
+    protected inline fun <reified T> LiveData<T>.observe(noinline observer: (T) -> Unit) {
+        this.observe(this@BaseActivity, observer)
+    }
+
+    @MainThread
+    protected fun <T> LiveData<T?>.observeNotNull(observer: (T) -> Unit) {
+        this.observeNotNull(this@BaseActivity, observer)
+    }
+
+    @MainThread
+    protected inline fun <T> LiveData<T?>.observeTillDestroyNotNull(crossinline observer: (T) -> Unit) {
+        this.observeTillDestroyNotNull(this@BaseActivity, observer)
+    }
+
+    @MainThread
+    protected inline fun <T> LiveData<T>.observeTillDestroy(crossinline observer: (T) -> Unit) {
+        this.observeTillDestroy(this@BaseActivity, observer)
+    }
+
+    @MainThread
+    protected inline fun <T> LiveData<T>.observeNonNullOnce(crossinline observer: (T) -> Unit) {
+        this.observeNotNullOnce(this@BaseActivity, observer)
+    }
+    //endregion*/
 }

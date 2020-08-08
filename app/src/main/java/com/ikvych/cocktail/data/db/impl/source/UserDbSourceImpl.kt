@@ -1,5 +1,6 @@
 package com.ikvych.cocktail.data.db.impl.source
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.data.db.impl.dao.UserDao
 import com.ikvych.cocktail.data.db.model.user.entity.UserDbModel
@@ -25,5 +26,6 @@ class UserDbSourceImpl(
 
     override suspend fun deleteUser() {
         userDao.deleteUser()
+        Log.d("Delete", "Deleted")
     }
 }

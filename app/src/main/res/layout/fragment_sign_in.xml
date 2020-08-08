@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.SignInViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:fillViewport="true">
+
+        <com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
+            android:id="@+id/llwkl_auth_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:descendantFocusability="beforeDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:padding="@dimen/offset_16">
+
+            <ImageView
+                android:id="@+id/iv_auth_app_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/offset_24"
+                android:layout_marginVertical="@dimen/offset_16"
+                android:contentDescription="@string/all_content_description"
+                app:srcCompat="@drawable/ic_logo" />
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_auth_login"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:hintTextColor="@color/color_on_surface_variant">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_auth_login"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_primary"
+                    android:hint="@string/auth_login_hint"
+                    android:inputType="textPersonName"
+                    android:saveEnabled="false"
+                    android:text="@={viewModel.loginInputLiveData}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/til_auth_password"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:errorEnabled="true"
+                app:hintTextColor="@color/color_on_surface_variant"
+                app:passwordToggleEnabled="true">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/tiet_auth_password"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_primary"
+                    android:hint="@string/auth_password_tint"
+                    android:inputType="textPassword"
+                    android:saveEnabled="false"
+                    android:text="@={viewModel.passwordInputLiveData}" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/b_auth_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_width"
+
+                android:background="@drawable/selector_app_button"
+                android:onClick="@{() -> viewModel.onSubmit()}"
+                android:text="@string/auth_login_button"
+                android:textColor="@drawable/selector_app_button_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/offset_16"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auth_have_no_account_title" />
+
+                <Space
+                    android:layout_width="@dimen/offset_8"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_sign_up"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClick"
+                    android:text="@string/auth_sign_up_button_title"
+                    android:textColor="@color/color_surface_variant" />
+
+            </LinearLayout>
+
+
+        </com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener>
+    </androidx.core.widget.NestedScrollView>
+</layout>

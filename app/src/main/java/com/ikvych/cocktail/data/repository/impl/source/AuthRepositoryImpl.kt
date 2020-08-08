@@ -29,13 +29,13 @@ class AuthRepositoryImpl(
             }
     }
 
-    override suspend fun logIn(
+    override suspend fun signUp(
         firstName: String,
         lastName: String,
         email: String,
         password: String
     ): Boolean {
-        return authNetSource.logIn(firstName, lastName, email, password)
+        return authNetSource.signUp(firstName, lastName, email, password)
             .let {
                 tokenLocalSource.token = it
 

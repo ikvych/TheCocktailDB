@@ -98,7 +98,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
             override fun onQueryTextChange(newText: String?): Boolean {
                 return if (!newText.isNullOrBlank()) {
                     val searchQuery: String = newText.trim()
-                    viewModel.updateCocktailsLiveData(searchQuery)
+                    viewModel.searchQueryLiveData.value = searchQuery
                     return true
                 } else {
                     false

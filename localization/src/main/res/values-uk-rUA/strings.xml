@@ -137,11 +137,17 @@
 
     <!--#region Exception Dialog Title-->
     <string name="app_error_request_error">Введені невірні дані</string>
+    <string name="app_error_unknown_error">Невідома помилка</string>
+    <string name="app_no_internet_connection">Немає з\'єднання з інтернетом</string>
+    <string name="app_resume_internet_connection">З\'єднання з інтернетом відновлено</string>
     <!--#endregion-->
 
     <!--#region Edit Profile-->
     <string name="profile_avatar_title">Основна світлина</string>
+    <string name="profile_main_info_title">Основна інформація</string>
     <string name="edit_photo">Редагувати</string>
+    <string name="edit_profile">Редагування профілю</string>
+    <string name="edit_profile_main_info">Редагування основної нформації</string>
     <string name="upload_avatar_dialog_title">Завантаження фото</string>
     <string name="upload_avatar_dialog_description">Виберіть звідки загрузити фото</string>
     <!--#endregion-->

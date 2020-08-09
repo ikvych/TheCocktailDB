@@ -1,6 +1,7 @@
 package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.repository.source.AuthRepository
@@ -139,22 +140,30 @@ class SignUpViewModel(
 
             fun validate(): Boolean {
                 val result = isValidFirstNameLiveData.value ?: false &&
-                        isValidLastNameLiveData.value ?: false  &&
-                        isValidEmailLiveData.value ?: false  &&
-                        isValidPasswordLiveData.value ?: false  &&
+                        isValidLastNameLiveData.value ?: false &&
+                        isValidEmailLiveData.value ?: false &&
+                        isValidPasswordLiveData.value ?: false &&
                         isValidPasswordConfirmLiveData.value ?: false
                 return result
             }
         }
 
     fun onSubmit() {
-        launchRequest {
-            authRepository.signUp(
-                firstName = firstNameInputLiveData.value!!,
-                lastName = lastNameInputLiveData.value!!,
-                email = emailInputLiveData.value!!,
-                password = passwordInputLiveData.value!!
-            )
+        if (connectivityInfoLiveData.value == true) {
+            launchRequest {
+                authRepository.signUp(
+                    firstName = firstNameInputLiveData.value!!,
+                    lastName = lastNameInputLiveData.value!!,
+                    email = emailInputLiveData.value!!,
+                    password = passwordInputLiveData.value!!
+                )
+            }
+        } else {
+            Toast.makeText(
+                this.getApplication<Application>(),
+                this.getApplication<Application>().getString(R.string.app_no_internet_connection),
+                Toast.LENGTH_LONG
+            ).show()
         }
     }
 

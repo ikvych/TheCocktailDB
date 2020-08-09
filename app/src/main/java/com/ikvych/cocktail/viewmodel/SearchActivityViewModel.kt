@@ -1,7 +1,9 @@
 package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
+import android.widget.Toast
 import androidx.lifecycle.*
+import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.presentation.extension.debounce
 import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
@@ -17,12 +19,20 @@ class SearchActivityViewModel(
 ) : DrinkViewModel(application, savedStateHandle, cocktailRepository, mapper) {
 
     val cocktailLiveData: LiveData<List<CocktailModel>> =
-        cocktailRepository.cocktailsNetListLiveData.map{mapper.mapTo(it)}
+        cocktailRepository.cocktailsNetListLiveData.map { mapper.mapTo(it) }
 
     private var searchJob: Job? = null
 
     val searchObserver: Observer<String> = Observer {
-        updateCocktailsLiveData(it)
+        if (connectivityInfoLiveData.value == true) {
+            updateCocktailsLiveData(it)
+        } else {
+            Toast.makeText(
+                this.getApplication<Application>(),
+                this.getApplication<Application>().getString(R.string.app_no_internet_connection),
+                Toast.LENGTH_LONG
+            ).show()
+        }
     }
 
     //відслідковує чи було ініціалізоване value у drinkLiveData

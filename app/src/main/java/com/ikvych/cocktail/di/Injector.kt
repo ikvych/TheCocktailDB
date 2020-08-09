@@ -149,12 +149,6 @@ object Injector {
             handle: SavedStateHandle
         ): T {
             return when (modelClass) {
-                AuthViewModel::class.java -> AuthViewModel(application, handle) as T
-                DrinkDetailViewModel::class.java -> DrinkDetailViewModel(
-                    provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
-                        appContext
-                    ), application, handle
-                ) as T
                 MainActivityViewModel::class.java -> MainActivityViewModel(
                     provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
                         appContext

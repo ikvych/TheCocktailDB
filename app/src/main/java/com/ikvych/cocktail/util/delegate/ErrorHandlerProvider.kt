@@ -37,13 +37,13 @@ open class ErrorHandlerProvider/*<ViewRequest : LaunchRequest>*/(
                 }
             }*/
 
-/*            is UnknownError -> {
-                RegularBottomSheetDialogFragment.newInstance(data = null) {
+            is UnknownError -> {
+                RegularBottomSheetDialogFragment.newInstance() {
                     titleTextResId = R.string.app_error_unknown_error
-                    descriptionText = info.message
-                    rightButtonTextResId = R.string.app_ok
-                }.show(fragmentManager, ApiError::class.java.name)
-            }*/
+                    descriptionText = info.message ?: ""
+                    rightButtonTextResId = R.string.all_ok_button
+                }.show(fragmentManager, UnknownError::class.java.name)
+            }
 
 /*            is CancellationError -> {
                 if (BuildConfig.DEBUG) "DEBUG Job Cancellation (request ${info.request?.let { it::class.simpleName }}, message = ${info.message})".log

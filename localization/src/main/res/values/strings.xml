@@ -136,11 +136,17 @@
 
     <!--#region Exception Dialog Title-->
     <string name="app_error_request_error">Network error</string>
+    <string name="app_error_unknown_error">Unknown error</string>
+    <string name="app_no_internet_connection">No internet connection</string>
+    <string name="app_resume_internet_connection">Internet connection resumed</string>
     <!--#endregion-->
 
     <!--#region Edit Profile-->
     <string name="profile_avatar_title">Profile photo</string>
+    <string name="profile_main_info_title">Main info</string>
     <string name="edit_photo">Edit</string>
+    <string name="edit_profile">Edit profile</string>
+    <string name="edit_profile_main_info">Edit main info</string>
     <string name="upload_avatar_dialog_title">Upload photo</string>
     <string name="upload_avatar_dialog_description">Select where to upload the photo</string>
     <!--#endregion-->

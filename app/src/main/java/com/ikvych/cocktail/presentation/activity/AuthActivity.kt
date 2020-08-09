@@ -8,14 +8,14 @@ import com.ikvych.cocktail.databinding.ActivityAuthBinding
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
 import com.ikvych.cocktail.presentation.fragment.SignInFragment
 import com.ikvych.cocktail.presentation.fragment.SignUpFragment
-import com.ikvych.cocktail.viewmodel.AuthViewModel
+import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlin.reflect.KClass
 
-class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
+class AuthActivity : BaseActivity<BaseViewModel, ActivityAuthBinding>() {
 
     override var contentLayoutResId: Int = R.layout.activity_auth
-    override val viewModelClass: KClass<AuthViewModel>
-        get() = AuthViewModel::class
+    override val viewModelClass: KClass<BaseViewModel>
+        get() = BaseViewModel::class
 
     override fun configureView(savedInstanceState: Bundle?) {
         super.configureView(savedInstanceState)
@@ -38,9 +38,5 @@ class AuthActivity : BaseActivity<AuthViewModel, ActivityAuthBinding>() {
                 ft.commit()
             }
         }
-    }
-
-    override fun configureDataBinding(binding: ActivityAuthBinding) {
-        binding.viewModel = viewModel
     }
 }

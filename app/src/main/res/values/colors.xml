@@ -13,6 +13,7 @@
     <color name="color_normal">#FFFFFF</color>
 
     <color name="color_surface_variant">#558B2F</color>
+    <color name="color_edit_text">#283593</color>
 
     <color name="battery_charging">#558B2F</color>
     <color name="battery_low">#D32F2F</color>

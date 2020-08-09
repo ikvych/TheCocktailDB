@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+<data>
+    <import type="android.view.View"/>
+    <variable
+        name="viewModel"
+        type="com.ikvych.cocktail.viewmodel.EditProfileViewModel" />
+</data>
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#FFFFFF"
+    android:clickable="true"
+    android:focusable="true"
+    tools:context=".presentation.fragment.ProfileMainInfoFragment">
+
+    <com.ikvych.cocktail.widget.custom.ApplicationToolBar
+        android:id="@+id/atb_profile_main_info"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/view_height_max"
+        android:layout_gravity="top"
+        bind:tl_set_text="@string/edit_profile_main_info"
+        android:background="@drawable/shape_app_bar_bg"
+        android:elevation="@dimen/elevation_16" />
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/ll_main_info_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:descendantFocusability="beforeDescendants"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:padding="@dimen/offset_16">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="@dimen/offset_16">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:paddingHorizontal="@dimen/offset_8"
+                    android:hint="@string/auth_first_name_hint"/>
+
+                <EditText
+                    android:id="@+id/tiet_first_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/color_on_surface_variant"
+                    android:text="@={viewModel.firstNameInputLiveData}"
+                    android:inputType="textPersonName"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/auth_password_confirm_hint"
+                    android:text="@{viewModel.validateFirstNameLiveData}"
+                    android:visibility="@{viewModel.isValidFirstNameLiveData() ? View.GONE : View.VISIBLE}"
+                    android:textColor="@color/warning"
+                    android:paddingStart="@dimen/offset_8"
+                    android:textColorHint="@color/warning"
+                    />
+
+            </LinearLayout>
+
+            <ImageView
+                android:layout_width="@dimen/offset_24"
+                android:layout_height="match_parent"
+                android:layout_marginStart="@dimen/offset_8"
+                android:src="@drawable/ic_checked_simple"
+                android:visibility="@{viewModel.isValidFirstNameLiveData() ? View.VISIBLE : View.GONE}"
+                />
+        </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="@dimen/offset_16">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:hint="@string/auth_last_name_hint"/>
+
+                    <EditText
+                        android:id="@+id/tiet_last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_on_surface_variant"
+                        android:text="@={viewModel.lastNameInputLiveData}"
+                        android:inputType="textPersonName"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/auth_password_confirm_hint"
+                        android:text="@{viewModel.validateLastNameLiveData}"
+                        android:visibility="@{viewModel.isValidLastNameLiveData() ? View.GONE : View.VISIBLE}"
+                        android:textColor="@color/warning"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:textColorHint="@color/warning"
+                        />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/offset_24"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/offset_8"
+                    android:src="@drawable/ic_checked_simple"
+                    android:visibility="@{viewModel.isValidLastNameLiveData() ? View.VISIBLE : View.GONE}"
+                    />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <Space
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/b_auth_sign_up"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/btn_height_max"
+        android:background="@drawable/selector_app_button_simple"
+        android:enabled="@{viewModel.isValidEnteredDataLIveData()}"
+        android:onClick="@{() -> viewModel.onSubmit()}"
+        android:text="@string/all_save_button"
+        android:textColor="@drawable/selector_app_button_text" />
+
+</LinearLayout>
+
+</layout>

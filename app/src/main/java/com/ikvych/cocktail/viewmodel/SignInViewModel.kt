@@ -1,6 +1,8 @@
 package com.ikvych.cocktail.viewmodel
 
 import android.app.Application
+import android.content.Context
+import android.widget.Toast
 import androidx.lifecycle.*
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.repository.source.AuthRepository
@@ -142,11 +144,19 @@ class SignInViewModel(
             isLoginDataMatchPatternLiveData.value!!.second &&
             isLoginDataValidLiveData.value!!
         ) {
-            launchRequest(shouldLogInLiveData) {
-                authRepository.signIn(
-                    email = loginInputLiveData.value!!,
-                    password = passwordInputLiveData.value!!
-                )
+            if (connectivityInfoLiveData.value == true) {
+                launchRequest(shouldLogInLiveData) {
+                    authRepository.signIn(
+                        email = loginInputLiveData.value!!,
+                        password = passwordInputLiveData.value!!
+                    )
+                }
+            } else {
+                Toast.makeText(
+                    this.getApplication<Application>(),
+                    this.getApplication<Application>().getString(R.string.app_no_internet_connection),
+                    Toast.LENGTH_LONG
+                ).show()
             }
         } else {
             //переводжу фокус на поле вводу для паролю оскільки в ньому є помилка

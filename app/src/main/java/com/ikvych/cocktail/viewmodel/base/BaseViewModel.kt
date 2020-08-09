@@ -3,8 +3,10 @@ package com.ikvych.cocktail.viewmodel.base
 import android.app.Application
 import android.widget.Toast
 import androidx.lifecycle.*
+import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.repository.source.AppSettingRepository
 import com.ikvych.cocktail.data.repository.impl.source.AppSettingRepositoryImpl
+import com.ikvych.cocktail.util.ConnectivityInfoLiveData
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
@@ -14,7 +16,18 @@ open class BaseViewModel(
     val savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
 
+    val networkObserver: Observer<Boolean> = Observer {}
     val errorLiveData: MutableLiveData<java.lang.Exception> = MutableLiveData()
+    val connectivityInfoLiveData: ConnectivityInfoLiveData = ConnectivityInfoLiveData(application)
+
+    init {
+        connectivityInfoLiveData.observeForever(networkObserver)
+    }
+
+    override fun onCleared() {
+        connectivityInfoLiveData.removeObserver(networkObserver)
+        super.onCleared()
+    }
 
     protected val appSettingRepository: AppSettingRepository =
         AppSettingRepositoryImpl.instance(application)

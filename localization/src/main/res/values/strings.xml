@@ -12,6 +12,7 @@
     <string name="all_cancel_button">Cancel</string>
     <string name="all_ok_button">OK</string>
     <string name="all_empty_search">Nothing found</string>
+    <string name="all_save_button">Save</string>
     <!--#endregion-->
 
     <string name="info">info</string>
@@ -99,6 +100,8 @@
     <string name="popup_menu_add_dynamic_shortcut">Dynamic shortcut added</string>
     <string name="popup_menu_remove_dynamic_shortcut">Dynamic shortcut removed</string>
     <string name="popup_menu_long_label_prefix">Launch</string>
+    <string name="popup_menu_profile_setting">Edit profile</string>
+    <string name="popup_menu_log_out">Log out</string>
     <!--#endregion-->
 
     <!--#region MainActivity BottomNavigationView-->
@@ -133,6 +136,13 @@
 
     <!--#region Exception Dialog Title-->
     <string name="app_error_request_error">Network error</string>
+    <!--#endregion-->
+
+    <!--#region Edit Profile-->
+    <string name="profile_avatar_title">Profile photo</string>
+    <string name="edit_photo">Edit</string>
+    <string name="upload_avatar_dialog_title">Upload photo</string>
+    <string name="upload_avatar_dialog_description">Select where to upload the photo</string>
     <!--#endregion-->
 
 </resources>

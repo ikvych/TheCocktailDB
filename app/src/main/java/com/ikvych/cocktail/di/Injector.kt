@@ -204,6 +204,16 @@ object Injector {
                         appContext, TokenRepository::class.java
                     )
                 ) as T
+                EditProfileViewModel::class.java -> EditProfileViewModel(
+                    application,
+                    handle,
+                    provideRepository(appContext, AuthRepository::class.java),
+                    provideRepository(appContext, UserRepository::class.java),
+                    provideRepository(
+                        appContext, TokenRepository::class.java
+                    ),
+                    provideModelMapper(appContext)
+                ) as T
                 else -> throw NotImplementedError("Must provide repository for class ${modelClass.simpleName}")
             }
         }

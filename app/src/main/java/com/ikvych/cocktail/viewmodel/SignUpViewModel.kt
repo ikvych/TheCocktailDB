@@ -18,7 +18,6 @@ class SignUpViewModel(
     val userRepository: UserRepository,
     val tokenRepository: TokenRepository
 ) : BaseViewModel(application, savedStateHandle) {
-
     private val minimumNameSymbolCount: Int = 4
     private val minimumPasswordSymbolCount: Int = 6
     private val atLeastOneNumber = Regex("[0-9]+")
@@ -118,7 +117,6 @@ class SignUpViewModel(
         }
     }
 
-
     val isValidEnteredDataLIveData: MutableLiveData<Boolean> =
         object : MediatorLiveData<Boolean>() {
             init {
@@ -148,7 +146,6 @@ class SignUpViewModel(
                 return result
             }
         }
-
 
     fun onSubmit() {
         launchRequest {

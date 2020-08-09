@@ -16,7 +16,7 @@ interface UserApiService : BaseNetService{
     suspend fun getUser(): UserNetModel
 
     @Headers(TOKEN_HEADER)
-    @GET("users/profile")
+    @POST("users/profile")
     suspend fun updateUser(@Body user: UserNetModel)
 
     @Multipart

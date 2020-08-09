@@ -12,6 +12,7 @@
     <string name="all_cancel_button">Відмінити</string>
     <string name="all_ok_button">Добре</string>
     <string name="all_empty_search">Нічого не знайдено</string>
+    <string name="all_save_button">Зберегти</string>
     <!--#endregion-->
 
     <string name="info">Інформація</string>
@@ -100,6 +101,8 @@
     <string name="popup_menu_add_dynamic_shortcut">Динамічний ярлик додано</string>
     <string name="popup_menu_remove_dynamic_shortcut">Динамічний ярлик видалено</string>
     <string name="popup_menu_long_label_prefix">Запустити </string>
+    <string name="popup_menu_profile_setting">Редагувати профіль</string>
+    <string name="popup_menu_log_out">Вийти</string>
     <!--#endregion-->
 
     <!--#region MainActivity BottomNavigationView-->
@@ -134,6 +137,13 @@
 
     <!--#region Exception Dialog Title-->
     <string name="app_error_request_error">Введені невірні дані</string>
+    <!--#endregion-->
+
+    <!--#region Edit Profile-->
+    <string name="profile_avatar_title">Основна світлина</string>
+    <string name="edit_photo">Редагувати</string>
+    <string name="upload_avatar_dialog_title">Завантаження фото</string>
+    <string name="upload_avatar_dialog_description">Виберіть звідки загрузити фото</string>
     <!--#endregion-->
 
 </resources>

@@ -3,6 +3,7 @@ package com.ikvych.cocktail.data.repository.impl.source
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.map
 import com.ikvych.cocktail.data.db.source.UserDbSource
+import com.ikvych.cocktail.data.network.model.UserNetModel
 import com.ikvych.cocktail.data.network.source.UserNetSource
 import com.ikvych.cocktail.data.repository.impl.mapper.user.UserRepoModelMapper
 import com.ikvych.cocktail.data.repository.model.user.UserRepoModel
@@ -36,6 +37,17 @@ class UserRepositoryImpl(
 
     override suspend fun updateUser(user: UserRepoModel) {
         userDbSource.saveUser(user.run(userModelMapper::mapRepoToDb))
+    }
+
+    override suspend fun updateUserOnServer(user: UserRepoModel) {
+        userNetSource.updateUser(UserNetModel(
+            id = user.id,
+            name = user.name,
+            lastName = user.lastName,
+            email = user.email,
+            avatar = user.avatar
+        ))
+        refreshUser()
     }
 
     override suspend fun updateUserLogo(avatar: File) {

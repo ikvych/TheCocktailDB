@@ -121,4 +121,7 @@ dependencies {
     implementation 'jp.wasabeef:glide-transformations:4.0.0'
     //UKrop
     implementation 'com.github.yalantis:ucrop:2.2.5'
+
+    //logging interceptor
+    debugImplementation "com.squareup.okhttp3:logging-interceptor:4.5.0-RC1"
 }

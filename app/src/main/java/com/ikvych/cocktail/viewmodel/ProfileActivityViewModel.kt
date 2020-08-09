@@ -11,6 +11,7 @@ import com.ikvych.cocktail.data.repository.source.UserRepository
 import com.ikvych.cocktail.presentation.extension.mapNotNull
 import com.ikvych.cocktail.presentation.mapper.user.UserModelMapper
 import com.ikvych.cocktail.presentation.model.user.UserModel
+import com.ikvych.cocktail.util.UploadAvatar
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.io.File
 
@@ -43,9 +44,9 @@ class ProfileActivityViewModel(
         }
     }
 
-    fun uploadAvatar(file: File) {
+    fun uploadAvatar(file: File, onUploadProgress: (Float) -> Unit = {_ -> }) {
         launchRequest {
-            userRepository.updateUserLogo(file)
+            userRepository.updateUserLogo(file, onUploadProgress)
             userRepository.refreshUser()
         }
     }

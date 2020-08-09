@@ -50,8 +50,8 @@ class UserRepositoryImpl(
         refreshUser()
     }
 
-    override suspend fun updateUserLogo(avatar: File) {
-        userNetSource.updateUserLogo(avatar)
+    override suspend fun updateUserLogo(avatar: File, onUploadProgress: (Float) -> Unit) {
+        userNetSource.updateUserLogo(avatar) { percent, _, _ -> onUploadProgress(percent)}
         refreshUser()
     }
 

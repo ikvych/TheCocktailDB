@@ -12,7 +12,7 @@ internal class PlatformVersionInterceptor : Interceptor {
         val original = chain.request()
         return with(original.newBuilder()) {
             header(Constant.Header.PLATFORM_VERSION, Build.VERSION.RELEASE ?: "API ${Build.VERSION.SDK_INT}")
-            method(original.method(), original.body())
+            method(original.method, original.body)
             chain.proceed(build())
         }
     }

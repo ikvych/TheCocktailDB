@@ -12,8 +12,8 @@ internal class PostmanMockInterceptor : Interceptor {
         val original = chain.request()
 
         return with(original.newBuilder()) {
-            if (original.method() != "GET") header(Constant.Header.X_MOCK_MATCH_REQUEST_BODY, "true")
-            method(original.method(), original.body())
+            if (original.method != "GET") header(Constant.Header.X_MOCK_MATCH_REQUEST_BODY, "true")
+            method(original.method, original.body)
             chain.proceed(build())
         }
     }

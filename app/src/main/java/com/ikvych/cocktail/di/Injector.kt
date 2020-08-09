@@ -322,7 +322,7 @@ object Injector {
 //                CocktailAppRoomDatabase.instance(context).cocktailDao()
 //            ) as T
             CocktailNetSource::class.java -> CocktailNetSourceImpl(provideNetService()) as T
-            UserNetSource::class.java -> UserNetSourceImpl(provideNetService()) as T
+            UserNetSource::class.java -> UserNetSourceImpl(context, provideNetService()) as T
             AuthNetSource::class.java -> AuthNetSourceImpl(provideNetService()) as T
             else -> throw IllegalStateException("Must provide repository for class ${T::class.java.simpleName}")
         }

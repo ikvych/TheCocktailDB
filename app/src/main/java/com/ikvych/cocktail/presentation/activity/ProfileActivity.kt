@@ -177,7 +177,9 @@ class ProfileActivity : BaseActivity<ProfileActivityViewModel, ActivityProfileBi
             )
             convertBitmapToFile(avatarImgFile, croppedImageBitmap)
             //Uploading the image to cloud.
-            viewModel.uploadAvatar(avatarImgFile)
+            viewModel.uploadAvatar(avatarImgFile) { fraction ->
+                "LOG PROGRESS = fraction=$fraction, percent=${fraction * 100.0F}%".log
+            }
         } catch (e: Exception) {
             "Cannot load image. Unknown error".log()
             e.printStackTrace()

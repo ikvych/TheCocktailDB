@@ -35,7 +35,7 @@ open class BaseNetSourceImpl<ApiService>(private val apiService: ApiService) {
 
         if (throwable is HttpException) {
 
-            val url = throwable.response()?.raw()?.request()?.url().toString()
+            val url = throwable.response()?.raw()?.request?.url.toString()
 
             val errorBody = throwable.response()?.errorBody()
                 ?: throw ApiException(
@@ -67,8 +67,9 @@ open class BaseNetSourceImpl<ApiService>(private val apiService: ApiService) {
                 }
                 .getOrElse {
                     if (throwable.code() >= 500) {
-                        ApiException.SERVER_ERROR to (throwable.localizedMessage ?: throwable.message
-                        ?: it.message.orEmpty())
+                        ApiException.SERVER_ERROR to (throwable.localizedMessage
+                            ?: throwable.message
+                            ?: it.message.orEmpty())
                     } else if (it is IOException || it is JsonSyntaxException) {
                         it.printStackTrace()
                         ApiException.JSON_PARSE to it.message.orEmpty()
@@ -90,7 +91,8 @@ open class BaseNetSourceImpl<ApiService>(private val apiService: ApiService) {
                 else -> throw throwable
             }
 
-            apiException = ApiException("", apiErrorCode, throwable.message.orEmpty(), -1, throwable)
+            apiException =
+                ApiException("", apiErrorCode, throwable.message.orEmpty(), -1, throwable)
         }
 
         return apiException

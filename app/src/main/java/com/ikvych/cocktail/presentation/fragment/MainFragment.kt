@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
@@ -40,7 +41,10 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
     override var contentLayoutResId: Int = R.layout.fragment_main
     override val viewModelClass: KClass<MainFragmentViewModel>
         get() = MainFragmentViewModel::class
-    private val parentViewModel: MainActivityViewModel by activityViewModels()
+    private val parentViewModel: MainActivityViewModel
+        get() {
+            return ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
+        }
 
     private lateinit var filterAdapter: FilterAdapter
 

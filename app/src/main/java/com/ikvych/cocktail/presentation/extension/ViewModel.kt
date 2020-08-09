@@ -41,7 +41,7 @@ fun <ViewModel : BaseViewModel, DataBinding : ViewDataBinding> BaseFragment<View
 
 
 @MainThread
-inline fun <reified ViewModel : BaseViewModel, reified DataBinding : ViewDataBinding> BaseActivity<ViewModel, DataBinding>.viewModels(
+inline fun <reified ViewModel : BaseViewModel, reified DataBinding : ViewDataBinding> BaseActivity<*, DataBinding>.viewModels(
     owner: ViewModelStoreOwner = this,
     noinline factoryProducer: (() -> ViewModelProvider.Factory)? = null
 ): Lazy<ViewModel> {

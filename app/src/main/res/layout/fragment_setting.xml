@@ -38,16 +38,6 @@
                     android:clipChildren="false">
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/b_log_out"
-                        android:layout_width="match_parent"
-                        android:layout_height="@dimen/btn_height"
-                        android:layout_gravity="center"
-                        android:layout_margin="@dimen/offset_8"
-                        android:text="@string/profile_log_out_button"
-                        android:textColor="@drawable/selector_app_button_text"
-                        android:background="@drawable/selector_app_button"/>
-
-                    <androidx.appcompat.widget.AppCompatButton
                         android:id="@+id/b_start_test_fragment"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_height"

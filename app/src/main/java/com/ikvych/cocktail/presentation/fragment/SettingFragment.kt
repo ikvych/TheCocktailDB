@@ -6,6 +6,7 @@ import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.FragmentSettingBinding
 import com.ikvych.cocktail.presentation.activity.AuthActivity
@@ -31,12 +32,13 @@ class SettingFragment : BaseFragment<ProfileActivityViewModel, FragmentSettingBi
     override var contentLayoutResId: Int = R.layout.fragment_setting
     override val viewModelClass: KClass<ProfileActivityViewModel>
         get() = ProfileActivityViewModel::class
-    private val mainViewModel: MainActivityViewModel by activityViewModels()
-    private val profileViewModel: ProfileActivityViewModel by baseViewModels()
+    private val mainViewModel: MainActivityViewModel
+        get() {
+            return ViewModelProvider(requireActivity()).get(MainActivityViewModel::class.java)
+        }
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
-        b_log_out.setOnClickListener(this)
         b_start_test_fragment.setOnClickListener(this)
         b_change_language.setOnClickListener(this)
         b_start_profile.setOnClickListener(this)
@@ -50,17 +52,6 @@ class SettingFragment : BaseFragment<ProfileActivityViewModel, FragmentSettingBi
     override fun onClick(v: View?) {
         if (v == null) return
         when (v.id) {
-            R.id.b_log_out -> {
-                RegularBottomSheetDialogFragment.newInstance {
-                    titleText = getString(R.string.profile_log_out_dialog_title)
-                    descriptionText = getString(R.string.profile_log_out_dialog_message)
-                    leftButtonText = getString(R.string.all_cancel_button)
-                    rightButtonText = getString(R.string.all_accept_button)
-                }.show(
-                    childFragmentManager,
-                    RegularBottomSheetDialogFragment::class.java.simpleName
-                )
-            }
             R.id.b_start_test_fragment -> {
                 val fragmentTransaction: FragmentTransaction =
                     childFragmentManager.beginTransaction()
@@ -95,19 +86,6 @@ class SettingFragment : BaseFragment<ProfileActivityViewModel, FragmentSettingBi
     ) {
         super.onBottomSheetDialogFragmentClick(dialog, buttonType, type, data)
         when (type) {
-            RegularDialogType -> {
-                when (buttonType) {
-                    RightDialogButton -> {
-                        profileViewModel.removeUser()
-                        val intent = Intent(requireContext(), AuthActivity::class.java)
-                        requireContext().startActivity(intent)
-                        requireActivity().finish()
-                    }
-                    LeftDialogButton -> {
-                        dialog.dismiss()
-                    }
-                }
-            }
             SelectLanguageDialogType -> {
                 when (buttonType) {
                     ItemListDialogButton -> {

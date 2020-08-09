@@ -66,16 +66,6 @@ class ProfileActivityViewModel(
     }
 
     init {
-        userNameLiveData.setValue("HELLO FROM VIEW MODEL")
-/*        launchRequest {
-            authRepository.logIn(
-                firstName = "Ivan",
-                lastName = "Kvych",
-                email = "ikvuch@gmail.com",
-                password = "123456"
-            )
-        }*/
-
         launchRequest {
             authRepository.signIn(
                 email = "ikvuch@gmail.com",

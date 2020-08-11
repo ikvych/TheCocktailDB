@@ -104,7 +104,7 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
             NotificationDialogType -> {
                 when (buttonType) {
                     ActionSingleDialogButton -> {
-                        if (!viewModel.isKeyboardShown.value!!) {
+                        if (!viewModel.isKeyboardShownLiveData.value!!) {
                             inputMethodManager.toggleSoftInput(InputMethodManager.SHOW_FORCED, 0)
                         }
                     }
@@ -119,6 +119,6 @@ class AuthActivity : BaseActivity<AuthViewModel>(),
     }
 
     override fun onSoftKeyboardShown(isShowing: Boolean) {
-        viewModel.isKeyboardShown.value = isShowing
+        viewModel.isKeyboardShownLiveData.value = isShowing
     }
 }

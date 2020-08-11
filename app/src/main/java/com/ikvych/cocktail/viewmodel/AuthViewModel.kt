@@ -22,7 +22,7 @@ class AuthViewModel(application: Application) : BaseViewModel(application) {
     private val passwordErrorMessage: String = application.resources.getString(R.string.auth_invalid_password)
 
     //зберігає значення чи показана клавіатура чи прихована
-    val isKeyboardShown: MutableLiveData<Boolean> = MutableLiveData()
+    val isKeyboardShownLiveData: MutableLiveData<Boolean> = MutableLiveData()
     //дані введені з поля логін
     val loginInputLiveData: MutableLiveData<String?> = MutableLiveData()
     //дані введені з поля пароль

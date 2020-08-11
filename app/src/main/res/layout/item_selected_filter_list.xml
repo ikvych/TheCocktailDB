@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.ikvych.cocktail.viewmodel.MainFragmentViewModel" />
+            type="com.ikvych.cocktail.viewmodel.cocktail.MainFragmentViewModel" />
     </data>
 
     <LinearLayout

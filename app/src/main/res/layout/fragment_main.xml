@@ -6,15 +6,15 @@
 
     <data>
         <import type="com.ikvych.cocktail.databinding.adapter.DataBindingAdapter.DataBindingConverter"/>
-        <import type="com.ikvych.cocktail.util.Page"/>
+        <import type="com.ikvych.cocktail.presentation.enumeration.Page"/>
         <import type="android.view.View" />
 
         <variable
             name="viewModel"
-            type="com.ikvych.cocktail.viewmodel.MainFragmentViewModel" />
+            type="com.ikvych.cocktail.viewmodel.cocktail.MainFragmentViewModel" />
         <variable
             name="parentViewModel"
-            type="com.ikvych.cocktail.viewmodel.MainActivityViewModel" />
+            type="com.ikvych.cocktail.viewmodel.cocktail.MainActivityViewModel" />
     </data>
 
     <FrameLayout
@@ -28,7 +28,7 @@
             android:background="#FFFFFF"
             android:orientation="vertical">
 
-            <com.ikvych.cocktail.widget.custom.ApplicationToolBar
+            <com.ikvych.cocktail.util.widget.custom.ApplicationToolBar
                 android:id="@+id/atb_fragment_main"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/view_height_max"

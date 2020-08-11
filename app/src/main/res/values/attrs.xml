@@ -6,5 +6,6 @@
         <attr name="tl_enable_custom_btn" format="boolean"/>
         <attr name="tl_enable_sort_btn" format="boolean"/>
         <attr name="tl_disable_return_btn" format="boolean"/>
+        <attr name="tl_set_transparent" format="boolean"/>
     </declare-styleable>
 </resources>

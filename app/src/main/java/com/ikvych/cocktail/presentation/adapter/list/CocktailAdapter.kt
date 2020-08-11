@@ -10,11 +10,11 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.presentation.adapter.list.base.BaseRecyclerViewAdapter
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
-import com.ikvych.cocktail.viewmodel.DrinkViewModel
+import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
 
 
 class CocktailAdapter(
-    private val viewModel: DrinkViewModel,
+    private val viewModel: CocktailViewModel,
     private val context: Context
 ) : BaseRecyclerViewAdapter<CocktailModel>() {
 

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <import type="android.view.View" />
+        <import type="android.text.InputType"/>
+
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.auth.SignUpViewModel" />
+    </data>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:id="@+id/llwkl_auth_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:descendantFocusability="beforeDescendants"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:orientation="vertical"
+            android:padding="@dimen/offset_16">
+
+            <ImageView
+                android:id="@+id/iv_auth_app_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="@dimen/offset_24"
+                android:layout_marginVertical="@dimen/offset_16"
+                android:contentDescription="@string/all_content_description"
+                app:srcCompat="@drawable/ic_logo" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/offset_16"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/auth_first_name_hint"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/tiet_first_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_on_surface_variant"
+                        android:inputType="textPersonName"
+                        android:text="@={viewModel.firstNameInputLiveData}" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:text="@{viewModel.validateFirstNameLiveData}"
+                        android:textColor="@color/warning"
+                        android:textColorHint="@color/warning"
+                        android:visibility="@{viewModel.isValidFirstNameLiveData() ? View.GONE : View.VISIBLE}" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/offset_24"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/offset_8"
+                    android:src="@drawable/ic_checked_simple"
+                    android:visibility="@{viewModel.isValidFirstNameLiveData() ? View.VISIBLE : View.GONE}" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/offset_16"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/auth_last_name_hint"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/tiet_last_name"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_on_surface_variant"
+                        android:inputType="textPersonName"
+                        android:text="@={viewModel.lastNameInputLiveData}" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:text="@{viewModel.validateLastNameLiveData}"
+                        android:textColor="@color/warning"
+                        android:textColorHint="@color/warning"
+                        android:visibility="@{viewModel.isValidLastNameLiveData() ? View.GONE : View.VISIBLE}" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/offset_24"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/offset_8"
+                    android:src="@drawable/ic_checked_simple"
+                    android:visibility="@{viewModel.isValidLastNameLiveData() ? View.VISIBLE : View.GONE}" />
+            </LinearLayout>
+
+
+            <!--Email-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/offset_16"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/auth_email_hint"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/tiet_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_on_surface_variant"
+                        android:inputType="textEmailAddress"
+                        android:text="@={viewModel.emailInputLiveData}" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:text="@{viewModel.validateEmailLiveData}"
+                        android:textColor="@color/warning"
+                        android:textColorHint="@color/warning"
+                        android:visibility="@{viewModel.isValidEmailLiveData() ? View.GONE : View.VISIBLE}" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/offset_24"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/offset_8"
+                    android:src="@drawable/ic_checked_simple"
+                    android:visibility="@{viewModel.isValidEmailLiveData() ? View.VISIBLE : View.GONE}" />
+            </LinearLayout>
+
+
+            <!--Password-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/offset_16"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/auth_password_hint"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:textSize="16sp" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <EditText
+                            android:id="@+id/tiet_password"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:backgroundTint="@color/color_on_surface_variant"
+                            bind:password_visibility="@{viewModel.passwordVisibilityLiveData}"
+                            android:text="@={viewModel.passwordInputLiveData}" />
+
+                        <CheckBox
+                            android:layout_width="@dimen/offset_32"
+                            android:layout_height="@dimen/btn_height"
+                            android:checked="@={viewModel.passwordVisibilityLiveData}"
+                            android:buttonTint="@drawable/selector_password_checkbox_tint"
+                            android:button="@drawable/selector_password_checkbox"/>
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/auth_password_confirm_hint"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:text="@{viewModel.validatePasswordLiveData}"
+                        android:textColor="@color/warning"
+                        android:textColorHint="@color/warning"
+                        android:visibility="@{viewModel.isValidPasswordLiveData() ? View.GONE : View.VISIBLE}" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/offset_24"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/offset_8"
+                    android:src="@drawable/ic_checked_simple"
+                    android:visibility="@{viewModel.isValidPasswordLiveData() ? View.VISIBLE : View.GONE}" />
+            </LinearLayout>
+
+            <!--Password Confirm-->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/offset_16"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/auth_password_confirm_hint"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:textSize="16sp" />
+
+                    <EditText
+                        android:id="@+id/tiet_password_confirm"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:backgroundTint="@color/color_on_surface_variant"
+                        bind:password_visibility="@{viewModel.passwordVisibilityLiveData}"
+                        android:text="@={viewModel.passwordConfirmInputLiveData}" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/auth_password_confirm_hint"
+                        android:paddingHorizontal="@dimen/offset_8"
+                        android:text="@{viewModel.validateConfirmPasswordLiveData}"
+                        android:textColor="@color/warning"
+                        android:textColorHint="@color/warning"
+                        android:visibility="@{viewModel.isValidPasswordConfirmLiveData() ? View.GONE : View.VISIBLE}" />
+
+                </LinearLayout>
+
+                <ImageView
+                    android:layout_width="@dimen/offset_24"
+                    android:layout_height="match_parent"
+                    android:layout_marginStart="@dimen/offset_8"
+                    android:src="@drawable/ic_checked_simple"
+                    android:visibility="@{viewModel.isValidPasswordConfirmLiveData() ? View.VISIBLE : View.GONE}" />
+            </LinearLayout>
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/b_auth_sign_up"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/btn_width"
+                android:background="@drawable/selector_app_button"
+                android:enabled="@{viewModel.isValidEnteredDataLIveData()}"
+                android:onClick="@{() -> viewModel.onSubmit()}"
+                android:text="@string/auth_sign_up_button_title"
+                android:textColor="@drawable/selector_app_button_text" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="@dimen/offset_16"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auth_have_no_account_title" />
+
+                <Space
+                    android:layout_width="@dimen/offset_8"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    android:id="@+id/tv_sign_in"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:onClick="onClick"
+                    android:text="@string/auth_sign_in_button_title"
+                    android:textColor="@color/color_surface_variant" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</layout>

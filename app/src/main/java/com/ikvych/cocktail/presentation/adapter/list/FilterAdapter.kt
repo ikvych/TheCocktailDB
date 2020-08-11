@@ -8,7 +8,7 @@ import com.ikvych.cocktail.R
 import com.ikvych.cocktail.presentation.adapter.list.base.BaseRecyclerViewAdapter
 import com.ikvych.cocktail.databinding.ItemSelectedFilterListBinding
 import com.ikvych.cocktail.presentation.filter.DrinkFilter
-import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
+import com.ikvych.cocktail.viewmodel.cocktail.MainFragmentViewModel
 
 
 class FilterAdapter(

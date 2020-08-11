@@ -36,6 +36,7 @@
             android:id="@+id/tv_toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:textSize="20sp"
             android:layout_margin="@dimen/offset_8"
             android:textAppearance="@style/TextAppearance.MaterialComponents.Headline5"
             android:layout_gravity="center_vertical"/>
@@ -43,13 +44,13 @@
     </FrameLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_sort_btn_container"
+        android:id="@+id/rl_custom_btn_container_1"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
         <ImageButton
-            android:id="@+id/ib_sort_btn"
+            android:id="@+id/ib_custom_btn_1"
             android:layout_width="@dimen/btn_width_min"
             android:layout_height="@dimen/btn_width_min"
             android:layout_centerInParent="true"
@@ -60,12 +61,12 @@
             android:contentDescription="@string/all_content_description"/>
 
         <TextView
-            android:id="@+id/tv_sort_indicator"
+            android:id="@+id/tv_custom_button_indicator_1"
             android:height="@dimen/indicator_height"
             android:width="@dimen/indicator_width"
             android:visibility="gone"
-            android:layout_alignEnd="@+id/ib_sort_btn"
-            android:layout_alignTop="@+id/ib_sort_btn"
+            android:layout_alignEnd="@+id/ib_custom_btn_1"
+            android:layout_alignTop="@+id/ib_custom_btn_1"
             android:background="@drawable/shape_indicator_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -73,13 +74,13 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_filer_btn_container"
+        android:id="@+id/rl_custom_btn_container_2"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1">
 
         <ImageButton
-            android:id="@+id/ib_filter_btn"
+            android:id="@+id/ib_custom_btn_2"
             android:layout_width="@dimen/btn_width_min"
             android:layout_height="@dimen/btn_width_min"
             android:layout_centerInParent="true"
@@ -90,12 +91,12 @@
             android:contentDescription="@string/all_content_description"/>
 
         <TextView
-            android:id="@+id/tv_filter_indicator"
+            android:id="@+id/tv_custom_button_indicator_2"
             android:height="@dimen/indicator_height"
             android:width="@dimen/indicator_width"
             android:visibility="gone"
-            android:layout_alignEnd="@+id/ib_filter_btn"
-            android:layout_alignTop="@+id/ib_filter_btn"
+            android:layout_alignEnd="@+id/ib_custom_btn_2"
+            android:layout_alignTop="@+id/ib_custom_btn_2"
             android:background="@drawable/shape_indicator_filter_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />

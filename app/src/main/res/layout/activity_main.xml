@@ -7,7 +7,7 @@
 
         <variable
             name="viewModel"
-            type="com.ikvych.cocktail.viewmodel.MainActivityViewModel" />
+            type="com.ikvych.cocktail.viewmodel.cocktail.MainActivityViewModel" />
     </data>
 
 <LinearLayout

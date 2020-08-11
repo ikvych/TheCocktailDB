@@ -74,6 +74,53 @@ class SharedPrefsHelper(val sharedPreferences: SharedPreferences) {
         }
     }
 
+    @Suppress("IMPLICIT_CAST_TO_ANY")
+    inline fun <reified T: Any?> get(key: String, defaultValue: T): T {
+        return when (T::class.java) {
+            Boolean::class.java -> getBoolean(key, defValue = defaultValue as Boolean)
+            String::class.java -> getString(key, defValue = defaultValue as String)
+            Int::class.java -> getInt(key, defValue = defaultValue as Int)
+            Long::class.java -> getLong(key, defValue = defaultValue as Long)
+            Double::class.java -> getDouble(key, defValue = defaultValue as Double)
+            else -> throw NotImplementedError("TODO implement")
+        } as T
+    }
+
+    inline fun <reified T: Any?> set(key: String, value: T) {
+        when (T::class.java) {
+            Boolean::class.java -> putBoolean(key, value as Boolean)
+            String::class.java -> putString(key, value as? String?)
+            Int::class.java -> putInt(key, value as Int)
+            Long::class.java -> putLong(key, value as Long)
+            Double::class.java -> putDouble(key, value as Double)
+            else -> throw NotImplementedError("TODO implement")
+        }
+    }
+
+    @Suppress("UNCHECKED_CAST", "IMPLICIT_CAST_TO_ANY")
+    fun <T> get(clazz: Class<T>, key: String, defaultValue: T): T {
+        return when (clazz) {
+            Boolean::class.java -> getBoolean(key, defValue = defaultValue as Boolean)
+            String::class.java -> getString(key, defValue = defaultValue as String)
+            Int::class.java -> getInt(key, defValue = defaultValue as Int)
+            Long::class.java -> getLong(key, defValue = defaultValue as Long)
+            Double::class.java -> getDouble(key, defValue = defaultValue as Double)
+            else -> throw NotImplementedError("TODO implement")
+        } as T
+    }
+
+    @Suppress("UNCHECKED_CAST")
+    fun <T> set(clazz: Class<T>, key: String, value: T) {
+        when (clazz) {
+            Boolean::class.java -> putBoolean(key, value as Boolean)
+            String::class.java -> putString(key, value as? String?)
+            Int::class.java -> putInt(key, value as Int)
+            Long::class.java -> putLong(key, value as Long)
+            Double::class.java -> putDouble(key, value as Double)
+            else -> throw NotImplementedError("TODO implement")
+        }
+    }
+
     fun remove(key: String) {
         commit { remove(key) }
     }
@@ -93,42 +140,5 @@ class SharedPrefsHelper(val sharedPreferences: SharedPreferences) {
             .apply(block)
             .commit()
     }
-
-    /**
-     * Adds [SharedPreferences.OnSharedPreferenceChangeListener] to [SharedPreferences]
-     * which listens to changes into it.
-     *
-     * @param key key to observe.
-     * @param onChanged invokes when [SharedPreferences.OnSharedPreferenceChangeListener.onSharedPreferenceChanged] method is called.
-     * Should returns as a result a refreshed data from database which will be offered to [callbackFlow].
-     *
-     * @return [Flow] of changed data.
-     */
-/*    @ExperimentalCoroutinesApi
-    inline fun <R> observeChange(
-        key: String,
-        crossinline onChanged: suspend () -> R
-    ): Flow<R> {
-        return callbackFlow {
-            val listener = SharedPreferences.OnSharedPreferenceChangeListener { _, changedKey ->
-                runBlocking {
-                    if (key != changedKey) return@runBlocking
-
-                    if (!isClosedForSend)
-                        offer(onChanged())
-                }
-            }
-
-            if (!isClosedForSend) {
-                offer(onChanged())
-            }
-
-            sharedPreferences.registerOnSharedPreferenceChangeListener(listener)
-
-            awaitClose {
-                sharedPreferences.unregisterOnSharedPreferenceChangeListener(listener)
-            }
-        }
-    }*/
 
 }

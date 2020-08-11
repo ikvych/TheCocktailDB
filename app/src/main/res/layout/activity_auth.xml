@@ -1,93 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <data>
-        <variable
-            name="viewModel"
-            type="com.ikvych.cocktail.viewmodel.AuthViewModel"/>
-    </data>
-
-    <com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
-        android:id="@+id/llwkl_auth_container"
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcv_auth_activity"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:descendantFocusability="beforeDescendants"
-        android:clipChildren="false"
-        android:clipToPadding="false"
-        android:padding="@dimen/offset_16">
+        tools:context=".presentation.activity.AuthActivity"
+        android:focusable="true"/>
 
-        <ImageView
-            android:id="@+id/iv_auth_app_logo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/offset_24"
-            android:layout_marginVertical="@dimen/offset_16"
-            android:contentDescription="@string/all_content_description"
-            app:srcCompat="@drawable/ic_logo" />
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_auth_login"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:errorEnabled="true"
-            app:hintTextColor="@color/color_on_surface_variant">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiet_auth_login"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/color_primary"
-                android:hint="@string/auth_login_hint"
-                android:text="@={viewModel.loginInputLiveData}"
-                android:saveEnabled="false"
-                android:inputType="textPersonName"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <com.google.android.material.textfield.TextInputLayout
-            android:id="@+id/til_auth_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:errorEnabled="true"
-            app:hintTextColor="@color/color_on_surface_variant"
-            app:passwordToggleEnabled="true">
-
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/tiet_auth_password"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:backgroundTint="@color/color_primary"
-                android:hint="@string/auth_password_tint"
-                android:text="@={viewModel.passwordInputLiveData}"
-                android:saveEnabled="false"
-                android:inputType="textPassword"/>
-
-        </com.google.android.material.textfield.TextInputLayout>
-
-        <Space
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1" />
-
-        <androidx.appcompat.widget.AppCompatButton
-            android:id="@+id/b_auth_login"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/btn_width"
-            android:layout_marginVertical="@dimen/offset_16"
-            android:text="@string/auth_login_button"
-            android:onClick="@{() -> viewModel.onSubmit()}"
-            android:textColor="@drawable/selector_app_button_text"
-            android:background="@drawable/selector_app_button"/>
-
-    </com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener>
 </layout>

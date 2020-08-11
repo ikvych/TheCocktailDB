@@ -13,16 +13,16 @@ import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
 import com.ikvych.cocktail.service.ApplicationService
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
 import com.ikvych.cocktail.util.*
-import com.ikvych.cocktail.viewmodel.DrinkDetailViewModel
+import com.ikvych.cocktail.viewmodel.cocktail.CocktailDetailViewModel
 import kotlinx.android.synthetic.main.activity_drink_details.*
 import kotlin.reflect.KClass
 
 
 class DrinkDetailActivity
-    : BaseActivity<DrinkDetailViewModel, ActivityDrinkDetailsBinding>() {
+    : BaseActivity<CocktailDetailViewModel, ActivityDrinkDetailsBinding>() {
 
-    override val viewModelClass: KClass<DrinkDetailViewModel>
-        get() = DrinkDetailViewModel::class
+    override val viewModelClass: KClass<CocktailDetailViewModel>
+        get() = CocktailDetailViewModel::class
     override var contentLayoutResId: Int = R.layout.activity_drink_details
 
     private var maxImageWidth: Int? = null

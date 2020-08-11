@@ -12,6 +12,7 @@
     <string name="all_cancel_button">Відмінити</string>
     <string name="all_ok_button">Добре</string>
     <string name="all_empty_search">Нічого не знайдено</string>
+    <string name="all_save_button">Зберегти</string>
     <!--#endregion-->
 
     <string name="info">Інформація</string>
@@ -33,7 +34,7 @@
     <!--#endregion-->
 
     <!--#region AuthActivity-->
-    <string name="auth_correct_login">123qweasd</string>
+    <string name="auth_correct_login">ikvych@gmail.com</string>
     <string name="auth_correct_password">123qweasd</string>
     <string name="auth_login_button">Увійти</string>
     <string name="auth_password_tint">Пароль</string>
@@ -42,6 +43,22 @@
     <string name="auth_invalid_data">Невірні логін або пароль!</string>
     <string name="auth_invalid_password">Пароль повинний містити більше 6 символів, одну літеру і одну цифру!</string>
     <string name="auth_invalid_login">Логін повинний містити більше 6 символів!</string>
+    <string name="auth_have_no_account_title">У вас немає акаунта?</string>
+    <string name="auth_sign_up_button_title">Зареєструватись</string>
+    <string name="auth_sign_in_button_title">Увійти</string>
+    <string name="auth_first_name_hint">Ім\'я</string>
+    <string name="auth_last_name_hint">Прізвище</string>
+    <string name="auth_email_hint">Електронна адреса</string>
+    <string name="auth_password_hint">Пароль</string>
+    <string name="auth_password_confirm_hint">Повторіть пароль</string>
+    <string name="auth_minimal_symbol_count">Потрібно ще $ символів</string>
+    <string name="auth_email_format">Приклад - something@someserver.com</string>
+    <string name="auth_password_minimun_require">Хоча б - </string>
+    <string name="auth_password_one_number">одна цифра </string>
+    <string name="auth_password_one_letter">одна літера </string>
+    <string name="auth_passwords_do_not_mutch">Паролі не співпадають</string>
+    <string name="auth_user_already_exist">Користувач з електронною поштою - $ уже зареєстрований!</string>
+    <string name="auth_user_do_not_exist">Коричтувача з поточними даними не існує!</string>
     <!--#endregion-->
 
     <string name="dialog_sort_title">Сортувати за</string>
@@ -54,6 +71,7 @@
     <string name="profile_log_out_dialog_message">Ви справді бажаєте вийти?</string>
     <string name="profile_start_test_fragment_button">Запустити тестовий фрагмент</string>
     <string name="profile_change_language_button">Змінити мову</string>
+    <string name="profile_start_profile_button">Профіль</string>
     <string name="profile_show_hide_main_navigation_bar_titles">Показати/Приховати заголовки вкладок</string>
     <string name="profile_battery_state_visibility">Показати/Приховати стан батареї</string>
     <string name="profile_fragment_battery_state_shown">Рівень заряду батареї показано</string>
@@ -83,6 +101,8 @@
     <string name="popup_menu_add_dynamic_shortcut">Динамічний ярлик додано</string>
     <string name="popup_menu_remove_dynamic_shortcut">Динамічний ярлик видалено</string>
     <string name="popup_menu_long_label_prefix">Запустити </string>
+    <string name="popup_menu_profile_setting">Редагувати профіль</string>
+    <string name="popup_menu_log_out">Вийти</string>
     <!--#endregion-->
 
     <!--#region MainActivity BottomNavigationView-->
@@ -113,6 +133,27 @@
     <string name="resume_app_dialog_description">Пропонуємо переглянути напій дня: </string>
     <string name="resume_app_dialog_right_button">Переглянути</string>
     <string name="resume_app_dialog_left_button">Ні, дякую</string>
+    <!--#endregion-->
+
+    <!--#region Exception Dialog Title-->
+    <string name="app_error_request_error">Помилка мережі</string>
+    <string name="app_error_unknown_error">Невідома помилка</string>
+    <string name="app_no_internet_connection">Немає з\'єднання з інтернетом</string>
+    <string name="app_resume_internet_connection">З\'єднання з інтернетом відновлено</string>
+    <string name="app_error_description_check_internet_connection">Перевірте з\'єднання з інтернетом</string>
+    <!--#endregion-->
+
+    <!--#region Edit Profile-->
+    <string name="profile_avatar_title">Основна світлина</string>
+    <string name="profile_main_info_title">Основна інформація</string>
+    <string name="edit_photo">Редагувати</string>
+    <string name="profile">Профіль</string>
+    <string name="edit_profile">Редагування профілю</string>
+    <string name="edit_profile_main_info">Основна нформація</string>
+    <string name="upload_avatar_dialog_title">Завантаження фото</string>
+    <string name="upload_avatar_dialog_description">Виберіть звідки загрузити фото</string>
+    <string name="edit_profile_first_name_title">Ім\'я :</string>
+    <string name="edit_profile_last_name_title">Прізвище :</string>
     <!--#endregion-->
 
 </resources>

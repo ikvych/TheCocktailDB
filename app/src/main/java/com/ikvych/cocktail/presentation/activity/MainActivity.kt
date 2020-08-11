@@ -19,7 +19,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.facebook.stetho.Stetho
-import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.util.COCKTAIL_ID
 import com.ikvych.cocktail.databinding.ActivityMainBinding
@@ -28,10 +27,10 @@ import com.ikvych.cocktail.presentation.dialog.bottom.ResumeAppBottomSheetDialog
 import com.ikvych.cocktail.presentation.dialog.type.*
 import com.ikvych.cocktail.presentation.extension.observeOnce
 import com.ikvych.cocktail.presentation.fragment.MainFragment
-import com.ikvych.cocktail.presentation.fragment.ProfileFragment
+import com.ikvych.cocktail.presentation.fragment.SettingFragment
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
-import com.ikvych.cocktail.util.ShortcutType
-import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.presentation.enumeration.ShortcutType
+import com.ikvych.cocktail.viewmodel.cocktail.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.reflect.KClass
 
@@ -43,7 +42,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
         get() = MainActivityViewModel::class
 
     private var mainFragment: MainFragment? = null
-    private var profileFragment: ProfileFragment? = null
+    private var profileFragment: SettingFragment? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         //бібліотека яка дозволяє відслідковувати базу даних через веб браузер у реальному часі
@@ -75,18 +74,18 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
         })
 
         profileFragment =
-            supportFragmentManager.findFragmentByTag(ProfileFragment::class.java.simpleName)
-                    as? ProfileFragment
+            supportFragmentManager.findFragmentByTag(SettingFragment::class.java.simpleName)
+                    as? SettingFragment
         mainFragment = supportFragmentManager.findFragmentByTag(MainFragment::class.java.simpleName)
                 as? MainFragment
 
         if (profileFragment == null && mainFragment == null) {
             val fragmentTransaction: FragmentTransaction = supportFragmentManager.beginTransaction()
-            profileFragment = ProfileFragment.newInstance()
+            profileFragment = SettingFragment.newInstance()
             fragmentTransaction.add(
                 R.id.fcv_container,
                 profileFragment!!,
-                ProfileFragment::class.java.simpleName
+                SettingFragment::class.java.simpleName
             )
             fragmentTransaction.hide(profileFragment!!)
             mainFragment = MainFragment.newInstance()

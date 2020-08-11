@@ -1,5 +1,6 @@
 package com.ikvych.cocktail.presentation.extension
 
+import android.view.View
 import androidx.annotation.MainThread
 import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.ViewModelLazy
@@ -13,7 +14,7 @@ import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 @MainThread
 inline fun <reified ViewModel : BaseViewModel, reified DataBinding : ViewDataBinding> BaseFragment<*, DataBinding>.viewModels(
-    owner: ViewModelStoreOwner = this,
+    noinline owner: () -> ViewModelStoreOwner =  { this },
     saveStateOwner: SavedStateRegistryOwner = this,
     noinline factoryProducer: (() -> ViewModelProvider.Factory)? = null
 ): Lazy<ViewModel> {
@@ -23,7 +24,7 @@ inline fun <reified ViewModel : BaseViewModel, reified DataBinding : ViewDataBin
             owner = saveStateOwner
         )
     }
-    return ViewModelLazy(ViewModel::class, { owner.viewModelStore }, factoryPromise)
+    return ViewModelLazy(ViewModel::class, { owner().viewModelStore }, factoryPromise)
 }
 
 @MainThread

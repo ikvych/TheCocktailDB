@@ -18,8 +18,8 @@ import com.ikvych.cocktail.receiver.DrinkOfferReceiver
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.util.*
-import com.ikvych.cocktail.viewmodel.SearchActivityViewModel
-import com.ikvych.cocktail.widget.custom.ApplicationToolBar
+import com.ikvych.cocktail.viewmodel.cocktail.SearchActivityViewModel
+import com.ikvych.cocktail.util.widget.custom.ApplicationToolBar
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlin.reflect.KClass
 

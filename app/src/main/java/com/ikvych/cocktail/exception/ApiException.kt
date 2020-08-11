@@ -1,6 +1,5 @@
 package com.ikvych.cocktail.core.common.exception
 
-
 data class ApiException(
     /**
      * Called api method.
@@ -36,5 +35,6 @@ data class ApiException(
         const val SERVER_NOT_RESPONDING = 2
         const val SOCKET_TIMEOUT = 3
         const val SERVER_ERROR = 4
+        const val NO_INTERNET_CONNECTION = 5
     }
 }

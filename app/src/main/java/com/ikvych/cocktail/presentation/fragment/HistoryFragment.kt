@@ -2,14 +2,14 @@ package com.ikvych.cocktail.presentation.fragment
 
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.FragmentHistoryBinding
-import com.ikvych.cocktail.viewmodel.DrinkViewModel
+import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
 import kotlin.reflect.KClass
 
-class HistoryFragment : RecyclerViewFragment<DrinkViewModel, FragmentHistoryBinding>() {
+class HistoryFragment : RecyclerViewFragment<CocktailViewModel, FragmentHistoryBinding>() {
 
     override var contentLayoutResId: Int = R.layout.fragment_history
-    override val viewModelClass: KClass<DrinkViewModel>
-        get() = DrinkViewModel::class
+    override val viewModelClass: KClass<CocktailViewModel>
+        get() = CocktailViewModel::class
     override val recyclerViewId: Int = R.id.rv_search_result
 
     override fun configureDataBinding(binding: FragmentHistoryBinding) {

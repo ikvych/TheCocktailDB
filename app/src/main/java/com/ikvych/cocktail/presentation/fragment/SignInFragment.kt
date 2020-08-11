@@ -4,31 +4,24 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.text.InputFilter
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
-import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.DialogFragment
-import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.core.common.exception.ApiException
-import com.ikvych.cocktail.databinding.ActivityAuthBinding
 import com.ikvych.cocktail.databinding.FragmentSignInBinding
+import com.ikvych.cocktail.exception.ApiError
 import com.ikvych.cocktail.presentation.activity.MainActivity
-import com.ikvych.cocktail.presentation.dialog.regular.ErrorAuthDialogFragment
+import com.ikvych.cocktail.presentation.dialog.regular.ErrorDialogFragment
 import com.ikvych.cocktail.presentation.dialog.type.ActionSingleDialogButton
 import com.ikvych.cocktail.presentation.dialog.type.DialogButton
 import com.ikvych.cocktail.presentation.dialog.type.DialogType
 import com.ikvych.cocktail.presentation.dialog.type.NotificationDialogType
 import com.ikvych.cocktail.presentation.filter.TextInputFilter
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
-import com.ikvych.cocktail.viewmodel.SignInViewModel
-import com.ikvych.cocktail.viewmodel.base.BaseViewModel
-import com.ikvych.cocktail.widget.custom.LinerLayoutWithKeyboardListener
+import com.ikvych.cocktail.viewmodel.auth.SignInViewModel
+import com.ikvych.cocktail.util.widget.custom.LinerLayoutWithKeyboardListener
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import java.lang.Exception
 import kotlin.reflect.KClass
@@ -76,11 +69,11 @@ class SignInFragment : BaseFragment<SignInViewModel, FragmentSignInBinding>(),
                 startActivity(intent)
                 requireActivity().finishAffinity()
             } else {
-                ErrorAuthDialogFragment.newInstance {
+                ErrorDialogFragment.newInstance {
                     titleText = getString(R.string.auth_invalid_title)
                     leftButtonText = getString(R.string.all_ok_button)
                     descriptionText = viewModel.errorMessageLiveData.value!!
-                }.show(childFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
+                }.show(childFragmentManager, ErrorDialogFragment::class.java.simpleName)
             }
         })
 
@@ -88,12 +81,12 @@ class SignInFragment : BaseFragment<SignInViewModel, FragmentSignInBinding>(),
     }
 
     override fun toProcessError(exception: Exception) {
-        if (exception is ApiException && exception.code == 400) {
-            ErrorAuthDialogFragment.newInstance {
+        if (exception is ApiError && exception.code == 400) {
+            ErrorDialogFragment.newInstance {
                 titleText = getString(R.string.auth_invalid_title)
                 leftButtonText = getString(R.string.all_ok_button)
                 descriptionText = getString(R.string.auth_invalid_data)
-            }.show(childFragmentManager, ErrorAuthDialogFragment::class.java.simpleName)
+            }.show(childFragmentManager, ErrorDialogFragment::class.java.simpleName)
         } else {
             super.toProcessError(exception)
         }

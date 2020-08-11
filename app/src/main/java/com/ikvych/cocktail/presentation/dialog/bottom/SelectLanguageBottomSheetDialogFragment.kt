@@ -8,7 +8,7 @@ import com.ikvych.cocktail.presentation.dialog.base.*
 import com.ikvych.cocktail.presentation.dialog.type.ItemListDialogButton
 import com.ikvych.cocktail.presentation.dialog.type.ListDialogButton
 import com.ikvych.cocktail.presentation.dialog.type.SelectLanguageDialogType
-import com.ikvych.cocktail.util.Language
+import com.ikvych.cocktail.presentation.enumeration.Language
 
 
 class SelectLanguageBottomSheetDialogFragment :

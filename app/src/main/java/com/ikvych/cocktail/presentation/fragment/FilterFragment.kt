@@ -13,10 +13,9 @@ import com.ikvych.cocktail.presentation.filter.type.*
 import com.ikvych.cocktail.presentation.dialog.regular.FilterDrinkDialogFragment
 import com.ikvych.cocktail.presentation.dialog.regular.ListFilterDrinkDialogFragment
 import com.ikvych.cocktail.presentation.dialog.type.*
-import com.ikvych.cocktail.presentation.extension.viewModels
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
 import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
-import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
+import com.ikvych.cocktail.viewmodel.cocktail.MainFragmentViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlinx.android.synthetic.main.fragment_filter.*
 import java.lang.IllegalArgumentException
@@ -28,7 +27,8 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>(), Vie
     override val viewModelClass: KClass<BaseViewModel>
         get() = BaseViewModel::class
 
-    val parentViewModel: MainFragmentViewModel/* by viewModels(requireParentFragment())*/ //Not attached yet
+    val parentViewModel: MainFragmentViewModel
+        /* by viewModels(requireParentFragment())*/ //Not attached yet
     get() {
         return ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
     }

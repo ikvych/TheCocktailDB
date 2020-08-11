@@ -9,6 +9,7 @@ import retrofit2.HttpException
 import java.io.IOException
 import java.net.ConnectException
 import java.net.SocketTimeoutException
+import java.net.UnknownHostException
 
 open class BaseNetSourceImpl<ApiService>(private val apiService: ApiService) {
 
@@ -58,7 +59,6 @@ open class BaseNetSourceImpl<ApiService>(private val apiService: ApiService) {
                             val details = when {
                                 has("details") -> get("details").asString
                                 has("message") -> get("message").asString
-                                has("status") -> get("status").asString
                                 else -> "Unknown error!"
                             }
 
@@ -86,6 +86,7 @@ open class BaseNetSourceImpl<ApiService>(private val apiService: ApiService) {
                 is JsonSyntaxException,
                 is JSONException,
                 is JsonParseException -> ApiException.JSON_PARSE
+                is UnknownHostException -> ApiException.NO_INTERNET_CONNECTION
                 is ConnectException -> ApiException.SERVER_NOT_RESPONDING
                 is SocketTimeoutException -> ApiException.SOCKET_TIMEOUT
                 else -> throw throwable

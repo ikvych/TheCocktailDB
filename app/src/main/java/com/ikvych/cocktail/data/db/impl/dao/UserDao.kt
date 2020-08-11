@@ -27,7 +27,4 @@ interface UserDao : BaseDao {
     @Query("DELETE FROM ${Table.USER}")
     suspend fun deleteUser()
 
-/*    @Delete
-    suspend fun deleteUser(user: UserDbModel)*/
-
 }

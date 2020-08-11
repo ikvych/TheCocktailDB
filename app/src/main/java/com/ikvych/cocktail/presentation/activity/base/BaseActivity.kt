@@ -6,14 +6,11 @@ import android.os.Build
 import android.os.Bundle
 import android.os.LocaleList
 import android.view.View
-import android.widget.Toast
 import androidx.annotation.CallSuper
-import androidx.annotation.MainThread
 import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
-import androidx.lifecycle.LiveData
 import com.ikvych.cocktail.receiver.FlyModeReceiver
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
 import com.ikvych.cocktail.presentation.dialog.base.BaseBottomSheetDialogFragment
@@ -22,9 +19,9 @@ import com.ikvych.cocktail.presentation.dialog.type.DialogButton
 import com.ikvych.cocktail.presentation.dialog.type.DialogType
 import com.ikvych.cocktail.presentation.extension.baseViewModels
 import com.ikvych.cocktail.presentation.extension.observeNotNull
-import com.ikvych.cocktail.util.Language
-import com.ikvych.cocktail.util.delegate.ErrorHandler
-import com.ikvych.cocktail.util.delegate.ErrorHandlerProvider
+import com.ikvych.cocktail.presentation.enumeration.Language
+import com.ikvych.cocktail.exception.handler.base.ErrorHandler
+import com.ikvych.cocktail.exception.handler.ErrorHandlerProvider
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.lang.Exception
 import java.util.*
@@ -79,7 +76,10 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
 
     override fun onPostCreate(savedInstanceState: Bundle?) {
         super.onPostCreate(savedInstanceState)
-        errorHandler = ErrorHandlerProvider(supportFragmentManager) {}
+        errorHandler =
+            ErrorHandlerProvider(
+                supportFragmentManager
+            ) {}
         viewModel.errorLiveData.observeNotNull(this) {
             toProcessErrors(it)
         }

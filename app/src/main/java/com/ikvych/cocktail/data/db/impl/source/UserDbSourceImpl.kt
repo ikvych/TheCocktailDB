@@ -26,6 +26,5 @@ class UserDbSourceImpl(
 
     override suspend fun deleteUser() {
         userDao.deleteUser()
-        Log.d("Delete", "Deleted")
     }
 }

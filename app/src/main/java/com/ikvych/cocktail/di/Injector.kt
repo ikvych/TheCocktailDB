@@ -59,8 +59,12 @@ import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
 import com.ikvych.cocktail.presentation.mapper.cocktail.LocalizedStringModelMapper
 import com.ikvych.cocktail.presentation.mapper.base.BaseModelMapper
 import com.ikvych.cocktail.presentation.mapper.user.UserModelMapper
-import com.ikvych.cocktail.viewmodel.*
+import com.ikvych.cocktail.viewmodel.auth.SignInViewModel
+import com.ikvych.cocktail.viewmodel.auth.SignUpViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import com.ikvych.cocktail.viewmodel.cocktail.*
+import com.ikvych.cocktail.viewmodel.user.EditProfileViewModel
+import com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel
 import io.devlight.data.network.impl.extension.deserializeType
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
@@ -150,30 +154,41 @@ object Injector {
         ): T {
             return when (modelClass) {
                 MainActivityViewModel::class.java -> MainActivityViewModel(
-                    provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
+                    provideRepository(appContext, CocktailRepository::class.java),
+                    provideModelMapper(
                         appContext
-                    ), application, handle
+                    ),
+                    application,
+                    handle
                 ) as T
                 SearchActivityViewModel::class.java -> SearchActivityViewModel(
-                    provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
+                    provideRepository(appContext, CocktailRepository::class.java),
+                    provideModelMapper(
                         appContext
-                    ), application, handle
+                    ),
+                    application,
+                    handle
                 ) as T
                 ProfileActivityViewModel::class.java -> ProfileActivityViewModel(
                     application,
                     handle,
-                    provideRepository(appContext, AuthRepository::class.java),
                     provideRepository(appContext, UserRepository::class.java),
                     provideModelMapper(appContext),
                     provideRepository(appContext, TokenRepository::class.java)
                 ) as T
                 MainFragmentViewModel::class.java -> MainFragmentViewModel(
-                    provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
+                    provideRepository(appContext, CocktailRepository::class.java),
+                    provideModelMapper(
                         appContext
-                    ), application, handle
+                    ),
+                    application,
+                    handle
                 ) as T
-                DrinkViewModel::class.java -> DrinkViewModel(
-                    application, handle, provideRepository(appContext, CocktailRepository::class.java), provideModelMapper(
+                CocktailViewModel::class.java -> CocktailViewModel(
+                    application,
+                    handle,
+                    provideRepository(appContext, CocktailRepository::class.java),
+                    provideModelMapper(
                         appContext
                     )
                 ) as T
@@ -183,30 +198,24 @@ object Injector {
                 SignInViewModel::class.java -> SignInViewModel(
                     application,
                     handle,
-                    provideRepository(appContext, AuthRepository::class.java),
-                    provideRepository(appContext, UserRepository::class.java),
-                    provideRepository(
-                        appContext, TokenRepository::class.java
-                    )
+                    provideRepository(appContext, AuthRepository::class.java)
                 ) as T
                 SignUpViewModel::class.java -> SignUpViewModel(
                     application,
                     handle,
-                    provideRepository(appContext, AuthRepository::class.java),
-                    provideRepository(appContext, UserRepository::class.java),
-                    provideRepository(
-                        appContext, TokenRepository::class.java
-                    )
+                    provideRepository(appContext, AuthRepository::class.java)
                 ) as T
                 EditProfileViewModel::class.java -> EditProfileViewModel(
                     application,
                     handle,
-                    provideRepository(appContext, AuthRepository::class.java),
                     provideRepository(appContext, UserRepository::class.java),
-                    provideRepository(
-                        appContext, TokenRepository::class.java
-                    ),
                     provideModelMapper(appContext)
+                ) as T
+                CocktailDetailViewModel::class.java -> CocktailDetailViewModel(
+                    provideRepository(appContext, CocktailRepository::class.java),
+                    provideModelMapper(appContext),
+                    application,
+                    handle
                 ) as T
                 else -> throw NotImplementedError("Must provide repository for class ${modelClass.simpleName}")
             }

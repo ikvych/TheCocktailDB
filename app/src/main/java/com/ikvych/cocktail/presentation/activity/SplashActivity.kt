@@ -8,7 +8,7 @@ import com.ikvych.cocktail.databinding.ActivitySplashBinding
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
 import com.ikvych.cocktail.presentation.extension.observeOnce
 import com.ikvych.cocktail.presentation.extension.viewModels
-import com.ikvych.cocktail.viewmodel.ProfileActivityViewModel
+import com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import kotlin.reflect.KClass
 

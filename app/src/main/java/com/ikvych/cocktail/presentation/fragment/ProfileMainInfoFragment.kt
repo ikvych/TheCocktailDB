@@ -1,22 +1,19 @@
 package com.ikvych.cocktail.presentation.fragment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.FragmentProfileMainInfoBinding
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
-import com.ikvych.cocktail.viewmodel.EditProfileViewModel
-import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
-import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import com.ikvych.cocktail.viewmodel.user.EditProfileViewModel
 import kotlinx.android.synthetic.main.fragment_profile_main_info.*
 import kotlin.reflect.KClass
 
-class ProfileMainInfoFragment : BaseFragment<EditProfileViewModel, FragmentProfileMainInfoBinding>(),
-View.OnClickListener{
+class ProfileMainInfoFragment :
+    BaseFragment<EditProfileViewModel, FragmentProfileMainInfoBinding>(),
+    View.OnClickListener {
     override var contentLayoutResId: Int = R.layout.fragment_profile_main_info
     override val viewModelClass: KClass<EditProfileViewModel>
         get() = EditProfileViewModel::class
@@ -34,6 +31,12 @@ View.OnClickListener{
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
         atb_profile_main_info.returnBtn.setOnClickListener(this)
+        viewModel.shouldReturnLiveData.observe(this, Observer {
+            if (it) {
+                parentFragmentManager.popBackStack()
+                viewModel.shouldReturnLiveData.value = false
+            }
+        })
     }
 
     companion object {

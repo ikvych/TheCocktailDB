@@ -20,6 +20,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
 import androidx.fragment.app.DialogFragment
 import com.ikvych.cocktail.R
+import com.ikvych.cocktail.core.common.exception.ApiException
 import com.ikvych.cocktail.databinding.ActivityProfileBinding
 import com.ikvych.cocktail.extension.isAllPermissionGranted
 import com.ikvych.cocktail.extension.log
@@ -30,11 +31,16 @@ import com.ikvych.cocktail.presentation.dialog.type.*
 import com.ikvych.cocktail.presentation.extension.convertMbToBinaryBytes
 import com.ikvych.cocktail.presentation.extension.scaleToSize
 import com.ikvych.cocktail.presentation.fragment.EditProfileFragment
-import com.ikvych.cocktail.util.UploadAvatar
-import com.ikvych.cocktail.viewmodel.ProfileActivityViewModel
+import com.ikvych.cocktail.presentation.fragment.ProfileMainInfoFragment
+import com.ikvych.cocktail.presentation.enumeration.UploadAvatar
+import com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_profile.*
-import java.io.*
+import java.io.ByteArrayOutputStream
+import java.io.File
+import java.io.FileOutputStream
+import java.lang.reflect.Field
+import java.lang.reflect.Method
 import kotlin.reflect.KClass
 
 
@@ -48,7 +54,9 @@ class ProfileActivity : BaseActivity<ProfileActivityViewModel, ActivityProfileBi
     override fun configureView(savedInstanceState: Bundle?) {
         super.configureView(savedInstanceState)
         b_upload_photo.setOnClickListener(this)
-        iv_menu.setOnClickListener(this)
+        atb_profile_activity.customBtn2.setImageDrawable(getDrawable(R.drawable.ic_menu))
+        atb_profile_activity.customBtn2.setOnClickListener(this)
+        ib_edit_main_info.setOnClickListener(this)
     }
 
     override fun configureDataBinding(binding: ActivityProfileBinding) {
@@ -65,7 +73,7 @@ class ProfileActivity : BaseActivity<ProfileActivityViewModel, ActivityProfileBi
                     UploadAvatarBottomSheetDialogFragment::class.java.simpleName
                 )
             }
-            R.id.iv_menu -> {
+            R.id.ib_custom_btn_2 -> {
                 PopupMenu(this, v).apply {
                     inflate(R.menu.menu_profile)
                     setOnMenuItemClickListener {
@@ -97,12 +105,44 @@ class ProfileActivity : BaseActivity<ProfileActivityViewModel, ActivityProfileBi
                             else -> false
                         }
                     }
+                    setForceShowIcon(this)
                     show()
                 }
-
+            }
+            R.id.ib_edit_main_info -> {
+                val fragmentTransaction = supportFragmentManager.beginTransaction()
+                fragmentTransaction.add(
+                    R.id.fcv_profile,
+                    ProfileMainInfoFragment.newInstance(),
+                    ProfileMainInfoFragment::class.java.simpleName
+                )
+                fragmentTransaction.addToBackStack(ProfileMainInfoFragment::class.java.name)
+                fragmentTransaction.commit()
             }
         }
+    }
 
+    private fun setForceShowIcon(popupMenu: PopupMenu) {
+        try {
+            val fields: Array<Field> = popupMenu.javaClass.declaredFields
+            for (field in fields) {
+                if ("mPopup" == field.getName()) {
+                    field.setAccessible(true)
+                    val menuPopupHelper: Any = field.get(popupMenu) ?: return
+                    val classPopupHelper = Class.forName(
+                        menuPopupHelper
+                            .javaClass.name
+                    )
+                    val setForceIcons: Method = classPopupHelper.getMethod(
+                        "setForceShowIcon", Boolean::class.javaPrimitiveType
+                    )
+                    setForceIcons.invoke(menuPopupHelper, true)
+                    break
+                }
+            }
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
     }
 
     private fun processGalleryImage(data: Intent) {

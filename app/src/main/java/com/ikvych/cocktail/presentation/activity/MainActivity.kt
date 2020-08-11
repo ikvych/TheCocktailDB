@@ -29,8 +29,8 @@ import com.ikvych.cocktail.presentation.extension.observeOnce
 import com.ikvych.cocktail.presentation.fragment.MainFragment
 import com.ikvych.cocktail.presentation.fragment.SettingFragment
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
-import com.ikvych.cocktail.util.ShortcutType
-import com.ikvych.cocktail.viewmodel.MainActivityViewModel
+import com.ikvych.cocktail.presentation.enumeration.ShortcutType
+import com.ikvych.cocktail.viewmodel.cocktail.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.reflect.KClass
 

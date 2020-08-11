@@ -10,7 +10,7 @@
 
         <variable
             name="viewModel"
-            type="com.ikvych.cocktail.viewmodel.DrinkViewModel" />
+            type="com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel" />
     </data>
 
     <androidx.cardview.widget.CardView

@@ -2,16 +2,13 @@ package com.ikvych.cocktail.presentation.dialog.bottom
 
 import android.os.Bundle
 import android.view.View
-import android.widget.ListAdapter
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.presentation.dialog.base.*
 import com.ikvych.cocktail.presentation.dialog.type.ItemListDialogButton
 import com.ikvych.cocktail.presentation.dialog.type.ListDialogButton
-import com.ikvych.cocktail.presentation.dialog.type.SelectLanguageDialogType
 import com.ikvych.cocktail.presentation.dialog.type.UploadPhotoDialogType
-import com.ikvych.cocktail.util.Language
-import com.ikvych.cocktail.util.UploadAvatar
+import com.ikvych.cocktail.presentation.enumeration.UploadAvatar
 
 
 class UploadAvatarBottomSheetDialogFragment :

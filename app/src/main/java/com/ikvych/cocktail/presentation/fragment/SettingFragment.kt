@@ -5,24 +5,17 @@ import android.os.Bundle
 import android.view.View
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
-import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.FragmentSettingBinding
-import com.ikvych.cocktail.presentation.activity.AuthActivity
 import com.ikvych.cocktail.presentation.activity.ProfileActivity
 import com.ikvych.cocktail.presentation.activity.SplashActivity
-import com.ikvych.cocktail.presentation.dialog.bottom.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.presentation.dialog.bottom.SelectLanguageBottomSheetDialogFragment
 import com.ikvych.cocktail.presentation.dialog.type.*
-import com.ikvych.cocktail.presentation.extension.baseViewModels
-import com.ikvych.cocktail.presentation.extension.observeOnce
-import com.ikvych.cocktail.presentation.extension.viewModels
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
-import com.ikvych.cocktail.util.Language
-import com.ikvych.cocktail.viewmodel.MainActivityViewModel
-import com.ikvych.cocktail.viewmodel.ProfileActivityViewModel
-import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import com.ikvych.cocktail.presentation.enumeration.Language
+import com.ikvych.cocktail.viewmodel.cocktail.MainActivityViewModel
+import com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel
 import kotlinx.android.synthetic.main.fragment_setting.*
 import kotlin.reflect.KClass
 

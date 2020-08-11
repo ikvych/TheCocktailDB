@@ -29,35 +29,31 @@ class UserRepositoryImpl(
 
     override suspend fun refreshUser() {
         userNetSource.getUser()
-            .run{userModelMapper.mapRepoToDb(userModelMapper.mapNetToRepo(this))}
+            .run { userModelMapper.mapRepoToDb(userModelMapper.mapNetToRepo(this)) }
             .run {
                 userDbSource.saveUser(this)
             }
     }
 
     override suspend fun updateUser(user: UserRepoModel) {
-        userDbSource.saveUser(user.run(userModelMapper::mapRepoToDb))
-    }
-
-    override suspend fun updateUserOnServer(user: UserRepoModel) {
-        userNetSource.updateUser(UserNetModel(
-            id = user.id,
-            name = user.name,
-            lastName = user.lastName,
-            email = user.email,
-            avatar = user.avatar
-        ))
+        userNetSource.updateUser(
+            UserNetModel(
+                id = user.id,
+                name = user.name,
+                lastName = user.lastName,
+                email = user.email,
+                avatar = user.avatar
+            )
+        )
         refreshUser()
     }
 
-    override suspend fun updateUserLogo(avatar: File, onUploadProgress: (Float) -> Unit) {
-        userNetSource.updateUserLogo(avatar) { percent, _, _ -> onUploadProgress(percent)}
+    override suspend fun updateUserAvatar(avatar: File, onUploadProgress: (Float) -> Unit) {
+        userNetSource.updateUserLogo(avatar) { percent, _, _ -> onUploadProgress(percent) }
         refreshUser()
     }
 
     override suspend fun deleteUser() {
         userDbSource.deleteUser()
     }
-
-
 }

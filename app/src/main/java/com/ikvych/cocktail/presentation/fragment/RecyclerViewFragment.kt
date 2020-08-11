@@ -10,10 +10,10 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.presentation.adapter.list.CocktailAdapter
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
-import com.ikvych.cocktail.viewmodel.DrinkViewModel
-import com.ikvych.cocktail.viewmodel.MainFragmentViewModel
+import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
+import com.ikvych.cocktail.viewmodel.cocktail.MainFragmentViewModel
 
-abstract class RecyclerViewFragment<ViewModel : DrinkViewModel, DataBinding : ViewDataBinding> :
+abstract class RecyclerViewFragment<ViewModel : CocktailViewModel, DataBinding : ViewDataBinding> :
     BaseFragment<ViewModel, DataBinding>() {
     protected lateinit var cocktailAdapter: CocktailAdapter
 

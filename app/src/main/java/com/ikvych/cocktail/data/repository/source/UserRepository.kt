@@ -18,9 +18,7 @@ interface UserRepository : BaseRepository {
 
     suspend fun updateUser(user: UserRepoModel)
 
-    suspend fun updateUserOnServer(user: UserRepoModel)
-
-    suspend fun updateUserLogo(avatar: File, onUploadProgress: (Float) -> Unit = {_ -> })
+    suspend fun updateUserAvatar(avatar: File, onUploadProgress: (Float) -> Unit = { _ -> })
 
     suspend fun deleteUser()
 }

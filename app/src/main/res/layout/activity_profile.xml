@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="viewModel"
-            type="com.ikvych.cocktail.viewmodel.ProfileActivityViewModel" />
+            type="com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel" />
     </data>
 <FrameLayout
     android:layout_width="match_parent"
@@ -35,7 +36,17 @@
                 android:src="@drawable/default_icon"
                 bind:bg_avatar="@{viewModel.userLiveData.avatar}" />
 
-            <LinearLayout
+            <com.ikvych.cocktail.util.widget.custom.ApplicationToolBar
+                android:id="@+id/atb_profile_activity"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_max"
+                android:elevation="@dimen/elevation_16"
+                android:layout_gravity="top"
+                bind:tl_set_text="@string/profile"
+                bind:tl_set_transparent="true"
+                app:tl_enable_custom_btn="true" />
+
+            <!--<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/color_transparent"
@@ -73,7 +84,7 @@
                     android:contentDescription="@string/all_content_description"
                     android:src="@drawable/ic_drop_down" />
 
-            </LinearLayout>
+            </LinearLayout>-->
 
         </FrameLayout>
 
@@ -82,6 +93,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="-100dp"
+            android:layout_marginBottom="@dimen/offset_16"
             android:gravity="center">
 
             <ImageView
@@ -98,8 +110,8 @@
                 android:layout_height="@dimen/btn_width"
                 android:layout_alignEnd="@+id/iv_upload_image"
                 android:layout_alignBottom="@+id/iv_upload_image"
-                android:src="@drawable/ic_upload_user_avatar"
-                android:background="@color/color_transparent"
+                android:src="@drawable/ic_add_photo"
+                android:background="@drawable/shape_camera_icon"
                 android:contentDescription="@string/all_content_description"/>
 
         </RelativeLayout>
@@ -112,14 +124,31 @@
                     android:textSize="@dimen/headline_3"
                     android:text="@{viewModel.userFullNameLiveData}"/>-->
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="@{viewModel.userFullNameLiveData}"
-            android:textColor="@color/color_on_primary"
-            android:textSize="@dimen/headline_2"
-            android:textStyle="bold" />
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.userFullNameLiveData}"
+                android:textColor="@color/color_on_primary"
+                android:textSize="@dimen/headline_2"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="@dimen/offset_8"
+                android:layout_height="wrap_content"/>
+
+            <ImageButton
+                android:id="@+id/ib_edit_main_info"
+                android:layout_width="@dimen/btn_width_min"
+                android:layout_height="@dimen/btn_height_min"
+                android:background="@color/color_transparent"
+                android:src="@drawable/ic_edit"/>
+        </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"

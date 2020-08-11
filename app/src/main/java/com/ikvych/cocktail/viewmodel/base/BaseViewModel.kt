@@ -1,22 +1,22 @@
 package com.ikvych.cocktail.viewmodel.base
 
 import android.app.Application
-import android.widget.Toast
 import androidx.lifecycle.*
-import com.ikvych.cocktail.R
-import com.ikvych.cocktail.data.repository.source.AppSettingRepository
+import com.ikvych.cocktail.core.common.exception.ApiException
 import com.ikvych.cocktail.data.repository.impl.source.AppSettingRepositoryImpl
+import com.ikvych.cocktail.data.repository.source.AppSettingRepository
+import com.ikvych.cocktail.exception.ApiError
+import com.ikvych.cocktail.exception.NetworkConnectionError
 import com.ikvych.cocktail.util.ConnectivityInfoLiveData
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
-
 
 open class BaseViewModel(
     application: Application,
     val savedStateHandle: SavedStateHandle
 ) : AndroidViewModel(application) {
 
-    val networkObserver: Observer<Boolean> = Observer {}
+    private val networkObserver: Observer<Boolean> = Observer {}
     val errorLiveData: MutableLiveData<java.lang.Exception> = MutableLiveData()
     val connectivityInfoLiveData: ConnectivityInfoLiveData = ConnectivityInfoLiveData(application)
 
@@ -43,10 +43,23 @@ open class BaseViewModel(
             } catch (e: Exception) {
                 e.printStackTrace()
                 withContext(Dispatchers.Main) {
-                    errorLiveData.value = e
+                    errorLiveData.value = parseException(e)
                     errorLiveData.value = null
                 }
             }
+        }
+    }
+
+    private fun parseException(e: java.lang.Exception) : java.lang.Exception {
+        return when (e) {
+            is ApiException -> {
+                if (e.code == ApiException.NO_INTERNET_CONNECTION) {
+                    NetworkConnectionError()
+                } else {
+                    ApiError(e.method, e.code, e.details, e.httpCode, e.cause)
+                }
+            }
+            else -> {e}
         }
     }
 

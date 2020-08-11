@@ -4,7 +4,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import com.ikvych.cocktail.presentation.fragment.FavoriteFragment
 import com.ikvych.cocktail.presentation.fragment.HistoryFragment
-import com.ikvych.cocktail.util.Page
+import com.ikvych.cocktail.presentation.enumeration.Page
 
 class DrinkPagerAdapter(
     fragment: Fragment

@@ -2,12 +2,10 @@ package com.ikvych.cocktail.databinding.adapter
 
 import android.content.res.ColorStateList
 import android.graphics.Color
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
-import android.widget.ImageButton
-import android.widget.ImageView
-import android.widget.Switch
-import android.widget.TableLayout
+import android.widget.*
 import androidx.core.view.isVisible
 import androidx.databinding.*
 import androidx.viewpager2.widget.ViewPager2
@@ -15,8 +13,8 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ItemDrinkIngredientListBinding
+import com.ikvych.cocktail.presentation.enumeration.Page
 import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
-import com.ikvych.cocktail.util.Page
 import jp.wasabeef.glide.transformations.BlurTransformation
 
 
@@ -39,7 +37,7 @@ fun loadBgAvatar(imageView: ImageView, imageUrl: String?) {
     Glide.with(imageView.context)
         .load(imageUrl)
         .placeholder(R.drawable.default_icon)
-        .apply(RequestOptions.bitmapTransform(BlurTransformation(10, 2)))
+        .apply(RequestOptions.bitmapTransform(BlurTransformation(15)))
         .into(imageView)
 }
 
@@ -92,6 +90,17 @@ fun loadImage(imageView: ImageView, imageUrl: String?) {
         .load(imageUrl)
         .placeholder(R.drawable.default_icon)
         .into(imageView)
+}
+
+@BindingAdapter("bind:password_visibility")
+fun passwordVisibility(view: EditText, isChecked: Boolean) {
+    if (isChecked) {
+        view.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+        view.setSelection(view.text.length)
+    } else {
+        view.inputType = InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+        view.setSelection(view.text.length)
+    }
 }
 
 class DataBindingAdapter {

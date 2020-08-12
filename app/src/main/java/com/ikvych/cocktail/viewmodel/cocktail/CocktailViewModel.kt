@@ -7,16 +7,15 @@ import androidx.lifecycle.SavedStateHandle
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
-import com.ikvych.cocktail.util.FirebaseAnalyticHelper
+import com.ikvych.cocktail.util.FirebaseHelper
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
-import com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel
 
 open class CocktailViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle,
     private val cocktailRepository: CocktailRepository,
     private val mapper: CocktailModelMapper,
-    val analytic: FirebaseAnalyticHelper
+    val analytic: FirebaseHelper
 ) : BaseViewModel(
     application,
     savedStateHandle

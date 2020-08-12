@@ -22,7 +22,7 @@ import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
 import com.ikvych.cocktail.util.BatteryStateLiveData
 import com.ikvych.cocktail.presentation.enumeration.Page
-import com.ikvych.cocktail.util.FirebaseAnalyticHelper
+import com.ikvych.cocktail.util.FirebaseHelper
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -31,7 +31,7 @@ class MainFragmentViewModel(
     private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle,
-    analytic: FirebaseAnalyticHelper
+    analytic: FirebaseHelper
 ) : CocktailViewModel(application, savedStateHandle, cocktailRepository, mapper, analytic) {
 
 /*    companion object {

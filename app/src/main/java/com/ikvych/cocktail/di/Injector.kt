@@ -59,7 +59,7 @@ import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
 import com.ikvych.cocktail.presentation.mapper.cocktail.LocalizedStringModelMapper
 import com.ikvych.cocktail.presentation.mapper.base.BaseModelMapper
 import com.ikvych.cocktail.presentation.mapper.user.UserModelMapper
-import com.ikvych.cocktail.util.FirebaseAnalyticHelper
+import com.ikvych.cocktail.util.FirebaseHelper
 import com.ikvych.cocktail.viewmodel.auth.SignInViewModel
 import com.ikvych.cocktail.viewmodel.auth.SignUpViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
@@ -257,8 +257,8 @@ object Injector {
         }
     }
 
-    fun provideAnalyticHelper(context: Context): FirebaseAnalyticHelper {
-        return FirebaseAnalyticHelper.getInstance(context)
+    fun provideAnalyticHelper(context: Context): FirebaseHelper {
+        return FirebaseHelper.getInstance(context)
     }
 
     inline fun <reified T> provideLocalDataSource(context: Context): T {

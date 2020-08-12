@@ -8,6 +8,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.PopupMenu
@@ -21,6 +22,9 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.facebook.stetho.Stetho
 import com.google.firebase.analytics.FirebaseAnalytics
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig
+import com.google.firebase.remoteconfig.ktx.get
+import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity

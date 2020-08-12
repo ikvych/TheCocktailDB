@@ -73,6 +73,7 @@
                         android:layout_margin="@dimen/offset_8"
                         android:thumbTint="@color/color_surface_variant"
                         bind:cb_checked="@={parentViewModel.navBarTitleVisibilityLiveData}"
+                        bind:v_isVisible="@{parentViewModel.switcherVisibilityLiveData}"
                         android:text="@string/profile_show_hide_main_navigation_bar_titles" />
 
                     <Switch

@@ -6,7 +6,7 @@ import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.presentation.extension.debounce
 import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
-import com.ikvych.cocktail.util.FirebaseAnalyticHelper
+import com.ikvych.cocktail.util.FirebaseHelper
 import kotlinx.coroutines.Job
 
 class SearchActivityViewModel(
@@ -14,7 +14,7 @@ class SearchActivityViewModel(
     private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle,
-    analytic: FirebaseAnalyticHelper
+    analytic: FirebaseHelper
 ) : CocktailViewModel(application, savedStateHandle, cocktailRepository, mapper, analytic) {
 
     val cocktailLiveData: LiveData<List<CocktailModel>> =

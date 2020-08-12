@@ -8,7 +8,7 @@ import com.ikvych.cocktail.data.repository.source.UserRepository
 import com.ikvych.cocktail.presentation.extension.mapNotNull
 import com.ikvych.cocktail.presentation.mapper.user.UserModelMapper
 import com.ikvych.cocktail.presentation.model.user.UserModel
-import com.ikvych.cocktail.util.FirebaseAnalyticHelper
+import com.ikvych.cocktail.util.FirebaseHelper
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class EditProfileViewModel(
@@ -16,7 +16,7 @@ class EditProfileViewModel(
     savedStateHandle: SavedStateHandle,
     private val userRepository: UserRepository,
     private val mapper: UserModelMapper,
-    val analytic: FirebaseAnalyticHelper
+    val analytic: FirebaseHelper
 ) : BaseViewModel(application, savedStateHandle) {
     private val minimumNameSymbolCount: Int = 4
 

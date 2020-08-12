@@ -136,4 +136,7 @@ dependencies {
     // Add the Firebase Crashlytics SDK.
     implementation 'com.google.firebase:firebase-crashlytics:17.1.1'
 
+    // Add the Firebase RemoteConfig.
+    implementation 'com.google.firebase:firebase-config-ktx:19.2.0'
+
 }

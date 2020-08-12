@@ -6,13 +6,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.map
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.ikvych.cocktail.data.repository.source.TokenRepository
 import com.ikvych.cocktail.data.repository.source.UserRepository
 import com.ikvych.cocktail.presentation.extension.mapNotNull
 import com.ikvych.cocktail.presentation.mapper.user.UserModelMapper
 import com.ikvych.cocktail.presentation.model.user.UserModel
-import com.ikvych.cocktail.util.FirebaseAnalyticHelper
+import com.ikvych.cocktail.util.FirebaseHelper
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import java.io.File
 
@@ -22,7 +21,7 @@ class ProfileActivityViewModel(
     private val userRepository: UserRepository,
     private val mapper: UserModelMapper,
     private val tokenRepository: TokenRepository,
-    val analytic: FirebaseAnalyticHelper
+    val analytic: FirebaseHelper
 ) : BaseViewModel(application, savedStateHandle) {
 
     val userLiveData:LiveData<UserModel?> = userRepository.userLiveData.map {

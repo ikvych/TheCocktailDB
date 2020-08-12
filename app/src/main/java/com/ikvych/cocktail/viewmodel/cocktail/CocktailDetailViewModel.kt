@@ -5,14 +5,14 @@ import androidx.lifecycle.*
 import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
-import com.ikvych.cocktail.util.FirebaseAnalyticHelper
+import com.ikvych.cocktail.util.FirebaseHelper
 
 class CocktailDetailViewModel(
     private val cocktailRepository: CocktailRepository,
     private val mapper: CocktailModelMapper,
     application: Application,
     savedStateHandle: SavedStateHandle,
-    analytic: FirebaseAnalyticHelper
+    analytic: FirebaseHelper
 ) : CocktailViewModel(application, savedStateHandle, cocktailRepository, mapper, analytic) {
 
     private val triggerObserver: Observer<in Any?> = Observer { }

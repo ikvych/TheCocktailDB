@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<defaultsMap xmlns:android="http://schemas.android.com/apk/res/android">
+    <entry>
+        <key>main_toolbar_title_visibility</key>
+        <value>true</value>
+    </entry>
+    <entry>
+        <key>switcher_toolbar_visibility</key>
+        <value>true</value>
+    </entry>
+</defaultsMap>

@@ -63,7 +63,7 @@ class DrinkDetailActivity
                 finish()
             }
         }
-        viewModel.analytic.logEvent(
+        viewModel.firebase.logEvent(
             ANALYTIC_EVENT_COCKTAIL_DETAIL_OPEN, bundleOf(
                 ANALYTIC_KEY_COCKTAIL_ID to cocktailId
             )

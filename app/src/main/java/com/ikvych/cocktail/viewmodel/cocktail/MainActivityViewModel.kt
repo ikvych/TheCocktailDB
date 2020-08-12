@@ -43,13 +43,16 @@ class MainActivityViewModel(
     init {
         lifecycleObserver = ApplicationLifeCycleObserver(this, sharedPreferences)
         ProcessLifecycleOwner.get().lifecycle.addObserver(lifecycleObserver)
+    }
 
+    fun checkForRemoteConfig() {
         firebase.fetchAndActivate { result, remoteConfig ->
-            val titleVisibility = remoteConfig["main_toolbar_title_visibility"].asBoolean()
-            val switcherVisibility = remoteConfig["switcher_toolbar_visibility"].asBoolean()
-            appSettingRepository.showNavigationBarTitleLiveData.value = titleVisibility
-            switcherVisibilityLiveData.value = switcherVisibility
-            Log.d("MyLOGS", "Config params updated: $result")
+            if (result) {
+                val titleVisibility = remoteConfig["main_toolbar_title_visibility"].asBoolean()
+                val switcherVisibility = remoteConfig["switcher_toolbar_visibility"].asBoolean()
+                appSettingRepository.showNavigationBarTitleLiveData.value = titleVisibility
+                switcherVisibilityLiveData.value = switcherVisibility
+            }
         }
     }
 

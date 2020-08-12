@@ -15,7 +15,7 @@ open class CocktailViewModel(
     savedStateHandle: SavedStateHandle,
     private val cocktailRepository: CocktailRepository,
     private val mapper: CocktailModelMapper,
-    val analytic: FirebaseHelper
+    val firebase: FirebaseHelper
 ) : BaseViewModel(
     application,
     savedStateHandle
@@ -26,13 +26,13 @@ open class CocktailViewModel(
         launchRequest {
             cocktailRepository.addOrReplaceCocktail(mapper.mapFrom(cocktail))
             if (cocktail.isFavorite) {
-                analytic.logEvent(
+                firebase.logEvent(
                     ANALYTIC_EVENT_ADD_TO_FAVORITE, bundleOf(
                         ANALYTIC_KEY_COCKTAIL_ID to cocktail.id
                     )
                 )
             } else {
-                analytic.logEvent(
+                firebase.logEvent(
                     ANALYTIC_EVENT_REMOVE_FROM_FAVORITE, bundleOf(
                         ANALYTIC_KEY_COCKTAIL_ID to cocktail.id
                     )

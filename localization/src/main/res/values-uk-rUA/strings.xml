@@ -156,4 +156,9 @@
     <string name="edit_profile_last_name_title">Прізвище :</string>
     <!--#endregion-->
 
+<!--    #region App config
+    <string name="main_toolbar_title_visibility">main_toolbar_title_visibility</string>
+    <string name="switcher_toolbar_visibility">switcher_toolbar_visibility</string>
+    #endregion-->
+
 </resources>

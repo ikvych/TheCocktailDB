@@ -574,7 +574,7 @@ class MainFragmentViewModel(
             filteredAndSortedDrinksLiveData.value!!.isNotEmpty() &&
             isFiltersPresent()
         ) {
-            analytic.logEvent(ANALYTIC_EVENT_COCKTAIL_FILTER_APPLY, bundleOf(
+            firebase.logEvent(ANALYTIC_EVENT_COCKTAIL_FILTER_APPLY, bundleOf(
                 ANALYTIC_KEY_FILTER_ALCOHOL to filtersLiveData.value?.get(DrinkFilterType.ALCOHOL)
                     ?.filter { it != AlcoholDrinkFilter.NONE }.takeIf { it!!.isNotEmpty() }
                     .toString(),

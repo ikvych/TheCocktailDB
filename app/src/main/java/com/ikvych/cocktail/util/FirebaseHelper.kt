@@ -20,7 +20,7 @@ class FirebaseHelper private constructor(
     //FirebaseRemoteConfig
     private val remoteConfig = FirebaseRemoteConfig.getInstance()
     private val configSettings = remoteConfigSettings {
-        minimumFetchIntervalInSeconds = 10
+        minimumFetchIntervalInSeconds = 0
     }
     init {
         remoteConfig.setConfigSettingsAsync(configSettings)

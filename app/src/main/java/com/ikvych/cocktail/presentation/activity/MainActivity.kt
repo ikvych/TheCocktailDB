@@ -8,7 +8,6 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.PopupMenu
@@ -22,9 +21,6 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.facebook.stetho.Stetho
 import com.google.firebase.analytics.FirebaseAnalytics
-import com.google.firebase.remoteconfig.FirebaseRemoteConfig
-import com.google.firebase.remoteconfig.ktx.get
-import com.google.firebase.remoteconfig.ktx.remoteConfigSettings
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
@@ -54,6 +50,11 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
         //бібліотека яка дозволяє відслідковувати базу даних через веб браузер у реальному часі
         Stetho.initializeWithDefaults(this)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        viewModel.checkForRemoteConfig()
+        super.onResume()
     }
 
     override fun configureView(savedInstanceState: Bundle?) {
@@ -112,9 +113,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                     ft.show(mainFragment!!)
                     ft.setPrimaryNavigationFragment(mainFragment)
                     ft.commit()
-                    viewModel.analytic.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundleOf(
+                    viewModel.firebase.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundleOf(
                         ANALYTIC_KEY_MAIN_TAB_NAME to ANALYTIC_VALUE_MAIN_TAB
                     ))
+                    viewModel.checkForRemoteConfig()
                     true
                 }
                 R.id.menu_profile_fragment -> {
@@ -123,9 +125,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                     ft.show(profileFragment!!)
                     ft.setPrimaryNavigationFragment(profileFragment)
                     ft.commit()
-                    viewModel.analytic.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundleOf(
+                    viewModel.firebase.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundleOf(
                         ANALYTIC_KEY_MAIN_TAB_NAME to ANALYTIC_VALUE_PROFILE_TAB
                     ))
+                    viewModel.checkForRemoteConfig()
                     true
                 }
                 else -> false

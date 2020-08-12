@@ -32,6 +32,7 @@ import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.presentation.enumeration.ShortcutType
 import com.ikvych.cocktail.viewmodel.cocktail.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import java.lang.RuntimeException
 import kotlin.reflect.KClass
 
 

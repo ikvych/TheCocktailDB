@@ -10,6 +10,7 @@ import com.ikvych.cocktail.presentation.extension.observeOnce
 import com.ikvych.cocktail.presentation.extension.viewModels
 import com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
+import java.lang.NullPointerException
 import kotlin.reflect.KClass
 
 class SplashActivity : BaseActivity<BaseViewModel, ActivitySplashBinding>() {
@@ -21,6 +22,7 @@ class SplashActivity : BaseActivity<BaseViewModel, ActivitySplashBinding>() {
     private val profileViewModel: ProfileActivityViewModel by viewModels()
 
     override fun configureView(savedInstanceState: Bundle?) {
+
         profileViewModel.checkForUser()
         profileViewModel.isUserPresentLiveData.observeOnce {
             if (it) {

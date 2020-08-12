@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.DialogFragment
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.ikvych.cocktail.receiver.FlyModeReceiver
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
 import com.ikvych.cocktail.presentation.dialog.base.BaseBottomSheetDialogFragment
@@ -35,6 +36,8 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentClickListener<Any, DialogButton, DialogType<DialogButton>>,
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
     View.OnClickListener, View.OnLongClickListener {
+
+    lateinit var firebaseAnalytics: FirebaseAnalytics
 
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()
     private lateinit var errorHandler: ErrorHandler
@@ -64,6 +67,7 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
         dataBinding.lifecycleOwner = this@BaseActivity
         configureDataBinding(dataBinding)
         configureView(savedInstanceState)
+        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
     }
 
     protected open fun configureDataBinding(binding: DataBinding) {

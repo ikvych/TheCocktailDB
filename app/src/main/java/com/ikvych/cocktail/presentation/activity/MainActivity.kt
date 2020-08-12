@@ -15,24 +15,25 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.facebook.stetho.Stetho
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.util.COCKTAIL_ID
 import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
 import com.ikvych.cocktail.presentation.dialog.bottom.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.presentation.dialog.type.*
+import com.ikvych.cocktail.presentation.enumeration.ShortcutType
 import com.ikvych.cocktail.presentation.extension.observeOnce
 import com.ikvych.cocktail.presentation.fragment.MainFragment
 import com.ikvych.cocktail.presentation.fragment.SettingFragment
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
-import com.ikvych.cocktail.presentation.enumeration.ShortcutType
+import com.ikvych.cocktail.util.COCKTAIL_ID
 import com.ikvych.cocktail.viewmodel.cocktail.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import java.lang.RuntimeException
 import kotlin.reflect.KClass
 
 
@@ -107,6 +108,11 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                     ft.show(mainFragment!!)
                     ft.setPrimaryNavigationFragment(mainFragment)
                     ft.commit()
+                    val bundle = bundleOf(
+                        FirebaseAnalytics.Param.ITEM_ID to item.itemId,
+                        FirebaseAnalytics.Param.ITEM_NAME to "Main"
+                    )
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundle)
                     true
                 }
                 R.id.menu_profile_fragment -> {
@@ -115,6 +121,11 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                     ft.show(profileFragment!!)
                     ft.setPrimaryNavigationFragment(profileFragment)
                     ft.commit()
+                    val bundle = bundleOf(
+                        FirebaseAnalytics.Param.ITEM_ID to item.itemId,
+                        FirebaseAnalytics.Param.ITEM_NAME to "Profile"
+                    )
+                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundle)
                     true
                 }
                 else -> false

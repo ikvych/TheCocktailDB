@@ -139,4 +139,8 @@ dependencies {
     // Add the Firebase RemoteConfig.
     implementation 'com.google.firebase:firebase-config-ktx:19.2.0'
 
+    // Add the SDK for Firebase Cloud Messaging
+    implementation 'com.google.firebase:firebase-messaging:20.2.4'
+    implementation 'com.google.firebase:firebase-messaging-directboot:20.2.4'
+
 }

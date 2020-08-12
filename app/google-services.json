@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "344374618335",
+    "firebase_url": "https://thecocktaildb-19bc8.firebaseio.com",
+    "project_id": "thecocktaildb-19bc8",
+    "storage_bucket": "thecocktaildb-19bc8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:344374618335:android:df559451e34a9791c3a16a",
+        "android_client_info": {
+          "package_name": "com.ikvych.cocktail"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "344374618335-ln4g7td5a8bpumlg4otg4shqnqpnet49.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.ikvych.cocktail",
+            "certificate_hash": "1d92204b745a52b900742ec3f6fa6059e40d989a"
+          }
+        },
+        {
+          "client_id": "344374618335-i3ejj59mge4rv7h9vfncrihdg6oe52je.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC8STHsMb2mqaM5C65eRgbxcuMA5z5dUVg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "344374618335-i3ejj59mge4rv7h9vfncrihdg6oe52je.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

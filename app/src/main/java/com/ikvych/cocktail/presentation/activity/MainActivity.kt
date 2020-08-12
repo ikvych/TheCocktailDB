@@ -15,21 +15,23 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.toAdaptiveIcon
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Observer
 import com.facebook.stetho.Stetho
+import com.google.firebase.analytics.FirebaseAnalytics
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.util.COCKTAIL_ID
 import com.ikvych.cocktail.databinding.ActivityMainBinding
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
 import com.ikvych.cocktail.presentation.dialog.bottom.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.presentation.dialog.type.*
+import com.ikvych.cocktail.presentation.enumeration.ShortcutType
 import com.ikvych.cocktail.presentation.extension.observeOnce
 import com.ikvych.cocktail.presentation.fragment.MainFragment
 import com.ikvych.cocktail.presentation.fragment.SettingFragment
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
-import com.ikvych.cocktail.presentation.enumeration.ShortcutType
+import com.ikvych.cocktail.util.COCKTAIL_ID
 import com.ikvych.cocktail.viewmodel.cocktail.MainActivityViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.reflect.KClass
@@ -48,6 +50,11 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
         //бібліотека яка дозволяє відслідковувати базу даних через веб браузер у реальному часі
         Stetho.initializeWithDefaults(this)
         super.onCreate(savedInstanceState)
+    }
+
+    override fun onResume() {
+        viewModel.checkForRemoteConfig()
+        super.onResume()
     }
 
     override fun configureView(savedInstanceState: Bundle?) {
@@ -106,6 +113,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                     ft.show(mainFragment!!)
                     ft.setPrimaryNavigationFragment(mainFragment)
                     ft.commit()
+                    viewModel.firebase.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundleOf(
+                        ANALYTIC_KEY_MAIN_TAB_NAME to ANALYTIC_VALUE_MAIN_TAB
+                    ))
+                    viewModel.checkForRemoteConfig()
                     true
                 }
                 R.id.menu_profile_fragment -> {
@@ -114,6 +125,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                     ft.show(profileFragment!!)
                     ft.setPrimaryNavigationFragment(profileFragment)
                     ft.commit()
+                    viewModel.firebase.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundleOf(
+                        ANALYTIC_KEY_MAIN_TAB_NAME to ANALYTIC_VALUE_PROFILE_TAB
+                    ))
+                    viewModel.checkForRemoteConfig()
                     true
                 }
                 else -> false
@@ -412,5 +427,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
         }
     }
 
+    companion object {
+        const val ANALYTIC_KEY_MAIN_TAB_NAME = "main_tab_name"
+        const val ANALYTIC_VALUE_MAIN_TAB = "main"
+        const val ANALYTIC_VALUE_PROFILE_TAB = "profile"
+    }
 }
 

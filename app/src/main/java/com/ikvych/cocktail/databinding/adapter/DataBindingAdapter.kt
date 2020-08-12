@@ -136,7 +136,11 @@ class DataBindingAdapter {
         @BindingAdapter("bind:v_isVisible")
         @JvmStatic
         fun View.isVisibleView(isVisible: Boolean) {
-            this.isVisible = isVisible
+            this.visibility = if (isVisible) {
+                View.VISIBLE
+            } else {
+                View.GONE
+            }
         }
     }
 

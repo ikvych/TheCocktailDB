@@ -6,6 +6,7 @@ import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
+import androidx.core.os.bundleOf
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
@@ -21,6 +22,7 @@ import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
 import com.ikvych.cocktail.util.BatteryStateLiveData
 import com.ikvych.cocktail.presentation.enumeration.Page
+import com.ikvych.cocktail.util.FirebaseHelper
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -28,15 +30,22 @@ class MainFragmentViewModel(
     private val cocktailRepository: CocktailRepository,
     private val mapper: CocktailModelMapper,
     application: Application,
-    savedStateHandle: SavedStateHandle
-) : CocktailViewModel(application, savedStateHandle, cocktailRepository, mapper) {
+    savedStateHandle: SavedStateHandle,
+    analytic: FirebaseHelper
+) : CocktailViewModel(application, savedStateHandle, cocktailRepository, mapper, analytic) {
 
-    companion object {
+/*    companion object {
         const val EXTRA_KEY_FILTER_TYPE = "EXTRA_KEY_FILTER_TYPE"
         const val EXTRA_KEY_FILTER = "EXTRA_KEY_FILTER"
         const val EXTRA_KEY_PAGE_NUMBER = "EXTRA_KEY_PAGE_NUMBER"
         const val EXTRA_KEY_SORT_ORDER = "EXTRA_KEY_SORT_ORDER"
-    }
+
+        const val ANALYTIC_EVENT_COCKTAIL_FILTER_APPLY = "change_profile_photo"
+        const val ANALYTIC_KEY_FILTER_ALCOHOL = "filter_alcohol"
+        const val ANALYTIC_KEY_FILTER_COCKTAIL_TYPE = "filter_cocktail_type"
+        const val ANALYTIC_KEY_FILTER_GLASS = "filter_glass"
+        const val ANALYTIC_KEY_FILTER_INGREDIENT = "filter_ingredients"
+    }*/
 
     val ingredientsListLiveData: LiveData<List<IngredientModel>> =
         cocktailRepository.ingredientsListLiveData
@@ -558,5 +567,46 @@ class MainFragmentViewModel(
             SortDrinkType.INGREDIENT_COUNT_DESC -> cocktailCopy.sortedByDescending { cocktail -> cocktail.ingredients.size }
         }
         return cocktailCopy
+    }
+
+    fun notifyToSendAnalytics() {
+        if (
+            filteredAndSortedDrinksLiveData.value!!.isNotEmpty() &&
+            isFiltersPresent()
+        ) {
+            firebase.logEvent(ANALYTIC_EVENT_COCKTAIL_FILTER_APPLY, bundleOf(
+                ANALYTIC_KEY_FILTER_ALCOHOL to filtersLiveData.value?.get(DrinkFilterType.ALCOHOL)
+                    ?.filter { it != AlcoholDrinkFilter.NONE }.takeIf { it!!.isNotEmpty() }
+                    .toString(),
+                ANALYTIC_KEY_FILTER_COCKTAIL_TYPE to filtersLiveData.value?.get(DrinkFilterType.CATEGORY)
+                    ?.filter { it != CategoryDrinkFilter.NONE }.takeIf { it!!.isNotEmpty() }
+                    .toString(),
+                ANALYTIC_KEY_FILTER_GLASS to filtersLiveData.value?.get(DrinkFilterType.GLASS)
+                    ?.filter { it != GlassDrinkFilter.NONE }.takeIf { it!!.isNotEmpty() }
+                    .toString(),
+                ANALYTIC_KEY_FILTER_INGREDIENT to filtersLiveData.value?.get(DrinkFilterType.INGREDIENT)
+                    ?.filter {
+                        it != IngredientModel(
+                            DrinkFilterType.INGREDIENT,
+                            DRINK_FILTER_ABSENT
+                        )
+                    }
+                    .takeIf { it!!.isNotEmpty() }?.map { it.key }.toString()
+            )
+            )
+        }
+    }
+
+    companion object {
+        const val EXTRA_KEY_FILTER_TYPE = "EXTRA_KEY_FILTER_TYPE"
+        const val EXTRA_KEY_FILTER = "EXTRA_KEY_FILTER"
+        const val EXTRA_KEY_PAGE_NUMBER = "EXTRA_KEY_PAGE_NUMBER"
+        const val EXTRA_KEY_SORT_ORDER = "EXTRA_KEY_SORT_ORDER"
+
+        const val ANALYTIC_EVENT_COCKTAIL_FILTER_APPLY = "cocktail_filter_apply"
+        const val ANALYTIC_KEY_FILTER_ALCOHOL = "filter_alcohol"
+        const val ANALYTIC_KEY_FILTER_COCKTAIL_TYPE = "filter_category"
+        const val ANALYTIC_KEY_FILTER_GLASS = "filter_glass"
+        const val ANALYTIC_KEY_FILTER_INGREDIENT = "filter_ingredients"
     }
 }

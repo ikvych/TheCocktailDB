@@ -59,6 +59,7 @@ import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
 import com.ikvych.cocktail.presentation.mapper.cocktail.LocalizedStringModelMapper
 import com.ikvych.cocktail.presentation.mapper.base.BaseModelMapper
 import com.ikvych.cocktail.presentation.mapper.user.UserModelMapper
+import com.ikvych.cocktail.util.FirebaseHelper
 import com.ikvych.cocktail.viewmodel.auth.SignInViewModel
 import com.ikvych.cocktail.viewmodel.auth.SignUpViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
@@ -159,7 +160,8 @@ object Injector {
                         appContext
                     ),
                     application,
-                    handle
+                    handle,
+                    provideAnalyticHelper(appContext)
                 ) as T
                 SearchActivityViewModel::class.java -> SearchActivityViewModel(
                     provideRepository(appContext, CocktailRepository::class.java),
@@ -167,14 +169,16 @@ object Injector {
                         appContext
                     ),
                     application,
-                    handle
+                    handle,
+                    provideAnalyticHelper(appContext)
                 ) as T
                 ProfileActivityViewModel::class.java -> ProfileActivityViewModel(
                     application,
                     handle,
                     provideRepository(appContext, UserRepository::class.java),
                     provideModelMapper(appContext),
-                    provideRepository(appContext, TokenRepository::class.java)
+                    provideRepository(appContext, TokenRepository::class.java),
+                    provideAnalyticHelper(appContext)
                 ) as T
                 MainFragmentViewModel::class.java -> MainFragmentViewModel(
                     provideRepository(appContext, CocktailRepository::class.java),
@@ -182,7 +186,8 @@ object Injector {
                         appContext
                     ),
                     application,
-                    handle
+                    handle,
+                    provideAnalyticHelper(appContext)
                 ) as T
                 CocktailViewModel::class.java -> CocktailViewModel(
                     application,
@@ -190,7 +195,8 @@ object Injector {
                     provideRepository(appContext, CocktailRepository::class.java),
                     provideModelMapper(
                         appContext
-                    )
+                    ),
+                    provideAnalyticHelper(appContext)
                 ) as T
                 BaseViewModel::class.java -> BaseViewModel(
                     application, handle
@@ -209,13 +215,15 @@ object Injector {
                     application,
                     handle,
                     provideRepository(appContext, UserRepository::class.java),
-                    provideModelMapper(appContext)
+                    provideModelMapper(appContext),
+                    provideAnalyticHelper(appContext)
                 ) as T
                 CocktailDetailViewModel::class.java -> CocktailDetailViewModel(
                     provideRepository(appContext, CocktailRepository::class.java),
                     provideModelMapper(appContext),
                     application,
-                    handle
+                    handle,
+                    provideAnalyticHelper(appContext)
                 ) as T
                 else -> throw NotImplementedError("Must provide repository for class ${modelClass.simpleName}")
             }
@@ -247,6 +255,10 @@ object Injector {
             ) as T
             else -> throw IllegalStateException("Must provide repository for class ${clazz.simpleName}")
         }
+    }
+
+    fun provideAnalyticHelper(context: Context): FirebaseHelper {
+        return FirebaseHelper.getInstance(context)
     }
 
     inline fun <reified T> provideLocalDataSource(context: Context): T {

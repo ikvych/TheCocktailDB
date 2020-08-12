@@ -24,6 +24,7 @@ import com.ikvych.cocktail.viewmodel.auth.SignInViewModel
 import com.ikvych.cocktail.util.widget.custom.LinerLayoutWithKeyboardListener
 import kotlinx.android.synthetic.main.fragment_sign_in.*
 import java.lang.Exception
+import java.lang.UnsupportedOperationException
 import kotlin.reflect.KClass
 
 class SignInFragment : BaseFragment<SignInViewModel, FragmentSignInBinding>(),

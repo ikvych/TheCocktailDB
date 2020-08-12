@@ -108,11 +108,9 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                     ft.show(mainFragment!!)
                     ft.setPrimaryNavigationFragment(mainFragment)
                     ft.commit()
-                    val bundle = bundleOf(
-                        FirebaseAnalytics.Param.ITEM_ID to item.itemId,
-                        FirebaseAnalytics.Param.ITEM_NAME to "Main"
-                    )
-                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundle)
+                    viewModel.analytic.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundleOf(
+                        ANALYTIC_KEY_MAIN_TAB_NAME to ANALYTIC_VALUE_MAIN_TAB
+                    ))
                     true
                 }
                 R.id.menu_profile_fragment -> {
@@ -121,11 +119,9 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                     ft.show(profileFragment!!)
                     ft.setPrimaryNavigationFragment(profileFragment)
                     ft.commit()
-                    val bundle = bundleOf(
-                        FirebaseAnalytics.Param.ITEM_ID to item.itemId,
-                        FirebaseAnalytics.Param.ITEM_NAME to "Profile"
-                    )
-                    firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundle)
+                    viewModel.analytic.logEvent(FirebaseAnalytics.Event.SELECT_ITEM, bundleOf(
+                        ANALYTIC_KEY_MAIN_TAB_NAME to ANALYTIC_VALUE_PROFILE_TAB
+                    ))
                     true
                 }
                 else -> false
@@ -424,5 +420,10 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
         }
     }
 
+    companion object {
+        const val ANALYTIC_KEY_MAIN_TAB_NAME = "main_tab_name"
+        const val ANALYTIC_VALUE_MAIN_TAB = "main"
+        const val ANALYTIC_VALUE_PROFILE_TAB = "profile"
+    }
 }
 

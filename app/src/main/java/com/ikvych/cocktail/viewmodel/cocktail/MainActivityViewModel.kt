@@ -10,6 +10,7 @@ import com.ikvych.cocktail.data.repository.source.CocktailRepository
 import com.ikvych.cocktail.listener.ApplicationLifeCycleObserver
 import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
+import com.ikvych.cocktail.util.FirebaseAnalyticHelper
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -17,8 +18,9 @@ class MainActivityViewModel(
     private val cocktailRepository: CocktailRepository,
     private val mapper: CocktailModelMapper,
     application: Application,
-    savedStateHandle: SavedStateHandle
-) : CocktailViewModel(application, savedStateHandle, cocktailRepository, mapper),
+    savedStateHandle: SavedStateHandle,
+    analytic: FirebaseAnalyticHelper
+) : CocktailViewModel(application, savedStateHandle, cocktailRepository, mapper, analytic),
     ApplicationLifeCycleObserver.OnLifecycleObserverListener {
 
     val cocktailOfTheDayLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
@@ -31,7 +33,6 @@ class MainActivityViewModel(
         appSettingRepository.showNavigationBarTitleLiveData
     val showBatteryStateLiveData: MutableLiveData<Boolean> =
         appSettingRepository.showBatteryStateLiveData
-
 
     init {
         lifecycleObserver = ApplicationLifeCycleObserver(this, sharedPreferences)

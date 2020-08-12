@@ -101,6 +101,11 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>(), Vie
         }
     }
 
+    override fun onDestroy() {
+        parentViewModel.notifyToSendAnalytics()
+        super.onDestroy()
+    }
+
     private fun startFilterDialog(filterType: DrinkFilterType) {
         FilterDrinkDialogFragment.newInstance(parentViewModel.filtersLiveData.value!![filterType]!!.first())
             .show(
@@ -159,6 +164,7 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>(), Vie
     companion object {
         @JvmStatic
         fun newInstance() = FilterFragment()
+
     }
 
 }

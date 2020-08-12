@@ -1,22 +1,43 @@
 package com.ikvych.cocktail.viewmodel.user
 
 import android.app.Application
+import androidx.core.os.bundleOf
 import androidx.lifecycle.*
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.repository.source.UserRepository
+import com.ikvych.cocktail.presentation.extension.mapNotNull
 import com.ikvych.cocktail.presentation.mapper.user.UserModelMapper
 import com.ikvych.cocktail.presentation.model.user.UserModel
+import com.ikvych.cocktail.util.FirebaseAnalyticHelper
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 
 class EditProfileViewModel(
     application: Application,
     savedStateHandle: SavedStateHandle,
     private val userRepository: UserRepository,
-    private val mapper: UserModelMapper
+    private val mapper: UserModelMapper,
+    val analytic: FirebaseAnalyticHelper
 ) : BaseViewModel(application, savedStateHandle) {
     private val minimumNameSymbolCount: Int = 4
 
-    val userLiveData = userRepository.userLiveData
+    val triggerObserver: Observer<in Any?> = Observer {  }
+    val userLiveData:LiveData<UserModel?> = userRepository.userLiveData.map {
+        when {
+            it != null -> mapper.mapTo(it)
+            else -> null
+        }
+    }
+
+    val userFullNameLiveData = userLiveData.mapNotNull { "$name $lastName" }
+
+    init {
+        userFullNameLiveData.observeForever(triggerObserver)
+    }
+
+    override fun onCleared() {
+        userFullNameLiveData.removeObserver(triggerObserver)
+        super.onCleared()
+    }
 
     val shouldReturnLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
     val firstNameInputLiveData: MutableLiveData<String> = object : MediatorLiveData<String>() {
@@ -88,6 +109,15 @@ class EditProfileViewModel(
                 )
             )
             shouldReturnLiveData.postValue(true)
+            analytic.logEvent(ANALYTIC_EVENT_PROFILE_DATA_CHANGE, bundleOf(
+                    ANALYTIC_KEY_USER_NAME to userFullNameLiveData.value
+                )
+            )
         }
+    }
+
+    companion object {
+        const val ANALYTIC_EVENT_PROFILE_DATA_CHANGE = "profile_data_change"
+        const val ANALYTIC_KEY_USER_NAME = "user_name"
     }
 }

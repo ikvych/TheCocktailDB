@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
+import androidx.core.os.bundleOf
 import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ActivityDrinkDetailsBinding
@@ -42,9 +43,11 @@ class DrinkDetailActivity
         }
         //в залажності від того чи було передано id напою чи сам напій, вибирається спосіб як ініціалізувати
         //drinkLiveData з поточним напоєм. Якщо немає ніодого з варіантів, завершуємо актівіті
+        var cocktailId: Long = -1
         when {
             intent.hasExtra(COCKTAIL) -> {
                 viewModel.cocktailLiveData.value = intent.getParcelableExtra(COCKTAIL)
+                cocktailId = viewModel.cocktailLiveData.value!!.id
                 //Якщо присутній інтен SHOULD_SAVE_DRINK, тоді зберігаємо напій в базу даних
                 if (intent.hasExtra(SHOULD_SAVE_COCKTAIL)) {
                     viewModel.saveCocktailIntoDb()
@@ -53,13 +56,18 @@ class DrinkDetailActivity
             intent.hasExtra(COCKTAIL_ID) -> {
                 val currentCocktailId = intent.getLongExtra(COCKTAIL_ID, -1L)
                 if (currentCocktailId == -1L) finish()
+                cocktailId = currentCocktailId
                 viewModel.findCocktailDbById(currentCocktailId)
             }
             else -> {
                 finish()
             }
         }
-
+        viewModel.analytic.logEvent(
+            ANALYTIC_EVENT_COCKTAIL_DETAIL_OPEN, bundleOf(
+                ANALYTIC_KEY_COCKTAIL_ID to cocktailId
+            )
+        )
         //ініціалізуємо слухач, для зміни розмірів і позиції зображення напою
         initAppBarLayoutListener()
     }
@@ -142,5 +150,10 @@ class DrinkDetailActivity
             startService(intent)
         }
         super.onDestroy()
+    }
+
+    companion object {
+        const val ANALYTIC_EVENT_COCKTAIL_DETAIL_OPEN = "cocktail_detail_open"
+        const val ANALYTIC_KEY_COCKTAIL_ID = "cocktail_id"
     }
 }

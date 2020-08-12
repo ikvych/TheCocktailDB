@@ -37,8 +37,6 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
     BaseBottomSheetDialogFragment.OnBottomSheetDialogFragmentDismissListener<Any, DialogButton, DialogType<DialogButton>>,
     View.OnClickListener, View.OnLongClickListener {
 
-    lateinit var firebaseAnalytics: FirebaseAnalytics
-
     private val flyModeReceiver: FlyModeReceiver = FlyModeReceiver()
     private lateinit var errorHandler: ErrorHandler
     protected abstract var contentLayoutResId: Int
@@ -67,7 +65,6 @@ abstract class BaseActivity<ViewModel : BaseViewModel, DataBinding : ViewDataBin
         dataBinding.lifecycleOwner = this@BaseActivity
         configureDataBinding(dataBinding)
         configureView(savedInstanceState)
-        firebaseAnalytics = FirebaseAnalytics.getInstance(this)
     }
 
     protected open fun configureDataBinding(binding: DataBinding) {

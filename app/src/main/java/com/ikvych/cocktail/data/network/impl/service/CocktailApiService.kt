@@ -10,6 +10,6 @@ interface CocktailApiService : BaseNetService {
     @GET("api/json/v1/1/search.php")
     suspend fun findCocktailsByName(@Query("s") drinkName: String?): CocktailNetResponse
 
-    @GET("api/json/v1/1/search.php")
+    @GET("api/json/v1/1/lookup.php")
     suspend fun findCocktailById(@Query("i") cocktailId: Long): CocktailNetResponse
 }

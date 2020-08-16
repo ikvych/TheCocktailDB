@@ -230,6 +230,8 @@ object Injector {
                     application,
                     handle,
                     provideRepository(appContext, NotificationRepository::class.java),
+                    provideRepository(appContext, CocktailRepository::class.java),
+                    provideModelMapper(appContext),
                     provideModelMapper(appContext)
                 ) as T
                 else -> throw NotImplementedError("Must provide repository for class ${modelClass.simpleName}")

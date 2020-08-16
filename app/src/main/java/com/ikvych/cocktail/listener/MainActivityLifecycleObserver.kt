@@ -35,10 +35,18 @@ class MainActivityLifecycleObserver(
                     startProfileActivity()
                 }
                 NotificationType.NOTIFICATION_TYPE_COCKTAIL_DETAIL -> {
-                    val intent =
-                        Intent(activity, DrinkDetailActivity::class.java)
-                    intent.putExtra(COCKTAIL_ID, it.cocktailId)
-                    activity.startActivity(intent)
+                    if (it.cocktailId != null) {
+                        viewModel.getCocktailByIdLiveDataAndSave(it.cocktailId)
+                            .observeNotNullOnce { cocktail ->
+                                activity.startActivity(
+                                    Intent(
+                                        activity,
+                                        DrinkDetailActivity::class.java
+                                    ).apply {
+                                        putExtra(COCKTAIL_ID, cocktail.id)
+                                    })
+                            }
+                    }
                     viewModel.deleteNotification()
                 }
                 NotificationType.NOTIFICATION_TYPE_RATE_APP -> {

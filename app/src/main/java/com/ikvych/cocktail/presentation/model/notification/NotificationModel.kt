@@ -8,8 +8,8 @@ data class NotificationModel(
     val title: String? = "",
     val body: String? = "",
     val type: NotificationType = NotificationType.NOTIFICATION_TYPE_UNDEFINED,
-    val image: String?,
-    val cocktailId: Long?
+    val image: String? = null,
+    val cocktailId: Long? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -18,8 +18,7 @@ data class NotificationModel(
         NotificationType.valueOf(parcel.readString() ?: "undefined"),
         parcel.readString(),
         parcel.readValue(Long::class.java.classLoader) as? Long
-    ) {
-    }
+    )
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)

@@ -440,10 +440,36 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
         }
     }
 
+    override fun onDialogFragmentClick(
+        dialog: DialogFragment,
+        buttonType: DialogButton,
+        type: DialogType<DialogButton>,
+        data: Any?
+    ) {
+        super.onDialogFragmentClick(dialog, buttonType, type, data)
+        when (type) {
+            RatingDialogType -> {
+                when (buttonType) {
+                    ActionSingleDialogButton -> {
+                        val rating = data as Float
+                        viewModel.firebase.logEvent(
+                            ANALYTIC_KEY_RATE_APP,
+                            bundleOf(
+                                ANALYTIC_VALUE_RATING to rating
+                            )
+                        )
+                    }
+                }
+            }
+        }
+    }
+
     companion object {
         const val ANALYTIC_KEY_MAIN_TAB_NAME = "main_tab_name"
+        const val ANALYTIC_KEY_RATE_APP = "rate_app"
         const val ANALYTIC_VALUE_MAIN_TAB = "main"
         const val ANALYTIC_VALUE_PROFILE_TAB = "profile"
+        const val ANALYTIC_VALUE_RATING = "rating"
     }
 }
 

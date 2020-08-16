@@ -2,31 +2,42 @@ package com.ikvych.cocktail.presentation.dialog.regular
 
 import android.os.Bundle
 import android.view.View
+import android.widget.RatingBar
+import android.widget.Toast
 import androidx.core.os.bundleOf
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.presentation.dialog.type.ActionSingleDialogButton
 import com.ikvych.cocktail.presentation.dialog.type.NotificationDialogType
 import com.ikvych.cocktail.presentation.dialog.base.SimpleBaseDialogFragment
+import com.ikvych.cocktail.presentation.dialog.type.RatingDialogType
 import com.ikvych.cocktail.presentation.dialog.type.SingleDialogButton
+import kotlinx.android.synthetic.main.layout_rating_bar.*
 
 
 class RatingAppDialogFragment :
-    SimpleBaseDialogFragment<Any, SingleDialogButton, NotificationDialogType, SimpleBaseDialogFragment.SimpleDialogBuilder>() {
+    SimpleBaseDialogFragment<Float, SingleDialogButton, RatingDialogType, SimpleBaseDialogFragment.SimpleDialogBuilder>() {
 
-    override val dialogType: NotificationDialogType =
-        NotificationDialogType
+    override val dialogType: RatingDialogType =
+        RatingDialogType
     override val extraContentLayoutResId: Int
         get() = R.layout.layout_rating_bar
 
     override var dialogBuilder: SimpleDialogBuilder = SimpleDialogBuilder()
-    override var data: Any? = null
+    override var data: Float? = 0.0F
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         dialogBuilder = requireArguments().getParcelable(EXTRA_KEY_BUILDER)!!
     }
 
-    override fun obtainDataForView(view: View): Any? {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        rb_app.setOnRatingBarChangeListener { ratingBar, rating, fromUser ->
+            data = rating
+        }
+    }
+
+    override fun obtainDataForView(view: View): Float? {
         return data
     }
 

@@ -380,7 +380,7 @@ class ProfileActivity : BaseActivity<ProfileActivityViewModel, ActivityProfileBi
                         viewModel.removeUser()
                         val intent = Intent(this, AuthActivity::class.java)
                         startActivity(intent)
-                        finish()
+                        finishAffinity()
                     }
                     LeftDialogButton -> {
                         dialog.dismiss()

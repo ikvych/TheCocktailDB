@@ -5,9 +5,12 @@ import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.OnLifecycleEvent
+import com.ikvych.cocktail.R
 import com.ikvych.cocktail.presentation.activity.DrinkDetailActivity
 import com.ikvych.cocktail.presentation.activity.MainActivity
 import com.ikvych.cocktail.presentation.activity.ProfileActivity
+import com.ikvych.cocktail.presentation.dialog.regular.ErrorDialogFragment
+import com.ikvych.cocktail.presentation.dialog.regular.RatingAppDialogFragment
 import com.ikvych.cocktail.presentation.extension.observeNotNullOnce
 import com.ikvych.cocktail.presentation.extension.observeOnce
 import com.ikvych.cocktail.presentation.model.notification.NotificationType
@@ -50,7 +53,15 @@ class MainActivityLifecycleObserver(
                     viewModel.deleteNotification()
                 }
                 NotificationType.NOTIFICATION_TYPE_RATE_APP -> {
-
+                    RatingAppDialogFragment.newInstance {
+                        titleText = activity.getString(R.string.rating_bar_dialog_title)
+                        leftButtonText = activity.getString(R.string.all_ok_button)
+                        isCloseButtonVisible = true
+                    }.show(
+                        activity.supportFragmentManager,
+                        RatingAppDialogFragment::class.java.simpleName
+                    )
+                    viewModel.deleteNotification()
                 }
                 NotificationType.NOTIFICATION_TYPE_UNDEFINED -> {
 

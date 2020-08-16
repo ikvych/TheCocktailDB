@@ -165,4 +165,8 @@
     <string name="push_notification_chanel_description">Chanel for notifications from clouding messaging</string>
     <!--#endregion-->
 
+    <!--#region Rating Bar dialog-->
+    <string name="rating_bar_dialog_title">Rating app</string>
+    <!--#endregion-->
+
 </resources>

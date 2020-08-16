@@ -5,6 +5,7 @@ import androidx.core.os.bundleOf
 import androidx.lifecycle.*
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.data.repository.source.UserRepository
+import com.ikvych.cocktail.presentation.extension.distinctNotNullValues
 import com.ikvych.cocktail.presentation.extension.mapNotNull
 import com.ikvych.cocktail.presentation.mapper.user.UserModelMapper
 import com.ikvych.cocktail.presentation.model.user.UserModel
@@ -20,23 +21,11 @@ class EditProfileViewModel(
 ) : BaseViewModel(application, savedStateHandle) {
     private val minimumNameSymbolCount: Int = 4
 
-    val triggerObserver: Observer<in Any?> = Observer {  }
-    val userLiveData:LiveData<UserModel?> = userRepository.userLiveData.map {
+    val userLiveData: LiveData<UserModel?> = userRepository.userLiveData.map {
         when {
             it != null -> mapper.mapTo(it)
             else -> null
         }
-    }
-
-    val userFullNameLiveData = userLiveData.mapNotNull { "$name $lastName" }
-
-    init {
-        userFullNameLiveData.observeForever(triggerObserver)
-    }
-
-    override fun onCleared() {
-        userFullNameLiveData.removeObserver(triggerObserver)
-        super.onCleared()
     }
 
     val shouldReturnLiveData: MutableLiveData<Boolean> = MutableLiveData(false)
@@ -55,7 +44,7 @@ class EditProfileViewModel(
         }
     }
 
-    /*First Name*/
+    /*Validate First Name*/
     val validateFirstNameLiveData: LiveData<String> = firstNameInputLiveData.map {
         val symbolQuantity = minimumNameSymbolCount - it.length
         application.resources.getString(R.string.auth_minimal_symbol_count)
@@ -66,7 +55,7 @@ class EditProfileViewModel(
         minimumNameSymbolCount - firstNameInputLiveData.value!!.length <= 0
     }
 
-    /*Last Name*/
+    /*Validate Last Name*/
     val validateLastNameLiveData: LiveData<String> = lastNameInputLiveData.map {
         val symbolQuantity = minimumNameSymbolCount - it.length
         application.resources.getString(R.string.auth_minimal_symbol_count)
@@ -89,9 +78,8 @@ class EditProfileViewModel(
             }
 
             fun validate(): Boolean {
-                val result = isValidFirstNameLiveData.value ?: false &&
+                return isValidFirstNameLiveData.value ?: false &&
                         isValidLastNameLiveData.value ?: false
-                return result
             }
         }
 
@@ -109,15 +97,6 @@ class EditProfileViewModel(
                 )
             )
             shouldReturnLiveData.postValue(true)
-            analytic.logEvent(ANALYTIC_EVENT_PROFILE_DATA_CHANGE, bundleOf(
-                    ANALYTIC_KEY_USER_NAME to userFullNameLiveData.value
-                )
-            )
         }
-    }
-
-    companion object {
-        const val ANALYTIC_EVENT_PROFILE_DATA_CHANGE = "profile_data_change"
-        const val ANALYTIC_KEY_USER_NAME = "user_name"
     }
 }

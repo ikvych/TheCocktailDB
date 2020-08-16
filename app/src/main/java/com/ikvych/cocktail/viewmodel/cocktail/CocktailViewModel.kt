@@ -25,6 +25,7 @@ open class CocktailViewModel(
         cocktail.isFavorite = !cocktail.isFavorite
         launchRequest {
             cocktailRepository.addOrReplaceCocktail(mapper.mapFrom(cocktail))
+            // Винести з VIewModel
             if (cocktail.isFavorite) {
                 firebase.logEvent(
                     ANALYTIC_EVENT_ADD_TO_FAVORITE, bundleOf(

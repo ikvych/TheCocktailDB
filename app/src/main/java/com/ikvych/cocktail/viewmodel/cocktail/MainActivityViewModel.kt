@@ -46,8 +46,9 @@ class MainActivityViewModel(
     }
 
     fun checkForRemoteConfig() {
-        firebase.fetchAndActivate { result, remoteConfig ->
-            if (result) {
+        firebase.fetchAndActivate { isChanged, remoteConfig ->
+            // isChanged - визначає чи є зміни на сервері
+            if (isChanged) {
                 val titleVisibility = remoteConfig["main_toolbar_title_visibility"].asBoolean()
                 val switcherVisibility = remoteConfig["switcher_toolbar_visibility"].asBoolean()
                 appSettingRepository.showNavigationBarTitleLiveData.value = titleVisibility

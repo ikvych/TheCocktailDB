@@ -1,17 +1,16 @@
 package com.ikvych.cocktail.service.firebase
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
-import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.Drawable
-import android.os.Build
 import android.util.Log
+import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import com.google.firebase.messaging.FirebaseMessagingService
@@ -20,10 +19,6 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.ikvych.cocktail.Application.Companion.NOTIFICATION_CHANNEL_ID
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.data.network.impl.deserializer.BooleanDeserializer
-import com.ikvych.cocktail.data.network.impl.deserializer.Iso8601DateDeserializer
-import com.ikvych.cocktail.data.network.impl.deserializer.model.CocktailNetModelDeserializer
-import com.ikvych.cocktail.data.network.model.cocktail.CocktailNetResponse
 import com.ikvych.cocktail.presentation.activity.SplashActivity
 import com.ikvych.cocktail.presentation.model.notification.NotificationModel
 import com.ikvych.cocktail.presentation.model.notification.NotificationType
@@ -31,7 +26,7 @@ import com.ikvych.cocktail.service.NotificationActionService
 import com.ikvych.cocktail.service.firebase.deserializer.PushModelDeserializer
 import io.devlight.data.network.impl.extension.deserializeType
 import io.devlight.data.network.impl.extension.toJson
-import java.util.*
+
 
 class AppFirebaseMessagingService : FirebaseMessagingService() {
 
@@ -63,14 +58,8 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
                 NotificationModel::class.java
             )
             // Create an explicit intent for an Activity in your app
-
-            createNotificationChannel(notificationModel)
-            if (/* Check if data needs to be processed by long running job */ true) {
-                // For long-running tasks (10 seconds or more) use WorkManager.
-/*                scheduleJob()*/
-            } else {
-                // Handle message within 10 seconds
-/*                handleNow()*/
+            if (notificationModel != null) {
+                configureNotification(notificationModel)
             }
         }
 
@@ -84,69 +73,93 @@ class AppFirebaseMessagingService : FirebaseMessagingService() {
 
     }
 
-    private fun createNotificationChannel(model: NotificationModel) {
-
+    private fun configureNotification(model: NotificationModel) {
         val intent = Intent(this, SplashActivity::class.java).apply {
             flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
             putExtra(EXTRA_NOTIFICATION, model)
         }
+
         val pendingIntent: PendingIntent =
             PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
 
+        if (model.type == NotificationType.NOTIFICATION_TYPE_COCKTAIL_DETAIL) {
+            createCustomNotification(pendingIntent, model)
+        } else {
+            createRegularNotification(pendingIntent, model)
+        }
+    }
+
+    private fun createCustomNotification(
+        pendingIntent: PendingIntent,
+        model: NotificationModel
+    ) {
+        // сервіс для додавання коктейлю в улюблені
+        val serviceIntent = Intent(this, NotificationActionService::class.java).apply {
+            putExtra(EXTRA_NOTIFICATION_COCKTAIL_ID, model.cocktailId)
+        }
+        val servicePendingIntent: PendingIntent =
+            PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT)
+
+        // налаштовування кастомно вигляду для нотіфікейшина
+        val notificationLayout = RemoteViews(packageName, R.layout.layout_drink_detail_push)
+        notificationLayout.setTextViewText(R.id.txt_title, model.title)
+        notificationLayout.setTextViewText(R.id.txt_description, model.body)
+        notificationLayout.setOnClickPendingIntent(
+            R.id.ib_is_favorite,
+            servicePendingIntent
+        )
+
+        val builder = NotificationCompat.Builder(
+            this@AppFirebaseMessagingService,
+            NOTIFICATION_CHANNEL_ID
+        )
+            .setSmallIcon(R.drawable.ic_app_notification)
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(pendingIntent)
+            .setAutoCancel(true)
+            .setStyle(
+                NotificationCompat.DecoratedCustomViewStyle()
+            )
+            .setCustomContentView(notificationLayout)
+        // додавання іконки в нотіфікейшин
+        Glide.with(this)
+            .asBitmap()
+            .load(model.image)
+            .transform(CenterCrop(), RoundedCorners(6))
+            .into(object : CustomTarget<Bitmap>() {
+                override fun onLoadCleared(placeholder: Drawable?) {/*stub*/}
+                override fun onResourceReady(
+                    resource: Bitmap,
+                    transition: Transition<in Bitmap>?
+                ) {
+                    notificationLayout.setImageViewBitmap(
+                        R.id.iv_drink_image,
+                        resource
+                    )
+                    notifyNotification(builder)
+                }
+            })
+    }
+
+    private fun createRegularNotification(
+        pendingIntent: PendingIntent,
+        model: NotificationModel
+    ) {
         val builder = NotificationCompat.Builder(this, NOTIFICATION_CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_app_notification)
             .setContentTitle(model.title)
             .setContentText(model.body)
             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-            // Set the intent that will fire when the user taps the notification
             .setContentIntent(pendingIntent)
             .setAutoCancel(true)
-
-        if (model.type == NotificationType.NOTIFICATION_TYPE_COCKTAIL_DETAIL) {
-            val serviceIntent = Intent(this, NotificationActionService::class.java).apply {
-                putExtra(EXTRA_NOTIFICATION_COCKTAIL_ID, model.cocktailId)
-            }
-            val servicePendingIntent: PendingIntent =
-                PendingIntent.getService(this, 0, serviceIntent, PendingIntent.FLAG_UPDATE_CURRENT)
-            Glide.with(this)
-                .asBitmap()
-                .load(model.image)
-                .into(object : CustomTarget<Bitmap>() {
-
-                    override fun onLoadCleared(placeholder: Drawable?) {
-
-                    }
-
-                    override fun onResourceReady(
-                        resource: Bitmap,
-                        transition: Transition<in Bitmap>?
-                    ) {
-                        builder
-                            .setLargeIcon(resource)
-                            .setStyle(
-                                NotificationCompat.BigPictureStyle()
-                                    .bigPicture(resource)
-                                    .bigLargeIcon(null)
-                            )
-                            .addAction(R.drawable.ic_checbox_favorite_enabled, "Favorite", servicePendingIntent)
-
-                        with(NotificationManagerCompat.from(this@AppFirebaseMessagingService)) {
-                            // notificationId is a unique int for each notification that you must define
-                            notify(NOTIFICATION_ID, builder.build())
-                        }
-                    }
-
-                })
-        } else {
-            with(NotificationManagerCompat.from(this)) {
-                // notificationId is a unique int for each notification that you must define
-                notify(NOTIFICATION_ID, builder.build())
-            }
-        }
+        notifyNotification(builder)
     }
 
-    override fun onDeletedMessages() {
-        super.onDeletedMessages()
+    private fun notifyNotification(builder: NotificationCompat.Builder) {
+        with(NotificationManagerCompat.from(this@AppFirebaseMessagingService)) {
+            // notificationId is a unique int for each notification that you must define
+            notify(NOTIFICATION_ID, builder.build())
+        }
     }
 
     companion object {

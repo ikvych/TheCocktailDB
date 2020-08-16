@@ -34,7 +34,7 @@
                 android:maxHeight="@dimen/offset_256"
                 android:scaleType="centerCrop"
                 android:src="@drawable/default_icon"
-                bind:bg_avatar="@{viewModel.userLiveData.avatar}" />
+                bind:bg_avatar="@{viewModel.userAvatarLiveData}" />
 
             <com.ikvych.cocktail.util.widget.custom.ApplicationToolBar
                 android:id="@+id/atb_profile_activity"
@@ -45,46 +45,6 @@
                 bind:tl_set_text="@string/profile"
                 bind:tl_set_transparent="true"
                 app:tl_enable_custom_btn="true" />
-
-            <!--<LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/color_transparent"
-                android:orientation="horizontal"
-                android:padding="@dimen/offset_8">
-
-                <ImageButton
-                    android:layout_width="@dimen/btn_width"
-                    android:layout_height="@dimen/btn_width"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/all_content_description"
-                    android:padding="@dimen/offset_12"
-                    android:src="@drawable/ic_arrow_back" />
-
-                <Space
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1" />
-
-                <ImageView
-                    android:layout_width="@dimen/offset_24"
-                    android:layout_height="@dimen/offset_24"
-                    android:background="@android:color/transparent"
-                    android:contentDescription="@string/all_content_description"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_person" />
-
-                <ImageView
-                    android:id="@+id/iv_menu"
-                    android:layout_width="@dimen/offset_16"
-                    android:layout_height="@dimen/btn_width_min"
-                    android:background="@android:color/transparent"
-                    android:layout_gravity="center"
-                    android:layout_marginStart="@dimen/offset_8"
-                    android:contentDescription="@string/all_content_description"
-                    android:src="@drawable/ic_drop_down" />
-
-            </LinearLayout>-->
 
         </FrameLayout>
 
@@ -102,7 +62,7 @@
                 android:layout_height="@dimen/offset_160"
                 android:contentDescription="@string/all_content_description"
                 android:src="@drawable/default_icon"
-                bind:avatar="@{viewModel.userLiveData.avatar}" />
+                bind:avatar="@{viewModel.userAvatarLiveData}" />
 
             <ImageButton
                 android:id="@+id/b_upload_photo"

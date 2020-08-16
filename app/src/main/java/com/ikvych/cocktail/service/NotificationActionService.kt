@@ -34,7 +34,5 @@ class NotificationActionService : JobIntentService(){
 
     }
 
-    override fun onHandleWork(intent: Intent) {
-
-    }
+    override fun onHandleWork(intent: Intent) {}
 }

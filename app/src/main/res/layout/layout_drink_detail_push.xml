@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/offset_40"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/iv_drink_image"
+        android:layout_width="@dimen/view_height_min"
+        android:layout_gravity="center"
+        android:layout_marginEnd="@dimen/offset_8"
+        android:layout_height="@dimen/view_height_min"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/txt_title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/TextAppearance.Compat.Notification.Title"/>
+
+        <TextView
+            android:id="@+id/txt_description"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="12sp"
+            android:textColor="@color/color_on_surface_variant"
+            style="@style/TextAppearance.Compat.Notification.Title"/>
+
+    </LinearLayout>
+
+    <ImageButton
+        android:id="@+id/ib_is_favorite"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/color_transparent"
+        android:layout_gravity="bottom"
+        android:src="@drawable/ic_favorite"/>
+
+</LinearLayout>

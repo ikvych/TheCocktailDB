@@ -65,9 +65,11 @@ class SplashActivity : BaseActivity<BaseViewModel, ActivitySplashBinding>() {
                         val type = deepLink.getQueryParameter("type")
                             ?: NotificationType.NOTIFICATION_TYPE_UNDEFINED.key
                         val cocktailId = deepLink.getQueryParameter("id")?.toLong() ?: -1L
+
                         val notificationType =
                             NotificationType.values().firstOrNull { it.key == type }
                                 ?: NotificationType.NOTIFICATION_TYPE_UNDEFINED
+
                         notificationViewModel.saveNotification(
                             NotificationModel(
                                 type = notificationType,

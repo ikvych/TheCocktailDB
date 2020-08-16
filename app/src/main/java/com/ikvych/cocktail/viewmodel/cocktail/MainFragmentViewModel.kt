@@ -34,19 +34,6 @@ class MainFragmentViewModel(
     analytic: FirebaseHelper
 ) : CocktailViewModel(application, savedStateHandle, cocktailRepository, mapper, analytic) {
 
-/*    companion object {
-        const val EXTRA_KEY_FILTER_TYPE = "EXTRA_KEY_FILTER_TYPE"
-        const val EXTRA_KEY_FILTER = "EXTRA_KEY_FILTER"
-        const val EXTRA_KEY_PAGE_NUMBER = "EXTRA_KEY_PAGE_NUMBER"
-        const val EXTRA_KEY_SORT_ORDER = "EXTRA_KEY_SORT_ORDER"
-
-        const val ANALYTIC_EVENT_COCKTAIL_FILTER_APPLY = "change_profile_photo"
-        const val ANALYTIC_KEY_FILTER_ALCOHOL = "filter_alcohol"
-        const val ANALYTIC_KEY_FILTER_COCKTAIL_TYPE = "filter_cocktail_type"
-        const val ANALYTIC_KEY_FILTER_GLASS = "filter_glass"
-        const val ANALYTIC_KEY_FILTER_INGREDIENT = "filter_ingredients"
-    }*/
-
     val ingredientsListLiveData: LiveData<List<IngredientModel>> =
         cocktailRepository.ingredientsListLiveData
             .map { list ->
@@ -569,31 +556,23 @@ class MainFragmentViewModel(
         return cocktailCopy
     }
 
-    fun notifyToSendAnalytics() {
+    fun getAppliedFilters(): Array<Pair<String, String>> {
         if (
             filteredAndSortedDrinksLiveData.value!!.isNotEmpty() &&
             isFiltersPresent()
         ) {
-            firebase.logEvent(ANALYTIC_EVENT_COCKTAIL_FILTER_APPLY, bundleOf(
+            return arrayOf(
                 ANALYTIC_KEY_FILTER_ALCOHOL to filtersLiveData.value?.get(DrinkFilterType.ALCOHOL)
-                    ?.filter { it != AlcoholDrinkFilter.NONE }.takeIf { it!!.isNotEmpty() }
-                    .toString(),
+                    ?.map { it.key.capitalize() }.toString(),
                 ANALYTIC_KEY_FILTER_COCKTAIL_TYPE to filtersLiveData.value?.get(DrinkFilterType.CATEGORY)
-                    ?.filter { it != CategoryDrinkFilter.NONE }.takeIf { it!!.isNotEmpty() }
-                    .toString(),
+                    ?.map { it.key.capitalize() }.toString(),
                 ANALYTIC_KEY_FILTER_GLASS to filtersLiveData.value?.get(DrinkFilterType.GLASS)
-                    ?.filter { it != GlassDrinkFilter.NONE }.takeIf { it!!.isNotEmpty() }
-                    .toString(),
+                    ?.map { it.key.capitalize() }.toString(),
                 ANALYTIC_KEY_FILTER_INGREDIENT to filtersLiveData.value?.get(DrinkFilterType.INGREDIENT)
-                    ?.filter {
-                        it != IngredientModel(
-                            DrinkFilterType.INGREDIENT,
-                            DRINK_FILTER_ABSENT
-                        )
-                    }
-                    .takeIf { it!!.isNotEmpty() }?.map { it.key }.toString()
+                    ?.map { it.key.capitalize() }.toString()
             )
-            )
+        } else {
+            return arrayOf()
         }
     }
 

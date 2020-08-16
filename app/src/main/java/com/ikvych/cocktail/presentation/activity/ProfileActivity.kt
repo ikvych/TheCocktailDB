@@ -18,7 +18,9 @@ import android.widget.PopupMenu
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.FileProvider
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
+import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.core.common.exception.ApiException
 import com.ikvych.cocktail.databinding.ActivityProfileBinding
@@ -36,6 +38,7 @@ import com.ikvych.cocktail.presentation.fragment.ProfileMainInfoFragment
 import com.ikvych.cocktail.presentation.enumeration.UploadAvatar
 import com.ikvych.cocktail.presentation.extension.viewModels
 import com.ikvych.cocktail.viewmodel.notification.NotificationViewModel
+import com.ikvych.cocktail.viewmodel.user.EditProfileViewModel
 import com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -65,6 +68,21 @@ class ProfileActivity : BaseActivity<ProfileActivityViewModel, ActivityProfileBi
         atb_profile_activity.customBtn2.setImageDrawable(getDrawable(R.drawable.ic_menu))
         atb_profile_activity.customBtn2.setOnClickListener(this)
         ib_edit_main_info.setOnClickListener(this)
+
+        viewModel.userDataChangedLiveData.observe(this, Observer {
+            viewModel.analytic.logEvent(
+                ANALYTIC_EVENT_PROFILE_DATA_CHANGE, bundleOf(
+                    ANALYTIC_KEY_USER_NAME to it
+                )
+            )
+        })
+        viewModel.userAvatarPhotoChangedLiveData.observe(this, Observer {
+            viewModel.analytic.logEvent(
+                ANALYTIC_EVENT_CHANGE_AVATAR, bundleOf(
+                ANALYTIC_KEY_USER_AVATAR to "${it}",
+                ANALYTIC_KEY_USER_NAME to viewModel.userFullNameLiveData.value
+            ))
+        })
     }
 
     override fun onDestroy() {
@@ -431,5 +449,9 @@ class ProfileActivity : BaseActivity<ProfileActivityViewModel, ActivityProfileBi
         const val REQUEST_CODE_IMAGE_CHOOSER_PERMISSION = 1933
         const val REQUEST_CODE_TAKE_PICTURE = 1934
         const val REQUEST_CODE_TAKE_CAMERA_PERMISSION = 1935
+        const val ANALYTIC_EVENT_PROFILE_DATA_CHANGE = "profile_data_change"
+        const val ANALYTIC_KEY_USER_NAME = "user_name"
+        const val ANALYTIC_EVENT_CHANGE_AVATAR = "change_profile_photo"
+        const val ANALYTIC_KEY_USER_AVATAR = "user_avatar"
     }
 }

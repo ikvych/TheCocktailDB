@@ -2,6 +2,7 @@ package com.ikvych.cocktail.presentation.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.ikvych.cocktail.R

@@ -11,10 +11,8 @@ class NotificationModelMapper : BaseModelMapper<NotificationModel, NotificationR
     override fun mapTo(model: NotificationRepoModel): NotificationModel = with(model) {
         return NotificationModel (
             id = id,
-            body = "",
-            title = "",
             type = NotificationType.values().first { it.key == type },
-            image = "",
+            image = image,
             cocktailId = cocktailId
         )
     }

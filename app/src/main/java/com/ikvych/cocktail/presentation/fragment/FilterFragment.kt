@@ -2,6 +2,7 @@ package com.ikvych.cocktail.presentation.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -29,9 +30,9 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>(), Vie
 
     val parentViewModel: MainFragmentViewModel
         /* by viewModels(requireParentFragment())*/ //Not attached yet
-    get() {
-        return ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
-    }
+        get() {
+            return ViewModelProvider(requireParentFragment()).get(MainFragmentViewModel::class.java)
+        }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,8 +103,22 @@ class FilterFragment : BaseFragment<BaseViewModel, FragmentFilterBinding>(), Vie
     }
 
     override fun onDestroy() {
-        parentViewModel.notifyToSendAnalytics()
+        sendFiltersAnalytics()
         super.onDestroy()
+    }
+
+    fun sendFiltersAnalytics() {
+        val pairs = parentViewModel.getAppliedFilters()
+        if (pairs.isNotEmpty()) {
+            parentViewModel.firebase.logEvent(
+                MainFragmentViewModel.ANALYTIC_EVENT_COCKTAIL_FILTER_APPLY, bundleOf(
+                    pairs[0],
+                    pairs[1],
+                    pairs[2],
+                    pairs[3]
+                )
+            )
+        }
     }
 
     private fun startFilterDialog(filterType: DrinkFilterType) {

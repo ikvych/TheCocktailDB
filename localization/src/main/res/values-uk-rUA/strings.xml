@@ -161,4 +161,9 @@
     <string name="switcher_toolbar_visibility">switcher_toolbar_visibility</string>
     #endregion-->
 
+    <!--#region Notification Chanel-->
+    <string name="push_notification_chanel">Push notification channel</string>
+    <string name="push_notification_chanel_description">Chanel for notifications from clouding messaging</string>
+    <!--#endregion-->
+
 </resources>

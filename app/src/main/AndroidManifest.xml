@@ -70,13 +70,15 @@
         </provider>
 
         <service
-            android:name=".service.AppFirebaseMessagingService"
+            android:name=".service.firebase.AppFirebaseMessagingService"
             android:exported="false"
             android:directBootAware="true">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
+        <service android:name=".service.NotificationActionService"/>
 
     </application>
 

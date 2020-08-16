@@ -37,6 +37,10 @@ class CocktailRepositoryImpl(
             })
     }
 
+    override suspend fun getCocktailById(cocktailId: Long): CocktailRepoModel? {
+        return netSource.getCocktailById(cocktailId)?.run(mapper::mapNetToRepo)
+    }
+
     override fun findAllCocktailsLiveData(): LiveData<List<CocktailRepoModel>?> {
         return dbSource.findAllCocktailsLiveData()
             .map { list -> list?.map { mapper.mapDbToRepo(it) } }

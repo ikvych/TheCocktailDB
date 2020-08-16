@@ -24,6 +24,7 @@ import com.ikvych.cocktail.core.common.exception.ApiException
 import com.ikvych.cocktail.databinding.ActivityProfileBinding
 import com.ikvych.cocktail.extension.isAllPermissionGranted
 import com.ikvych.cocktail.extension.log
+import com.ikvych.cocktail.listener.ProfileActivityLifecycleObserver
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
 import com.ikvych.cocktail.presentation.dialog.bottom.RegularBottomSheetDialogFragment
 import com.ikvych.cocktail.presentation.dialog.bottom.UploadAvatarBottomSheetDialogFragment
@@ -33,6 +34,8 @@ import com.ikvych.cocktail.presentation.extension.scaleToSize
 import com.ikvych.cocktail.presentation.fragment.EditProfileFragment
 import com.ikvych.cocktail.presentation.fragment.ProfileMainInfoFragment
 import com.ikvych.cocktail.presentation.enumeration.UploadAvatar
+import com.ikvych.cocktail.presentation.extension.viewModels
+import com.ikvych.cocktail.viewmodel.notification.NotificationViewModel
 import com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -51,12 +54,22 @@ class ProfileActivity : BaseActivity<ProfileActivityViewModel, ActivityProfileBi
         get() = ProfileActivityViewModel::class
     private var currentPhotoPath: Uri? = null
 
+    private lateinit var lifecycleObserver: ProfileActivityLifecycleObserver
+    private val notificationViewModel: NotificationViewModel by viewModels()
+
     override fun configureView(savedInstanceState: Bundle?) {
+        lifecycleObserver = ProfileActivityLifecycleObserver(this, notificationViewModel)
+        lifecycle.addObserver(lifecycleObserver)
         super.configureView(savedInstanceState)
         b_upload_photo.setOnClickListener(this)
         atb_profile_activity.customBtn2.setImageDrawable(getDrawable(R.drawable.ic_menu))
         atb_profile_activity.customBtn2.setOnClickListener(this)
         ib_edit_main_info.setOnClickListener(this)
+    }
+
+    override fun onDestroy() {
+        lifecycle.removeObserver(lifecycleObserver)
+        super.onDestroy()
     }
 
     override fun configureDataBinding(binding: ActivityProfileBinding) {

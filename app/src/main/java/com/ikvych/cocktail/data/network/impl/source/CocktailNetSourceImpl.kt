@@ -17,4 +17,10 @@ class CocktailNetSourceImpl(
         }
     }
 
+    override suspend fun getCocktailById(cocktailId: Long): CocktailNetModel? {
+        return performRequest {
+            findCocktailById(cocktailId).cocktails.firstOrNull()
+        }
+    }
+
 }

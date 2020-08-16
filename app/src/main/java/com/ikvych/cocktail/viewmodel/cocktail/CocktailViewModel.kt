@@ -56,6 +56,14 @@ open class CocktailViewModel(
         return cocktailLiveData
     }
 
+    fun getCocktailById(cocktailId: Long): MutableLiveData<CocktailModel?> {
+        val cocktailLiveData = MutableLiveData<CocktailModel?>()
+        launchRequest(cocktailLiveData) {
+           cocktailRepository.getCocktailById(cocktailId)?.run(mapper::mapTo)
+        }
+        return cocktailLiveData
+    }
+
     fun findCocktailById(cocktailId: Long): MutableLiveData<CocktailModel?> {
         val cocktailLiveData: MutableLiveData<CocktailModel?> = MutableLiveData()
         launchRequest(cocktailLiveData) {

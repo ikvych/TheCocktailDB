@@ -12,12 +12,15 @@ import androidx.savedstate.SavedStateRegistryOwner
 import com.google.gson.GsonBuilder
 import com.ikvych.cocktail.data.db.impl.DrinkDataBase
 import com.ikvych.cocktail.data.db.impl.dao.CocktailDao
+import com.ikvych.cocktail.data.db.impl.dao.NotificationDao
 import com.ikvych.cocktail.data.db.impl.dao.UserDao
 import com.ikvych.cocktail.data.db.impl.dao.base.BaseDao
 import com.ikvych.cocktail.data.db.impl.source.DrinkDbSourceImpl
+import com.ikvych.cocktail.data.db.impl.source.NotificationDbSourceImpl
 import com.ikvych.cocktail.data.db.impl.source.UserDbSourceImpl
 import com.ikvych.cocktail.data.db.source.base.BaseDbSource
 import com.ikvych.cocktail.data.db.source.DrinkDbSource
+import com.ikvych.cocktail.data.db.source.NotificationDbSource
 import com.ikvych.cocktail.data.db.source.UserDbSource
 import com.ikvych.cocktail.data.local.impl.SharedPrefsHelper
 import com.ikvych.cocktail.data.local.impl.source.TokenLocalSourceImpl
@@ -37,6 +40,7 @@ import com.ikvych.cocktail.data.network.impl.service.base.BaseNetService
 import com.ikvych.cocktail.data.network.impl.source.AuthNetSourceImpl
 import com.ikvych.cocktail.data.network.impl.source.CocktailNetSourceImpl
 import com.ikvych.cocktail.data.network.impl.source.UserNetSourceImpl
+import com.ikvych.cocktail.data.network.model.cocktail.CocktailNetModel
 import com.ikvych.cocktail.data.network.model.cocktail.CocktailNetResponse
 import com.ikvych.cocktail.data.network.source.AuthNetSource
 import com.ikvych.cocktail.data.network.source.base.BaseNetSource
@@ -45,25 +49,22 @@ import com.ikvych.cocktail.data.network.source.UserNetSource
 import com.ikvych.cocktail.data.repository.impl.mapper.cocktail.CocktailRepoModelMapper
 import com.ikvych.cocktail.data.repository.impl.mapper.cocktail.LocalizedStringRepoModelMapper
 import com.ikvych.cocktail.data.repository.impl.mapper.base.BaseRepoModelMapper
+import com.ikvych.cocktail.data.repository.impl.mapper.notification.NotificationRepoModelMapper
 import com.ikvych.cocktail.data.repository.impl.mapper.user.UserRepoModelMapper
-import com.ikvych.cocktail.data.repository.impl.source.AuthRepositoryImpl
-import com.ikvych.cocktail.data.repository.impl.source.CocktailRepositoryImpl
-import com.ikvych.cocktail.data.repository.impl.source.TokenRepositoryImpl
-import com.ikvych.cocktail.data.repository.impl.source.UserRepositoryImpl
-import com.ikvych.cocktail.data.repository.source.AuthRepository
-import com.ikvych.cocktail.data.repository.source.CocktailRepository
-import com.ikvych.cocktail.data.repository.source.TokenRepository
-import com.ikvych.cocktail.data.repository.source.UserRepository
+import com.ikvych.cocktail.data.repository.impl.source.*
+import com.ikvych.cocktail.data.repository.source.*
 import com.ikvych.cocktail.data.repository.source.base.BaseRepository
 import com.ikvych.cocktail.presentation.mapper.cocktail.CocktailModelMapper
 import com.ikvych.cocktail.presentation.mapper.cocktail.LocalizedStringModelMapper
 import com.ikvych.cocktail.presentation.mapper.base.BaseModelMapper
+import com.ikvych.cocktail.presentation.mapper.notification.NotificationModelMapper
 import com.ikvych.cocktail.presentation.mapper.user.UserModelMapper
 import com.ikvych.cocktail.util.FirebaseHelper
 import com.ikvych.cocktail.viewmodel.auth.SignInViewModel
 import com.ikvych.cocktail.viewmodel.auth.SignUpViewModel
 import com.ikvych.cocktail.viewmodel.base.BaseViewModel
 import com.ikvych.cocktail.viewmodel.cocktail.*
+import com.ikvych.cocktail.viewmodel.notification.NotificationViewModel
 import com.ikvych.cocktail.viewmodel.user.EditProfileViewModel
 import com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel
 import io.devlight.data.network.impl.extension.deserializeType
@@ -90,7 +91,7 @@ object Injector {
             .registerTypeAdapter(deserializeType<Boolean>(), BooleanDeserializer(false))
             .registerTypeAdapter(deserializeType<Date>(), Iso8601DateDeserializer())
             .registerTypeAdapter(
-                deserializeType<CocktailNetResponse>(),
+                deserializeType<CocktailNetModel>(),
                 CocktailNetModelDeserializer()
             )
             .setPrettyPrinting()
@@ -225,6 +226,12 @@ object Injector {
                     handle,
                     provideAnalyticHelper(appContext)
                 ) as T
+                NotificationViewModel::class.java -> NotificationViewModel(
+                    application,
+                    handle,
+                    provideRepository(appContext, NotificationRepository::class.java),
+                    provideModelMapper(appContext)
+                ) as T
                 else -> throw NotImplementedError("Must provide repository for class ${modelClass.simpleName}")
             }
         }
@@ -252,6 +259,10 @@ object Injector {
             ) as T
             TokenRepository::class.java -> TokenRepositoryImpl(
                 provideLocalDataSource(context)
+            ) as T
+            NotificationRepository::class.java -> NotificationRepositoryImpl(
+                provideDbDataSource(context),
+                provideRepoModelMapper(context)
             ) as T
             else -> throw IllegalStateException("Must provide repository for class ${clazz.simpleName}")
         }
@@ -282,6 +293,7 @@ object Injector {
                 provideNestedRepoModelMapper(context)
             )
             UserRepoModelMapper::class.java -> UserRepoModelMapper()
+            NotificationRepoModelMapper::class.java -> NotificationRepoModelMapper()
             else -> throw IllegalStateException("Must provide repository for class ${T::class.java.simpleName}")
         } as T
     }
@@ -292,6 +304,7 @@ object Injector {
                 provideNestedModelMapper(context)
             )
             UserModelMapper::class.java -> UserModelMapper()
+            NotificationModelMapper::class.java -> NotificationModelMapper()
             else -> throw IllegalStateException("Must provide repository for class ${T::class.java.simpleName}")
         } as T
     }
@@ -319,6 +332,7 @@ object Injector {
 //            ) as T
             DrinkDbSource::class.java -> DrinkDbSourceImpl(provideDao(context)) as T
             UserDbSource::class.java -> UserDbSourceImpl(provideDao(context)) as T
+            NotificationDbSource::class.java -> NotificationDbSourceImpl(provideDao(context)) as T
             else -> throw IllegalStateException("Must provide repository for class ${T::class.java.simpleName}")
         }
     }
@@ -327,6 +341,7 @@ object Injector {
         return when (T::class.java) {
             CocktailDao::class.java -> DrinkDataBase.getInstance(context)?.drinkDao()
             UserDao::class.java -> DrinkDataBase.getInstance(context)?.userDao()
+            NotificationDao::class.java -> DrinkDataBase.getInstance(context)?.notificationDao()
             else -> throw IllegalStateException("Must provide repository for class ${T::class.java.simpleName}")
         } as T
     }

@@ -23,16 +23,19 @@ import com.facebook.stetho.Stetho
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ActivityMainBinding
+import com.ikvych.cocktail.listener.MainActivityLifecycleObserver
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
 import com.ikvych.cocktail.presentation.dialog.bottom.ResumeAppBottomSheetDialogFragment
 import com.ikvych.cocktail.presentation.dialog.type.*
 import com.ikvych.cocktail.presentation.enumeration.ShortcutType
 import com.ikvych.cocktail.presentation.extension.observeOnce
+import com.ikvych.cocktail.presentation.extension.viewModels
 import com.ikvych.cocktail.presentation.fragment.MainFragment
 import com.ikvych.cocktail.presentation.fragment.SettingFragment
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.util.COCKTAIL_ID
 import com.ikvych.cocktail.viewmodel.cocktail.MainActivityViewModel
+import com.ikvych.cocktail.viewmodel.notification.NotificationViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlin.reflect.KClass
 
@@ -46,10 +49,20 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
     private var mainFragment: MainFragment? = null
     private var profileFragment: SettingFragment? = null
 
+    private lateinit var lifecycleObserver: MainActivityLifecycleObserver
+    private val notificationViewModel: NotificationViewModel by viewModels()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         //бібліотека яка дозволяє відслідковувати базу даних через веб браузер у реальному часі
         Stetho.initializeWithDefaults(this)
         super.onCreate(savedInstanceState)
+        lifecycleObserver = MainActivityLifecycleObserver(this, notificationViewModel)
+        lifecycle.addObserver(lifecycleObserver)
+    }
+
+    override fun onDestroy() {
+        lifecycle.removeObserver(lifecycleObserver)
+        super.onDestroy()
     }
 
     override fun onResume() {

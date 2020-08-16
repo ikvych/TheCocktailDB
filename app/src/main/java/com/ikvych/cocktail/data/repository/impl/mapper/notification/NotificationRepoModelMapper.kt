@@ -13,6 +13,7 @@ class NotificationRepoModelMapper : BaseRepoModelMapper<NotificationRepoModel, N
         return NotificationRepoModel(
             id = id,
             type = type,
+            image = image,
             cocktailId = cocktailId
         )
     }
@@ -21,6 +22,7 @@ class NotificationRepoModelMapper : BaseRepoModelMapper<NotificationRepoModel, N
         return NotificationDbModel(
             id = id,
             type = type,
+            image = image,
             cocktailId = cocktailId
         )
     }

@@ -11,15 +11,15 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.presentation.adapter.list.CocktailAdapter
 import com.ikvych.cocktail.databinding.ActivitySearchBinding
 import com.ikvych.cocktail.listener.DrinkOfferListener
-import com.ikvych.cocktail.receiver.DrinkOfferReceiver
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
+import com.ikvych.cocktail.presentation.adapter.list.CocktailAdapter
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
+import com.ikvych.cocktail.receiver.DrinkOfferReceiver
 import com.ikvych.cocktail.util.*
-import com.ikvych.cocktail.viewmodel.cocktail.SearchActivityViewModel
 import com.ikvych.cocktail.util.widget.custom.ApplicationToolBar
+import com.ikvych.cocktail.viewmodel.cocktail.SearchActivityViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlin.reflect.KClass
 
@@ -80,11 +80,6 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
         unregisterReceiver(drinkOfferReceiver)
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        drinkAdapter.setLifecycleDestroyed()
-    }
-
     private fun initSearchView() {
         toolbarSearchView = findViewById<ApplicationToolBar>(R.id.atb_search_activity).searchView
         toolbarSearchView.isIconifiedByDefault = false
@@ -118,7 +113,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
         val cocktail: CocktailModel =
             cocktails.shuffled().find { it.id != currentCocktailId } ?: return
 
-        Snackbar.make(rv_search_result, "${resources.getString(R.string.search_activity_drink_offer_title)} - ${cocktail.names.defaults}", 3500)
+        Snackbar.make(rv_search_result, "${resources.getString(R.string.search_activity_drink_offer_title)} - ${cocktail.names.defaultName}", 3500)
             .setAction(R.string.toast_action_view) {
                 val drinkIntent = Intent(this, DrinkDetailActivity::class.java)
                 drinkIntent.putExtra(COCKTAIL_ID, cocktail.id)
@@ -136,7 +131,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
                 R.id.cv_item_drink -> {
                     val cocktailId = v.tag as Long
                     val cocktail =
-                        drinkAdapter.listData.find { cocktail -> cocktail.id == cocktailId }
+                        drinkAdapter.listData.find { cocktail -> (cocktail as CocktailModel).id == cocktailId } as? CocktailModel
                             ?: return
                     val intent = Intent(this, DrinkDetailActivity::class.java)
                     intent.putExtra(

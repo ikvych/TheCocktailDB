@@ -38,7 +38,7 @@ class CocktailModelMapper(
             names = names.run(localizedStringModelMapper::mapTo),
             category = CategoryDrinkFilter.values().firstOrNull { it.key == category }
                 ?: CategoryDrinkFilter.NONE,
-            alcoholType = AlcoholDrinkFilter.values().firstOrNull { it.key == alcoholType }
+            alcoholType = AlcoholDrinkFilter.values().firstOrNull { it.key.equals(alcoholType, ignoreCase = true) }
                 ?: AlcoholDrinkFilter.NONE,
             glass = GlassDrinkFilter.values().firstOrNull { it.key == glass }
                 ?: GlassDrinkFilter.NONE,

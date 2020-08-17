@@ -6,6 +6,6 @@ import com.ikvych.cocktail.presentation.filter.DrinkFilter
 enum class AlcoholDrinkFilter(override val type: DrinkFilterType, override val key: String) : DrinkFilter {
     NONE(DrinkFilterType.ALCOHOL, DRINK_FILTER_ABSENT),
     ALCOHOLIC(DrinkFilterType.ALCOHOL, "Alcoholic"),
-    NON_ALCOHOLIC(DrinkFilterType.ALCOHOL, "Non alcoholic"),
-    OPTIONAL_ALCOHOL(DrinkFilterType.ALCOHOL, "Optional alcohol")
+    OPTIONAL_ALCOHOL(DrinkFilterType.ALCOHOL, "Optional alcohol"),
+    NON_ALCOHOLIC(DrinkFilterType.ALCOHOL, "Non alcoholic")
 }

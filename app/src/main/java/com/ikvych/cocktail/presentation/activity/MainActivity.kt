@@ -81,7 +81,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                     ResumeAppBottomSheetDialogFragment.newInstance(drinkId = it.id) {
                         titleText = getString(R.string.resume_app_dialog_title)
                         descriptionText =
-                            getString(R.string.resume_app_dialog_description) + "${it.names.defaults}"
+                            getString(R.string.resume_app_dialog_description) + "${it.names.defaultName}"
                         rightButtonText = getString(R.string.resume_app_dialog_right_button)
                         leftButtonText = getString(R.string.resume_app_dialog_left_button)
                     }.show(
@@ -200,7 +200,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                                     viewModel.saveFavoriteDrink(cocktail)
                                     Toast.makeText(
                                         this@MainActivity,
-                                        "${cocktail.names.defaults} ${getString(R.string.popup_menu_add_to_favorite)}",
+                                        "${cocktail.names.defaultName} ${getString(R.string.popup_menu_add_to_favorite)}",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     true
@@ -210,7 +210,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                                     viewModel.saveFavoriteDrink(cocktail)
                                     Toast.makeText(
                                         this@MainActivity,
-                                        "${cocktail.names.defaults} ${getString(R.string.popup_menu_remove_from_favorite)}",
+                                        "${cocktail.names.defaultName} ${getString(R.string.popup_menu_remove_from_favorite)}",
                                         Toast.LENGTH_SHORT
                                     ).show()
                                     true
@@ -228,7 +228,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                                     }
                                     Toast.makeText(
                                         this@MainActivity,
-                                        "${cocktail.names.defaults} ${getString(R.string.popup_menu_remove_from_history)}",
+                                        "${cocktail.names.defaultName} ${getString(R.string.popup_menu_remove_from_history)}",
                                         Toast.LENGTH_SHORT
                                     )
                                         .show()
@@ -278,7 +278,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
                                             ) ?: return@setOnMenuItemClickListener false
 
                                         shortcutManager.dynamicShortcuts.forEach { shortcutInfo: ShortcutInfo ->
-                                            if (shortcutInfo.shortLabel == cocktail.names.defaults) {
+                                            if (shortcutInfo.shortLabel == cocktail.names.defaultName) {
                                                 shortcutManager.removeDynamicShortcuts(
                                                     arrayListOf(
                                                         shortcutInfo.id
@@ -370,7 +370,7 @@ class MainActivity : BaseActivity<MainActivityViewModel, ActivityMainBinding>() 
         //id для shortcut виставлено як id самого напою + ShortcutType, для того щоб розрізняти
         //динамічні і закріплені shortcut
         return ShortcutInfo.Builder(this@MainActivity, "${cocktail.id}${type.key}")
-            .setShortLabel(cocktail.names.defaults!!)
+            .setShortLabel(cocktail.names.defaultName!!)
             .setLongLabel("${getString(R.string.popup_menu_long_label_prefix)} ${cocktail.id}")
             .setIcon(drinkAdaptiveIcon)
             .setIntents(

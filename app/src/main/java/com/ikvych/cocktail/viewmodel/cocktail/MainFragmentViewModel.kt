@@ -6,7 +6,6 @@ import android.text.SpannableString
 import android.text.style.ImageSpan
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.lifecycle.*
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
@@ -73,7 +72,9 @@ class MainFragmentViewModel(
 
     val cachedBatteryStateLiveData: BatteryStateLiveData = BatteryStateLiveData(application)
     val cocktailsLiveData: LiveData<List<CocktailModel>> =
-        cocktailRepository.findAllCocktailsLiveData().map { mapper.mapTo(it!!) }
+        cocktailRepository.findAllCocktailsLiveData().map {
+            mapper.mapTo(it!!)
+        }
 
     @Suppress("IMPLICIT_CAST_TO_ANY")
 /*    val filtersLiveData: MutableLiveData<HashMap<DrinkFilterType, List<DrinkFilter>>> =
@@ -546,8 +547,8 @@ class MainFragmentViewModel(
         var cocktailCopy = cocktails
         cocktailCopy = when (sortDrinkType) {
             SortDrinkType.RECENT -> cocktailCopy.sortedByDescending { cocktail -> cocktail.dateSaved }
-            SortDrinkType.NAME_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.names.defaults }
-            SortDrinkType.NAME_DESC -> cocktailCopy.sortedByDescending { cocktail -> cocktail.names.defaults }
+            SortDrinkType.NAME_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.names.defaultName }
+            SortDrinkType.NAME_DESC -> cocktailCopy.sortedByDescending { cocktail -> cocktail.names.defaultName }
             SortDrinkType.ALCOHOL_ASC -> cocktailCopy.sortedWith(alcoholComparator)
             SortDrinkType.ALCOHOL_DESC -> cocktailCopy.sortedWith(alcoholComparator).asReversed()
             SortDrinkType.INGREDIENT_COUNT_ASC -> cocktailCopy.sortedBy { cocktail -> cocktail.ingredients.size }

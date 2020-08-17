@@ -15,6 +15,7 @@ class FavoriteFragment : RecyclerViewFragment<CocktailViewModel, FragmentFavorit
 
     override fun initLiveDataObserver() {
         parentViewModel.filteredAndSortedFavoriteDrinksLiveData.observe(this, Observer { cocktails ->
+            cocktailAdapter.sortType = parentViewModel.sortTypeLiveData.value!!
             cocktailAdapter.listData = cocktails
         })
     }

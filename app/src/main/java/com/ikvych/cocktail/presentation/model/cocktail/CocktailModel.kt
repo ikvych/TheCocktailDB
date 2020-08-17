@@ -55,7 +55,7 @@ data class CocktailModel(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeLong(id)
-        parcel.writeString(names.defaults)
+        parcel.writeString(names.defaultName)
         parcel.writeString(names.defaultAlternate)
         parcel.writeString(names.es)
         parcel.writeString(names.de)
@@ -66,7 +66,7 @@ data class CocktailModel(
         parcel.writeInt(alcoholType.ordinal)
         parcel.writeInt(glass.ordinal)
         parcel.writeString(image)
-        parcel.writeString(instructions.defaults)
+        parcel.writeString(instructions.defaultName)
         parcel.writeString(instructions.defaultAlternate)
         parcel.writeString(instructions.es)
         parcel.writeString(instructions.de)

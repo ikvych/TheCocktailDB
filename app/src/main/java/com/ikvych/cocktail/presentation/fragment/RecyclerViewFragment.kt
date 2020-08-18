@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.presentation.adapter.list.CocktailAdapterTest
+import com.ikvych.cocktail.presentation.adapter.list.CocktailAdapterTest.MyItemDecorator
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
 import com.ikvych.cocktail.viewmodel.cocktail.MainFragmentViewModel
@@ -66,6 +67,7 @@ abstract class RecyclerViewFragment<ViewModel : CocktailViewModel, DataBinding :
         val recyclerView: RecyclerView = requireView().findViewById(recyclerViewId)
         recyclerView.layoutManager = layoutManager ?: LinearLayoutManager(requireContext())
         recyclerView.adapter = cocktailAdapter
+        recyclerView.addItemDecoration(cocktailAdapter.MyItemDecorator(requireContext()))
         cocktailAdapter.listData = parentViewModel.cocktailsLiveData.value ?: arrayListOf()
     }
 }

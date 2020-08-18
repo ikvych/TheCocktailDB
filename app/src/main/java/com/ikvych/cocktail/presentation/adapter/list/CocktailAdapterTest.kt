@@ -1,12 +1,14 @@
 package com.ikvych.cocktail.presentation.adapter.list
 
 import android.content.Context
+import android.graphics.Canvas
+import android.graphics.Rect
+import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
+import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
-import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.R
@@ -16,9 +18,7 @@ import com.ikvych.cocktail.databinding.ItemHeaderDrinkListBinding
 import com.ikvych.cocktail.presentation.filter.type.SortDrinkType
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
-import kotlinx.android.synthetic.*
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 class CocktailAdapterTest(
@@ -52,7 +52,7 @@ class CocktailAdapterTest(
     private val typedDataMap: SortedMap<String, ArrayList<Any>> = sortedMapOf()
 
 
-    private val lookup = object : GridLayoutManager.SpanSizeLookup() {
+    val lookup = object : GridLayoutManager.SpanSizeLookup() {
         override fun getSpanSize(position: Int): Int {
             return when (completedDataList[position].second) {
                 ViewType.HEADER -> 2
@@ -289,5 +289,117 @@ class CocktailAdapterTest(
 
     class HeaderViewHolder(val binding: ItemHeaderDrinkListBinding) :
         RecyclerView.ViewHolder(binding.root)
+
+
+
+    inner class MyItemDecorator(
+        private val context: Context
+    ) : RecyclerView.ItemDecoration() {
+
+        private val divider: Drawable = context.getDrawable(R.drawable.shape_divider)!!
+
+/*        override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+            val left = parent.paddingLeft
+            val right = parent.width - parent.paddingRight
+
+            val childCount = parent.childCount
+            for (i in 0 until childCount) {
+                val child = parent.getChildAt(i)
+                val params =
+                    child.layoutParams as RecyclerView.LayoutParams
+                val dividerTop = child.bottom + params.bottomMargin
+                val dividerBottom: Int = dividerTop + divider.intrinsicHeight
+                divider.setBounds(left, dividerTop, right, dividerBottom)
+                divider.draw(c)
+            }
+        }*/
+
+        override fun getItemOffsets(
+            outRect: Rect,
+            view: View,
+            parent: RecyclerView,
+            state: RecyclerView.State
+        ) {
+            super.getItemOffsets(outRect, view, parent, state)
+            if (view is CardView) {
+                val position = parent.getChildAdapterPosition(view)
+                val spanCount = lookup.getSpanSize(position)
+                var currentHeader: String? = null
+
+                typedDataMap.forEach { entry ->
+                    entry.value.forEach { element ->
+                        if (completedDataList[position].first == element) {
+                            currentHeader = entry.key
+                            return@forEach
+                        }
+                    }
+                    if (currentHeader != null) {
+                        return@forEach
+                    }
+                }
+                if (currentHeader != null) {
+                    val currentInListPosition = typedDataMap[currentHeader]!!.indexOf(completedDataList[position].first)
+                    val rest = typedDataMap[currentHeader]!!.size % 2
+                    if (rest == 0) {
+                        if (currentInListPosition % 2 == 0) {
+                            outRect.top = context.resources.getDimension(R.dimen.offset_8).toInt()
+                            outRect.bottom =
+                                context.resources.getDimension(R.dimen.offset_8).toInt()
+                            outRect.right =
+                                context.resources.getDimension(R.dimen.offset_8).toInt()
+                            outRect.left = context.resources.getDimension(R.dimen.offset_16).toInt()
+                        } else {
+                            outRect.top = context.resources.getDimension(R.dimen.offset_8).toInt()
+                            outRect.bottom =
+                                context.resources.getDimension(R.dimen.offset_8).toInt()
+                            outRect.right =
+                                context.resources.getDimension(R.dimen.offset_16).toInt()
+                            outRect.left = context.resources.getDimension(R.dimen.offset_8).toInt()
+                        }
+                    } else {
+                        when (spanCount) {
+                            1 -> {
+                                if (currentInListPosition % 2 == 0) {
+                                    outRect.top = context.resources.getDimension(R.dimen.offset_8).toInt()
+                                    outRect.bottom =
+                                        context.resources.getDimension(R.dimen.offset_8).toInt()
+                                    outRect.right =
+                                        context.resources.getDimension(R.dimen.offset_16).toInt()
+                                    outRect.left = context.resources.getDimension(R.dimen.offset_8).toInt()
+                                } else {
+                                    outRect.top = context.resources.getDimension(R.dimen.offset_8).toInt()
+                                    outRect.bottom =
+                                        context.resources.getDimension(R.dimen.offset_8).toInt()
+                                    outRect.right =
+                                        context.resources.getDimension(R.dimen.offset_8).toInt()
+                                    outRect.left = context.resources.getDimension(R.dimen.offset_16).toInt()
+                                }
+                            }
+                            2 -> {
+                                outRect.top =
+                                    context.resources.getDimension(R.dimen.offset_8).toInt()
+                                outRect.right =
+                                    context.resources.getDimension(R.dimen.offset_16).toInt()
+                                outRect.left =
+                                    context.resources.getDimension(R.dimen.offset_16).toInt()
+                                if (typedDataMap[currentHeader]!!.size == 1) {
+                                    outRect.bottom =
+                                        context.resources.getDimension(R.dimen.offset_16).toInt()
+                                } else {
+                                    outRect.bottom =
+                                        context.resources.getDimension(R.dimen.offset_8).toInt()
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    //stub
+                }
+
+            } else {
+                outRect.bottom = context.resources.getDimension(R.dimen.offset_8).toInt()
+            }
+        }
+    }
 
 }

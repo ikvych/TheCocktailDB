@@ -7,6 +7,7 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.presentation.adapter.list.CocktailAdapterTest
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
@@ -16,7 +17,8 @@ import com.ikvych.cocktail.viewmodel.cocktail.MainFragmentViewModel
 abstract class RecyclerViewFragment<ViewModel : CocktailViewModel, DataBinding : ViewDataBinding> :
     BaseFragment<ViewModel, DataBinding>() {
     protected lateinit var cocktailAdapter: CocktailAdapterTest
-    private lateinit var layoutManager: GridLayoutManager
+    private var layoutManager: GridLayoutManager? = null
+    abstract val isFavorite: Boolean
 
     val parentViewModel: MainFragmentViewModel
         get() {
@@ -26,12 +28,18 @@ abstract class RecyclerViewFragment<ViewModel : CocktailViewModel, DataBinding :
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         super.configureView(view, savedInstanceState)
-        layoutManager = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            GridLayoutManager(requireContext(), 2)
+        if (!isFavorite) {
+            layoutManager =
+                if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+                    GridLayoutManager(requireContext(), 2)
+                } else {
+                    GridLayoutManager(requireContext(), 4)
+                }
+            cocktailAdapter = CocktailAdapterTest(viewModel, requireContext(), layoutManager = layoutManager, isFavorite = isFavorite)
         } else {
-            GridLayoutManager(requireContext(), 4)
+            cocktailAdapter = CocktailAdapterTest(viewModel, requireContext(), isFavorite = isFavorite)
         }
-        cocktailAdapter = CocktailAdapterTest(viewModel, requireContext(), layoutManager = layoutManager)
+
         initLiveDataObserver()
         initRecyclerView()
     }
@@ -45,7 +53,7 @@ abstract class RecyclerViewFragment<ViewModel : CocktailViewModel, DataBinding :
 
     fun initRecyclerView() {
         val recyclerView: RecyclerView = requireView().findViewById(recyclerViewId)
-        recyclerView.layoutManager = layoutManager
+        recyclerView.layoutManager = layoutManager ?: LinearLayoutManager(requireContext())
         recyclerView.adapter = cocktailAdapter
         cocktailAdapter.listData = parentViewModel.cocktailsLiveData.value ?: arrayListOf()
     }

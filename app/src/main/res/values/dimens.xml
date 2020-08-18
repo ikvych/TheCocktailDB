@@ -26,6 +26,11 @@
     <dimen name="view_width_max">56dp</dimen>
     <!--#endregion-->
 
+    <!--#region Image View-->
+    <dimen name="img_height">88dp</dimen>
+    <dimen name="img_width">88dp</dimen>
+    <!--#endregion-->
+
     <!--#region Corner-->
     <dimen name="corner_6">6dp</dimen>
     <dimen name="corner_8">8dp</dimen>
@@ -51,6 +56,7 @@
     <dimen name="offset_48">48dp</dimen>
     <dimen name="offset_64">64dp</dimen>
     <dimen name="offset_72">72dp</dimen>
+    <dimen name="offset_88">88dp</dimen>
     <dimen name="offset_128">128dp</dimen>
     <dimen name="offset_160">160dp</dimen>
     <dimen name="offset_256">256dp</dimen>

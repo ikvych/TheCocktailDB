@@ -29,4 +29,7 @@ class FavoriteFragment : RecyclerViewFragment<CocktailViewModel, FragmentFavorit
         @JvmStatic
         fun newInstance() = FavoriteFragment()
     }
+
+    override val isFavorite: Boolean
+        get() = true
 }

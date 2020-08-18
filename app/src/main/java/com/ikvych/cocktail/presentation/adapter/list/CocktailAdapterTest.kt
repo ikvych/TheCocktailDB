@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
+import com.ikvych.cocktail.databinding.ItemFavoriteDrinkListBinding
 import com.ikvych.cocktail.databinding.ItemHeaderDrinkListBinding
 import com.ikvych.cocktail.presentation.filter.type.SortDrinkType
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
@@ -19,7 +20,8 @@ import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
 class CocktailAdapterTest(
     private val viewModel: CocktailViewModel,
     private val context: Context,
-    private val layoutManager: GridLayoutManager
+    private val layoutManager: GridLayoutManager? = null,
+    private val isFavorite: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     var sortType: SortDrinkType = SortDrinkType.RECENT
@@ -34,6 +36,7 @@ class CocktailAdapterTest(
 
     val completedDataList: ArrayList<Pair<Any, ViewType>> = arrayListOf()
     private val layoutId = R.layout.item_drink_list
+    private val favoriteLayoutId = R.layout.item_favorite_drink_list
     private val headerLayoutId = R.layout.item_header_drink_list
 
     private val typedDataMap: HashMap<Any, ViewType> = hashMapOf()
@@ -49,7 +52,9 @@ class CocktailAdapterTest(
     }
 
     init {
-        layoutManager.spanSizeLookup = lookup
+        if (!isFavorite) {
+            layoutManager?.spanSizeLookup = lookup
+        }
     }
 
     private fun generateData() {
@@ -117,14 +122,26 @@ class CocktailAdapterTest(
                 holder
             }
             else -> {
-                CocktailViewHolder(
-                    DataBindingUtil.inflate(
-                        LayoutInflater.from(parent.context),
-                        layoutId,
-                        parent,
-                        false
+                if (isFavorite) {
+                    FavoriteCocktailViewHolder(
+                        DataBindingUtil.inflate(
+                            LayoutInflater.from(parent.context),
+                            favoriteLayoutId,
+                            parent,
+                            false
+                        )
                     )
-                )
+                } else {
+                    CocktailViewHolder(
+                        DataBindingUtil.inflate(
+                            LayoutInflater.from(parent.context),
+                            layoutId,
+                            parent,
+                            false
+                        )
+                    )
+                }
+
             }
         }
     }
@@ -150,6 +167,13 @@ class CocktailAdapterTest(
                 holder.binding.cvItemDrink.setOnClickListener(context as? View.OnClickListener)
                 holder.binding.executePendingBindings()
             }
+            is FavoriteCocktailViewHolder -> {
+                holder.binding.obj = completedDataList[position].first as CocktailModel
+                holder.binding.viewModel = viewModel
+                holder.binding.ibPopupMenu.setOnLongClickListener(context as? View.OnLongClickListener)
+                holder.binding.cvItemDrink.setOnClickListener(context as? View.OnClickListener)
+                holder.binding.executePendingBindings()
+            }
             is HeaderViewHolder -> {
                 holder.binding.obj = completedDataList[position].first.toString()
                 holder.binding.executePendingBindings()
@@ -158,6 +182,9 @@ class CocktailAdapterTest(
     }
 
     class CocktailViewHolder(val binding: ItemDrinkListBinding) :
+        RecyclerView.ViewHolder(binding.root)
+
+    class FavoriteCocktailViewHolder(val binding: ItemFavoriteDrinkListBinding) :
         RecyclerView.ViewHolder(binding.root)
 
     class HeaderViewHolder(val binding: ItemHeaderDrinkListBinding) :

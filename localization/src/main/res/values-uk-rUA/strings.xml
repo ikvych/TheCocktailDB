@@ -170,4 +170,10 @@
     <string name="rating_bar_dialog_title">Rating app</string>
     <!--#endregion-->
 
+    <!--#region Item Favorite Cocktail-->
+    <string name="item_favorite_cocktail_title_type">Тип: </string>
+    <string name="item_favorite_cocktail_title_alcohol">Алкоголь: </string>
+    <string name="item_favorite_cocktail_title_glass">Стакан: </string>
+    <!--#endregion-->
+
 </resources>

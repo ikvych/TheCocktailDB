@@ -22,4 +22,7 @@ class HistoryFragment : RecyclerViewFragment<CocktailViewModel, FragmentHistoryB
         @JvmStatic
         fun newInstance() = HistoryFragment()
     }
+
+    override val isFavorite: Boolean
+        get() = false
 }

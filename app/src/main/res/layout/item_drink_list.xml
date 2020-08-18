@@ -4,6 +4,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="obj"
             type="com.ikvych.cocktail.presentation.model.cocktail.CocktailModel" />
@@ -17,49 +18,62 @@
         android:id="@+id/cv_item_drink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/offset_4"
-        card_view:cardCornerRadius="@dimen/corner_8"
-        card_view:cardElevation="@dimen/elevation_4"
         android:longClickable="true"
         android:tag="@{obj.id}"
-        card_view:cardUseCompatPadding="true">
+        card_view:cardCornerRadius="@dimen/corner_8"
+        card_view:cardElevation="@dimen/elevation_4">
 
-        <RelativeLayout
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/iv_drink_image"
+
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:adjustViewBounds="true"
-                android:scaleType="fitXY"
-                android:contentDescription="@string/all_content_description"
-                bind:strDrinkThumb="@{obj.image}" />
+                android:layout_height="wrap_content">
 
-            <CheckBox
-                android:id="@+id/cb_is_favorite"
-                android:layout_margin="@dimen/offset_4"
-                android:buttonTint="@drawable/selector_favorite_checkbox_tint"
-                android:button="@drawable/selector_favorite_checkbox"
-                android:layout_alignStart="@+id/iv_drink_image"
-                android:layout_alignTop="@+id/iv_drink_image"
-                android:layout_width="wrap_content"
-                android:checked="@{obj.favorite}"
-                android:tag="@{obj.id}"
-                android:onClick="@{() -> viewModel.saveFavoriteDrink(obj)}"
-                android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/iv_drink_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="@string/all_content_description"
+                    bind:strDrinkThumb="@{obj.image}" />
+
+<!--                <ImageView
+                    android:id="@+id/iv_drink_image_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:contentDescription="@string/all_content_description"
+                    bind:strDrinkThumb="@{obj.image}" />-->
+
+                <CheckBox
+                    android:id="@+id/cb_is_favorite"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/iv_drink_image"
+                    android:layout_alignTop="@+id/iv_drink_image"
+                    android:layout_margin="@dimen/offset_4"
+                    android:button="@drawable/selector_favorite_checkbox"
+                    android:buttonTint="@drawable/selector_favorite_checkbox_tint"
+                    android:checked="@{obj.favorite}"
+                    android:onClick="@{() -> viewModel.saveFavoriteDrink(obj)}"
+                    android:tag="@{obj.id}" />
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_drink_name"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@{obj.names.defaultName}"
-                android:layout_below="@id/iv_drink_image"
+                android:layout_height="0dp"
+                android:layout_weight="1"
                 android:layout_margin="@dimen/offset_8"
-                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2" />
+                android:text="@{obj.names.defaultName}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                android:textSize="12sp" />
 
-        </RelativeLayout>
+        </LinearLayout>
 
     </androidx.cardview.widget.CardView>
 </layout>

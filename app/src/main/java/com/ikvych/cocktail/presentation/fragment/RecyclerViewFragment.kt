@@ -35,9 +35,20 @@ abstract class RecyclerViewFragment<ViewModel : CocktailViewModel, DataBinding :
                 } else {
                     GridLayoutManager(requireContext(), 4)
                 }
-            cocktailAdapter = CocktailAdapterTest(viewModel, requireContext(), layoutManager = layoutManager, isFavorite = isFavorite)
+            cocktailAdapter = CocktailAdapterTest(
+                viewModel,
+                requireContext(),
+                layoutManager = layoutManager!!,
+                isFavorite = isFavorite
+            )
         } else {
-            cocktailAdapter = CocktailAdapterTest(viewModel, requireContext(), isFavorite = isFavorite)
+            layoutManager = GridLayoutManager(requireContext(), 1)
+            cocktailAdapter = CocktailAdapterTest(
+                viewModel,
+                requireContext(),
+                layoutManager = layoutManager!!,
+                isFavorite = isFavorite
+            )
         }
 
         initLiveDataObserver()

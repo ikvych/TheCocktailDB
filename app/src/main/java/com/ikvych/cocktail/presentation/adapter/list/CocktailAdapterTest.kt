@@ -4,6 +4,7 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.recyclerview.widget.GridLayoutManager
@@ -15,12 +16,15 @@ import com.ikvych.cocktail.databinding.ItemHeaderDrinkListBinding
 import com.ikvych.cocktail.presentation.filter.type.SortDrinkType
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
+import kotlinx.android.synthetic.*
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class CocktailAdapterTest(
     private val viewModel: CocktailViewModel,
     private val context: Context,
-    private val layoutManager: GridLayoutManager? = null,
+    private val layoutManager: GridLayoutManager,
     private val isFavorite: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -29,9 +33,15 @@ class CocktailAdapterTest(
         set(value) {
             field = value
             completedDataList.clear()
+            typedDataMap.clear()
             generateData()
             notifyDataSetChanged()
         }
+    var itemMaxHeight: Int? = null
+
+    init {
+
+    }
 
 
     val completedDataList: ArrayList<Pair<Any, ViewType>> = arrayListOf()
@@ -39,14 +49,43 @@ class CocktailAdapterTest(
     private val favoriteLayoutId = R.layout.item_favorite_drink_list
     private val headerLayoutId = R.layout.item_header_drink_list
 
-    private val typedDataMap: HashMap<Any, ViewType> = hashMapOf()
+    private val typedDataMap: SortedMap<String, ArrayList<Any>> = sortedMapOf()
 
 
     private val lookup = object : GridLayoutManager.SpanSizeLookup() {
         override fun getSpanSize(position: Int): Int {
             return when (completedDataList[position].second) {
                 ViewType.HEADER -> 2
-                else -> 1
+                else -> {
+                    var currentHeader: String? = null
+                    typedDataMap.forEach { entry ->
+                        entry.value.forEach { element ->
+                            if (completedDataList[position].first == element) {
+                                currentHeader = entry.key
+                                return@forEach
+                            }
+                        }
+                        if (currentHeader != null) {
+                            return@forEach
+                        }
+                    }
+                    if (currentHeader != null) {
+                        val rest = typedDataMap[currentHeader]!!.size % 2
+                        if (rest == 0) {
+                            1
+                        } else {
+                            val index =
+                                typedDataMap[currentHeader]!!.indexOf(completedDataList[position].first)
+                            if (index == 0) {
+                                2
+                            } else {
+                                1
+                            }
+                        }
+                    } else {
+                        1
+                    }
+                }
             }
         }
     }
@@ -58,9 +97,8 @@ class CocktailAdapterTest(
     }
 
     private fun generateData() {
-
-/*        completedDataList.addAll(listData.map { it to ViewType.ITEM })*/
         addHeaders()
+        println()
     }
 
     private var currentHeader: Any? = null
@@ -97,9 +135,11 @@ class CocktailAdapterTest(
     private fun addElement(element: Any, newHeader: Any?) {
         if (newHeader != currentHeader) {
             currentHeader = newHeader
-            completedDataList.add(newHeader!! to ViewType.HEADER)
+            typedDataMap[newHeader.toString()] = arrayListOf(element)
+            completedDataList.add(newHeader.toString() to ViewType.HEADER)
             completedDataList.add(element to ViewType.ITEM)
         } else {
+            typedDataMap[currentHeader.toString()]?.add(element)
             completedDataList.add(element to ViewType.ITEM)
         }
     }
@@ -108,7 +148,16 @@ class CocktailAdapterTest(
         return completedDataList.size
     }
 
+    var rcWidth: Int? = null
+    var maxHeight: Int? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
+        if (itemMaxHeight == null) {
+            val spans = layoutManager.spanCount
+            val layoutWidth = layoutManager.width / spans
+            val bottomTitleHeight = (context.resources.getDimension(R.dimen.offset_32)).toInt()
+            itemMaxHeight = layoutWidth + bottomTitleHeight
+        }
         return when (viewType) {
             ViewType.HEADER.ordinal -> {
                 val holder = HeaderViewHolder(
@@ -132,16 +181,17 @@ class CocktailAdapterTest(
                         )
                     )
                 } else {
+
+                    val binding: ItemDrinkListBinding = DataBindingUtil.inflate(
+                        LayoutInflater.from(parent.context),
+                        layoutId,
+                        parent,
+                        false
+                    )
                     CocktailViewHolder(
-                        DataBindingUtil.inflate(
-                            LayoutInflater.from(parent.context),
-                            layoutId,
-                            parent,
-                            false
-                        )
+                        binding
                     )
                 }
-
             }
         }
     }
@@ -158,13 +208,57 @@ class CocktailAdapterTest(
         }
     }
 
+/*    override fun onViewAttachedToWindow(holder: RecyclerView.ViewHolder) {
+        super.onViewAttachedToWindow(holder)
+        when (holder) {
+            is CocktailViewHolder -> {
+                if (itemMaxHeight == null) {
+
+                    val itemView = holder.binding.root
+                    itemView.measure(View.MeasureSpec.UNSPECIFIED, View.MeasureSpec.UNSPECIFIED)
+                    maxHeight = itemView.measuredHeight
+                }
+            }
+        }
+    }*/
+
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        val spans = layoutManager.spanCount
+        val layoutWidth = layoutManager.width / spans
         when (holder) {
             is CocktailViewHolder -> {
                 holder.binding.obj = completedDataList[position].first as CocktailModel
                 holder.binding.viewModel = viewModel
                 holder.binding.cvItemDrink.setOnLongClickListener(context as? View.OnLongClickListener)
                 holder.binding.cvItemDrink.setOnClickListener(context as? View.OnClickListener)
+                holder.binding.ivDrinkImage.maxHeight = layoutWidth
+                holder.binding.ivDrinkImage.adjustViewBounds = true
+
+/*                if (lookup.getSpanSize(position) == 2) {
+                    holder.binding.ivDrinkImage.visibility = View.GONE
+                    holder.binding.ivDrinkImage2.visibility = View.VISIBLE
+                    holder.binding.ivDrinkImage2.maxHeight = layoutWidth
+                    holder.binding.ivDrinkImage2.adjustViewBounds = true
+                    holder.binding.ivDrinkImage2.scaleType = ImageView.ScaleType.CENTER_CROP
+                } else {
+                    holder.binding.ivDrinkImage.visibility = View.VISIBLE
+                    holder.binding.ivDrinkImage2.visibility = View.GONE
+                    holder.binding.ivDrinkImage.maxHeight = layoutWidth
+                    holder.binding.ivDrinkImage.adjustViewBounds = true
+                    holder.binding.ivDrinkImage.scaleType = ImageView.ScaleType.CENTER_CROP
+                }*/
+
+
+                if (!isFavorite) {
+                        val itemView = holder.binding.root
+                        itemView.measure(
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.EXACTLY),
+                            View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
+                        )
+                        val itemLayoutParam = itemView.layoutParams
+                        itemLayoutParam.height = itemMaxHeight!!
+                        itemView.layoutParams = itemLayoutParam
+                }
                 holder.binding.executePendingBindings()
             }
             is FavoriteCocktailViewHolder -> {
@@ -182,7 +276,13 @@ class CocktailAdapterTest(
     }
 
     class CocktailViewHolder(val binding: ItemDrinkListBinding) :
-        RecyclerView.ViewHolder(binding.root)
+        RecyclerView.ViewHolder(binding.root) {
+    }
+
+
+    class CocktailViewHolder1(val binding: ItemDrinkListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+    }
 
     class FavoriteCocktailViewHolder(val binding: ItemFavoriteDrinkListBinding) :
         RecyclerView.ViewHolder(binding.root)

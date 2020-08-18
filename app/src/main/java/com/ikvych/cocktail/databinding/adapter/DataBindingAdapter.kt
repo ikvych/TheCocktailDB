@@ -6,6 +6,7 @@ import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.*
+import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.view.isVisible
 import androidx.databinding.*
 import androidx.viewpager2.widget.ViewPager2
@@ -13,9 +14,11 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ItemDrinkIngredientListBinding
+import com.ikvych.cocktail.di.Injector
 import com.ikvych.cocktail.presentation.enumeration.Page
 import com.ikvych.cocktail.presentation.model.cocktail.IngredientModel
 import jp.wasabeef.glide.transformations.BlurTransformation
+import kotlinx.android.synthetic.*
 
 
 @BindingAdapter("bind:src")
@@ -34,8 +37,8 @@ fun loadAvatar(imageView: ImageView, imageUrl: String?) {
 
 @BindingAdapter("bind:bg_avatar")
 fun loadBgAvatar(imageView: ImageView, imageUrl: String?) {
-    Glide.with(imageView.context)
-        .load(imageUrl)
+    val one = Glide.with(imageView.context)
+    one.load(imageUrl)
         .placeholder(R.drawable.default_icon)
         .apply(RequestOptions.bitmapTransform(BlurTransformation(15)))
         .into(imageView)
@@ -86,10 +89,12 @@ fun getIngredients(
 
 @BindingAdapter("strDrinkThumb")
 fun loadImage(imageView: ImageView, imageUrl: String?) {
+    imageView.scaleType = ImageView.ScaleType.CENTER
     Glide.with(imageView.context)
         .load(imageUrl)
         .placeholder(R.drawable.default_icon)
         .into(imageView)
+    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 }
 
 @BindingAdapter("bind:password_visibility")

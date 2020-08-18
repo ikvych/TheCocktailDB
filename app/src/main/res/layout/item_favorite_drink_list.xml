@@ -18,7 +18,6 @@
         android:id="@+id/cv_item_drink"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="@dimen/offset_4"
         android:elevation="@dimen/elevation_4"
         android:background="@color/color_primary"
         android:longClickable="true"

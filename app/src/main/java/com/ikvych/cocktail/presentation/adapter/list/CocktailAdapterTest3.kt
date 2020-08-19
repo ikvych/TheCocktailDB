@@ -241,42 +241,40 @@ class CocktailAdapterTest3(
                     sortType == SortDrinkType.INGREDIENT_COUNT_ASC || sortType == SortDrinkType.INGREDIENT_COUNT_DESC
                 ) {
                     if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
-                    } else {
                         when (subList.size % 4) {
                             0 -> {
                                 when (sublistElementIndex % 2) {
                                     0 -> {
                                         when (sublistElementIndex % 4) {
-                                            2 -> setBounds(4, 4, 4, 4, outRect)
-                                            0 -> setBounds(4, 4, 4, 8, outRect)
+                                            2 -> setBounds(lb_8, lb_8, lb_8, lb_8, outRect)
+                                            0 -> setBounds(lb_8, lb_8, lb_8, lb_16, outRect)
                                         }
                                     }
                                     1 -> {
                                         when ((sublistElementIndex - 1) % 4) {
-                                            2 -> setBounds(4, 8, 4, 4, outRect)
-                                            0 -> setBounds(4, 4, 4, 4, outRect)
+                                            2 -> setBounds(lb_8, lb_16, lb_8, lb_8, outRect)
+                                            0 -> setBounds(lb_8, lb_8, lb_8, lb_8, outRect)
                                         }
                                     }
                                 }
                             }
                             3 -> {
                                 when (sublistElementIndex) {
-                                    0 -> setBounds(4, 8, 4, 8, outRect)
-                                    1 -> setBounds(4, 4, 4, 8, outRect)
-                                    2 -> setBounds(4, 8, 4, 4, outRect)
+                                    0 -> setBounds(lb_8, lb_16, lb_8, lb_16, outRect)
+                                    1 -> setBounds(lb_8, lb_8, lb_8, lb_16, outRect)
+                                    2 -> setBounds(lb_8, lb_16, lb_8, lb_8, outRect)
                                     else -> {
                                         when (sublistElementIndex % 2) {
                                             0 -> {
                                                 when (sublistElementIndex % 4) {
-                                                    2 -> setBounds(4, 8, 4, 4, outRect)
-                                                    0 -> setBounds(4, 4, 4, 4, outRect)
+                                                    2 -> setBounds(lb_8, lb_16, lb_8, lb_8, outRect)
+                                                    0 -> setBounds(lb_8, lb_8, lb_8, lb_8, outRect)
                                                 }
                                             }
                                             1 -> {
                                                 when ((sublistElementIndex - 1) % 4) {
-                                                    2 -> setBounds(4, 4, 4, 8, outRect)
-                                                    0 -> setBounds(4, 4, 4, 4, outRect)
+                                                    2 -> setBounds(lb_8, lb_8, lb_8, lb_16, outRect)
+                                                    0 -> setBounds(lb_8, lb_8, lb_8, lb_8, outRect)
                                                 }
                                             }
                                         }
@@ -285,20 +283,20 @@ class CocktailAdapterTest3(
                             }
                             2 -> {
                                 when (sublistElementIndex) {
-                                    0 -> setBounds(4, 4, 4, 8, outRect)
-                                    1 -> setBounds(4, 8, 4, 4, outRect)
+                                    0 -> setBounds(lb_8, lb_8, lb_8, lb_16, outRect)
+                                    1 -> setBounds(lb_8, lb_16, lb_8, lb_8, outRect)
                                     else -> {
                                         when (sublistElementIndex % 2) {
                                             0 -> {
                                                 when (sublistElementIndex % 4) {
-                                                    2 -> setBounds(4, 4, 4, 8, outRect)
-                                                    0 -> setBounds(4, 4, 4, 4, outRect)
+                                                    2 -> setBounds(lb_8, lb_8, lb_8, lb_16, outRect)
+                                                    0 -> setBounds(lb_8, lb_8, lb_8, lb_8, outRect)
                                                 }
                                             }
                                             1 -> {
                                                 when ((sublistElementIndex - 1) % 4) {
-                                                    2 -> setBounds(4, 4, 4, 4, outRect)
-                                                    0 -> setBounds(4, 8, 4, 4, outRect)
+                                                    2 -> setBounds(lb_8, lb_8, lb_8, lb_8, outRect)
+                                                    0 -> setBounds(lb_8, lb_16, lb_8, lb_8, outRect)
                                                 }
                                             }
                                         }
@@ -307,19 +305,105 @@ class CocktailAdapterTest3(
                             }
                             1 -> {
                                 when (sublistElementIndex) {
-                                    0 -> setBounds(4, 8, 4, 8, outRect)
+                                    0 -> setBounds(lb_8, lb_16, lb_8, lb_16, outRect)
                                     else -> {
                                         when (sublistElementIndex % 2) {
                                             0 -> {
                                                 when (sublistElementIndex % 4) {
-                                                    2 -> setBounds(4, 4, 4, 4, outRect)
-                                                    0 -> setBounds(4, 8, 4, 4, outRect)
+                                                    2 -> setBounds(lb_8, lb_8, lb_8, lb_8, outRect)
+                                                    0 -> setBounds(lb_8, lb_16, lb_8, lb_8, outRect)
                                                 }
                                             }
                                             1 -> {
                                                 when ((sublistElementIndex - 1) % 4) {
-                                                    2 -> setBounds(4, 4, 4, 4, outRect)
-                                                    0 -> setBounds(4, 4, 4, 8, outRect)
+                                                    2 -> setBounds(lb_8, lb_8, lb_8, lb_8, outRect)
+                                                    0 -> setBounds(lb_8, lb_8, lb_8, lb_16, outRect)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else -> {}
+                        }
+                    } else {
+                        when (subList.size % 4) {
+                            0 -> {
+                                when (sublistElementIndex % 2) {
+                                    0 -> {
+                                        when (sublistElementIndex % 4) {
+                                            2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                            0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_8, outRect)
+                                        }
+                                    }
+                                    1 -> {
+                                        when ((sublistElementIndex - 1) % 4) {
+                                            2 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_4, outRect)
+                                            0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                        }
+                                    }
+                                }
+                            }
+                            3 -> {
+                                when (sublistElementIndex) {
+                                    0 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_8, outRect)
+                                    1 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_8, outRect)
+                                    2 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_4, outRect)
+                                    else -> {
+                                        when (sublistElementIndex % 2) {
+                                            0 -> {
+                                                when (sublistElementIndex % 4) {
+                                                    2 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_4, outRect)
+                                                    0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                                }
+                                            }
+                                            1 -> {
+                                                when ((sublistElementIndex - 1) % 4) {
+                                                    2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_8, outRect)
+                                                    0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            2 -> {
+                                when (sublistElementIndex) {
+                                    0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_8, outRect)
+                                    1 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_4, outRect)
+                                    else -> {
+                                        when (sublistElementIndex % 2) {
+                                            0 -> {
+                                                when (sublistElementIndex % 4) {
+                                                    2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_8, outRect)
+                                                    0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                                }
+                                            }
+                                            1 -> {
+                                                when ((sublistElementIndex - 1) % 4) {
+                                                    2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                                    0 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_4, outRect)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            1 -> {
+                                when (sublistElementIndex) {
+                                    0 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_8, outRect)
+                                    else -> {
+                                        when (sublistElementIndex % 2) {
+                                            0 -> {
+                                                when (sublistElementIndex % 4) {
+                                                    2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                                    0 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_4, outRect)
+                                                }
+                                            }
+                                            1 -> {
+                                                when ((sublistElementIndex - 1) % 4) {
+                                                    2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                                    0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_8, outRect)
                                                 }
                                             }
                                         }
@@ -333,16 +417,16 @@ class CocktailAdapterTest3(
                     when (subList.size % 2) {
                         0 -> {
                             when (sublistElementIndex % 2) {
-                                0 -> setBounds(8, 8, 8, 16, outRect)
-                                1 -> setBounds(8, 16, 8, 8, outRect)
+                                0 -> setBounds(pb_8, pb_8, pb_8, pb_16, outRect)
+                                1 -> setBounds(pb_8, pb_16, pb_8, pb_8, outRect)
                             }
                         }
                         1 -> {
                             when (sublistElementIndex % 2) {
                                 0 ->
-                                    if (sublistElementIndex == 0) setBounds(8, 16, 8, 16, outRect)
-                                    else setBounds(8, 16, 8, 8, outRect)
-                                1 -> setBounds(8, 8, 8, 16, outRect)
+                                    if (sublistElementIndex == 0) setBounds(pb_8, pb_16, pb_8, pb_16, outRect)
+                                    else setBounds(pb_8, pb_16, pb_8, pb_8, outRect)
+                                1 -> setBounds(pb_8, pb_8, pb_8, pb_16, outRect)
                             }
                         }
                         else -> {}
@@ -353,13 +437,27 @@ class CocktailAdapterTest3(
                     sortType == SortDrinkType.INGREDIENT_COUNT_ASC || sortType == SortDrinkType.INGREDIENT_COUNT_DESC
                 ) {
                     if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-
+                        setBounds(lb_8, lb_0, lb_8, lb_0, outRect)
                     } else {
-                        setBounds(4, 0, 4, 0, outRect)
+                        setBounds(ingb_4, ingb_0, ingb_4, ingb_0, outRect)
                     }
-                } else setBounds(8, 0, 8, 0, outRect)
+                } else setBounds(pb_8, pb_0, pb_8, pb_0, outRect)
             }
         }
+    }
+
+    companion object {
+        private const val pb_0 = 0
+        private const val pb_8 = 8
+        private const val pb_16 = 16
+
+        private const val lb_0 = 0
+        private const val lb_8 = 8
+        private const val lb_16 = 16
+
+        private const val ingb_0 = 0
+        private const val ingb_4 = 4
+        private const val ingb_8 = 8
     }
 
     private fun setBounds(top: Int, right: Int, bottom: Int, left: Int, outRect: Rect) {
@@ -419,5 +517,4 @@ class CocktailAdapterTest3(
             }
         }
     }
-
 }

@@ -38,15 +38,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/all_content_description"
+                    android:scaleType="centerCrop"
                     bind:strDrinkThumb="@{obj.image}" />
-
-<!--                <ImageView
-                    android:id="@+id/iv_drink_image_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:visibility="gone"
-                    android:contentDescription="@string/all_content_description"
-                    bind:strDrinkThumb="@{obj.image}" />-->
 
                 <CheckBox
                     android:id="@+id/cb_is_favorite"

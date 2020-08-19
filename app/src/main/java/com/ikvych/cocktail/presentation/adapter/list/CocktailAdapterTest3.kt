@@ -6,8 +6,11 @@ import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.R
@@ -18,6 +21,8 @@ import com.ikvych.cocktail.presentation.filter.type.SortDrinkType
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
 import java.util.*
+import kotlin.collections.ArrayList
+import kotlin.collections.HashMap
 
 
 class CocktailAdapterTest3(
@@ -26,11 +31,12 @@ class CocktailAdapterTest3(
     private val layoutManager: GridLayoutManager,
     private val isFavorite: Boolean,
     private val orientation: Int
-) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>(), View.OnClickListener {
 
     private val layoutId = R.layout.item_drink_list
     private val favoriteLayoutId = R.layout.item_favorite_drink_list
     private val headerLayoutId = R.layout.item_header_drink_list
+    private val diffUtilCallback = MyDiffUtilCallback()
 
     var spanSizeLookup: GridLayoutManager.SpanSizeLookup = setSpanSizeLookup()
 
@@ -40,18 +46,44 @@ class CocktailAdapterTest3(
 
     private val num = if (orientation == Configuration.ORIENTATION_LANDSCAPE) 4 else 2
 
+    var oldType: SortDrinkType = SortDrinkType.RECENT
     var sortType: SortDrinkType = SortDrinkType.RECENT
+    set(value) {
+        oldType = SortDrinkType.values().first { it.key == sortType.key}
+        field = value
+    }
     var listData: List<Any> = arrayListOf()
         set(value) {
             field = value
+            oldDataList = completedDataList.clone() as ArrayList<Pair<Any, String>>
             completedDataList.clear()
             typedDataMap.clear()
+            headersStateList.clear()
             addHeaders()
-            notifyDataSetChanged()
+            if (oldType == sortType) {
+                val headersValues = collapsedElements.keys
+                headersValues.forEach {
+                    collapsedElements[it]!!.clear()
+                    headersStateList[it] = HeaderState.COLLAPSED
+                    completedDataList.removeAll {pair ->
+                        if (pair.second == it) {
+                            collapsedElements[it]!!.add(pair.first)
+                            true
+                        } else false
+                    }
+                }
+            } else {
+                collapsedElements.clear()
+            }
+            DiffUtil.calculateDiff(diffUtilCallback).dispatchUpdatesTo(this)
+            /*notifyDataSetChanged()*/
         }
 
+    var oldDataList: ArrayList<Pair<Any, String>> = arrayListOf()
     val completedDataList: ArrayList<Pair<Any, String>> = arrayListOf()
+    private val collapsedElements: SortedMap<String, ArrayList<Any>> = sortedMapOf()
     private val typedDataMap: SortedMap<String, ArrayList<Any>> = sortedMapOf()
+    private val headersStateList: SortedMap<String, HeaderState> = sortedMapOf()
 
     private fun getSpanForPortraitOrientation(element: Any, header: String): Int {
         val subList = typedDataMap[header]!!
@@ -88,9 +120,9 @@ class CocktailAdapterTest3(
     private fun addHeaders() {
         when (sortType) {
             SortDrinkType.RECENT -> {
-                completedDataList.addAll(listData.map { it to "" })
-                typedDataMap[""] = arrayListOf()
-                typedDataMap[""]!!.addAll(listData)
+                completedDataList.addAll(listData.map { it to "NOTHEADER" })
+                typedDataMap["NOTHEADER"] = arrayListOf()
+                typedDataMap["NOTHEADER"]!!.addAll(listData)
             }
             SortDrinkType.NAME_ASC -> listData.forEach {
                 addElement(
@@ -122,6 +154,7 @@ class CocktailAdapterTest3(
         if (newHeader != currentHeader) {
             currentHeader = newHeader
             typedDataMap[newHeader.toString()] = arrayListOf(element)
+            headersStateList[newHeader.toString()] = HeaderState.EXPANDED
             completedDataList.add(newHeader.toString() to "")
             completedDataList.add(element to newHeader.toString())
         } else {
@@ -173,7 +206,6 @@ class CocktailAdapterTest3(
         }
     }
 
-
     override fun getItemViewType(position: Int): Int {
         return when (completedDataList[position].first) {
             is String -> {
@@ -188,10 +220,15 @@ class CocktailAdapterTest3(
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         when (holder) {
             is CocktailViewHolder -> {
-                holder.binding.obj = completedDataList[position].first as CocktailModel
-                holder.binding.viewModel = viewModel
-                holder.binding.cvItemDrink.setOnLongClickListener(context as? View.OnLongClickListener)
-                holder.binding.cvItemDrink.setOnClickListener(context as? View.OnClickListener)
+                val header = completedDataList[position].second
+                if (headersStateList[header] == HeaderState.COLLAPSED) {
+
+                } else {
+                    holder.binding.obj = completedDataList[position].first as CocktailModel
+                    holder.binding.viewModel = viewModel
+                    holder.binding.cvItemDrink.setOnLongClickListener(context as? View.OnLongClickListener)
+                    holder.binding.cvItemDrink.setOnClickListener(context as? View.OnClickListener)
+                }
                 holder.binding.executePendingBindings()
             }
             is FavoriteCocktailViewHolder -> {
@@ -214,9 +251,91 @@ class CocktailAdapterTest3(
     class FavoriteCocktailViewHolder(val binding: ItemFavoriteDrinkListBinding) :
         RecyclerView.ViewHolder(binding.root)
 
-    class HeaderViewHolder(val binding: ItemHeaderDrinkListBinding) :
-        RecyclerView.ViewHolder(binding.root)
+    inner class HeaderViewHolder(val binding: ItemHeaderDrinkListBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
+        init {
+            binding.root.setOnClickListener(this@CocktailAdapterTest3)
+        }
+    }
+
+    override fun onClick(v: View?) {
+        if (v == null) return
+        when (v) {
+            is TextView -> {
+                val header = v.text.toString()
+                when (headersStateList[header]) {
+                    HeaderState.EXPANDED -> {
+                        oldDataList = completedDataList.clone() as ArrayList<Pair<Any, String>>
+                        headersStateList[header] = HeaderState.COLLAPSED
+                        collapsedElements[header] = arrayListOf()
+                        completedDataList.removeAll {
+                            if (it.second == header) {
+                                collapsedElements[header]!!.add(it.first)
+                                true
+                            } else false
+                        }
+                    }
+                    HeaderState.COLLAPSED -> {
+                        oldDataList = completedDataList.clone() as ArrayList<Pair<Any, String>>
+                        headersStateList[header] = HeaderState.EXPANDED
+                        val hidedList: ArrayList<Any> = collapsedElements.remove(header)!!
+                        val existenHeader = completedDataList.first { it.first.toString() == header }
+                        val headerIndex = completedDataList.indexOf(existenHeader)
+                        val collection = hidedList.map { it to header }
+                        completedDataList.addAll(headerIndex+1, collection)
+                    }
+                }
+                DiffUtil.calculateDiff(diffUtilCallback).dispatchUpdatesTo(this)
+            }
+        }
+    }
+
+    inner class MyDiffUtilCallback :
+        DiffUtil.Callback() {
+
+        override fun getOldListSize(): Int {
+            return oldDataList.size
+        }
+
+        override fun getNewListSize(): Int {
+            return completedDataList.size
+        }
+
+        override fun areItemsTheSame(
+            oldItemPosition: Int,
+            newItemPosition: Int
+        ): Boolean {
+            val oldElement = oldDataList[oldItemPosition]
+            val newElement = completedDataList[newItemPosition]
+            var result = false
+            if (oldElement.second.isBlank() && newElement.second.isBlank()) {
+                result = (oldElement.first as String) == (newElement.first as String)
+            }
+            if (oldElement.second.isNotBlank() && newElement.second.isNotBlank()) {
+                result =
+                    (oldElement.first as CocktailModel).id == (newElement.first as CocktailModel).id
+            }
+            return result
+        }
+
+        override fun areContentsTheSame(
+            oldItemPosition: Int,
+            newItemPosition: Int
+        ): Boolean {
+            val oldElement = oldDataList[oldItemPosition]
+            val newElement = completedDataList[newItemPosition]
+            var result = false
+            if (oldElement.second.isBlank() && newElement.second.isBlank()) {
+                result = (oldElement.first as String) == (newElement.first as String)
+            }
+            if (oldElement.second.isNotBlank() && newElement.second.isNotBlank()) {
+                result =
+                    (oldElement.first as CocktailModel).isFavorite == (newElement.first as CocktailModel).isFavorite
+            }
+            return result
+        }
+    }
 
     inner class MyItemDecorator(
         private val context: Context
@@ -231,7 +350,7 @@ class CocktailAdapterTest3(
             super.getItemOffsets(outRect, view, parent, state)
             if (view is CardView) {
                 val position = parent.getChildAdapterPosition(view)
-                val spanCount = spanSizeLookup.getSpanSize(position)
+                if (position == -1) return
                 val currentHeader = completedDataList[position].second
                 val currentElement = completedDataList[position].first
                 val subList = typedDataMap[currentHeader]!!
@@ -324,7 +443,8 @@ class CocktailAdapterTest3(
                                     }
                                 }
                             }
-                            else -> {}
+                            else -> {
+                            }
                         }
                     } else {
                         when (subList.size % 4) {
@@ -353,14 +473,38 @@ class CocktailAdapterTest3(
                                         when (sublistElementIndex % 2) {
                                             0 -> {
                                                 when (sublistElementIndex % 4) {
-                                                    2 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_4, outRect)
-                                                    0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                                    2 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_8,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        outRect
+                                                    )
+                                                    0 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        outRect
+                                                    )
                                                 }
                                             }
                                             1 -> {
                                                 when ((sublistElementIndex - 1) % 4) {
-                                                    2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_8, outRect)
-                                                    0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                                    2 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_8,
+                                                        outRect
+                                                    )
+                                                    0 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        outRect
+                                                    )
                                                 }
                                             }
                                         }
@@ -375,14 +519,38 @@ class CocktailAdapterTest3(
                                         when (sublistElementIndex % 2) {
                                             0 -> {
                                                 when (sublistElementIndex % 4) {
-                                                    2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_8, outRect)
-                                                    0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
+                                                    2 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_8,
+                                                        outRect
+                                                    )
+                                                    0 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        outRect
+                                                    )
                                                 }
                                             }
                                             1 -> {
                                                 when ((sublistElementIndex - 1) % 4) {
-                                                    2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
-                                                    0 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_4, outRect)
+                                                    2 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        outRect
+                                                    )
+                                                    0 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_8,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        outRect
+                                                    )
                                                 }
                                             }
                                         }
@@ -396,21 +564,46 @@ class CocktailAdapterTest3(
                                         when (sublistElementIndex % 2) {
                                             0 -> {
                                                 when (sublistElementIndex % 4) {
-                                                    2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
-                                                    0 -> setBounds(ingb_4, ingb_8, ingb_4, ingb_4, outRect)
+                                                    2 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        outRect
+                                                    )
+                                                    0 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_8,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        outRect
+                                                    )
                                                 }
                                             }
                                             1 -> {
                                                 when ((sublistElementIndex - 1) % 4) {
-                                                    2 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_4, outRect)
-                                                    0 -> setBounds(ingb_4, ingb_4, ingb_4, ingb_8, outRect)
+                                                    2 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        outRect
+                                                    )
+                                                    0 -> setBounds(
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_4,
+                                                        ingb_8,
+                                                        outRect
+                                                    )
                                                 }
                                             }
                                         }
                                     }
                                 }
                             }
-                            else -> {}
+                            else -> {
+                            }
                         }
                     }
                 } else {
@@ -424,12 +617,19 @@ class CocktailAdapterTest3(
                         1 -> {
                             when (sublistElementIndex % 2) {
                                 0 ->
-                                    if (sublistElementIndex == 0) setBounds(pb_8, pb_16, pb_8, pb_16, outRect)
+                                    if (sublistElementIndex == 0) setBounds(
+                                        pb_8,
+                                        pb_16,
+                                        pb_8,
+                                        pb_16,
+                                        outRect
+                                    )
                                     else setBounds(pb_8, pb_16, pb_8, pb_8, outRect)
                                 1 -> setBounds(pb_8, pb_8, pb_8, pb_16, outRect)
                             }
                         }
-                        else -> {}
+                        else -> {
+                        }
                     }
                 }
             } else {

@@ -89,12 +89,12 @@ fun getIngredients(
 
 @BindingAdapter("strDrinkThumb")
 fun loadImage(imageView: ImageView, imageUrl: String?) {
-/*    imageView.scaleType = ImageView.ScaleType.FIT_XY*/
+    imageView.scaleType = ImageView.ScaleType.FIT_XY
     Glide.with(imageView.context)
         .load(imageUrl)
         .placeholder(R.drawable.default_icon)
         .into(imageView)
-/*    imageView.scaleType = ImageView.ScaleType.CENTER_CROP*/
+    imageView.scaleType = ImageView.ScaleType.CENTER_CROP
 }
 
 @BindingAdapter("bind:password_visibility")

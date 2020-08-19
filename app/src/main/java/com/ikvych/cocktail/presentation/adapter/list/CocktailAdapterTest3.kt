@@ -3,11 +3,9 @@ package com.ikvych.cocktail.presentation.adapter.list
 import android.content.Context
 import android.content.res.Configuration
 import android.graphics.Rect
-import android.graphics.drawable.Drawable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
@@ -242,74 +240,138 @@ class CocktailAdapterTest3(
                 if (orientation == Configuration.ORIENTATION_LANDSCAPE ||
                     sortType == SortDrinkType.INGREDIENT_COUNT_ASC || sortType == SortDrinkType.INGREDIENT_COUNT_DESC
                 ) {
+                    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 
-                } else {
-
-                }
-                val rest = typedDataMap[currentHeader]!!.size % 2
-                if (rest == 0) {
-                    if (sublistElementIndex % 2 == 0) {
-                        outRect.top = context.resources.getDimension(R.dimen.offset_8).toInt()
-                        outRect.bottom =
-                            context.resources.getDimension(R.dimen.offset_8).toInt()
-                        outRect.right =
-                            context.resources.getDimension(R.dimen.offset_8).toInt()
-                        outRect.left = context.resources.getDimension(R.dimen.offset_16).toInt()
                     } else {
-                        outRect.top = context.resources.getDimension(R.dimen.offset_8).toInt()
-                        outRect.bottom =
-                            context.resources.getDimension(R.dimen.offset_8).toInt()
-                        outRect.right =
-                            context.resources.getDimension(R.dimen.offset_16).toInt()
-                        outRect.left = context.resources.getDimension(R.dimen.offset_8).toInt()
+                        when (subList.size % 4) {
+                            0 -> {
+                                when (sublistElementIndex % 2) {
+                                    0 -> {
+                                        when (sublistElementIndex % 4) {
+                                            2 -> setBounds(4, 4, 4, 4, outRect)
+                                            0 -> setBounds(4, 4, 4, 8, outRect)
+                                        }
+                                    }
+                                    1 -> {
+                                        when ((sublistElementIndex - 1) % 4) {
+                                            2 -> setBounds(4, 8, 4, 4, outRect)
+                                            0 -> setBounds(4, 4, 4, 4, outRect)
+                                        }
+                                    }
+                                }
+                            }
+                            3 -> {
+                                when (sublistElementIndex) {
+                                    0 -> setBounds(4, 8, 4, 8, outRect)
+                                    1 -> setBounds(4, 4, 4, 8, outRect)
+                                    2 -> setBounds(4, 8, 4, 4, outRect)
+                                    else -> {
+                                        when (sublistElementIndex % 2) {
+                                            0 -> {
+                                                when (sublistElementIndex % 4) {
+                                                    2 -> setBounds(4, 8, 4, 4, outRect)
+                                                    0 -> setBounds(4, 4, 4, 4, outRect)
+                                                }
+                                            }
+                                            1 -> {
+                                                when ((sublistElementIndex - 1) % 4) {
+                                                    2 -> setBounds(4, 4, 4, 8, outRect)
+                                                    0 -> setBounds(4, 4, 4, 4, outRect)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            2 -> {
+                                when (sublistElementIndex) {
+                                    0 -> setBounds(4, 4, 4, 8, outRect)
+                                    1 -> setBounds(4, 8, 4, 4, outRect)
+                                    else -> {
+                                        when (sublistElementIndex % 2) {
+                                            0 -> {
+                                                when (sublistElementIndex % 4) {
+                                                    2 -> setBounds(4, 4, 4, 8, outRect)
+                                                    0 -> setBounds(4, 4, 4, 4, outRect)
+                                                }
+                                            }
+                                            1 -> {
+                                                when ((sublistElementIndex - 1) % 4) {
+                                                    2 -> setBounds(4, 4, 4, 4, outRect)
+                                                    0 -> setBounds(4, 8, 4, 4, outRect)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            1 -> {
+                                when (sublistElementIndex) {
+                                    0 -> setBounds(4, 8, 4, 8, outRect)
+                                    else -> {
+                                        when (sublistElementIndex % 2) {
+                                            0 -> {
+                                                when (sublistElementIndex % 4) {
+                                                    2 -> setBounds(4, 4, 4, 4, outRect)
+                                                    0 -> setBounds(4, 8, 4, 4, outRect)
+                                                }
+                                            }
+                                            1 -> {
+                                                when ((sublistElementIndex - 1) % 4) {
+                                                    2 -> setBounds(4, 4, 4, 4, outRect)
+                                                    0 -> setBounds(4, 4, 4, 8, outRect)
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            else -> {}
+                        }
                     }
                 } else {
-                    when (spanCount) {
+                    when (subList.size % 2) {
+                        0 -> {
+                            when (sublistElementIndex % 2) {
+                                0 -> setBounds(8, 8, 8, 16, outRect)
+                                1 -> setBounds(8, 16, 8, 8, outRect)
+                            }
+                        }
                         1 -> {
-                            if (sublistElementIndex % 2 == 0) {
-                                outRect.top =
-                                    context.resources.getDimension(R.dimen.offset_8).toInt()
-                                outRect.bottom =
-                                    context.resources.getDimension(R.dimen.offset_8).toInt()
-                                outRect.right =
-                                    context.resources.getDimension(R.dimen.offset_16).toInt()
-                                outRect.left =
-                                    context.resources.getDimension(R.dimen.offset_8).toInt()
-                            } else {
-                                outRect.top =
-                                    context.resources.getDimension(R.dimen.offset_8).toInt()
-                                outRect.bottom =
-                                    context.resources.getDimension(R.dimen.offset_8).toInt()
-                                outRect.right =
-                                    context.resources.getDimension(R.dimen.offset_8).toInt()
-                                outRect.left =
-                                    context.resources.getDimension(R.dimen.offset_16).toInt()
+                            when (sublistElementIndex % 2) {
+                                0 ->
+                                    if (sublistElementIndex == 0) setBounds(8, 16, 8, 16, outRect)
+                                    else setBounds(8, 16, 8, 8, outRect)
+                                1 -> setBounds(8, 8, 8, 16, outRect)
                             }
                         }
-                        2 -> {
-                            outRect.top =
-                                context.resources.getDimension(R.dimen.offset_8).toInt()
-                            outRect.right =
-                                context.resources.getDimension(R.dimen.offset_16).toInt()
-                            outRect.left =
-                                context.resources.getDimension(R.dimen.offset_16).toInt()
-                            if (typedDataMap[currentHeader]!!.size == 1) {
-                                outRect.bottom =
-                                    context.resources.getDimension(R.dimen.offset_16).toInt()
-                            } else {
-                                outRect.bottom =
-                                    context.resources.getDimension(R.dimen.offset_8).toInt()
-                            }
-                        }
+                        else -> {}
                     }
                 }
-
             } else {
-                outRect.bottom = context.resources.getDimension(R.dimen.offset_8).toInt()
+                if (orientation == Configuration.ORIENTATION_LANDSCAPE ||
+                    sortType == SortDrinkType.INGREDIENT_COUNT_ASC || sortType == SortDrinkType.INGREDIENT_COUNT_DESC
+                ) {
+                    if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+                    } else {
+                        setBounds(4, 0, 4, 0, outRect)
+                    }
+                } else setBounds(8, 0, 8, 0, outRect)
             }
         }
     }
 
+    private fun setBounds(top: Int, right: Int, bottom: Int, left: Int, outRect: Rect) {
+        outRect.top = convertDpToPx(top).toInt()
+        outRect.bottom = convertDpToPx(bottom).toInt()
+        outRect.right = convertDpToPx(right).toInt()
+        outRect.left = convertDpToPx(left).toInt()
+    }
+
+    private fun convertDpToPx(dp: Int): Float {
+        return dp * context.resources.displayMetrics.density
+    }
 
     private fun setSpanSizeLookup(): GridLayoutManager.SpanSizeLookup {
         return if (isFavorite) {

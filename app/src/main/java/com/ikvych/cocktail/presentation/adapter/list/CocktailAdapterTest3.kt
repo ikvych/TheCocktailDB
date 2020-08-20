@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
@@ -46,10 +47,10 @@ class CocktailAdapterTest3(
 
     var oldType: SortDrinkType = SortDrinkType.RECENT
     var sortType: SortDrinkType = SortDrinkType.RECENT
-    set(value) {
-        oldType = SortDrinkType.values().first { it.key == sortType.key}
-        field = value
-    }
+        set(value) {
+            oldType = SortDrinkType.values().first { it.key == sortType.key }
+            field = value
+        }
     var listData: List<Any> = arrayListOf()
         set(value) {
             field = value
@@ -63,7 +64,7 @@ class CocktailAdapterTest3(
                 headersValues.forEach {
                     collapsedElements[it]!!.clear()
                     headersStateList[it] = HeaderState.COLLAPSED
-                    completedDataList.removeAll {pair ->
+                    completedDataList.removeAll { pair ->
                         if (pair.second == it) {
                             collapsedElements[it]!!.add(pair.first)
                             true
@@ -278,10 +279,11 @@ class CocktailAdapterTest3(
                         oldDataList = completedDataList.clone() as ArrayList<Pair<Any, String>>
                         headersStateList[header] = HeaderState.EXPANDED
                         val hidedList: ArrayList<Any> = collapsedElements.remove(header)!!
-                        val existenHeader = completedDataList.first { it.first.toString() == header }
+                        val existenHeader =
+                            completedDataList.first { it.first.toString() == header }
                         val headerIndex = completedDataList.indexOf(existenHeader)
                         val collection = hidedList.map { it to header }
-                        completedDataList.addAll(headerIndex+1, collection)
+                        completedDataList.addAll(headerIndex + 1, collection)
                     }
                 }
                 DiffUtil.calculateDiff(diffUtilCallback).dispatchUpdatesTo(this)
@@ -729,7 +731,8 @@ class CocktailAdapterTest3(
 
     private fun showUndoSnackbar(view: View) {
         val snackbar: Snackbar = Snackbar.make(
-            view, "${(mRecentlyDeletedItem!!.first as CocktailModel).names.defaultName} removed from history",
+            view,
+            "${(mRecentlyDeletedItem!!.first as CocktailModel).names.defaultName} removed from history",
             Snackbar.LENGTH_LONG
         )
         snackbar.setAction(R.string.all_undo_button) { v -> undoDelete() }
@@ -742,5 +745,66 @@ class CocktailAdapterTest3(
             mRecentlyDeletedItem!!
         )
         notifyItemInserted(mRecentlyDeletedItemPosition!!)
+    }
+
+    inner class SimpleItemTouchHelperCallback() :
+        ItemTouchHelper.Callback() {
+
+        override fun isLongPressDragEnabled(): Boolean {
+            return false
+        }
+
+        override fun isItemViewSwipeEnabled(): Boolean {
+            return true
+        }
+
+        override fun getMovementFlags(
+            recyclerView: RecyclerView,
+            viewHolder: RecyclerView.ViewHolder
+        ): Int {
+            return when (viewHolder) {
+                is CocktailViewHolder -> {
+                    val dragFlags = ItemTouchHelper.ACTION_STATE_IDLE
+                    val swipeFlags = ItemTouchHelper.END
+                    makeMovementFlags(
+                        dragFlags,
+                        swipeFlags
+                    )
+                }
+                is FavoriteCocktailViewHolder -> {
+                    val dragFlags = ItemTouchHelper.ACTION_STATE_IDLE
+                    val swipeFlags = ItemTouchHelper.START
+                    makeMovementFlags(
+                        dragFlags,
+                        swipeFlags
+                    )
+                }
+                else -> {
+                    val dragFlags = ItemTouchHelper.ACTION_STATE_IDLE
+                    val swipeFlags = ItemTouchHelper.ACTION_STATE_IDLE
+                    makeMovementFlags(
+                        dragFlags,
+                        swipeFlags
+                    )
+                }
+            }
+
+        }
+
+        override fun onMove(
+            recyclerView: RecyclerView, viewHolder: RecyclerView.ViewHolder,
+            target: RecyclerView.ViewHolder
+        ): Boolean {
+/*            mAdapter.onItemMove(viewHolder.adapterPosition, target.adapterPosition)*/
+            return false
+        }
+
+        override fun onSwiped(
+            viewHolder: RecyclerView.ViewHolder,
+            direction: Int
+        ) {
+            val position = viewHolder.adapterPosition
+            this@CocktailAdapterTest3.deleteItem(position, viewHolder.itemView)
+        }
     }
 }

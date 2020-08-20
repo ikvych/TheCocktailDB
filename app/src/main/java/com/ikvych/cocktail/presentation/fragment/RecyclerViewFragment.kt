@@ -6,12 +6,15 @@ import androidx.databinding.ViewDataBinding
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.ikvych.cocktail.presentation.adapter.list.CocktailAdapterTest3
+import com.ikvych.cocktail.presentation.adapter.list.SwipeToDeleteCallback
 import com.ikvych.cocktail.presentation.fragment.base.BaseFragment
 import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
 import com.ikvych.cocktail.viewmodel.cocktail.MainFragmentViewModel
+
 
 abstract class RecyclerViewFragment<ViewModel : CocktailViewModel, DataBinding : ViewDataBinding> :
     BaseFragment<ViewModel, DataBinding>() {
@@ -51,6 +54,8 @@ abstract class RecyclerViewFragment<ViewModel : CocktailViewModel, DataBinding :
         recyclerView.layoutManager = layoutManager ?: LinearLayoutManager(requireContext())
         recyclerView.adapter = cocktailAdapter
         recyclerView.addItemDecoration(cocktailAdapter.MyItemDecorator(requireContext()))
+        val itemTouchHelper = ItemTouchHelper(SwipeToDeleteCallback(adapter = cocktailAdapter))
+        itemTouchHelper.attachToRecyclerView(recyclerView)
         cocktailAdapter.listData = parentViewModel.cocktailsLiveData.value ?: arrayListOf()
     }
 }

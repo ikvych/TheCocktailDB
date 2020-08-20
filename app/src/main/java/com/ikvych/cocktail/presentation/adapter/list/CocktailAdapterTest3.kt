@@ -6,13 +6,13 @@ import android.graphics.Rect
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ItemDrinkListBinding
 import com.ikvych.cocktail.databinding.ItemFavoriteDrinkListBinding
@@ -21,8 +21,6 @@ import com.ikvych.cocktail.presentation.filter.type.SortDrinkType
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
 import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
 import java.util.*
-import kotlin.collections.ArrayList
-import kotlin.collections.HashMap
 
 
 class CocktailAdapterTest3(
@@ -716,5 +714,33 @@ class CocktailAdapterTest3(
                 }
             }
         }
+    }
+
+    private var mRecentlyDeletedItem: Pair<Any, String>? = null
+    private var mRecentlyDeletedItemPosition: Int? = null
+
+    fun deleteItem(position: Int, view: View) {
+        mRecentlyDeletedItem = completedDataList[position]
+        mRecentlyDeletedItemPosition = position
+        completedDataList.removeAt(position)
+        notifyItemRemoved(position)
+        showUndoSnackbar(view)
+    }
+
+    private fun showUndoSnackbar(view: View) {
+        val snackbar: Snackbar = Snackbar.make(
+            view, "${(mRecentlyDeletedItem!!.first as CocktailModel).names.defaultName} removed from history",
+            Snackbar.LENGTH_LONG
+        )
+        snackbar.setAction(R.string.all_undo_button) { v -> undoDelete() }
+        snackbar.show()
+    }
+
+    private fun undoDelete() {
+        completedDataList.add(
+            mRecentlyDeletedItemPosition!!,
+            mRecentlyDeletedItem!!
+        )
+        notifyItemInserted(mRecentlyDeletedItemPosition!!)
     }
 }

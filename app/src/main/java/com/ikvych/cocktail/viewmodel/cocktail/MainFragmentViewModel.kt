@@ -104,6 +104,7 @@ class MainFragmentViewModel(
             override fun getValue(): HashMap<DrinkFilterType, List<DrinkFilter>>? {
                 var map = HashMap<DrinkFilterType, List<DrinkFilter>>()
 
+
                 DrinkFilterType.values().forEach { filterType ->
                     val filterTypeOrdinal: Int =
                         savedStateHandle.get("$EXTRA_KEY_FILTER_TYPE${filterType.key}")
@@ -136,7 +137,14 @@ class MainFragmentViewModel(
                             drinkFilterKeyArray?.forEach { key ->
                                 drinkFilters.add(
                                     if (!list.isNullOrEmpty() && list.size > 0) {
-                                        list.first { it.key == key }
+                                        try {
+                                            list.first { it.key == key }
+                                        } catch (e: NoSuchElementException) {
+                                            IngredientModel(
+                                                DrinkFilterType.INGREDIENT,
+                                                key
+                                            )
+                                        }
                                     } else {
                                         IngredientModel(
                                             DrinkFilterType.INGREDIENT,

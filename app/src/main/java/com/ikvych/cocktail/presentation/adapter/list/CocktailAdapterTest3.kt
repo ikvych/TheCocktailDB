@@ -61,8 +61,8 @@ class CocktailAdapterTest3(
             addHeaders()
             if (oldType == sortType) {
                 val headersValues = collapsedElements.keys
+                collapsedElements.clear()
                 headersValues.forEach {
-                    collapsedElements[it]!!.clear()
                     headersStateList[it] = HeaderState.COLLAPSED
                     completedDataList.removeAll { pair ->
                         if (pair.second == it) {
@@ -75,13 +75,20 @@ class CocktailAdapterTest3(
                 collapsedElements.clear()
             }
             DiffUtil.calculateDiff(diffUtilCallback).dispatchUpdatesTo(this)
-            /*notifyDataSetChanged()*/
+            val first = layoutManager.findFirstVisibleItemPosition()
+            val last = layoutManager.findLastVisibleItemPosition()
+            for (i in first..last) {
+                notifyItemChanged(i)
+            }
         }
 
     var oldDataList: ArrayList<Pair<Any, String>> = arrayListOf()
     val completedDataList: ArrayList<Pair<Any, String>> = arrayListOf()
+
     private val collapsedElements: SortedMap<String, ArrayList<Any>> = sortedMapOf()
+
     private val typedDataMap: SortedMap<String, ArrayList<Any>> = sortedMapOf()
+
     private val headersStateList: SortedMap<String, HeaderState> = sortedMapOf()
 
     private fun getSpanForPortraitOrientation(element: Any, header: String): Int {
@@ -724,8 +731,7 @@ class CocktailAdapterTest3(
     fun deleteItem(position: Int, view: View) {
         mRecentlyDeletedItem = completedDataList[position]
         mRecentlyDeletedItemPosition = position
-        completedDataList.removeAt(position)
-        notifyItemRemoved(position)
+        viewModel.removeCocktail(mRecentlyDeletedItem!!.first as CocktailModel)
         showUndoSnackbar(view)
     }
 
@@ -740,11 +746,7 @@ class CocktailAdapterTest3(
     }
 
     private fun undoDelete() {
-        completedDataList.add(
-            mRecentlyDeletedItemPosition!!,
-            mRecentlyDeletedItem!!
-        )
-        notifyItemInserted(mRecentlyDeletedItemPosition!!)
+        viewModel.saveCocktail(mRecentlyDeletedItem!!.first as CocktailModel)
     }
 
     inner class SimpleItemTouchHelperCallback() :

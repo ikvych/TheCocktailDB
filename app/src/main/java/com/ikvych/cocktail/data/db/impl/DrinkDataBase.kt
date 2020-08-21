@@ -32,7 +32,7 @@ import com.ikvych.cocktail.data.db.model.user.entity.UserDbModel
         IngredientMeasureDbModel::class,
         UserDbModel::class,
         NotificationDbModel::class
-    ], version = 3, exportSchema = false
+    ], version = 4, exportSchema = false
 )
 @TypeConverters(DateConverter::class, StringListToStringConverter::class)
 abstract class DrinkDataBase : RoomDatabase() {

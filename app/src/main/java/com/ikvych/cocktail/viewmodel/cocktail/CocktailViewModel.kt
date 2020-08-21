@@ -42,6 +42,12 @@ open class CocktailViewModel(
         }
     }
 
+    fun saveCocktail(cocktail: CocktailModel) {
+        launchRequest {
+            cocktailRepository.addOrReplaceCocktail(mapper.mapFrom(cocktail))
+        }
+    }
+
 
     fun removeCocktail(cocktail: CocktailModel) {
         launchRequest {

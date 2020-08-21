@@ -16,5 +16,5 @@ data class CocktailRepoModel(
     var isFavorite: Boolean = false,
     var cocktailOfTheDay: String = "",
     val dateModified: Date = Date(),
-    val dateSaved: Date = Date()
+    val dateSaved: Date? = null
 )

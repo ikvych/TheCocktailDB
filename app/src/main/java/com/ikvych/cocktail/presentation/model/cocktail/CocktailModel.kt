@@ -18,7 +18,7 @@ data class CocktailModel(
     val cocktailOfTheDay: String = "",
     var isFavorite: Boolean = false,
     val dateModified: Date = Date(),
-    val dateSaved: Date = Date()
+    val dateSaved: Date? = null
 ) : Parcelable {
     constructor(parcel: Parcel) : this(
         parcel.readLong(),
@@ -81,7 +81,7 @@ data class CocktailModel(
         parcel.writeString(cocktailOfTheDay)
         parcel.writeByte(if (isFavorite) 1 else 0)
         parcel.writeLong(dateModified.time)
-        parcel.writeLong(dateModified.time)
+        parcel.writeLong(dateSaved?.time ?: 0)
     }
 
     override fun describeContents(): Int {

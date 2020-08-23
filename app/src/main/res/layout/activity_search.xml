@@ -36,10 +36,11 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_search_result"
-                android:layout_marginHorizontal="@dimen/offset_8"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:visibility="@{viewModel.cocktailLiveData.empty ? View.GONE : View.VISIBLE}" />
+                android:visibility="@{viewModel.cocktailLiveData.empty ? View.GONE : View.VISIBLE}"
+                android:clipChildren="false"
+                android:clipToPadding="false"/>
 
             <!--Shown at the start of activity-->
             <TextView

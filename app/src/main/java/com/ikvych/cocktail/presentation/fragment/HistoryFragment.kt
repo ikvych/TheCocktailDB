@@ -2,8 +2,8 @@ package com.ikvych.cocktail.presentation.fragment
 
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.FragmentHistoryBinding
+import com.ikvych.cocktail.presentation.adapter.list.ItemViewLook
 import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
-import java.lang.NullPointerException
 import kotlin.reflect.KClass
 
 class HistoryFragment : RecyclerViewFragment<CocktailViewModel, FragmentHistoryBinding>() {
@@ -23,6 +23,6 @@ class HistoryFragment : RecyclerViewFragment<CocktailViewModel, FragmentHistoryB
         fun newInstance() = HistoryFragment()
     }
 
-    override val isFavorite: Boolean
-        get() = false
+    override val itemViewType: ItemViewLook
+        get() = ItemViewLook.CARD_ITEM
 }

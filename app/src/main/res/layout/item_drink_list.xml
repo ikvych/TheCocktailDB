@@ -38,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/all_content_description"
-                    android:scaleType="centerCrop"
+
                     bind:strDrinkThumb="@{obj.image}" />
 
                 <CheckBox
@@ -59,8 +59,7 @@
             <TextView
                 android:id="@+id/tv_drink_name"
                 android:layout_width="wrap_content"
-                android:layout_height="0dp"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
                 android:layout_margin="@dimen/offset_8"
                 android:text="@{obj.names.defaultName}"
                 android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"

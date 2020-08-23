@@ -7,6 +7,6 @@ import retrofit2.Call
 
 interface CocktailNetSource :
     BaseNetSource {
-    suspend fun getCocktailsByName(cocktailName: String): List<CocktailNetModel>
+    suspend fun getCocktailsByName(cocktailName: String): List<CocktailNetModel>?
     suspend fun getCocktailById(cocktailId: Long): CocktailNetModel?
 }

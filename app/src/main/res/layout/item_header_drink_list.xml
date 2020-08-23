@@ -4,6 +4,7 @@
     xmlns:card_view="http://schemas.android.com/apk/res-auto">
 
     <data>
+
         <variable
             name="obj"
             type="String" />
@@ -12,8 +13,55 @@
 
     <TextView
         android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/color_surface_variant"
+        android:minWidth="@dimen/view_width"
+        android:paddingStart="@dimen/offset_16"
+        android:gravity="start|center"
+        android:elevation="@dimen/elevation_2"
+        android:hint="A"
+        android:text="@{obj}"
+        android:textColor="@color/color_on_secondary"
+        android:textSize="20sp" />
+
+<!--    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/battery_charging"
-        android:textSize="24sp"
-        android:text="@{obj}"/>
+        android:orientation="vertical"
+        android:clickable="true"
+        android:focusable="true"
+        android:clipToPadding="false"
+        android:clipChildren="false">
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:clipChildren="false">
+
+
+&lt;!&ndash;            <View
+                android:layout_width="match_parent"
+                android:layout_height="32dp"
+                android:layout_gravity="center"
+                android:elevation="@dimen/elevation_2"
+                android:background="@drawable/shape_header_item_backgroud"/>&ndash;&gt;
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/view_height"
+                android:background="@drawable/shape_header_item_view"
+                android:layout_marginStart="@dimen/offset_8"
+                android:minWidth="@dimen/view_width"
+                android:gravity="center"
+                android:paddingHorizontal="@dimen/offset_16"
+                android:elevation="@dimen/elevation_2"
+                android:hint="A"
+                android:text="@{obj}"
+                android:textColor="@color/color_on_secondary"
+                android:textSize="20sp" />
+
+        </FrameLayout>
+    </LinearLayout>-->
+
 </layout>

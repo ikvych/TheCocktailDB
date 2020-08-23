@@ -27,6 +27,8 @@
     <!--#endregion-->
 
     <!--#region Image View-->
+    <dimen name="img_height_min">72dp</dimen>
+    <dimen name="img_width_min">72dp</dimen>
     <dimen name="img_height">88dp</dimen>
     <dimen name="img_width">88dp</dimen>
     <!--#endregion-->
@@ -69,6 +71,7 @@
 
     <!--#region Icon-->
     <dimen name="icon_size">24dp</dimen>
+    <dimen name="icon_size_max">32dp</dimen>
     <dimen name="icon_size_extra">48dp</dimen>
     <!--#endregion-->
 

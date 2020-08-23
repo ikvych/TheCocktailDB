@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.databinding.*
 import androidx.viewpager2.widget.ViewPager2
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.ItemDrinkIngredientListBinding
@@ -89,12 +90,22 @@ fun getIngredients(
 
 @BindingAdapter("strDrinkThumb")
 fun loadImage(imageView: ImageView, imageUrl: String?) {
-    imageView.scaleType = ImageView.ScaleType.FIT_XY
+    imageView.scaleType = ImageView.ScaleType.CENTER
     Glide.with(imageView.context)
         .load(imageUrl)
         .placeholder(R.drawable.default_icon)
         .into(imageView)
     imageView.scaleType = ImageView.ScaleType.CENTER_CROP
+}
+
+@BindingAdapter("favoriteItemImage")
+fun loadFavoriteItemImg(imageView: ImageView, imageUrl: String?) {
+    val density = imageView.context.resources.displayMetrics.density
+    Glide.with(imageView.context)
+        .load(imageUrl)
+        .transform(RoundedCorners((16 * density).toInt()))
+        .placeholder(R.drawable.default_icon)
+        .into(imageView)
 }
 
 @BindingAdapter("bind:password_visibility")

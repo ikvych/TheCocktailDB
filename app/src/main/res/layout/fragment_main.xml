@@ -111,7 +111,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="bottom|center"
                     android:layout_marginBottom="@dimen/offset_20"
-                    android:background="@drawable/shape_search_view"
+                    android:background="@drawable/shape_battery_state"
                     android:visibility="@{parentViewModel.showBatteryStateLiveData ? View.VISIBLE : View.GONE}"
                     android:orientation="horizontal">
 

@@ -19,10 +19,11 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_search_result"
-            android:layout_marginHorizontal="@dimen/offset_8"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:visibility="@{viewModel.filteredAndSortedDrinksLiveData.empty ? View.GONE : View.VISIBLE}"/>
+            android:visibility="@{viewModel.filteredAndSortedDrinksLiveData.empty ? View.GONE : View.VISIBLE}"
+            android:clipToPadding="false"
+            android:clipChildren="false"/>
 
         <!--Shown when the database is empty-->
         <TextView

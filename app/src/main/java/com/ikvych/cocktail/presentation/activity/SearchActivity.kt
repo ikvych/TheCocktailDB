@@ -2,24 +2,23 @@ package com.ikvych.cocktail.presentation.activity
 
 import android.content.Intent
 import android.content.IntentFilter
-import android.content.res.Configuration
 import android.os.Bundle
 import android.view.View
 import android.widget.SearchView
 import androidx.lifecycle.Observer
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.presentation.adapter.list.CocktailAdapter
 import com.ikvych.cocktail.databinding.ActivitySearchBinding
 import com.ikvych.cocktail.listener.DrinkOfferListener
-import com.ikvych.cocktail.receiver.DrinkOfferReceiver
 import com.ikvych.cocktail.presentation.activity.base.BaseActivity
+import com.ikvych.cocktail.presentation.adapter.list.CocktailAdapter
+import com.ikvych.cocktail.presentation.adapter.list.ItemViewLook
 import com.ikvych.cocktail.presentation.model.cocktail.CocktailModel
+import com.ikvych.cocktail.receiver.DrinkOfferReceiver
 import com.ikvych.cocktail.util.*
-import com.ikvych.cocktail.viewmodel.cocktail.SearchActivityViewModel
 import com.ikvych.cocktail.util.widget.custom.ApplicationToolBar
+import com.ikvych.cocktail.viewmodel.cocktail.SearchActivityViewModel
 import kotlinx.android.synthetic.main.activity_search.*
 import kotlin.reflect.KClass
 
@@ -38,8 +37,15 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
     private lateinit var recyclerView: RecyclerView
 
     override fun configureView(savedInstanceState: Bundle?) {
-        drinkAdapter = CocktailAdapter(viewModel, this)
-        initRecyclerView()
+        recyclerView = rv_search_result
+        drinkAdapter = CocktailAdapter(
+            viewModel,
+            this,
+            ItemViewLook.CARD_ITEM,
+            recyclerView,
+            4
+        )
+        recyclerView.adapter = drinkAdapter
         initLiveDataObserver()
         initSearchView()
     }
@@ -51,20 +57,8 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
 
     private fun initLiveDataObserver() {
         viewModel.cocktailLiveData.observe(this, Observer { cocktails ->
-            drinkAdapter.listData = cocktails
+            drinkAdapter.updateListData(cocktails)
         })
-    }
-
-    private fun initRecyclerView() {
-        recyclerView = rv_search_result
-        if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
-            recyclerView.layoutManager = GridLayoutManager(this, 2)
-        } else {
-            recyclerView.layoutManager = GridLayoutManager(this, 4)
-        }
-
-        recyclerView.adapter = drinkAdapter
-
     }
 
     override fun onStart() {
@@ -78,11 +72,6 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
     override fun onStop() {
         super.onStop()
         unregisterReceiver(drinkOfferReceiver)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        drinkAdapter.setLifecycleDestroyed()
     }
 
     private fun initSearchView() {
@@ -118,7 +107,11 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
         val cocktail: CocktailModel =
             cocktails.shuffled().find { it.id != currentCocktailId } ?: return
 
-        Snackbar.make(rv_search_result, "${resources.getString(R.string.search_activity_drink_offer_title)} - ${cocktail.names.defaults}", 3500)
+        Snackbar.make(
+            rv_search_result,
+            "${resources.getString(R.string.search_activity_drink_offer_title)} - ${cocktail.names.defaultName}",
+            3500
+        )
             .setAction(R.string.toast_action_view) {
                 val drinkIntent = Intent(this, DrinkDetailActivity::class.java)
                 drinkIntent.putExtra(COCKTAIL_ID, cocktail.id)
@@ -136,7 +129,7 @@ class SearchActivity : BaseActivity<SearchActivityViewModel, ActivitySearchBindi
                 R.id.cv_item_drink -> {
                     val cocktailId = v.tag as Long
                     val cocktail =
-                        drinkAdapter.listData.find { cocktail -> cocktail.id == cocktailId }
+                        drinkAdapter.getListData().find { cocktail -> (cocktail as CocktailModel).id == cocktailId } as? CocktailModel
                             ?: return
                     val intent = Intent(this, DrinkDetailActivity::class.java)
                     intent.putExtra(

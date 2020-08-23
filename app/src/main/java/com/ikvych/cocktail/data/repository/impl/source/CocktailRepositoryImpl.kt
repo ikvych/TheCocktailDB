@@ -33,7 +33,7 @@ class CocktailRepositoryImpl(
     override suspend fun updateCocktailsLiveData(cocktailName: String) {
         cocktailsNetListLiveData.postValue(netSource.getCocktailsByName(cocktailName)
             .run {
-                mapper.mapNetToRepoList(this)
+                mapper.mapNetToRepoList(this ?: arrayListOf())
             })
     }
 

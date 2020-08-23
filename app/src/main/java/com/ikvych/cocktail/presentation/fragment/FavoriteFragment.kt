@@ -3,6 +3,7 @@ package com.ikvych.cocktail.presentation.fragment
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.databinding.FragmentFavoriteBinding
+import com.ikvych.cocktail.presentation.adapter.list.ItemViewLook
 import com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel
 import kotlin.reflect.KClass
 
@@ -12,10 +13,13 @@ class FavoriteFragment : RecyclerViewFragment<CocktailViewModel, FragmentFavorit
     override val viewModelClass: KClass<CocktailViewModel>
     get() = CocktailViewModel::class
     override val recyclerViewId: Int = R.id.rv_search_result
+    override val itemViewType: ItemViewLook
+        get() = ItemViewLook.LIST_ITEM
 
     override fun initLiveDataObserver() {
         parentViewModel.filteredAndSortedFavoriteDrinksLiveData.observe(this, Observer { cocktails ->
-            cocktailAdapter.listData = cocktails
+            cocktailAdapter.sortType = parentViewModel.sortTypeLiveData.value!!
+            cocktailAdapter.updateListData(cocktails)
         })
     }
 

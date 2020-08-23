@@ -7,7 +7,7 @@ import com.xtreeivi.cocktailsapp.data.repository.model.LocalizedStringRepoModel
 class LocalizedStringModelMapper : BaseModelMapper<LocalizedStringModel, LocalizedStringRepoModel>() {
     override fun mapTo(model: LocalizedStringRepoModel) = with(model) {
         LocalizedStringModel(
-            defaults = defaultName,
+            defaultName = defaultName,
             defaultAlternate = defaultAlternate,
             es = es,
             de = de,
@@ -19,7 +19,7 @@ class LocalizedStringModelMapper : BaseModelMapper<LocalizedStringModel, Localiz
 
     override fun mapFrom(model: LocalizedStringModel) = with(model) {
         LocalizedStringRepoModel(
-            defaultName = defaults,
+            defaultName = defaultName,
             defaultAlternate = defaultAlternate,
             es = es,
             de = de,

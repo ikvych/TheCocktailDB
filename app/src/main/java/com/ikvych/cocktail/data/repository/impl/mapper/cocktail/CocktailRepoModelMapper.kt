@@ -47,7 +47,7 @@ class CocktailRepoModelMapper(
             cocktailOfTheDay = cocktailDbModel.cocktailOfDay,
             isFavorite = cocktailDbModel.isFavorite,
             dateModified = cocktailDbModel.dateModified ?: Date(),
-            dateSaved = cocktailDbModel.dateSaved ?: Date()
+            dateSaved = cocktailDbModel.dateSaved
         )
     }
 
@@ -62,7 +62,7 @@ class CocktailRepoModelMapper(
                 cocktailOfDay = cocktailOfTheDay,
                 isFavorite = isFavorite,
                 dateModified = dateModified,
-                dateSaved = Date()
+                dateSaved = dateSaved
             ),
             localizedInstructionDbModel = LocalizedInstructionDbModel(
                 defaultsName = instructions.defaultName!!,
@@ -125,8 +125,7 @@ class CocktailRepoModelMapper(
                 )
             },
             measures = ingredientsWithMeasures.map { it.value },
-            dateModified = date,
-            dateSaved = Date()
+            dateModified = date
         )
     }
 

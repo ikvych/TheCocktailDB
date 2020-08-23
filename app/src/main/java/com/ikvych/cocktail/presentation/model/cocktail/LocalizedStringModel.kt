@@ -1,7 +1,7 @@
 package com.ikvych.cocktail.presentation.model.cocktail
 
 class LocalizedStringModel(
-    val defaults: String? = null,
+    val defaultName: String? = null,
     val defaultAlternate: String? = null,
     val es: String? = null,
     val de: String? = null,

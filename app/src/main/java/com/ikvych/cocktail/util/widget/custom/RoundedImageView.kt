@@ -68,14 +68,15 @@ class RoundedImageView : AppCompatImageView {
         val maxRadius = min(height, width) / 2.0F
         for (i in 0..3) {
             if (isCornerRounded(CORNERS[i])) {
-                radii[2 * i] = cornerRadius.coerceAtMost(maxRadius)
-                radii[2 * i + 1] = cornerRadius.coerceAtMost(maxRadius)
+                radii[2 * i] = cornerRadius
+                radii[2 * i + 1] = cornerRadius
             }
         }
     }
 
     private fun isCornerRounded(corner: Int): Boolean {
-        return (cornerFlags and corner) == corner
+        val result = cornerFlags and corner
+        return (result) == corner
     }
 
     private val roundPaint = object : Paint() {

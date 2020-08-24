@@ -28,4 +28,14 @@
             <flag name="all" value="15" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="AspectRationFrameLayout">
+        <attr name="arfl_mode" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+        <attr name="arfl_aspect_ratio" format="float|reference"/>
+        <attr name="arfl_min_size" format="dimension"/>
+        <attr name="arfl_min_mode_size" format="dimension"/>
+    </declare-styleable>
 </resources>

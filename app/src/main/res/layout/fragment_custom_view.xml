@@ -1,81 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <com.ikvych.cocktail.util.widget.custom.CustomLayout
-        xmlns:custom="http://schemas.android.com/apk/res/com.ikvych.cocktail"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#FFFFFF">
+    <com.ikvych.cocktail.util.widget.custom.AspectRationFrameLayout
+        android:layout_width="400dp"
+        android:layout_height="0dp"
+        android:background="#673AB7"
+        app:arfl_aspect_ratio="4"
+        app:arfl_mode="width"
+        >
 
-        <!-- put first view to left. -->
         <TextView
-            android:background="#F44336"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            custom:layout_position="left"
-            android:layout_gravity="fill_vertical|center_horizontal"
-            android:text="l1"/>
+            android:text="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" />
 
-        <!-- by default views go in the middle; use fill vertical gravity -->
-        <TextView
-            android:background="#4CAF50"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_vertical|center_horizontal"
-            android:text="fill-vert"/>
+    </com.ikvych.cocktail.util.widget.custom.AspectRationFrameLayout>
 
-        <!-- stack second view to left. -->
-        <TextView
-            android:background="#F44336"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            custom:layout_position="left"
-            android:layout_gravity="fill_vertical|center_horizontal"
-            android:text="l2"/>
+    <!--    <com.ikvych.cocktail.util.widget.custom.CustomLayout
+            xmlns:custom="http://schemas.android.com/apk/res/com.ikvych.cocktail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF">
 
-        <!-- also put a view on the right. -->
-        <TextView
-            android:background="#F44336"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            custom:layout_position="right"
-            android:layout_gravity="fill_vertical|center_horizontal"
-            android:text="r1"/>
+            &lt;!&ndash; put first view to left. &ndash;&gt;
+            <TextView
+                android:background="#F44336"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:layout_position="left"
+                android:layout_gravity="fill_vertical|center_horizontal"
+                android:text="l1"/>
+
+            &lt;!&ndash; by default views go in the middle; use fill vertical gravity &ndash;&gt;
+            <TextView
+                android:background="#4CAF50"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="fill_vertical|center_horizontal"
+                android:text="fill-vert"/>
+
+            &lt;!&ndash; stack second view to left. &ndash;&gt;
+            <TextView
+                android:background="#F44336"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:layout_position="left"
+                android:layout_gravity="fill_vertical|center_horizontal"
+                android:text="l2"/>
+
+            &lt;!&ndash; also put a view on the right. &ndash;&gt;
+            <TextView
+                android:background="#F44336"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                custom:layout_position="right"
+                android:layout_gravity="fill_vertical|center_horizontal"
+                android:text="r1"/>
 
 
 
-        <!-- by default views go in the middle; use fill horizontal gravity -->
-        <TextView
-            android:background="#4CAF50"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_vertical|fill_horizontal"
-            android:text="fill-horiz"/>
+            &lt;!&ndash; by default views go in the middle; use fill horizontal gravity &ndash;&gt;
+            <TextView
+                android:background="#4CAF50"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|fill_horizontal"
+                android:text="fill-horiz"/>
 
-        <!-- by default views go in the middle; use top-left gravity -->
-        <TextView
-            android:background="#3F51B5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="top|left"
-            android:text="top-left"/>
+            &lt;!&ndash; by default views go in the middle; use top-left gravity &ndash;&gt;
+            <TextView
+                android:background="#3F51B5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="top|left"
+                android:text="top-left"/>
 
-        <!-- by default views go in the middle; use center gravity -->
-        <TextView
-            android:background="#3F51B5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="center"/>
+            &lt;!&ndash; by default views go in the middle; use center gravity &ndash;&gt;
+            <TextView
+                android:background="#3F51B5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="center"/>
 
-        <!-- by default views go in the middle; use bottom-right -->
-        <TextView
-            android:background="#3F51B5"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|right"
-            android:text="bottom-right"/>
+            &lt;!&ndash; by default views go in the middle; use bottom-right &ndash;&gt;
+            <TextView
+                android:background="#3F51B5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:text="bottom-right"/>
 
-    </com.ikvych.cocktail.util.widget.custom.CustomLayout>
+        </com.ikvych.cocktail.util.widget.custom.CustomLayout>-->
 </layout>

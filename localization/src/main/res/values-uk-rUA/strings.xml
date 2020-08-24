@@ -72,6 +72,7 @@
     <string name="profile_start_test_fragment_button">Запустити тестовий фрагмент</string>
     <string name="profile_change_language_button">Змінити мову</string>
     <string name="profile_start_profile_button">Профіль</string>
+    <string name="profile_start_custom_view_button">Запустити кастомку</string>
     <string name="profile_show_hide_main_navigation_bar_titles">Показати/Приховати заголовки вкладок</string>
     <string name="profile_battery_state_visibility">Показати/Приховати стан батареї</string>
     <string name="profile_fragment_battery_state_shown">Рівень заряду батареї показано</string>

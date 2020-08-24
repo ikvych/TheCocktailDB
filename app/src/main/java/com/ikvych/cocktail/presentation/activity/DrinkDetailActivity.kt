@@ -32,6 +32,8 @@ class DrinkDetailActivity
     private var imageMarginStart: Int? = null
     private var imageMarginTop: Int? = null
 
+    private var cachedImageRoundCorner: Float? = null
+
     private lateinit var imageViewParams: LinearLayout.LayoutParams
 
     override fun configureView(savedInstanceState: Bundle?) {
@@ -96,10 +98,15 @@ class DrinkDetailActivity
                 imageViewParams.topMargin = ((maxImageWidth!! / 2 - imageMarginTop!!) * offsetFactor).toInt()
                 imageViewParams.width = currentImageWidth.toInt()
 
+
+
                 if (imageViewParams.width != cachedImageWidth) {
                     cachedImageWidth = currentImageWidth.toInt()
                     iv_drink_image.layoutParams = imageViewParams
+                    val rounded = currentImageWidth.toInt() / 2 * offsetFactor
+                    iv_drink_image.cornerRadius = rounded
                 }
+
 
                 //change transparency of background
 /*                val stateList =
@@ -122,6 +129,10 @@ class DrinkDetailActivity
                     )
                 findViewById<ImageView>(R.id.ib_return).backgroundTintList = stateList
             })
+    }
+
+    private fun convertDpToPx(dp: Int): Float {
+        return dp * this.resources.displayMetrics.density
     }
 
     private fun initImageParameters() {

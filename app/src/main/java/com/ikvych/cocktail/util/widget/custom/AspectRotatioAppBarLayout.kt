@@ -6,7 +6,7 @@ import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
 import kotlin.math.roundToInt
 
-class AspectRotationAppBarLayout : AppBarLayout {
+class AspectRotatioAppBarLayout : AppBarLayout {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(attrs)
@@ -26,16 +26,16 @@ class AspectRotationAppBarLayout : AppBarLayout {
     private fun init(attrs: AttributeSet?) {
         setWillNotDraw(false)
 
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.AspectRotationAppBarLayout)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.AspectRotatioAppBarLayout)
         try {
             aspectRationMode =
                 typedArray.getInt(
-                    R.styleable.AspectRotationAppBarLayout_arabl_mode,
+                    R.styleable.AspectRotatioAppBarLayout_arabl_mode,
                     AspectRatioMode.WIDTH_MODE
                 )
 
             portion = typedArray.getFloat(
-                R.styleable.AspectRotationAppBarLayout_arabl_part,
+                R.styleable.AspectRotatioAppBarLayout_arabl_part,
                 1.0F
             )
 

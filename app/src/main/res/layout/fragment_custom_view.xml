@@ -3,20 +3,39 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <com.ikvych.cocktail.util.widget.custom.AspectRationFrameLayout
-        android:layout_width="400dp"
-        android:layout_height="0dp"
-        android:background="#673AB7"
-        app:arfl_aspect_ratio="4"
-        app:arfl_mode="width"
-        >
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/color_primary">
 
-        <TextView
-            android:layout_width="match_parent"
+        <com.ikvych.cocktail.util.widget.custom.AspectRatioFrameLayout
+            android:layout_width="400dp"
+            android:layout_height="0dp"
+            android:background="#673AB7"
+            app:arfl_aspect_ratio="4"
+            app:arfl_mode="width"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" />
+
+        </com.ikvych.cocktail.util.widget.custom.AspectRatioFrameLayout>
+
+        <com.ikvych.cocktail.util.widget.custom.AspectRatioTextView
+            android:layout_width="300dp"
             android:layout_height="wrap_content"
-            android:text="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" />
+            app:artv_mode="width"
+            app:artv_aspect_ratio="1"
+            android:text="TEST TEXT IVAN IOL WODR DIFERENT WORD AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA RURVAMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM kjhfjdsh"
+            android:gravity="center"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:background="@color/color_surface_variant"/>
 
-    </com.ikvych.cocktail.util.widget.custom.AspectRationFrameLayout>
+    </LinearLayout>
 
     <!--    <com.ikvych.cocktail.util.widget.custom.CustomLayout
             xmlns:custom="http://schemas.android.com/apk/res/com.ikvych.cocktail"

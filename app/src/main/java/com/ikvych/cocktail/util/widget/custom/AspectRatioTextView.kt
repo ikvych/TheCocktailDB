@@ -2,11 +2,11 @@ package com.ikvych.cocktail.util.widget.custom
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.FrameLayout
+import androidx.appcompat.widget.AppCompatTextView
 import com.ikvych.cocktail.R
 import kotlin.math.roundToInt
 
-class AspectRationFrameLayout : FrameLayout {
+class AspectRatioTextView : AppCompatTextView {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(attrs)
@@ -20,35 +20,23 @@ class AspectRationFrameLayout : FrameLayout {
         init(attrs)
     }
 
-    var aspectRationMode: Int = AspectRatioMode.WIDTH_MODE
+    var aspectRationMode: Int = AspectRatioFrameLayout.AspectRatioMode.WIDTH_MODE
     var aspectRation: Float = 1.0F
-    var minSize: Float = .0F
-    var minModeSize: Float = .0F
 
     private fun init(attrs: AttributeSet?) {
         setWillNotDraw(false)
 
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.AspectRationFrameLayout)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.AspectRatioTextView)
         try {
             aspectRationMode =
                 typedArray.getInt(
-                    R.styleable.AspectRationFrameLayout_arfl_mode,
-                    AspectRatioMode.WIDTH_MODE
+                    R.styleable.AspectRatioTextView_artv_mode,
+                    AspectRatioFrameLayout.AspectRatioMode.WIDTH_MODE
                 )
 
             aspectRation = typedArray.getFloat(
-                R.styleable.AspectRationFrameLayout_arfl_aspect_ratio,
+                R.styleable.AspectRatioTextView_artv_aspect_ratio,
                 1.0F
-            )
-
-            minSize = typedArray.getDimension(
-                R.styleable.AspectRationFrameLayout_arfl_min_size,
-                .0F
-            )
-
-            minModeSize = typedArray.getDimension(
-                R.styleable.AspectRationFrameLayout_arfl_min_mode_size,
-                .0F
             )
 
         } finally {
@@ -59,19 +47,14 @@ class AspectRationFrameLayout : FrameLayout {
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec)
         when (aspectRationMode) {
-            AspectRatioMode.WIDTH_MODE -> {
-                var newWidth = measuredWidth.coerceAtLeast(minSize.toInt())
-                var newHeight = (newWidth / aspectRation)
+            AspectRatioFrameLayout.AspectRatioMode.WIDTH_MODE -> {
+                val newHeight = (measuredWidth / aspectRation)
                     .takeIf { it.isFinite() }
                     ?.roundToInt()
                     ?.coerceAtLeast(0)
                     ?: 0
-                if (newHeight < minModeSize) {
-                    newWidth = (minModeSize * aspectRation).roundToInt()
-                    newHeight = minModeSize.roundToInt()
-                }
                 val newWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    newWidth,
+                    measuredWidth,
                     MeasureSpec.EXACTLY
                 )
                 val newHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
@@ -80,33 +63,22 @@ class AspectRationFrameLayout : FrameLayout {
                 )
                 super.onMeasure(newWidthMeasureSpec, newHeightMeasureSpec)
             }
-            AspectRatioMode.HEIGHT_MODE -> {
-                var newHeight = measuredHeight.coerceAtLeast(minSize.toInt())
-                var newWidth = (newHeight / aspectRation)
+            AspectRatioFrameLayout.AspectRatioMode.HEIGHT_MODE -> {
+                val newWidth = (measuredHeight / aspectRation)
                     .takeIf { it.isFinite() }
                     ?.roundToInt()
                     ?.coerceAtLeast(0)
                     ?: 0
-                if (newWidth < minModeSize) {
-                    newHeight = (minModeSize * aspectRation).roundToInt()
-                    newWidth = minModeSize.roundToInt()
-                }
                 val newWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
                     newWidth,
                     MeasureSpec.EXACTLY
                 )
                 val newHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                    newHeight,
+                    measuredHeight,
                     MeasureSpec.EXACTLY
                 )
                 super.onMeasure(newWidthMeasureSpec, newHeightMeasureSpec)
             }
         }
     }
-
-    object AspectRatioMode {
-        const val WIDTH_MODE = 0
-        const val HEIGHT_MODE = 1
-    }
-
 }

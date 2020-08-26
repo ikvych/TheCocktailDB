@@ -29,7 +29,7 @@
         </attr>
     </declare-styleable>
 
-    <declare-styleable name="AspectRationFrameLayout">
+    <declare-styleable name="AspectRatioFrameLayout">
         <attr name="arfl_mode" format="enum">
             <enum name="width" value="0"/>
             <enum name="height" value="1"/>
@@ -39,11 +39,19 @@
         <attr name="arfl_min_mode_size" format="dimension"/>
     </declare-styleable>
 
-    <declare-styleable name="AspectRotationAppBarLayout">
+    <declare-styleable name="AspectRotatioAppBarLayout">
         <attr name="arabl_mode" format="enum">
             <enum name="width" value="0"/>
             <enum name="height" value="1"/>
         </attr>
         <attr name="arabl_part" format="float|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="AspectRatioTextView">
+        <attr name="artv_mode" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+        <attr name="artv_aspect_ratio" format="float|reference"/>
     </declare-styleable>
 </resources>

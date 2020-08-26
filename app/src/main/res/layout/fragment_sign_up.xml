@@ -290,11 +290,13 @@
                     android:visibility="@{viewModel.isValidPasswordConfirmLiveData() ? View.VISIBLE : View.GONE}" />
             </LinearLayout>
 
-            <androidx.appcompat.widget.AppCompatButton
+            <com.ikvych.cocktail.util.widget.custom.MyAppCompatButton
                 android:id="@+id/b_auth_sign_up"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/btn_width"
+                android:elevation="@dimen/elevation_2"
                 android:background="@drawable/selector_app_button"
+                android:stateListAnimator="@animator/sla_app_button"
                 android:enabled="@{viewModel.isValidEnteredDataLIveData()}"
                 android:onClick="@{() -> viewModel.onSubmit()}"
                 android:text="@string/auth_sign_up_button_title"

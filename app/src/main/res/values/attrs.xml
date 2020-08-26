@@ -38,4 +38,12 @@
         <attr name="arfl_min_size" format="dimension"/>
         <attr name="arfl_min_mode_size" format="dimension"/>
     </declare-styleable>
+
+    <declare-styleable name="AspectRotationAppBarLayout">
+        <attr name="arabl_mode" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+        <attr name="arabl_part" format="float|reference"/>
+    </declare-styleable>
 </resources>

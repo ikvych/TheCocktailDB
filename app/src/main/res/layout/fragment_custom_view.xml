@@ -25,15 +25,43 @@
         </com.ikvych.cocktail.util.widget.custom.AspectRatioFrameLayout>
 
         <com.ikvych.cocktail.util.widget.custom.AspectRatioTextView
-            android:layout_width="300dp"
+            android:id="@+id/artv_test"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             app:artv_mode="width"
-            app:artv_aspect_ratio="1"
-            android:text="TEST TEXT IVAN IOL WODR DIFERENT WORD AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA RURVAMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMMM kjhfjdsh"
-            android:gravity="center"
+            app:artv_aspect_ratio="2"
+            android:text="TEST TEXT IMMMMMMMMMMMMMMMMMMMMMMMMMMM kjhfjdsh"
+            android:gravity="center|start"
             android:ellipsize="end"
             android:maxLines="4"
             android:background="@color/color_surface_variant"/>
+
+        <com.ikvych.cocktail.util.widget.custom.IvanKvychLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/color_edit_text"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@color/color_surface_variant"
+                android:text="agdsfsdfgsfdg225465cvdfgergdfvccvcvbdfgr"/>
+
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@color/text_invalid"
+                android:text="agdsfsdfgsfdsdfsadfasdfasdfasdfdg"/>
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:background="@color/warning"
+                app:layout_max_size="250dp"
+                android:text="agdsfsdfgsfdgsdfsdfasdfsdfasdfasd"/>
+
+        </com.ikvych.cocktail.util.widget.custom.IvanKvychLayout>
+
 
     </LinearLayout>
 

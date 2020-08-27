@@ -36,31 +36,36 @@
             android:maxLines="4"
             android:background="@color/color_surface_variant"/>
 
-        <com.ikvych.cocktail.util.widget.custom.IvanKvychLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <com.ikvych.cocktail.util.widget.custom.LinearLayoutWithChildLimiter
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:background="@color/color_edit_text"
+            android:layout_margin="@dimen/offset_48"
             android:orientation="vertical">
 
             <TextView
-                android:layout_width="150dp"
+                android:id="@+id/tv_test"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_margin="@dimen/offset_8"
                 android:background="@color/color_surface_variant"
-                android:text="agdsfsdfgsfdg225465cvdfgergdfvccvcvbdfgr"/>
+                android:text="agdsfsdfg"/>
 
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/text_invalid"
-                android:text="agdsfsdfgsfdsdfsadfasdfasdfasdfdg"/>
+                android:layout_margin="@dimen/offset_8"
+                android:text="agdsfsdf"/>
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="@color/warning"
+                android:layout_margin="@dimen/offset_8"
                 app:layout_max_size="250dp"
-                android:text="agdsfsdfgsfdgsdfsdfasdfsdfasdfasd"/>
+                android:text="agdsfsdf"/>
 
-        </com.ikvych.cocktail.util.widget.custom.IvanKvychLayout>
+        </com.ikvych.cocktail.util.widget.custom.LinearLayoutWithChildLimiter>
 
 
     </LinearLayout>

@@ -55,12 +55,13 @@
         <attr name="artv_aspect_ratio" format="float|reference"/>
     </declare-styleable>
 
-    <declare-styleable name="IvanKvychLayout_Layout">
+    <declare-styleable name="LinearLayoutWithChildLimiter_Layout">
         <attr name="layout_max_size" format="dimension" />
+        <attr name="layout_percent_size" format="integer" />
         <attr name="android:layout_gravity" />
     </declare-styleable>
 
-    <declare-styleable name="IvanKvychLayout">
+    <declare-styleable name="LinearLayoutWithChildLimiter">
         <attr name="android:orientation"/>
     </declare-styleable>
 </resources>

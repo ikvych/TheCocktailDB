@@ -30,7 +30,9 @@ class DrinkDetailActivity
     private var minImageWidth: Int? = null
     private var cachedImageWidth: Int? = null
     private var imageMarginStart: Int? = null
-    private var imageMarginTop: Int? = null
+    private var imageMarginVertical: Int? = null
+
+    private var imgContainerHeight: Int? = null
 
     private lateinit var imageViewParams: LinearLayout.LayoutParams
 
@@ -91,15 +93,20 @@ class DrinkDetailActivity
                 val scaleFactor = 1F - offsetFactor
 
                 val currentImageWidth = ((maxImageWidth!! - minImageWidth!!) * scaleFactor) + minImageWidth!!
+                val currentMarginVertical =  ((imgContainerHeight!! / 2 - imageMarginVertical!!) * offsetFactor).toInt()
 
                 imageViewParams.marginStart = (imageMarginStart!! * offsetFactor).toInt()
-                imageViewParams.topMargin = ((maxImageWidth!! / 2 - imageMarginTop!!) * offsetFactor).toInt()
+                imageViewParams.topMargin = currentMarginVertical
+                imageViewParams.bottomMargin = currentMarginVertical
                 imageViewParams.width = currentImageWidth.toInt()
 
                 if (imageViewParams.width != cachedImageWidth) {
                     cachedImageWidth = currentImageWidth.toInt()
                     iv_drink_image.layoutParams = imageViewParams
+                    val rounded = currentImageWidth.toInt() / 2 * offsetFactor
+                    iv_drink_image.cornerRadius = rounded
                 }
+
 
                 //change transparency of background
 /*                val stateList =
@@ -124,14 +131,19 @@ class DrinkDetailActivity
             })
     }
 
+    private fun convertDpToPx(dp: Int): Float {
+        return dp * this.resources.displayMetrics.density
+    }
+
     private fun initImageParameters() {
         maxImageWidth = iv_drink_image.width
+        imgContainerHeight = ll_drink_image_container.height
         ll_drink_image_container.layoutParams.height = iv_drink_image.height
         ll_drink_image_container.requestLayout()
         cachedImageWidth = maxImageWidth
 
         imageMarginStart = (resources.getDimension(R.dimen.offset_64)).toInt()
-        imageMarginTop = (resources.getDimension(R.dimen.offset_16)).toInt()
+        imageMarginVertical = (resources.getDimension(R.dimen.offset_16)).toInt()
         minImageWidth = (resources.getDimension(R.dimen.offset_32)).toInt()
 
         imageViewParams = iv_drink_image.layoutParams as LinearLayout.LayoutParams

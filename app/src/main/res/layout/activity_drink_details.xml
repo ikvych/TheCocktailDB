@@ -193,14 +193,16 @@
 
         </LinearLayout>
 
-        <com.google.android.material.appbar.AppBarLayout
+        <com.ikvych.cocktail.util.widget.custom.PartibleAppBarLayout
             android:id="@+id/abl_drink_detail"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            app:pabl_mode="height"
+            app:pabl_part="3">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:fitsSystemWindows="true"
                 app:expandedTitleTextAppearance="@style/AppTextAppearanceHeadline4"
                 app:expandedTitleGravity="bottom"
@@ -212,18 +214,18 @@
                 <LinearLayout
                     android:id="@+id/ll_drink_image_container"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:fitsSystemWindows="true"
                     android:orientation="vertical"
                     app:layout_collapseMode="parallax">
 
-                    <ImageView
+                    <com.ikvych.cocktail.util.widget.custom.RoundedImageView
                         android:id="@+id/iv_drink_image"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
+                        android:layout_height="match_parent"
                         android:contentDescription="@string/all_content_description"
                         android:scaleType="centerCrop"
+                        app:roundedCorners="all"
                         bind:strDrinkThumb="@{viewModel.cocktailLiveData.image}" />
 
                 </LinearLayout>
@@ -253,7 +255,7 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
-        </com.google.android.material.appbar.AppBarLayout>
+        </com.ikvych.cocktail.util.widget.custom.PartibleAppBarLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

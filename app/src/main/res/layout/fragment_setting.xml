@@ -57,12 +57,22 @@
                         android:background="@drawable/selector_app_button"/>
 
                     <androidx.appcompat.widget.AppCompatButton
-                        android:id="@+id/b_start_profile"
+                    android:id="@+id/b_start_profile"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_gravity="center"
+                    android:layout_margin="@dimen/offset_8"
+                    android:text="@string/profile_start_profile_button"
+                    android:textColor="@drawable/selector_app_button_text"
+                    android:background="@drawable/selector_app_button"/>
+
+                    <androidx.appcompat.widget.AppCompatButton
+                        android:id="@+id/b_start_custom_view"
                         android:layout_width="match_parent"
                         android:layout_height="@dimen/btn_height"
                         android:layout_gravity="center"
                         android:layout_margin="@dimen/offset_8"
-                        android:text="@string/profile_start_profile_button"
+                        android:text="@string/profile_start_custom_view_button"
                         android:textColor="@drawable/selector_app_button_text"
                         android:background="@drawable/selector_app_button"/>
 

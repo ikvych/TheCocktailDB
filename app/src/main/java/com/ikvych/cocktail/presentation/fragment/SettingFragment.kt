@@ -35,6 +35,7 @@ class SettingFragment : BaseFragment<ProfileActivityViewModel, FragmentSettingBi
         b_start_test_fragment.setOnClickListener(this)
         b_change_language.setOnClickListener(this)
         b_start_profile.setOnClickListener(this)
+        b_start_custom_view.setOnClickListener(this)
     }
 
     override fun configureDataBinding(binding: FragmentSettingBinding) {
@@ -67,6 +68,17 @@ class SettingFragment : BaseFragment<ProfileActivityViewModel, FragmentSettingBi
             }
             R.id.b_start_profile -> {
                 startActivity(Intent(requireContext(), ProfileActivity::class.java))
+            }
+            R.id.b_start_custom_view -> {
+                val fragmentTransaction: FragmentTransaction =
+                    childFragmentManager.beginTransaction()
+                fragmentTransaction.add(
+                    R.id.fcv_profile_fragment,
+                    CustomViewFragment.newInstance(),
+                    CustomViewFragment::class.java.simpleName
+                )
+                fragmentTransaction.addToBackStack(CustomViewFragment::class.java.name)
+                fragmentTransaction.commit()
             }
         }
     }

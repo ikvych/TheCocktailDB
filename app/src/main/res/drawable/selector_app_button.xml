@@ -18,7 +18,7 @@
     <item android:state_enabled="false">
         <shape android:shape="rectangle">
             <corners android:radius="@dimen/offset_8" />
-            <solid android:color="@color/color_on_surface_variant" />
+            <solid android:color="@color/color_surface_variant" />
         </shape>
     </item>
 

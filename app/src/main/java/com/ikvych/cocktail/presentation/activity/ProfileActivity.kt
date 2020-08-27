@@ -22,7 +22,6 @@ import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import com.ikvych.cocktail.R
-import com.ikvych.cocktail.core.common.exception.ApiException
 import com.ikvych.cocktail.databinding.ActivityProfileBinding
 import com.ikvych.cocktail.extension.isAllPermissionGranted
 import com.ikvych.cocktail.extension.log
@@ -38,7 +37,6 @@ import com.ikvych.cocktail.presentation.fragment.ProfileMainInfoFragment
 import com.ikvych.cocktail.presentation.enumeration.UploadAvatar
 import com.ikvych.cocktail.presentation.extension.viewModels
 import com.ikvych.cocktail.viewmodel.notification.NotificationViewModel
-import com.ikvych.cocktail.viewmodel.user.EditProfileViewModel
 import com.ikvych.cocktail.viewmodel.user.ProfileActivityViewModel
 import com.yalantis.ucrop.UCrop
 import kotlinx.android.synthetic.main.activity_profile.*
@@ -104,7 +102,7 @@ class ProfileActivity : BaseActivity<ProfileActivityViewModel, ActivityProfileBi
                     UploadAvatarBottomSheetDialogFragment::class.java.simpleName
                 )
             }
-            R.id.ib_custom_btn_2 -> {
+            R.id.ib_secondary_btn -> {
                 PopupMenu(this, v).apply {
                     inflate(R.menu.menu_profile)
                     setOnMenuItemClickListener {

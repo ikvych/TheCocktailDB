@@ -75,10 +75,10 @@ class ApplicationToolBar(
             field = value
             if (field) {
                 customBtn1.visibility = View.VISIBLE
-                rl_custom_btn_container_1.visibility = View.VISIBLE
+                rl_first_btn_container.visibility = View.VISIBLE
             } else {
                 customBtn1.visibility = View.GONE
-                rl_custom_btn_container_1.visibility = View.GONE
+                rl_first_btn_container.visibility = View.GONE
             }
             invalidate()
             requestLayout()
@@ -107,15 +107,15 @@ class ApplicationToolBar(
     init {
         View.inflate(context, R.layout.widget_app_toolbar, this)
         this.returnBtn = findViewById(R.id.ib_return_button)
-        this.customBtn2 = findViewById(R.id.ib_custom_btn_2)
-        this.customBtnIndicatorView2 = findViewById(R.id.tv_custom_button_indicator_2)
+        this.customBtn2 = findViewById(R.id.ib_secondary_btn)
+        this.customBtnIndicatorView2 = findViewById(R.id.tv_secondary_btn_indicator)
         this.frameLayout = findViewById(R.id.fl_toolbar)
         this.searchView = findViewById(R.id.sv_toolbar)
         this.textView = findViewById(R.id.tv_toolbar)
-        this.customBtn1 = findViewById(R.id.ib_custom_btn_1)
-        this.customBtnIndicatorView1 = findViewById(R.id.tv_custom_button_indicator_1)
-        this.relativeLayoutCustomBtn = rl_custom_btn_container_2
-        this.relativeLayoutSortBtn = rl_custom_btn_container_1
+        this.customBtn1 = findViewById(R.id.ib_first_btn)
+        this.customBtnIndicatorView1 = findViewById(R.id.tv_first_btn_indicator)
+        this.relativeLayoutCustomBtn = rl_secondary_btn_container
+        this.relativeLayoutSortBtn = rl_first_btn_container
 
         context!!.theme.obtainStyledAttributes(
             attrs,

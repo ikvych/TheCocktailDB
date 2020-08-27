@@ -38,7 +38,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/all_content_description"
-
                     bind:strDrinkThumb="@{obj.image}" />
 
                 <CheckBox

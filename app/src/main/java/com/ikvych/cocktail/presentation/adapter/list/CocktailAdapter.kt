@@ -292,13 +292,12 @@ class CocktailAdapter(
     private fun onBind(holder: RecyclerView.ViewHolder, position: Int, model: Any) {
         when (holder) {
             is CocktailViewHolder -> {
-                holder.binding.obj = model as CocktailModel
-                holder.binding.viewModel = viewModel
-                holder.binding.cvItemDrink.setOnLongClickListener(context as? View.OnLongClickListener)
-                holder.binding.cvItemDrink.setOnClickListener(context as? View.OnClickListener)
                 if (isDefaultLayoutManagerEnabled) {
                     // на деяких девайсах не встановлювалась коректно min і max height, тому прийшлося заміряти і встановлювати конкретну
                     //висоту для кожного елемента
+/*                    val arflImgContainer = holder.binding.arflImgContainer.minSize
+                    holder.binding.arflImgContainer.aspectRation =
+                        getAspectRotation(position)*/
                     holder.binding.ivDrinkImage.measure(
                         View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.EXACTLY),
                         View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.UNSPECIFIED)
@@ -308,6 +307,10 @@ class CocktailAdapter(
                     itemLayoutParam.height = layoutWidth
                     holder.binding.ivDrinkImage.layoutParams = itemLayoutParam
                 }
+                holder.binding.obj = model as CocktailModel
+                holder.binding.viewModel = viewModel
+                holder.binding.cvItemDrink.setOnLongClickListener(context as? View.OnLongClickListener)
+                holder.binding.cvItemDrink.setOnClickListener(context as? View.OnClickListener)
                 holder.binding.executePendingBindings()
             }
             is FavoriteCocktailViewHolder -> {
@@ -320,6 +323,31 @@ class CocktailAdapter(
             is HeaderViewHolder -> {
                 holder.binding.obj = model.toString()
                 holder.binding.executePendingBindings()
+            }
+        }
+    }
+
+    private fun getAspectRotation(position: Int): Float {
+        val span = spanSizeLookup!!.getSpanSize(position)
+        return when (defaultItemSpanSize) {
+            4 -> {
+                when (span) {
+                    4 -> 4.0F
+                    2 -> 2.0F
+                    1 -> 1.0F
+                    else -> .0F
+                }
+            }
+            2 -> {
+                when (span) {
+                    4 -> 2.0F
+                    2 -> 1.0F
+                    1 -> .5F
+                    else -> .0F
+                }
+            }
+            else -> {
+                .0F
             }
         }
     }

@@ -8,4 +8,60 @@
         <attr name="tl_disable_return_btn" format="boolean"/>
         <attr name="tl_set_transparent" format="boolean"/>
     </declare-styleable>
+
+    <declare-styleable name="CustomLayoutLP">
+        <attr name="android:layout_gravity" />
+        <attr name="layout_position">
+            <enum name="middle" value="0" />
+            <enum name="left" value="1" />
+            <enum name="right" value="2" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="RoundedImageView">
+        <attr name="cornerRadius" format="dimension" />
+        <attr name="roundedCorners">
+            <flag name="topLeft" value="1" />
+            <flag name="topRight" value="2" />
+            <flag name="bottomRight" value="4" />
+            <flag name="bottomLeft" value="8" />
+            <flag name="all" value="15" />
+        </attr>
+    </declare-styleable>
+
+    <declare-styleable name="AspectRatioFrameLayout">
+        <attr name="arfl_mode" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+        <attr name="arfl_aspect_ratio" format="float|reference"/>
+        <attr name="arfl_min_size_by_mode" format="dimension"/>
+        <attr name="arfl_min_size_by_reverse_mode" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="PartibleAppBarLayout">
+        <attr name="pabl_mode" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+        <attr name="pabl_part" format="float|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="AspectRatioTextView">
+        <attr name="artv_mode" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+        <attr name="artv_aspect_ratio" format="float|reference"/>
+    </declare-styleable>
+
+    <declare-styleable name="LinearLayoutWithChildLimiter_Layout">
+        <attr name="layout_max_size" format="dimension" />
+        <attr name="layout_percent_size" format="integer" />
+        <attr name="android:layout_gravity" />
+    </declare-styleable>
+
+    <declare-styleable name="LinearLayoutWithChildLimiter">
+        <attr name="android:orientation"/>
+    </declare-styleable>
 </resources>

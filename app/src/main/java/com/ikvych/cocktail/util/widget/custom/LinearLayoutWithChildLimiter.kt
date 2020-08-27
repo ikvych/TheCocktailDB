@@ -102,7 +102,7 @@ class LinearLayoutWithChildLimiter : ViewGroup {
                     }
                     Orientation.VERTICAL -> {
                         if (lp.layoutPercentSize != NONE_PERCENT) {
-                            lp.height = measuredWidth * lp.layoutPercentSize / 100
+                            lp.height = measuredHeight * lp.layoutPercentSize / 100
                             measureCurrentChild(child, widthMeasureSpec, heightMeasureSpec)
                         }
                         when (lp.height) {

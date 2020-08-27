@@ -35,16 +35,16 @@
             <enum name="height" value="1"/>
         </attr>
         <attr name="arfl_aspect_ratio" format="float|reference"/>
-        <attr name="arfl_min_size" format="dimension"/>
-        <attr name="arfl_min_mode_size" format="dimension"/>
+        <attr name="arfl_min_size_by_mode" format="dimension"/>
+        <attr name="arfl_min_size_by_reverse_mode" format="dimension"/>
     </declare-styleable>
 
-    <declare-styleable name="AspectRotatioAppBarLayout">
-        <attr name="arabl_mode" format="enum">
+    <declare-styleable name="PartibleAppBarLayout">
+        <attr name="pabl_mode" format="enum">
             <enum name="width" value="0"/>
             <enum name="height" value="1"/>
         </attr>
-        <attr name="arabl_part" format="float|reference"/>
+        <attr name="pabl_part" format="float|reference"/>
     </declare-styleable>
 
     <declare-styleable name="AspectRatioTextView">

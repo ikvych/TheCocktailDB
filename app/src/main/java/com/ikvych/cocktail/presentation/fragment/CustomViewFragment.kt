@@ -23,7 +23,7 @@ class CustomViewFragment : BaseFragment<BaseViewModel, FragmentCustomViewBinding
         artv_test.ellipsize = TextUtils.TruncateAt.END
         artv_test.text = text
         val lp = tv_test.layoutParams as LinearLayoutWithChildLimiter.LinearLayoutWithChildLimiterLayoutParams
-
+/*        lp.layoutPercentSize = 50*/
     }
 
     companion object {

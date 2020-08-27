@@ -6,7 +6,9 @@ import com.google.android.material.appbar.AppBarLayout
 import com.ikvych.cocktail.R
 import kotlin.math.roundToInt
 
-class AspectRotatioAppBarLayout : AppBarLayout {
+//Можливість встановлювати висоту віджета в певну частину від загальної висоти
+//Для деталізації напою використовується щоб відображати картинку на 1/3 від висоти екрану
+class PartibleAppBarLayout : AppBarLayout {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         init(attrs)
@@ -26,16 +28,16 @@ class AspectRotatioAppBarLayout : AppBarLayout {
     private fun init(attrs: AttributeSet?) {
         setWillNotDraw(false)
 
-        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.AspectRotatioAppBarLayout)
+        val typedArray = context.obtainStyledAttributes(attrs, R.styleable.PartibleAppBarLayout)
         try {
             aspectRationMode =
                 typedArray.getInt(
-                    R.styleable.AspectRotatioAppBarLayout_arabl_mode,
+                    R.styleable.PartibleAppBarLayout_pabl_mode,
                     AspectRatioMode.WIDTH_MODE
                 )
 
             portion = typedArray.getFloat(
-                R.styleable.AspectRotatioAppBarLayout_arabl_part,
+                R.styleable.PartibleAppBarLayout_pabl_part,
                 1.0F
             )
 

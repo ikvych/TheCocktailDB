@@ -8,7 +8,8 @@ import android.util.AttributeSet
 import android.view.View
 import androidx.appcompat.widget.AppCompatButton
 
-class MyAppCompatButton : AppCompatButton {
+// Використовується на кнопці реєстрації SignUpFragment
+class AppCompatButton : AppCompatButton {
     constructor(context: Context) : super(context)
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs)
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(
@@ -18,16 +19,13 @@ class MyAppCompatButton : AppCompatButton {
     )
 
     var saturation: Float = 1.0F
-    set(value) {
-        field = value
-        val colorMatrix = ColorMatrix()
-        colorMatrix.setSaturation(value)
-        val colorMatrixColorFilter = ColorMatrixColorFilter(colorMatrix)
-        val paint = Paint()
-        paint.colorFilter = colorMatrixColorFilter
-        setLayerType(View.LAYER_TYPE_HARDWARE, paint)
-        invalidate()
-    }
-
-
+        set(value) {
+            field = value
+            setLayerType(View.LAYER_TYPE_HARDWARE, Paint().apply {
+                colorFilter = ColorMatrixColorFilter(ColorMatrix().apply {
+                    setSaturation(value)
+                })
+            })
+            invalidate()
+        }
 }

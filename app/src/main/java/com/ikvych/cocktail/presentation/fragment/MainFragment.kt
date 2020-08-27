@@ -4,13 +4,11 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.core.content.ContextCompat
-import androidx.core.os.bundleOf
 import androidx.fragment.app.DialogFragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.analytics.FirebaseAnalytics
 import com.ikvych.cocktail.R
 import com.ikvych.cocktail.presentation.adapter.list.FilterAdapter
 import com.ikvych.cocktail.presentation.adapter.pager.DrinkPagerAdapter
@@ -91,10 +89,10 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
         filterRecyclerView.setHasFixedSize(true)
         filterRecyclerView.adapter = filterAdapter
 
-        ib_custom_btn_2.setOnClickListener(this)
-        ib_custom_btn_2.setOnLongClickListener(this)
-        ib_custom_btn_1.setOnClickListener(this)
-        ib_custom_btn_1.setOnLongClickListener(this)
+        ib_secondary_btn.setOnClickListener(this)
+        ib_secondary_btn.setOnLongClickListener(this)
+        ib_first_btn.setOnClickListener(this)
+        ib_first_btn.setOnLongClickListener(this)
         fab_main_fragment.setOnClickListener(this)
 
         initLiveDataObserver()
@@ -132,9 +130,9 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             }
             filterAdapter.setData(filterList)
             if (viewModel.isFiltersPresent()) {
-                tv_custom_button_indicator_2.visibility = View.VISIBLE
+                tv_secondary_btn_indicator.visibility = View.VISIBLE
             } else {
-                tv_custom_button_indicator_2.visibility = View.GONE
+                tv_secondary_btn_indicator.visibility = View.GONE
             }
         })
     }
@@ -205,7 +203,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
     override fun onClick(v: View?) {
         if (v == null) return
         when (v.id) {
-            R.id.ib_custom_btn_2 -> {
+            R.id.ib_secondary_btn -> {
                 val fragmentTransaction = childFragmentManager.beginTransaction()
                 fragmentTransaction.add(
                     R.id.fcv_main_fragment,
@@ -215,7 +213,7 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
                 fragmentTransaction.addToBackStack(FilterFragment::class.java.name)
                 fragmentTransaction.commit()
             }
-            R.id.ib_custom_btn_1 -> {
+            R.id.ib_first_btn -> {
                 SortDrinkDialogFragment.newInstance(viewModel.sortTypeLiveData.value)
                     .show(childFragmentManager, SortDrinkDialogFragment::class.java.simpleName)
             }
@@ -230,14 +228,14 @@ class MainFragment : BaseFragment<MainFragmentViewModel, FragmentMainBinding>(),
             return false
         }
         return when (v.id) {
-            R.id.ib_custom_btn_2 -> {
+            R.id.ib_secondary_btn -> {
                 viewModel.resetFilters()
                 filterAdapter.setData(arrayListOf())
                 true
             }
             //можна винести клік по цій кнопці у viewModel через dataBinding, але оскільки вона належить кастомному тулбару
             //то поки не брався це реалізовувати, і взагалі сумніваюся чи так потрібно робити
-            R.id.ib_custom_btn_1 -> {
+            R.id.ib_first_btn -> {
                 if (viewModel.sortTypeLiveData.value != SortDrinkType.RECENT) {
                     viewModel.sortTypeLiveData.value = SortDrinkType.RECENT
                     return true

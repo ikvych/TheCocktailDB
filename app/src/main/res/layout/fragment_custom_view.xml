@@ -10,7 +10,7 @@
         android:background="@color/color_primary">
 
         <com.ikvych.cocktail.util.widget.custom.AspectRatioFrameLayout
-            android:layout_width="400dp"
+            android:layout_width="200dp"
             android:layout_height="0dp"
             android:background="#673AB7"
             app:arfl_aspect_ratio="4"
@@ -38,7 +38,7 @@
 
         <com.ikvych.cocktail.util.widget.custom.LinearLayoutWithChildLimiter
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:background="@color/color_edit_text"
             android:layout_margin="@dimen/offset_48"
             android:orientation="vertical">

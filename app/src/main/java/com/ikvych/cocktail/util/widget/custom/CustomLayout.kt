@@ -9,7 +9,7 @@ import android.view.ViewGroup
 import android.widget.RemoteViews.RemoteView
 import com.ikvych.cocktail.R
 
-
+// Тестовий лейаут скачаний з доків, щоб подивитися як це все працює
 /**
  * Example of writing a custom layout manager.  This is a fairly full-featured
  * layout manager that is relatively general, handling all layout cases.  You

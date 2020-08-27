@@ -7,7 +7,6 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.core.graphics.withSave
 import com.ikvych.cocktail.R
-import kotlin.math.min
 
 class RoundedImageView : AppCompatImageView {
     constructor(context: Context?) : super(context)
@@ -24,7 +23,7 @@ class RoundedImageView : AppCompatImageView {
     }
 
     private val is26Plus = Build.VERSION.SDK_INT >= 26
-    private val CORNERS: Array<Int> = arrayOf(
+    private val corners: Array<Int> = arrayOf(
         CornerFlag.CORNER_TOP_LEFT,
         CornerFlag.CORNER_TOP_RIGHT,
         CornerFlag.CORNER_BOTTOM_RIGHT,
@@ -65,9 +64,8 @@ class RoundedImageView : AppCompatImageView {
     }
 
     private fun configureRadii() {
-        val maxRadius = min(height, width) / 2.0F
         for (i in 0..3) {
-            if (isCornerRounded(CORNERS[i])) {
+            if (isCornerRounded(corners[i])) {
                 radii[2 * i] = cornerRadius
                 radii[2 * i + 1] = cornerRadius
             }

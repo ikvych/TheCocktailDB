@@ -193,12 +193,12 @@
 
         </LinearLayout>
 
-        <com.ikvych.cocktail.util.widget.custom.AspectRotatioAppBarLayout
+        <com.ikvych.cocktail.util.widget.custom.PartibleAppBarLayout
             android:id="@+id/abl_drink_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:arabl_mode="height"
-            app:arabl_part="3">
+            app:pabl_mode="height"
+            app:pabl_part="3">
 
             <com.google.android.material.appbar.CollapsingToolbarLayout
                 android:layout_width="match_parent"
@@ -255,7 +255,7 @@
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
-        </com.ikvych.cocktail.util.widget.custom.AspectRotatioAppBarLayout>
+        </com.ikvych.cocktail.util.widget.custom.PartibleAppBarLayout>
 
 
     </androidx.coordinatorlayout.widget.CoordinatorLayout>

@@ -55,6 +55,14 @@
         <attr name="artv_aspect_ratio" format="float|reference"/>
     </declare-styleable>
 
+    <declare-styleable name="AspectRatioCardView">
+        <attr name="arcv_mode" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+        <attr name="arcv_aspect_ratio" format="float|reference"/>
+    </declare-styleable>
+
     <declare-styleable name="LinearLayoutWithChildLimiter_Layout">
         <attr name="layout_max_size" format="dimension" />
         <attr name="layout_percent_size" format="integer" />
@@ -63,5 +71,54 @@
 
     <declare-styleable name="LinearLayoutWithChildLimiter">
         <attr name="android:orientation"/>
+    </declare-styleable>
+
+    <declare-styleable name="RangeSeekBar">
+        <attr name="mrsb_mode" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+        <attr name="mrsb_min_value" format="integer"/>
+        <attr name="mrsb_max_value" format="integer"/>
+        <attr name="mrsb_background_height" format="dimension"/>
+        <attr name="mrsb_background_is_rounded" format="boolean"/>
+        <attr name="mrsb_background_color" format="color"/>
+        <attr name="mrsb_background_gradient_left" format="color"/>
+        <attr name="mrsb_background_gradient_right" format="color"/>
+        <attr name="mrsb_foreground_height" format="color"/>
+        <attr name="mrsb_foreground_color" format="color"/>
+        <attr name="mrsb_foreground_gradient_left" format="color"/>
+        <attr name="mrsb_foreground_gradient_right" format="color"/>
+        <attr name="mrsb_thumb_color_active" format="color"/>
+        <attr name="mrsb_thumb_color_disable" format="color"/>
+        <attr name="mrsb_thumb_color_gradient_top_active" format="color"/>
+        <attr name="mrsb_thumb_color_gradient_bottom_active" format="color"/>
+        <attr name="mrsb_thumb_color_gradient_top_disable" format="color"/>
+        <attr name="mrsb_thumb_color_gradient_bottom_disable" format="color"/>
+        <attr name="mrsb_thumb_size_active" format="dimension"/>
+        <attr name="mrsb_thumb_size_disable" format="dimension"/>
+        <attr name="mrsb_value_text_size" format="dimension"/>
+    </declare-styleable>
+
+
+    <declare-styleable name="GifView2">
+        <attr name="gv_mode" format="enum">
+            <enum name="width" value="0"/>
+            <enum name="height" value="1"/>
+        </attr>
+        <attr name="gv_aspect_ratio" format="float|reference"/>
+
+        <attr name="gv_circle_color" format="color|reference" />
+        <attr name="gv_min_circle_size" format="dimension" />
+        <attr name="gv_max_circle_size" format="dimension" />
+        <attr name="gv_cycle_duration" format="integer" />
+        <!--радіальні кольори-->
+        <attr name="gv_circle_internal_color" format="color|reference" />
+        <attr name="gv_circle_external_color" format="color|reference" />
+
+        <attr name="gv_circle_count" format="integer" />
+        <attr name="gv_sweep_angle" format="integer" />
+        <!--стиснутість еліапса-->
+        <attr name="gv_compress_ratio" format="float" />
     </declare-styleable>
 </resources>

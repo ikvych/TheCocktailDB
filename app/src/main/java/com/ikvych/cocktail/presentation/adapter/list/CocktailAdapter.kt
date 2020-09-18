@@ -295,8 +295,8 @@ class CocktailAdapter(
                 if (isDefaultLayoutManagerEnabled) {
                     // на деяких девайсах не встановлювалась коректно min і max height, тому прийшлося заміряти і встановлювати конкретну
                     //висоту для кожного елемента
-/*                    val arflImgContainer = holder.binding.arflImgContainer.minSize
-                    holder.binding.arflImgContainer.aspectRation =
+/*                    val arflImgContainer = holder.binding.cvItemDrink.minSize*/
+/*                    holder.binding.cvItemDrink.aspectRation =
                         getAspectRotation(position)*/
                     holder.binding.ivDrinkImage.measure(
                         View.MeasureSpec.makeMeasureSpec(0, View.MeasureSpec.EXACTLY),

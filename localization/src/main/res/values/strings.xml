@@ -69,6 +69,7 @@
     <string name="profile_log_out_button">Log out</string>
     <string name="profile_log_out_dialog_title">Log out</string>
     <string name="profile_log_out_dialog_message">Are you Really want to exit?</string>
+    <string name="profile_start_gif">Start gif</string>
     <string name="profile_start_test_fragment_button">Start test fragment</string>
     <string name="profile_change_language_button">Change Language</string>
     <string name="profile_start_profile_button">Profile</string>

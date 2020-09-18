@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/color_primary"
+        android:orientation="vertical"
+        tools:context=".presentation.fragment.MyMapFragmentFragment">
+
+        <com.ikvych.cocktail.util.widget.custom.ApplicationToolBar
+            android:id="@+id/atb_fragment_main"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_height_max"
+            android:layout_gravity="top"
+            android:background="@drawable/shape_app_bar_bg"
+            android:elevation="@dimen/elevation_16" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.google.android.libraries.maps.MapView
+                android:id="@+id/mv_map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:apiKey="@string/google_maps_key" />
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+    </LinearLayout>
+</layout>

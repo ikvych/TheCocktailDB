@@ -19,10 +19,10 @@ class CustomViewFragment : BaseFragment<BaseViewModel, FragmentCustomViewBinding
 
     override fun configureView(view: View, savedInstanceState: Bundle?) {
         val text = "Text\n2nd line\nSample Text"
-        artv_test.maxLines = 2
+/*        artv_test.maxLines = 2
         artv_test.ellipsize = TextUtils.TruncateAt.END
         artv_test.text = text
-        val lp = tv_test.layoutParams as LinearLayoutWithChildLimiter.LinearLayoutWithChildLimiterLayoutParams
+        val lp = tv_test.layoutParams as LinearLayoutWithChildLimiter.LinearLayoutWithChildLimiterLayoutParams*/
 /*        lp.layoutPercentSize = 50*/
     }
 

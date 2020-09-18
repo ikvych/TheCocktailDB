@@ -31,4 +31,14 @@
     <color name="item_drink_filter_ingredient_bg">#E0E0E0</color>
     <color name="app_bar_drink_filter_bg">#f5f5f5</color>
 
+
+    <color name="seek_bar_indicator_active">#673AB7</color>
+    <color name="seek_bar_indicator_disable">#FF9800</color>
+    <color name="seek_bar_foreground_left">#01579B</color>
+
+    <color name="seek_bar_active_indicator_top">#7E57C2</color>
+    <color name="seek_bar_active_indicator_bottom">#311B92</color>
+
+    <color name="seek_bar_disable_indicator_top">#5C6BC0</color>
+    <color name="seek_bar_disable_indicator_bottom">#1A237E</color>
 </resources>

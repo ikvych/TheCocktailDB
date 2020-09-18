@@ -75,4 +75,16 @@
     <dimen name="icon_size_extra">48dp</dimen>
     <!--#endregion-->
 
+    <dimen name="range_seek_bar_background_height">12dp</dimen>
+    <dimen name="range_seek_bar_foreground_height">16dp</dimen>
+    <dimen name="range_seek_bar_indicator_disable">20dp</dimen>
+    <dimen name="range_seek_bar_indicator_active">32dp</dimen>
+    <dimen name="range_seek_bar_zone">40dp</dimen>
+    <dimen name="range_seek_bar_text_size">16sp</dimen>
+
+
+    <dimen name="min_circle_size">16dp</dimen>
+    <dimen name="min_circle_size_test">10dp</dimen>
+    <dimen name="max_circle_size">24dp</dimen>
+
 </resources>

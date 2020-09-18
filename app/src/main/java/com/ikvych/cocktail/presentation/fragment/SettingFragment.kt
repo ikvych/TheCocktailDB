@@ -36,6 +36,7 @@ class SettingFragment : BaseFragment<ProfileActivityViewModel, FragmentSettingBi
         b_change_language.setOnClickListener(this)
         b_start_profile.setOnClickListener(this)
         b_start_custom_view.setOnClickListener(this)
+        b_start_gif.setOnClickListener(this)
     }
 
     override fun configureDataBinding(binding: FragmentSettingBinding) {
@@ -46,15 +47,26 @@ class SettingFragment : BaseFragment<ProfileActivityViewModel, FragmentSettingBi
     override fun onClick(v: View?) {
         if (v == null) return
         when (v.id) {
+            R.id.b_start_gif -> {
+                val fragmentTransaction: FragmentTransaction =
+                    childFragmentManager.beginTransaction()
+                fragmentTransaction.add(
+                    R.id.fcv_profile_fragment,
+                    CustomViewFragment2.newInstance(),
+                    CustomViewFragment2::class.java.simpleName
+                )
+                fragmentTransaction.addToBackStack(CustomViewFragment2::class.java.name)
+                fragmentTransaction.commit()
+            }
             R.id.b_start_test_fragment -> {
                 val fragmentTransaction: FragmentTransaction =
                     childFragmentManager.beginTransaction()
                 fragmentTransaction.add(
                     R.id.fcv_profile_fragment,
-                    TestFragment.newInstance(5, "Ivan Kvych"),
-                    TestFragment::class.java.simpleName
+                    MyMapFragmentFragment.newInstance(),
+                    MyMapFragmentFragment::class.java.simpleName
                 )
-                fragmentTransaction.addToBackStack(TestFragment::class.java.name)
+                fragmentTransaction.addToBackStack(MyMapFragmentFragment::class.java.name)
                 fragmentTransaction.commit()
             }
             R.id.b_change_language -> {

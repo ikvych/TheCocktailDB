@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+<!--    <data>
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.cocktail.MainFragmentViewModel" />
+    </data>-->
+
+    <LinearLayout
+        android:id="@+id/cl_filter_fragment_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#FFFFFF"
+        android:clickable="true"
+        android:focusable="true"
+        android:orientation="vertical"
+        tools:context="com.ikvych.cocktail.filter.FilterFragment">
+
+        <com.ikvych.cocktail.prresentation.ui.widjet.ApplicationToolBar
+            android:id="@+id/atb_fragment_filter"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/view_height_max"
+            android:background="@drawable/shape_app_bar_bg"
+            android:elevation="@dimen/elevation_16" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/coordinator_fragment_filter"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1">
+
+            <androidx.core.widget.NestedScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <LinearLayout
+                    android:id="@+id/ll_fragment_filter_container"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:layout_marginBottom="@dimen/offset_128"
+                    android:clipChildren="false"
+                    android:clipToPadding="false"
+                    android:orientation="vertical"
+                    android:paddingVertical="@dimen/offset_4">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="@dimen/offset_4"
+                        android:padding="@dimen/offset_8"
+                        android:text="@string/filter_fragment_select_filter_type_title"
+                        android:textColor="@color/color_on_primary"
+                        android:textSize="@dimen/headline_3" />
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/layer_list_backgound_title"
+                        android:padding="@dimen/offset_12"
+                        android:text="@string/filter_fragment_single_filter_type_title"
+                        android:textColor="@color/color_on_surface_variant"
+                        android:textSize="@dimen/headline_4" />
+
+                    <LinearLayout
+                        android:id="@+id/im_alcohol_filter_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/view_height"
+                        android:layout_marginStart="@dimen/offset_8"
+                        android:layout_marginTop="@dimen/offset_4"
+                        android:background="@drawable/layer_list_text_title"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/offset_8">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="2"
+                            android:text="@string/filter_fragment_alcohol_filter_button"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/all_content_description"
+                            android:src="@drawable/ic_drink_alcohol_filter_arrow" />
+
+                        <TextView
+                            android:id="@+id/tv_alcohol_filter_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="5"
+
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            android:textColor="@color/color_on_surface_variant" />
+<!--                        android:text="@{viewModel.alcoholFilterLiveData}"-->
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/im_category_filter_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/view_height"
+                        android:layout_marginStart="@dimen/offset_8"
+                        android:layout_marginTop="@dimen/offset_4"
+                        android:background="@drawable/layer_list_text_title"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/offset_8">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="2"
+                            android:text="@string/filter_fragment_category_filter_button"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/all_content_description"
+                            android:src="@drawable/ic_drink_alcohol_filter_arrow" />
+
+                        <TextView
+                            android:id="@+id/tv_category_filter_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="5"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="@color/color_on_surface_variant" />
+                        <!--                            android:text="@{viewModel.categoryFilterLiveData}"-->
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/im_glass_filter_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/view_height"
+                        android:layout_marginStart="@dimen/offset_8"
+                        android:layout_marginTop="@dimen/offset_4"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/offset_8">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="2"
+                            android:text="@string/filter_fragment_glass_filter_button"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/all_content_description"
+                            android:src="@drawable/ic_drink_alcohol_filter_arrow" />
+
+                        <TextView
+                            android:id="@+id/tv_glass_filter_value"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="5"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                        android:textColor="@color/color_on_surface_variant" />
+                        <!--                            android:text="@{viewModel.glassFilterLiveData}"-->
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/layer_list_backgound_title"
+                        android:padding="@dimen/offset_12"
+                        android:text="@string/filter_fragment_multi_filter_type_title"
+                        android:textColor="@color/color_on_surface_variant"
+                        android:textSize="@dimen/headline_4" />
+
+                    <LinearLayout
+                        android:id="@+id/im_ingredient_filter_item"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/view_height"
+                        android:layout_marginStart="@dimen/offset_8"
+                        android:layout_marginTop="@dimen/offset_4"
+                        android:background="@drawable/layer_list_text_title"
+                        android:orientation="horizontal"
+                        android:paddingHorizontal="@dimen/offset_8">
+
+                        <TextView
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:layout_weight="2"
+                            android:text="@string/filter_fragment_ingredient_filter_button"
+                            android:textAppearance="@style/TextAppearance.MaterialComponents.Body1" />
+
+                        <ImageView
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:contentDescription="@string/all_content_description"
+                            android:src="@drawable/ic_drink_alcohol_filter_arrow" />
+
+                        <HorizontalScrollView
+                            android:id="@+id/hsw_ingredient_filter2"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="5"
+                            android:padding="@dimen/offset_4">
+
+                            <TextView
+                                android:id="@+id/tv_ingredient_filter_value"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:textAppearance="@style/TextAppearance.MaterialComponents.Body1"
+                            android:textColor="@color/color_on_surface_variant"
+                            android:visibility="visible" />
+                            <!--                                android:text="@{viewModel.ingredientFilterLiveData}"-->
+
+                        </HorizontalScrollView>
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+            </androidx.core.widget.NestedScrollView>
+
+            <LinearLayout
+                android:id="@+id/ll_btn_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="#FFFFFF"
+                android:clipChildren="false"
+                android:clipToPadding="false"
+                android:orientation="horizontal"
+                android:paddingHorizontal="@dimen/offset_8"
+                app:layout_behavior="@string/fab_transformation_sheet_behavior">
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/acb_reset"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_marginVertical="@dimen/offset_8"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_app_button"
+                    android:text="@string/all_reset_button"
+                    android:textColor="@drawable/selector_app_button_text"/>
+<!--                    android:onClick="@{() -> viewModel.resetFilters()}"-->
+
+
+                <Space
+                    android:layout_width="@dimen/offset_8"
+                    android:layout_height="match_parent" />
+
+                <androidx.appcompat.widget.AppCompatButton
+                    android:id="@+id/acb_to_result"
+                    android:layout_width="0dp"
+                    android:layout_height="@dimen/btn_height"
+                    android:layout_marginVertical="@dimen/offset_8"
+                    android:layout_weight="1"
+                    android:background="@drawable/selector_app_button"
+                    android:text="@string/filter_fragment_result_button"
+                    android:textColor="@drawable/selector_app_button_text" />
+
+            </LinearLayout>
+
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+    </LinearLayout>
+</layout>

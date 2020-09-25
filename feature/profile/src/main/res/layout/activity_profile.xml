@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.profile.ProfileActivityViewModel" />
+    </data>
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context=".ui.activity.ProfileActivity">
+
+        <FrameLayout
+            android:id="@+id/fl_image_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:adjustViewBounds="true"
+                android:contentDescription="@string/all_content_description"
+                android:maxHeight="@dimen/offset_256"
+                android:scaleType="centerCrop"
+                android:src="@drawable/default_icon"/>
+<!--                bind:bg_avatar="@{viewModel.userAvatarLiveData}"-->
+
+            <com.ikvych.cocktail.prresentation.ui.widjet.ApplicationToolBar
+                android:id="@+id/atb_profile_activity"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/view_height_max"
+                android:elevation="@dimen/elevation_16"
+                android:layout_gravity="top"
+                bind:tl_set_text="@string/profile"
+                bind:tl_set_transparent="true"
+                app:tl_enable_custom_btn="true" />
+
+        </FrameLayout>
+
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-100dp"
+            android:layout_marginBottom="@dimen/offset_16"
+            android:gravity="center">
+
+            <ImageView
+                android:id="@+id/iv_upload_image"
+                android:layout_width="@dimen/offset_160"
+                android:layout_height="@dimen/offset_160"
+                android:contentDescription="@string/all_content_description"
+                android:src="@drawable/default_icon"/>
+<!--                bind:avatar="@{viewModel.userAvatarLiveData}"-->
+
+            <ImageButton
+                android:id="@+id/b_upload_photo"
+                android:layout_width="@dimen/btn_width"
+                android:layout_height="@dimen/btn_width"
+                android:layout_alignEnd="@+id/iv_upload_image"
+                android:layout_alignBottom="@+id/iv_upload_image"
+                android:src="@drawable/ic_add_photo"
+                android:background="@drawable/shape_camera_icon"
+                android:contentDescription="@string/all_content_description"/>
+
+        </RelativeLayout>
+
+
+        <!--        <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textSize="@dimen/headline_3"
+                    android:text="@{viewModel.userFullNameLiveData}"/>-->
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{viewModel.userFullNameLiveData}"
+                android:textColor="@color/color_on_primary"
+                android:textSize="@dimen/headline_2"
+                android:textStyle="bold" />
+
+            <Space
+                android:layout_width="@dimen/offset_8"
+                android:layout_height="wrap_content"/>
+
+            <ImageButton
+                android:id="@+id/ib_edit_main_info"
+                android:layout_width="@dimen/btn_width_min"
+                android:layout_height="@dimen/btn_height_min"
+                android:background="@color/color_transparent"
+                android:src="@drawable/ic_edit"/>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/offset_8"
+            android:gravity="center"
+            android:text="@{viewModel.userEmailLiveData}"
+            android:textColor="@color/color_on_primary"
+            android:textSize="@dimen/headline_4" />
+
+
+    </LinearLayout>
+
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/fcv_profile"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</FrameLayout>
+</layout>

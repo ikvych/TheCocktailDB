@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.cocktail.MainFragmentViewModel" />
+    </data>
+
+    <LinearLayout
+        android:id="@+id/ll_search_result_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        tools:context="com.ikvych.cocktail.cocktail.FavoriteFragment">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_search_result"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="@{viewModel.filteredAndSortedFavoriteDrinksLiveData.isEmpty() ? View.GONE : View.VISIBLE}"
+            android:clipToPadding="false"
+            android:clipChildren="false"/>
+
+        <!--Shown when the database is empty-->
+        <TextView
+            android:id="@+id/tv_empty_history"
+            style="@style/TextOnEmptyRecyclerView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/all_empty_history"
+            android:visibility="@{viewModel.filteredAndSortedFavoriteDrinksLiveData.isEmpty() ? View.VISIBLE : View.GONE}"/>
+
+    </LinearLayout>
+
+</layout>

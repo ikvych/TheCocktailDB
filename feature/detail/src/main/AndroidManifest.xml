@@ -1,0 +1,9 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ikvych.cocktail.detail">
+
+    <application
+        android:theme="@style/Theme.App.Main">
+        <activity
+            android:name="com.ikvych.cocktail.detail.DrinkDetailActivity"/>
+    </application>
+</manifest>

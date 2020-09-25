@@ -69,6 +69,7 @@
     <string name="profile_log_out_button">Вийти</string>
     <string name="profile_log_out_dialog_title">Вихід</string>
     <string name="profile_log_out_dialog_message">Ви справді бажаєте вийти?</string>
+    <string name="profile_start_gif">Запустити гіфку</string>
     <string name="profile_start_test_fragment_button">Запустити тестовий фрагмент</string>
     <string name="profile_change_language_button">Змінити мову</string>
     <string name="profile_start_profile_button">Профіль</string>

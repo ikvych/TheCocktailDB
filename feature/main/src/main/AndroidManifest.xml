@@ -1,0 +1,10 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ikvych.cocktail.main">
+
+
+    <application
+        android:theme="@style/Theme.App.Main">
+        <activity
+            android:name="com.ikvych.cocktail.main.MainActivity"/>
+    </application>
+</manifest>

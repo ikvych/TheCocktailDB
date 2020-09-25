@@ -5,16 +5,69 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import com.amitshekhar.DebugDB
-import com.ikvych.cocktail.di.Injector
-import java.util.*
+import com.facebook.stetho.Stetho
+import com.ikvych.cocktail.auth.di.authStarterModule
+import com.ikvych.cocktail.detail.di.detailStarterModule
+import com.ikvych.cocktail.impl.di.dbSourceModule
+import com.ikvych.cocktail.preference.di.localSourceModule
+import com.ikvych.cocktail.impl.di.netSourceModule
+import com.ikvych.cocktail.main.di.mainStarterModule
+import com.ikvych.cocktail.profile.di.profileStarterModule
+import com.ikvych.cocktail.prresentation.di.firebaseModule
+import com.ikvych.cocktail.prresentation.di.mapperModule
+import com.ikvych.cocktail.repository.impl.di.repositoryModule
+import org.kodein.di.DKodein
+import org.kodein.di.Kodein
+import org.kodein.di.KodeinAware
+import org.kodein.di.android.androidCoreContextTranslators
+import org.kodein.di.generic.bind
+import org.kodein.di.generic.provider
+import org.kodein.di.generic.singleton
 
-class Application : Application() {
+class Application : Application(), KodeinAware {
 
     override fun onCreate() {
         super.onCreate()
-        Injector.init(this)
+/*        Injector.init(this)*/
+        //бібліотека яка дозволяє відслідковувати базу даних через веб браузер у реальному часі
+        Stetho.initializeWithDefaults(this)
         registerNotificationChanel()
+    }
+
+    override val kodein = Kodein.lazy {
+        import(androidCoreContextTranslators)
+        import(appModule, true)
+
+/*        import(navigationModule)*/
+
+        import(repositoryModule)
+
+        import(localSourceModule)
+        import(dbSourceModule)
+        import(netSourceModule)
+
+
+        import(mapperModule)
+        import(firebaseModule)
+
+        import(mainStarterModule)
+        import(authStarterModule)
+        import(detailStarterModule)
+        import(profileStarterModule)
+
+/*        import(interactorModule)
+
+        import(fcmSourceModule)*/
+    }
+
+    private val appModule = Kodein.Module("appModule") {
+        // because {BuildConfig.APPLICATION_ID} in Library modules are not the same as in Application
+/*        constant(APPLICATION_ID) with BuildConfig.APPLICATION_ID
+        constant(BASE_URL) with baseUrl*/
+
+        bind<Application>() with singleton { this@Application }
+        bind<Context>() with singleton { this@Application }
+        bind<DKodein>() with provider { this.dkodein }
     }
 
     private fun registerNotificationChanel() {

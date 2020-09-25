@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:card_view="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="obj"
+            type="com.ikvych.cocktail.prresentation.model.cocktail.CocktailModel" />
+
+<!--        <variable
+            name="viewModel"
+            type="com.ikvych.cocktail.viewmodel.cocktail.CocktailViewModel" />-->
+    </data>
+
+    <LinearLayout
+        android:id="@+id/cv_item_drink"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="@dimen/elevation_4"
+        android:background="@color/color_primary"
+        android:longClickable="true"
+        android:orientation="horizontal"
+        android:padding="@dimen/offset_12"
+        android:tag="@{obj.id}">
+
+        <ImageView
+            android:id="@+id/iv_drink_image"
+            android:layout_width="@dimen/img_width_min"
+            android:layout_height="@dimen/img_height_min"
+            android:adjustViewBounds="true"
+            android:contentDescription="@string/all_content_description"
+            android:scaleType="centerCrop"
+            android:layout_marginEnd="@dimen/offset_8"
+            bind:favoriteItemImage="@{obj.image}" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_drink_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="Long Title"
+                android:text="@{obj.names.defaultName}"
+                android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_drink_type_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_favorite_cocktail_title_type"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="@dimen/offset_4"/>
+
+                <TextView
+                    android:id="@+id/tv_drink_type"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{obj.category.key}"
+                    android:hint="Ordinary Drink"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textColor="@color/color_on_surface_variant"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_drink_alcohol_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_favorite_cocktail_title_alcohol"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="@dimen/offset_4"/>
+
+                <TextView
+                    android:id="@+id/tv_drink_alcohol"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{obj.alcoholType.key}"
+                    android:hint="Alcoholic"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textColor="@color/color_on_surface_variant"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/tv_drink_glass_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/item_favorite_cocktail_title_glass"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textSize="12sp"
+                    android:layout_marginEnd="@dimen/offset_4"/>
+
+                <TextView
+                    android:id="@+id/tv_drink_glass"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{obj.glass.key}"
+                    android:hint="Cup"
+                    android:textAppearance="@style/TextAppearance.MaterialComponents.Subtitle2"
+                    android:textColor="@color/color_on_surface_variant"
+                    android:textSize="12sp" />
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="end"
+            android:layout_marginStart="@dimen/offset_8"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/ib_popup_menu"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:src="@drawable/ic_drag_menu"
+                android:background="@color/color_transparent"
+                android:tag="@{obj.id}"/>
+
+            <Space
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"/>
+
+            <CheckBox
+                android:id="@+id/cb_is_favorite"
+                android:layout_width="@dimen/offset_32"
+                android:layout_height="wrap_content"
+                android:gravity="bottom|end"
+                android:button="@drawable/ic_remove_favorite"
+                android:buttonTint="#FFCE01"
+                android:checked="@{obj.favorite}"
+                android:tag="@{obj.id}" />
+            <!--                android:onClick="@{() -> viewModel.saveFavoriteDrink(obj)}"-->
+
+        </LinearLayout>
+
+
+    </LinearLayout>
+</layout>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+<!--    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:background="@color/color_primary">
+
+        <com.ikvych.cocktail.prresentation.util.widget.custom.AspectRatioFrameLayout
+            android:layout_width="200dp"
+            android:layout_height="0dp"
+            android:background="#673AB7"
+            app:arfl_aspect_ratio="4"
+            app:arfl_mode="width"
+            >
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF" />
+
+        </com.ikvych.cocktail.prresentation.util.widget.custom.AspectRatioFrameLayout>
+
+        <com.ikvych.cocktail.prresentation.util.widget.custom.AspectRatioTextView
+            android:id="@+id/artv_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:artv_mode="width"
+            app:artv_aspect_ratio="2"
+            android:text="TEST TEXT IMMMMMMMMMMMMMMMMMMMMMMMMMMM kjhfjdsh"
+            android:gravity="center|start"
+            android:ellipsize="end"
+            android:maxLines="4"
+            android:background="@color/color_surface_variant"/>
+
+        <com.ikvych.cocktail.prresentation.util.widget.custom.LinearLayoutWithChildLimiter
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:background="@color/color_edit_text"
+            android:layout_margin="@dimen/offset_48"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_test"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="@dimen/offset_8"
+                android:background="@color/color_surface_variant"
+                android:text="agdsfsdfg"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/text_invalid"
+                android:layout_margin="@dimen/offset_8"
+                android:text="agdsfsdf"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/warning"
+                android:layout_margin="@dimen/offset_8"
+                app:layout_max_size="250dp"
+                android:text="agdsfsdf"/>
+
+        </com.ikvych.cocktail.prresentation.util.widget.custom.LinearLayoutWithChildLimiter>
+
+
+    </LinearLayout>-->
+
+        <com.ikvych.cocktail.prresentation.ui.widjet.CustomLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#FFFFFF"/>
+</layout>
